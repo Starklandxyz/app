@@ -3,7 +3,7 @@
 ### Steps to Execute
 
 Clone repository
-`git clone https://github.com/stzb/game --recursive`
+`git clone https://github.com/Starklandxyz/app --recursive`
 
 - Build contracts
 
