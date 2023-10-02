@@ -12,9 +12,6 @@ import { ethers } from "ethers";
 import PlayerPanel from "./playerpanel";
 import ethicon from "../../public/ethereum.png"
 import starkicon from "../../public/starkneticon.png"
-import foodIcon from "../../public/assets/icons/food.png"
-import ironIcon from "../../public/assets/icons/iron.png"
-import goldIcon from "../../public/assets/icons/gold.png"
 import { ticStore } from "../store/ticStore";
 
 export default function Header() {
@@ -186,28 +183,14 @@ export default function Header() {
     return (
         <ClickWrapper style={{ height: "60px", width: "100%", lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
             <WalletContainer>
-                <div data-tooltip-id="my-tooltip"
-                    data-tooltip-content="Food balance"
-                    data-tooltip-place="top" style={{ marginTop: -5, marginRight: 4 }}>
-                    <img src={foodIcon} width={30} height={30} style={{ marginRight: 5 }} />100
-                </div>
-                <div data-tooltip-id="my-tooltip"
-                    data-tooltip-content="Gold balance"
-                    data-tooltip-place="top" style={{ marginTop: -5, marginRight: 4 }}>
-                    <img src={goldIcon} width={30} height={30} style={{ marginRight: 5 }} />100
-                </div>
-                <div data-tooltip-id="my-tooltip"
-                    data-tooltip-content="Iron balance"
-                    data-tooltip-place="top" style={{ marginTop: -5, marginRight: 4 }}>
-                    <img src={ironIcon} width={30} height={30} style={{ marginRight: 5 }} />100
-                </div>
+                
                 <div data-tooltip-id="my-tooltip"
                     data-tooltip-content="ETH balance"
                     data-tooltip-place="top" style={{ marginTop: 0, marginRight: 4 }}>
                     <img src={ethicon} width={25} height={25} />  {parseFloat(ethers.utils.formatEther(eth)).toFixed(5)} ETH
                 </div>
 
-                {
+                {/* {
                     (account && !player) &&
                     <div>
                         <input value={nickName} onChange={inputChange} style={{ height: 20 }} placeholder="input user name" />
@@ -220,10 +203,9 @@ export default function Header() {
                             Mint Player
                         </button>
                     </div>
-                }
+                } */}
                 <div>
                     {
-                        // players.size != 0 &&
                         <select onChange={e => selectAccount(e)} value={account?.address}>
                             {list().map((account, index) => {
                                 return <option value={account.address} key={index}>{truncateString(account.address, 6, 6)}</option>
@@ -231,11 +213,11 @@ export default function Header() {
                         </select>
                     }
 
-                    {
+                    {/* {
                         player && <button data-tooltip-id="my-tooltip"
                             data-tooltip-content="create a new local wallet"
                             data-tooltip-place="top" style={{ marginLeft: 10 }} onClick={() => createNew()}>{isDeploying ? "deploying..." : "create new"}</button>
-                    }
+                    } */}
                     {
                         !account && <button data-tooltip-id="my-tooltip"
                             data-tooltip-content="create a local wallet"

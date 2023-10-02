@@ -13,7 +13,7 @@ import { troopStore } from "../store/troopStore";
 import { Troop } from "../types/Troop";
 import { buildStore } from "../store/buildstore";
 export default function BuildingTip() {
-    const { camera, phaserLayer } = store()
+    const { camera, phaserLayer,account } = store()
     const { bases } = buildStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
@@ -85,7 +85,10 @@ export default function BuildingTip() {
 
     useEffect(() => {
         console.log("mouseDown", mouseDown);
-        if (!bases.has("0x123")) {
+        if(!account){
+            return
+        }
+        if (!bases.has(account.address)) {
             return
         }
         if (!mouseDown) {
@@ -118,7 +121,10 @@ export default function BuildingTip() {
 
     const addTroop = (end: Coord) => {
         console.log("addTroopArrow");
-        const baseCoord = bases.get("0x123")
+        if(!account){
+            return
+        }
+        const baseCoord = bases.get(account.address)
         if (!baseCoord) {
             return
         }
@@ -128,7 +134,7 @@ export default function BuildingTip() {
         const start = { x, y }
 
         const newTroops = new Map(troops)
-        const troop = new Troop("0x123", start, end, getTimestamp())
+        const troop = new Troop(account.address, start, end, getTimestamp())
         const tid = troop.owner + "_" + troop.startTime
         troop.amount = 2;
         troop.id = tid
@@ -174,7 +180,7 @@ export default function BuildingTip() {
                 showButtons.show &&
                 <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${showButtons.x - 10}px`, top: `${showButtons.y + 20}px` }}>
                     <button onClick={() => sendTroop()}>Send Troop</button>
-                    <button onClick={() => occupyClick()}>Occupy</button>
+                    <button onClick={() => occupyClick()}>Attack</button>
                     <button onClick={() => buildFarmland()}>Farmland</button>
                     <button onClick={() => buildGoldMine()}>GoldMine</button>
                     <button onClick={() => buildIronMine()}>IronMine</button>

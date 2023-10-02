@@ -10,6 +10,7 @@ import NotificationUI from "./NotificationUI";
 import TroopsUI from "./troopsUI";
 import SpawnUI from "./spawnui";
 import Map from "./map";
+import BottomIcons from "./bottomicons";
 
 export default function UI() {
     const layers = store((state) => {
@@ -29,6 +30,7 @@ export default function UI() {
                 <Header/>
             </TopHeaderContainer>
             <NamesUI />
+            <BottomIcons/>
             <BuildingTip />
             <Leaderboard />
             <VersionContainer>

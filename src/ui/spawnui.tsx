@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ClickWrapper } from "./clickWrapper";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { mouseStore } from "../store/mouseStore";
 import { store } from "../store/store";
 import { pixelCoordToTileCoord } from "@latticexyz/phaserx";
@@ -14,7 +14,7 @@ export default function SpawnUI() {
     const { bases } = buildStore()
     const [show, setShow] = useState(false)
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
-    const { camera, phaserLayer } = store()
+    const { camera, phaserLayer,account } = store()
     const [lastCoord, setLastCoord] = useState<Coord>({ x: 0, y: 0 })
     const {
         scenes: {
@@ -27,10 +27,13 @@ export default function SpawnUI() {
     } = phaserLayer!;
 
     const baseClick = () => {
-        setShow(true)
+        setShow(pre=>!pre)
     }
 
     useEffect(() => {
+        if(!account){
+            return
+        }
         if(!show){
             return
         }
@@ -41,7 +44,7 @@ export default function SpawnUI() {
         setShow(false)
         toastSuccess("Build Base Success!")
         const newBases = new Map(bases)
-        newBases.set("0x123", lastCoord)
+        newBases.set(account.address, lastCoord)
         buildStore.setState({ bases: newBases })
     }, [mouseDown])
 
@@ -80,6 +83,17 @@ export default function SpawnUI() {
 
     }, [ex, ey])
 
+    const showButton = useMemo(()=>{
+        if(!account){
+            return <></>
+        }
+        if(bases.has(account.address)){
+            return <></>
+        }
+
+        return <button onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</button>
+    },[account,bases,show])
+
     return (
         <ClickWrapper>
             <ButtonContainer>
@@ -87,13 +101,11 @@ export default function SpawnUI() {
                     show && <p style={{ marginLeft: -60, fontSize: 22, color: 'LavenderBlush' }}>Choose a land to place your Base.</p>
                 }
                 {
-                    (!bases.has("0x123")) && <button onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancle"}</button>
+                    showButton
                 }
-
             </ButtonContainer>
         </ClickWrapper>)
 }
-
 
 const ButtonContainer = styled.div`
     position: absolute;

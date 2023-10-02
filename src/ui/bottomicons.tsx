@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
 import { ClickWrapper } from "./clickWrapper";
 import { store } from "../store/store";
@@ -6,9 +7,11 @@ import { positionToCoorp, toastError } from "../utils";
 import { EntityIndex, getComponentValue, getComponentValueStrict } from "@latticexyz/recs";
 import twitter from "/twitterlogo.png"
 import telegram from "/telegram.png"
+import { buildStore } from "../store/buildstore";
 
 export default function BottomIcons() {
-    const { account,phaserLayer } = store()
+    const { account, phaserLayer } = store()
+    const { bases } = buildStore()
 
     const {
         scenes: {
@@ -22,15 +25,12 @@ export default function BottomIcons() {
             toastError("Create burner wallet first.")
             return
         }
-
-        const entityId = parseInt(account.address) as EntityIndex;
-        const player_ = getComponentValue(networkLayer.components.Player, entityId);
-        if(!player_){
-            toastError("Start game first.")
-            return;
+        const base = bases.get(account.address)
+        if (!base) {
+            return
         }
-        const { x, y } = positionToCoorp(player_.position)
-        const pixelPosition = tileCoordToPixelCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT);
+        // const { x, y } = positionToCoorp(player_.position)
+        const pixelPosition = tileCoordToPixelCoord(base, TILE_WIDTH, TILE_HEIGHT);
         camera.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }
 
@@ -44,12 +44,22 @@ export default function BottomIcons() {
 
     return (
         <ClickWrapper style={{ display: "flex", flexDirection: "column" }}>
-
-            <button onClick={() => center()}>Zoom to Me</button>
-            <div>
-            <img style={{cursor:"pointer", marginTop: 15,marginRight:10 }} width={25} src={twitter} onClick={() => gotoTwitter()} />
-            <img style={{cursor:"pointer", marginTop: 15 }} width={25} src={telegram} onClick={() => gotoTelegram()} />
-            </div>
-
+            <Container>
+                {
+                    (account && bases.has(account.address)) && <button onClick={() => center()}>Zoom to Base</button>
+                }
+                <div>
+                    <img style={{ cursor: "pointer", marginTop: 15, marginRight: 10 }} width={25} src={twitter} onClick={() => gotoTwitter()} />
+                    <img style={{ cursor: "pointer", marginTop: 15 }} width={25} src={telegram} onClick={() => gotoTelegram()} />
+                </div>
+            </Container>
         </ClickWrapper>)
 }
+
+
+const Container = styled.div`
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    color: white;
+`;
