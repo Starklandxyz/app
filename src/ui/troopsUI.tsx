@@ -58,8 +58,13 @@ export default function TroopsUI() {
             }
             const start = tileCoordToPixelCoord(value.from, TILE_WIDTH, TILE_HEIGHT)
             const end = tileCoordToPixelCoord(value.to, TILE_WIDTH, TILE_HEIGHT)
-            end.x = end.x + MAP_WIDTH / 4
-            end.y = end.y + MAP_HEIGHT / 4
+            if(value.retreat){
+                start.x = start.x + MAP_WIDTH / 2
+                start.y = start.y + MAP_HEIGHT / 2
+            }else{
+                end.x = end.x + MAP_WIDTH / 4
+                end.y = end.y + MAP_HEIGHT / 4
+            }
             createArrowLine(objectPool, id, start, end)
         })
     }, [troops])
@@ -200,11 +205,10 @@ export default function TroopsUI() {
         end.x = end.x + MAP_WIDTH / 4
         end.y = end.y + MAP_HEIGHT / 4
         const rr = (start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)
-        const length = Math.sqrt(rr) / SIZE
+        const length = Math.sqrt(rr) / SIZE + 10
         for (let index = 0; index < Math.ceil(length); index++) {
             pool.remove("arrow_" + troop.id + "_" + index)
         }
-
     }
 
     return (<
