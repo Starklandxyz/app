@@ -178,9 +178,11 @@ export default function TroopsUI() {
     const removeTroop = (troop: Troop) => {
         showTroop(troop);
         hideTroopArrow(objectPool, troop);
-        // const newTroops = new Map(troops)
-        // newTroops.delete(troop.id)
-        // troopStore.setState({ troops: newTroops })
+        if (troop.retreat) {
+            const newTroops = new Map(troops)
+            newTroops.delete(troop.id)
+            troopStore.setState({ troops: newTroops })
+        }
     }
 
     const showTroop = (troop: Troop) => {

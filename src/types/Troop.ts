@@ -8,6 +8,7 @@ export class Troop {
     public startTime: number = 0
     public totalTime: number = 0
     public amount: number = 0;
+    public retreat = false
 
     constructor(owner_: string, from_: Coord, to_: Coord, startTime_: number) {
         this.owner = owner_;

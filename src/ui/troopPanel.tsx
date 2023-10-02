@@ -16,7 +16,7 @@ export default function TroopPanel() {
             return
         }
         const pTroops: Array<Troop> = []
-        troops.forEach((value, key) => {
+        troops.forEach((value, _) => {
             if (value.owner == account.address)
                 pTroops.push(value)
         })
@@ -25,14 +25,18 @@ export default function TroopPanel() {
 
     return (<ClickWrapper>
         <Container>
-            <div style={{ width: 250, height: 380, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-                <p style={{fontSize:20,color:"pink"}}>Troops</p>
-                <div>
-                    {userTroop.map((item, index) => (
-                        <TroopItem index={index} troop={item}/>
-                    ))}
+            {
+                account &&
+                <div style={{ width: 270, height: 380, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                    <p style={{ fontSize: 20, color: "pink" }}>Troops</p>
+                    <div>
+                        {userTroop.map((item, index) => (
+                            <TroopItem index={index} troop={item} />
+                        ))}
+                    </div>
                 </div>
-            </div>
+            }
+
         </Container>
     </ClickWrapper>)
 }
