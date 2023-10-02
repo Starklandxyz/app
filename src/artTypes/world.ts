@@ -1,5 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 export enum Tileset {
+    Empty = 799,
     Grass = 0,
     Grass2 = 1,
     Water = 2,

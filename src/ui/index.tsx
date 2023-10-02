@@ -8,6 +8,8 @@ import { VERSION } from "../config";
 import Header from "./header";
 import NotificationUI from "./NotificationUI";
 import TroopsUI from "./troopsUI";
+import SpawnUI from "./spawnui";
+import Map from "./map";
 
 export default function UI() {
     const layers = store((state) => {
@@ -22,6 +24,7 @@ export default function UI() {
     return (
         <Wrapper>
             <NotificationUI/>
+            <SpawnUI/>
             <TopHeaderContainer>
                 <Header/>
             </TopHeaderContainer>
@@ -32,6 +35,7 @@ export default function UI() {
                 <p>version:{VERSION}</p>
             </VersionContainer>
             <TroopsUI/>
+            <Map/>
         </Wrapper>
     );
 };

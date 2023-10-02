@@ -117,28 +117,6 @@ export function buildingCoorpToPosition(coord: Coord): number {
     return position
 }
 
-export function mapIdToBuildingId(mapid: number): number {
-    var buildingId = 1
-    switch (mapid) {
-        case Tileset.Bank: buildingId = BANK_ID; break;
-        case Tileset.Hotel: buildingId = HOTEL_ID; break;
-        case Tileset.Starkbucks: buildingId = STARKBUCKS_ID; break;
-    }
-    return buildingId;
-}
-
-export function buildingIdToMapid(buildingId: number): number {
-    var mapid = 0
-    switch (buildingId) {
-        case BOMB_ID: mapid = Tileset.Bomb; break;
-        case BANK_ID: mapid = Tileset.Bank; break;
-        case HOTEL_ID: mapid = Tileset.Hotel; break;
-        case STARKBUCKS_ID: mapid = Tileset.Starkbucks; break;
-    }
-    return mapid
-}
-
-
 export function truncateString(str: string, frontLen: number, endLen: number) {
     return str.slice(0, frontLen) + '..' + str.slice(-endLen);
 }
@@ -229,8 +207,5 @@ export const calTotal = (gold: number, amount: number) => {
     let gold_left = gold - amount
     let eth_left_new = K / BigInt(gold_left)
     let eth_need = eth_left_new - eth_left
-    // console.log("calTotal",K,gold,amount);
-    // console.log("calTotal",ethers.utils.formatEther(eth_left),ethers.utils.formatEther(eth_left_new),ethers.utils.formatEther(eth_need));
-
     return eth_need
 }

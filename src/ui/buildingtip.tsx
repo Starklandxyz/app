@@ -1,5 +1,5 @@
 import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "@latticexyz/phaserx";
-import { Assets, MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
+import { MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mouseStore } from "../store/mouseStore";
 import { useEffect, useState } from "react";
 import { store } from "../store/store";
@@ -11,8 +11,10 @@ import { ClickWrapper } from "./clickWrapper";
 import { Coord } from "@latticexyz/utils";
 import { troopStore } from "../store/troopStore";
 import { Troop } from "../types/Troop";
+import { buildStore } from "../store/buildstore";
 export default function BuildingTip() {
     const { camera, phaserLayer } = store()
+    const { bases } = buildStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
     const { troops } = troopStore()
@@ -83,6 +85,9 @@ export default function BuildingTip() {
 
     useEffect(() => {
         console.log("mouseDown", mouseDown);
+        if (!bases.has("0x123")) {
+            return
+        }
         if (!mouseDown) {
             if (!showButtons.show) {
                 var x = ex
@@ -113,8 +118,13 @@ export default function BuildingTip() {
 
     const addTroop = (end: Coord) => {
         console.log("addTroopArrow");
-        const x = MAP_WIDTH / 2 + 1
-        const y = MAP_HEIGHT / 2 + 1
+        const baseCoord = bases.get("0x123")
+        if (!baseCoord) {
+            return
+        }
+        const x = baseCoord.x + 1
+        const y = baseCoord.y + 1
+
         const start = { x, y }
 
         const newTroops = new Map(troops)
