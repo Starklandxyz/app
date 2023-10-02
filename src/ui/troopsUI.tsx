@@ -80,12 +80,15 @@ export default function TroopsUI() {
         }
 
 
-        console.log("createArrowLine", start, end, theta);
+        // console.log("createArrowLine", start, end, theta);
 
         const rr = (start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)
         const length = Math.sqrt(rr) / SIZE
         for (let index = 0; index < Math.ceil(length); index++) {
-            const playerObj = pool.get("arrow_" + id + "_" + index, "Sprite")
+            const sid = "arrow_" + id + "_" + index
+            const playerObj = pool.get(sid, "Sprite")
+            // console.log("createArrowLine",sid,playerObj);
+            playerObj.spawn()
             playerObj.setComponent({
                 id: "position",
                 once: (sprite) => {
@@ -115,6 +118,7 @@ export default function TroopsUI() {
     const createArmey = (pool: ObjectPool, id: number | string, pos: Coord, leftTime: number, flip = false) => {
         const playerObj = pool.get("armey_" + id, "Sprite")
         // console.log("createArmey",id,flip);
+        playerObj.spawn()
         playerObj.setComponent({
             id: "position",
             once: (sprite) => {
@@ -125,10 +129,13 @@ export default function TroopsUI() {
                 sprite.setPosition(pos.x, pos.y)
                 sprite.flipX = flip
                 sprite.rotation = 0
+                sprite.z = 10
+                sprite.depth = 10
                 // console.log("createArmey", sprite.active == true, sprite.flipX, sprite.rotation, sprite.angle);
             }
         })
         const nameObj = pool.get("armey_name_" + id, "Text")
+        nameObj.spawn()
         nameObj.setComponent({
             id: 'position',
             once: (text) => {
@@ -161,6 +168,8 @@ export default function TroopsUI() {
                     } else {
                         text.setText(hstr + ":" + mstr + ":" + sstr);
                     }
+                    text.z = 11
+                    text.depth = 11
                 }
             }
         })
@@ -169,9 +178,9 @@ export default function TroopsUI() {
     const removeTroop = (troop: Troop) => {
         showTroop(troop);
         hideTroopArrow(objectPool, troop);
-        const newTroops = new Map(troops)
-        newTroops.delete(troop.id)
-        troopStore.setState({ troops: newTroops })
+        // const newTroops = new Map(troops)
+        // newTroops.delete(troop.id)
+        // troopStore.setState({ troops: newTroops })
     }
 
     const showTroop = (troop: Troop) => {
