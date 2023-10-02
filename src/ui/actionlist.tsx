@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { store } from "../store/store"
 import { actionStore } from "../store/actionstore";
 
 export default function ActionList() {

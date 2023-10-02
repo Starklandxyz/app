@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { store } from "../store/store";
 import { buildingCoorpToPosition, getTimestamp, hexToString, toastSuccess } from "../utils";
 import { tipStore } from "../store/tipStore";
-import { Building } from "../types";
 import { TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetZone } from "../artTypes/world";
 import { ObjectPool, WorldCoord } from "@latticexyz/phaserx/dist/types";
 import { ClickWrapper } from "./clickWrapper";
