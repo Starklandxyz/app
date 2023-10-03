@@ -83,6 +83,8 @@ export const useBurner = () => {
         }
       }
     }
+
+    setActiveAccount();
   }, []);
 
   const list = useCallback(() => {
@@ -96,6 +98,7 @@ export const useBurner = () => {
   }, []);
 
   const select = useCallback((address: string) => {
+    // TODO: should check if account has been deployed.
     let storage = Storage.get("burners") || {};
     if (!storage[address]) {
       throw new Error("burner not found");
