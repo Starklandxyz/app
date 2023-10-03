@@ -9,7 +9,8 @@ import ironmineicon from "../../public/assets/icons/ironmine.png"
 import campicon from "../../public/assets/icons/camp.png"
 import farmlandicon from "../../public/assets/icons/farmland.png"
 import { BuildType } from "../types/Build";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { BuildInfos } from "../types/BuildInfo";
 
 export default function ChooseBuildUI() {
     const { phaserLayer } = store()
@@ -61,12 +62,27 @@ export default function ChooseBuildUI() {
         controlStore.setState({ buildLand: undefined })
     }
 
+    const getBuildInfo = useMemo(() => {
+        const buildinfo = BuildInfos.get(selectBuild)
+        return (
+            <div className="buildinfo">
+                <div style={{ marginLeft: 10, marginTop: 10,overflowWrap: "break-word", whiteSpace: 'normal' }}>{buildinfo?.desc}</div>
+                <p style={{ marginLeft: 10, marginTop: 10 }}>Output : {buildinfo?.output}</p>
+                <div style={{ display: "flex" }}>
+                    <div className="buildneedbox buildneedenough">{buildinfo?.foodNeed} Food</div>
+                    <div className="buildneedbox buildneedenough">{buildinfo?.goldNeed} Gold</div>
+                    <div className="buildneedbox buildnotenough">{buildinfo?.ironNeed} Iron</div>
+                </div>
+            </div>
+        )
+    }, [selectBuild])
+
     return (
         <ClickWrapper>
             {
                 buildLand &&
                 <div className="choosebuildpanel">
-                    <table style={{ width: 400, marginTop: 10 }}>
+                    <table style={{ width: 400, marginTop: 1 }}>
                         <tr style={{ height: 100, width: 400 }}>
                             <td
                                 className={selectBuild == BuildType.Farmland ? "selectbox" : "notselectbox"}
@@ -86,22 +102,13 @@ export default function ChooseBuildUI() {
                             </td>
                         </tr>
                         <tr style={{ textAlign: "center" }}>
-                            <td style={{ paddingTop: 12 }}>Framland</td>
-                            <td style={{ paddingTop: 12 }}>GoldMine</td>
-                            <td style={{ paddingTop: 12 }}>IronMine</td>
-                            <td style={{ paddingTop: 12 }}>Camp</td>
+                            <td style={{ paddingTop: 2 }}>Framland</td>
+                            <td style={{ paddingTop: 2 }}>GoldMine</td>
+                            <td style={{ paddingTop: 2 }}>IronMine</td>
+                            <td style={{ paddingTop: 2 }}>Camp</td>
                         </tr>
                     </table>
-
-                    <div className="buildinfo">
-                        <p style={{ marginLeft: 10, marginTop: 20 }}>Farmland can generate food.</p>
-                        <p style={{ marginLeft: 10, marginTop: 30 }}>Output : 100 Food/Hour</p>
-                        <div style={{ display: "flex" }}>
-                            <div className="buildneedbox buildneedenough"><p>100 Food</p></div>
-                            <div className="buildneedbox buildneedenough"><p>100 Gold</p></div>
-                            <div className="buildneedbox buildnotenough"><p>100 Iron</p></div>
-                        </div>
-                    </div>
+                    {getBuildInfo}
                     <div style={{ position: "absolute", right: 30, bottom: 30, display: "flex", flexDirection: "column" }}>
                         <button onClick={() => cancel()} style={{ marginBottom: 20 }}>Cancel</button>
                         <button onClick={() => buildConfirm()}>Build</button>

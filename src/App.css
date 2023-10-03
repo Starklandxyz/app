@@ -43,8 +43,7 @@ button {
     left: 33%;
     color: white;
     width: 430px;
-    height: 270px;
-    line-height: 1px;
+    height: 290px;
     background-color: #03030379;
     padding: 10px;
     border-radius: 15px;
@@ -53,9 +52,9 @@ button {
 
 .buildinfo {
     border: 2px solid white;
-    margin-top: 20px;
+    margin-top: 10px;
     width: 310px;
-    height: 110px;
+    height: 140px;
     border-radius: 10px;
 }
 
@@ -64,7 +63,7 @@ button {
     text-align: center;
     vertical-align: middle;
     width: 90px;
-    height: 30px;
+    height: 25px;
     border-radius: 6px;
 }
 
