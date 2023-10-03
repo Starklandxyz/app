@@ -15,12 +15,12 @@ export default function TroopPanel() {
         if (!account) {
             return
         }
-        const pTroops: Array<Troop> = []
-        troops.forEach((value, _) => {
-            if (value.owner == account.address)
-                pTroops.push(value)
-        })
-        setUserTroop(pTroops)
+        // const pTroops: Array<Troop> = []
+        // troops.forEach((value, _) => {
+        //     if (value.owner == account.address)
+        //         pTroops.push(value)
+        // })
+        // setUserTroop(pTroops)
     }, [troops.values()])
 
     return (<ClickWrapper>

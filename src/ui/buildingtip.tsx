@@ -8,14 +8,12 @@ import { tipStore } from "../store/tipStore";
 import { TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetZone } from "../artTypes/world";
 import { ObjectPool, WorldCoord } from "@latticexyz/phaserx/dist/types";
 import { ClickWrapper } from "./clickWrapper";
-import { Coord } from "@latticexyz/utils";
-import { troopStore } from "../store/troopStore";
 import { Troop } from "../types/Troop";
 import { buildStore } from "../store/buildstore";
 import SendTroopPanel from "./sendTroopPanel";
 import { controlStore } from "../store/controlStore";
 export default function BuildingTip() {
-    const { camera, phaserLayer,account } = store()
+    const { camera, phaserLayer, account } = store()
     const { bases } = buildStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
@@ -24,7 +22,7 @@ export default function BuildingTip() {
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const [lastCoord, setCoord] = useState<WorldCoord>({ x: 0, y: 0 })
 
-    const {sendTroop} = controlStore()
+    const { sendTroop,buildLand } = controlStore()
 
     const {
         scenes: {
@@ -73,7 +71,11 @@ export default function BuildingTip() {
             return
         }
 
-        if(sendTroop.show){
+        if (sendTroop.show) {
+            return
+        }
+
+        if(buildLand){
             return
         }
 
@@ -92,7 +94,7 @@ export default function BuildingTip() {
 
     useEffect(() => {
         console.log("mouseDown", mouseDown);
-        if(!account){
+        if (!account) {
             return
         }
         if (!bases.has(account.address)) {
@@ -120,31 +122,15 @@ export default function BuildingTip() {
     }
 
     const sendTroopClick = () => {
-        // setSendCoord(lastCoord)
-        const troop = new Troop(account?.address!,bases.get(account?.address!)!,lastCoord,getTimestamp())
-        controlStore.setState({sendTroop:{troop:troop,show:true}})
+        const troop = new Troop(account?.address!, bases.get(account?.address!)!, lastCoord, getTimestamp())
+        controlStore.setState({ sendTroop: { troop: troop, show: true } })
         setShowButtons({ show: false, x: 0, y: 0 })
-        // putTileAt(lastCoord, TilesetZone.MyZoneWait, "Occupy");
-        // addTroop(lastCoord)
     }
 
-    const buildFarmland = () => {
+    const buildClick = () => {
+        controlStore.setState({ buildLand: lastCoord })
+        // putTileAt(lastCoord, TilesetZone.MyZoneWait, "Occupy");
         setShowButtons({ show: false, x: 0, y: 0 })
-        toastSuccess("Build success")
-        putTileAt(lastCoord, TilesetBuilding.Farmland, "Top");
-        putTileAt(lastCoord, TilesetZone.MyZone, "Occupy");
-    }
-    const buildGoldMine = () => {
-        setShowButtons({ show: false, x: 0, y: 0 })
-        toastSuccess("Build success")
-        putTileAt(lastCoord, TilesetBuilding.GoldMine, "Top");
-        putTileAt(lastCoord, TilesetZone.MyZone, "Occupy");
-    }
-    const buildIronMine = () => {
-        setShowButtons({ show: false, x: 0, y: 0 })
-        toastSuccess("Build success")
-        putTileAt(lastCoord, TilesetBuilding.IronMine, "Top");
-        putTileAt(lastCoord, TilesetZone.MyZone, "Occupy");
     }
 
     return (
@@ -163,10 +149,8 @@ export default function BuildingTip() {
                 showButtons.show &&
                 <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${showButtons.x - 10}px`, top: `${showButtons.y + 20}px` }}>
                     <button onClick={() => sendTroopClick()}>Send Troop</button>
-                    <button onClick={() => occupyClick()}>Attack</button>
-                    <button onClick={() => buildFarmland()}>Farmland</button>
-                    <button onClick={() => buildGoldMine()}>GoldMine</button>
-                    <button onClick={() => buildIronMine()}>IronMine</button>
+                    {/* <button onClick={() => occupyClick()}>Attack</button> */}
+                    <button onClick={() => buildClick()}>Build</button>
                     <button style={{ marginTop: 10 }} onClick={() => setShowButtons({ show: false, x: 0, y: 0 })}>Cancel</button>
                 </div>
             }
@@ -181,7 +165,7 @@ export default function BuildingTip() {
                     }
                 </div>
             )}
-            <SendTroopPanel/>
+            <SendTroopPanel />
         </ClickWrapper>
     )
 }

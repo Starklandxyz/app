@@ -50,7 +50,9 @@ export enum TilesetZone{
 export enum TilesetBuilding {
     Farmland = 160,
     GoldMine = 200,
-    IronMine = 201
+    IronMine = 201,
+    Camp = 202,
+    Building = 203,
 }
 
 export enum TilesetSoldier{

@@ -12,6 +12,7 @@ import SpawnUI from "./spawnui";
 import Map from "./map";
 import BottomIcons from "./bottomicons";
 import TroopPanel from "./troopPanel";
+import ChooseBuildUI from "./ChooseBuildUI";
 
 export default function UI() {
     const layers = store((state) => {
@@ -37,6 +38,7 @@ export default function UI() {
             <VersionContainer>
                 <p>version:{VERSION}</p>
             </VersionContainer>
+            <ChooseBuildUI/>
             <TroopsUI/>
             <TroopPanel/>
             <Map/>

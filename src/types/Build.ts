@@ -1,4 +1,4 @@
-export enum BuildId{
+export enum BuildType{
     None,
     Farmland,
     IronMine,

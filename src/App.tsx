@@ -6,7 +6,6 @@ import { store } from "./store/store";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UI from './ui';
-import ReactTooltip from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css'
 import { Tooltip } from 'react-tooltip'
 
