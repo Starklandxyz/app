@@ -1125,16 +1125,6 @@
   resolved "https://registry.npmmirror.com/@dojoengine/core/-/core-0.0.20.tgz#d1c4eb8b804c0d2b96a988860a8a6ccdf855a91a"
   integrity sha512-Xxq2VPVJqVxhv7VRAR6aF72WXIxbyJHUlw34KoTs1wTWMPaYhHSo44TjZMcP+waJNkpNujWAwBFhETW1ME5BpQ==
 
-"@dojoengine/create-burner@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.npmmirror.com/@dojoengine/create-burner/-/create-burner-0.0.3.tgz#322fff7cc3ee654b6908fe295389c047d092b9f1"
-  integrity sha512-ZgoErPpmfRfE08/ixjM7BHlMTZecFVDzRHEBFWBwNJejxZ0RDBjVUy+XFNUPPkxUzFGSQAicHZNnfJscWUIYjQ==
-  dependencies:
-    "@starknet-react/core" "^1.0.3"
-    get-starknet-core "^3.2.0"
-    js-cookie "^3.0.5"
-    starknet "^5.14.1"
-
 "@dojoengine/react@^0.0.3":
   version "0.0.3"
   resolved "https://registry.npmmirror.com/@dojoengine/react/-/react-0.0.3.tgz#02cf1815c2145ee7ccf4351f5089be67021715ba"
@@ -2319,28 +2309,6 @@
   dependencies:
     "@noble/curves" "~1.2.0"
     "@noble/hashes" "~1.3.2"
-
-"@starknet-react/core@^1.0.3":
-  version "1.0.4"
-  resolved "https://registry.npmmirror.com/@starknet-react/core/-/core-1.0.4.tgz#08ed280382621cc78d031095a4293f043dbadc98"
-  integrity sha512-TQiRnb0moqim6+HqioGGzd3FgjPVJFMdMH8Q5AQlJ7oEUNprKkFyHlVGJJlcwvdRaCPD5BQuD2WUL2rQfgMRuw==
-  dependencies:
-    "@tanstack/react-query" "^4.29.12"
-    immutable "^4.3.0"
-    zod "^3.21.4"
-
-"@tanstack/query-core@4.35.3":
-  version "4.35.3"
-  resolved "https://registry.npmmirror.com/@tanstack/query-core/-/query-core-4.35.3.tgz#1c127e66b4ad1beeac052db83a812d7cb67369e1"
-  integrity sha512-PS+WEjd9wzKTyNjjQymvcOe1yg8f3wYc6mD+vb6CKyZAKvu4sIJwryfqfBULITKCla7P9C4l5e9RXePHvZOZeQ==
-
-"@tanstack/react-query@^4.29.12":
-  version "4.35.3"
-  resolved "https://registry.npmmirror.com/@tanstack/react-query/-/react-query-4.35.3.tgz#03d726ef6a19d426166427c6539b003dd9606d1b"
-  integrity sha512-UgTPioip/rGG3EQilXfA2j4BJkhEQsR+KAbF+KIuvQ7j4MkgnTCJF01SfRpIRNtQTlEfz/+IL7+jP8WA8bFbsw==
-  dependencies:
-    "@tanstack/query-core" "4.35.3"
-    use-sync-external-store "^1.2.0"
 
 "@types/js-yaml@^4.0.0":
   version "4.0.6"
@@ -3629,11 +3597,6 @@ get-caller-file@^2.0.1, get-caller-file@^2.0.5:
   resolved "https://registry.npmmirror.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
-get-starknet-core@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.npmmirror.com/get-starknet-core/-/get-starknet-core-3.2.0.tgz#44cabcbd573262340d575cb6b9a38e469a8029ed"
-  integrity sha512-SZhxtLlKoPKLZ2H3l9WIU7CiNmkL3qLWGksALmvZdAXa/9PykYfLtvIB5B8A2UZMpf2ojTZlWLfuo1KhgmVobA==
-
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.npmmirror.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
@@ -3832,11 +3795,6 @@ ignore@^5.2.0:
   resolved "https://registry.npmmirror.com/ignore/-/ignore-5.2.4.tgz#a291c0c6178ff1b960befe47fcdec301674a6324"
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
 
-immutable@^4.3.0:
-  version "4.3.4"
-  resolved "https://registry.npmmirror.com/immutable/-/immutable-4.3.4.tgz#2e07b33837b4bb7662f288c244d1ced1ef65a78f"
-  integrity sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==
-
 immutable@~3.7.6:
   version "3.7.6"
   resolved "https://registry.npmmirror.com/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
@@ -4033,7 +3991,7 @@ jose@^4.11.4:
 
 js-cookie@^3.0.5:
   version "3.0.5"
-  resolved "https://registry.npmmirror.com/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
+  resolved "https://mirrors.cloud.tencent.com/npm/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
   integrity sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==
 
 js-sha3@0.8.0:
@@ -5014,7 +4972,7 @@ sponge-case@^1.0.1:
   dependencies:
     tslib "^2.0.3"
 
-starknet@^5.14.1, starknet@^5.19.5:
+starknet@^5.19.5:
   version "5.19.5"
   resolved "https://registry.npmmirror.com/starknet/-/starknet-5.19.5.tgz#59a2e0f707dc1f64fbe9894195984ae97f623449"
   integrity sha512-S7V4ifyYd+ApsIwYTd7YA5U2Px+NZkCsQPnmgY/wkc5LLFKhYMNpzHQ5nIA15p70AwtSXCcsEBnHNRBOuci13Q==
@@ -5327,7 +5285,7 @@ urlpattern-polyfill@^9.0.0:
   resolved "https://registry.npmmirror.com/urlpattern-polyfill/-/urlpattern-polyfill-9.0.0.tgz#bc7e386bb12fd7898b58d1509df21d3c29ab3460"
   integrity sha512-WHN8KDQblxd32odxeIgo83rdVDE2bvdkb86it7bMhYZwWKJz0+O0RK/eZiHYnM+zgt/U7hAHOlCQGfjjvSkw2g==
 
-use-sync-external-store@1.2.0, use-sync-external-store@^1.2.0:
+use-sync-external-store@1.2.0:
   version "1.2.0"
   resolved "https://registry.npmmirror.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
@@ -5521,11 +5479,6 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmmirror.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
-
-zod@^3.21.4:
-  version "3.22.2"
-  resolved "https://registry.npmmirror.com/zod/-/zod-3.22.2.tgz#3add8c682b7077c05ac6f979fea6998b573e157b"
-  integrity sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==
 
 zustand@^4.4.1:
   version "4.4.1"
