@@ -6,5 +6,5 @@ export type TroopStore = {
 };
 
 export const troopStore = create<TroopStore>(() => ({
-    troops: new Map()
+    troops: new Map(),
 }));

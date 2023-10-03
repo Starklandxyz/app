@@ -27,7 +27,7 @@ export default function TroopPanel() {
         <Container>
             {
                 account &&
-                <div style={{ width: 270, height: 380, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                <div style={{ width: 220, height: 460, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                     <p style={{ fontSize: 20, color: "pink" }}>Troops</p>
                     <div>
                         {userTroop.map((item, index) => (
