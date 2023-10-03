@@ -12,16 +12,19 @@ import { Coord } from "@latticexyz/utils";
 import { troopStore } from "../store/troopStore";
 import { Troop } from "../types/Troop";
 import { buildStore } from "../store/buildstore";
+import SendTroopPanel from "./sendTroopPanel";
+import { controlStore } from "../store/controlStore";
 export default function BuildingTip() {
     const { camera, phaserLayer,account } = store()
     const { bases } = buildStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
-    const { troops } = troopStore()
     const [showButtons, setShowButtons] = useState({ show: false, x: 0, y: 0 })
 
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const [lastCoord, setCoord] = useState<WorldCoord>({ x: 0, y: 0 })
+
+    const {sendTroop} = controlStore()
 
     const {
         scenes: {
@@ -70,6 +73,10 @@ export default function BuildingTip() {
             return
         }
 
+        if(sendTroop.show){
+            return
+        }
+
         const x = (ex + camera.phaserCamera.worldView.x * 2) / 2;
         const y = (ey + camera.phaserCamera.worldView.y * 2) / 2;
 
@@ -112,37 +119,13 @@ export default function BuildingTip() {
         putTileAt(lastCoord, TilesetZone.MyZone, "Occupy");
     }
 
-    const sendTroop = () => {
+    const sendTroopClick = () => {
+        // setSendCoord(lastCoord)
+        const troop = new Troop(account?.address!,bases.get(account?.address!)!,lastCoord,getTimestamp())
+        controlStore.setState({sendTroop:{troop:troop,show:true}})
         setShowButtons({ show: false, x: 0, y: 0 })
-        putTileAt(lastCoord, TilesetZone.MyZoneWait, "Occupy");
-        addTroop(lastCoord)
-    }
-
-
-    const addTroop = (end: Coord) => {
-        console.log("addTroopArrow");
-        if(!account){
-            return
-        }
-        const baseCoord = bases.get(account.address)
-        if (!baseCoord) {
-            return
-        }
-        const x = baseCoord.x + 1
-        const y = baseCoord.y + 1
-
-        const start = { x, y }
-
-        const newTroops = new Map(troops)
-        const troop = new Troop(account.address, start, end, getTimestamp())
-        const tid = troop.owner + "_" + troop.startTime
-        troop.amount = 2;
-        troop.id = tid
-        troop.totalTime = 10
-        newTroops.set(tid, troop)
-        troopStore.setState({
-            troops: newTroops
-        })
+        // putTileAt(lastCoord, TilesetZone.MyZoneWait, "Occupy");
+        // addTroop(lastCoord)
     }
 
     const buildFarmland = () => {
@@ -179,7 +162,7 @@ export default function BuildingTip() {
             {
                 showButtons.show &&
                 <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${showButtons.x - 10}px`, top: `${showButtons.y + 20}px` }}>
-                    <button onClick={() => sendTroop()}>Send Troop</button>
+                    <button onClick={() => sendTroopClick()}>Send Troop</button>
                     <button onClick={() => occupyClick()}>Attack</button>
                     <button onClick={() => buildFarmland()}>Farmland</button>
                     <button onClick={() => buildGoldMine()}>GoldMine</button>
@@ -198,7 +181,7 @@ export default function BuildingTip() {
                     }
                 </div>
             )}
-
+            <SendTroopPanel/>
         </ClickWrapper>
     )
 }

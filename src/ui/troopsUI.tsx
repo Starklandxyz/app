@@ -9,12 +9,14 @@ import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
 import { TilesetNum, TilesetSoldier } from "../artTypes/world";
 import { Troop } from "../types/Troop";
 import { getTimestamp } from "../utils";
+import { controlStore } from "../store/controlStore";
 const SIZE = 12
 
 export default function TroopsUI() {
     const { phaserLayer } = store()
     const { timenow } = ticStore()
     const { troops } = troopStore()
+    const {sendTroop} = controlStore()
 
     const {
         scenes: {
@@ -56,21 +58,31 @@ export default function TroopsUI() {
             if (value.startTime + value.totalTime <= getTimestamp()) {
                 return
             }
-            const start = tileCoordToPixelCoord(value.from, TILE_WIDTH, TILE_HEIGHT)
-            const end = tileCoordToPixelCoord(value.to, TILE_WIDTH, TILE_HEIGHT)
-            if(value.retreat){
-                start.x = start.x + MAP_WIDTH / 2
-                start.y = start.y + MAP_HEIGHT / 2
-            }else{
-                end.x = end.x + MAP_WIDTH / 4
-                end.y = end.y + MAP_HEIGHT / 4
-            }
-            createArrowLine(objectPool, id, start, end)
+            createArrowLine(objectPool, value)
         })
     }, [troops])
 
+    useEffect(() => {
+        if (!sendTroop.troop) {
+            return
+        }
+        if (sendTroop.show) {
+            createArrowLine(objectPool,sendTroop.troop)
+        } else {
+            hideTroopArrow(objectPool, sendTroop.troop)
+        }
+    }, [sendTroop])
 
-    const createArrowLine = (pool: ObjectPool, id: number | string, start: Coord, end: Coord) => {
+    const createArrowLine = (pool: ObjectPool, troop: Troop) => {
+        const start = tileCoordToPixelCoord(troop.from, TILE_WIDTH, TILE_HEIGHT)
+        const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
+        if (troop.retreat) {
+            start.x = start.x + MAP_WIDTH / 2
+            start.y = start.y + MAP_HEIGHT / 2
+        } else {
+            end.x = end.x + MAP_WIDTH / 4
+            end.y = end.y + MAP_HEIGHT / 4
+        }
         var theta = 0
         if (end.x == start.x) {
             if (end.y > start.y) {
@@ -84,13 +96,10 @@ export default function TroopsUI() {
             theta = Math.atan(m);
         }
 
-
-        // console.log("createArrowLine", start, end, theta);
-
         const rr = (start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)
         const length = Math.sqrt(rr) / SIZE
         for (let index = 0; index < Math.ceil(length); index++) {
-            const sid = "arrow_" + id + "_" + index
+            const sid = "arrow_" + troop.id + "_" + index
             const playerObj = pool.get(sid, "Sprite")
             // console.log("createArrowLine",sid,playerObj);
             playerObj.spawn()
