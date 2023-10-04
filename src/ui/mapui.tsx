@@ -3,7 +3,7 @@ import { buildStore } from "../store/buildstore"
 import { store } from "../store/store";
 import { Tileset, TilesetBuilding, TilesetTown, TilesetZone } from "../artTypes/world";
 import { playerStore } from "../store/playerStore";
-import { Base, Land, Land2 } from "../generated/graphql";
+import { Base, Land } from "../generated/graphql";
 import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mapStore } from "../store/mapStore";

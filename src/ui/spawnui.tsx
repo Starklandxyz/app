@@ -7,12 +7,14 @@ import { pixelCoordToTileCoord } from "@latticexyz/phaserx";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { Tileset, TilesetTown } from "../artTypes/world";
 import { Coord } from "@latticexyz/utils";
-import { toastError, toastSuccess } from "../utils";
+import { toastError, toastInfo, toastSuccess } from "../utils";
 import { buildStore } from "../store/buildstore";
 import { LandType, get_land_type } from "../types/Land";
+import { playerStore } from "../store/playerStore";
 
 export default function SpawnUI() {
     const { bases } = buildStore()
+    const {player} = playerStore()
     const [show, setShow] = useState(false)
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const { camera, phaserLayer, account, networkLayer } = store()
@@ -32,6 +34,10 @@ export default function SpawnUI() {
     } = networkLayer!
 
     const baseClick = () => {
+        if(!player){
+            toastError("Mint your player first.")
+            return
+        }
         setShow(pre => !pre)
     }
 
