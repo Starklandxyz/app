@@ -68,18 +68,7 @@ export function Player2Player(player_:PlayerSQL):Player{
         type: ComponentEvents.Player,
         entity: "",
         nick_name:player_.nick_name,
-        position:player_.position,
         joined_time:player_.joined_time,
-        direction: player_.direction,
-        gold: player_.gold,
-        steps: player_.steps,
-        last_point: player_.last_point,
-        last_time: player_.last_time,
-        total_steps:player_.total_steps,
-        banks:player_.banks,
-        hotels:0,
-        startbucks:0,
-        total_used_eth:player_.total_used_eth
     }
     return player;
 }
@@ -89,18 +78,7 @@ export function copyPlayer(player_:Player):Player{
         type: player_.type,
         entity: player_.entity,
         nick_name:player_.nick_name,
-        position:player_.position,
         joined_time:player_.joined_time,
-        direction: player_.direction,
-        gold: player_.gold,
-        steps: player_.steps,
-        last_point: player_.last_point,
-        last_time: player_.last_time,
-        total_steps:player_.total_steps,
-        banks:0,
-        hotels:0,
-        startbucks:0,
-        total_used_eth:player_.total_used_eth
     }
     return player;
 }

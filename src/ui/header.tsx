@@ -110,6 +110,9 @@ export default function Header() {
         }
     }, [isDeploying])
 
+    useEffect(()=>{
+        console.log("Player change",player);
+    },[player])
 
 
     return (

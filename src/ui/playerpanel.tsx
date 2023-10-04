@@ -9,6 +9,8 @@ import landIcon from "../../public/assets/icons/landicon.png"
 import { store } from "../store/store";
 import { EntityIndex } from "@latticexyz/recs";
 import { useEffect, useRef } from "react";
+import { Player2Player } from "../types";
+import { Player } from "../generated/graphql";
 
 export default function PlayerPanel() {
     const { player: storePlayer } = playerStore()
@@ -86,34 +88,21 @@ export default function PlayerPanel() {
         const edges = playerInfo.data.entities?.edges
 
         if (edges) {
-            // console.log("fetchPlayerInfo game total players:" + edges.length);
             for (let index = 0; index < edges.length; index++) {
-                // console.log("fetchPlayerInfo length", edges.length);
                 const element = edges[index];
-                const players = element?.node?.components
-                // console.log(element?.node?.keys![0], element?.node?.components![0]?.__typename);
-                if (players && players[0] && players[0].__typename == "Player") {
-                    console.log(players[0]);
-                    if (element.node?.keys![0] == "0x0" || element.node?.keys![0] == accountRef.current) {
-                        continue
-                    }
-                    const player = players[0] as any
-                    const entityId = parseInt(element.node?.keys![0]!) as EntityIndex
-
-                    // setComponent(PlayerComponent, entityId, {
-                    //     banks: player.banks,
-                    //     position: player.position,
-                    //     joined_time: player.joined_time,
-                    //     direction: player.direction,
-                    //     nick_name: player.nick_name,
-                    //     gold: player.gold,
-                    //     steps: player.steps,
-                    //     last_point: player.last_point,
-                    //     last_time: player.last_time,
-                    //     total_steps: player.total_steps,
-                    //     total_used_eth:player.total_used_eth
-                    // })
+                const components = element?.node?.components
+                var player = undefined
+                var eth = 0n
+                if (components && components[0] && components[0].__typename == "Player") {
+                    console.log(components[0]);
+                    const player_ = components[0] as Player
+                    player = Player2Player(player_)
                 }
+                if(components && components[1] && components[1].__typename=="ETH"){
+                    const b: string = components[1].balance;
+                    eth = BigInt(b)
+                }
+                playerStore.setState({ eth: eth,player:player})
             }
         }
     }
