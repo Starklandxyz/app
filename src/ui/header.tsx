@@ -16,7 +16,7 @@ import { ticStore } from "../store/ticStore";
 
 export default function Header() {
     const { account, networkLayer } = store();
-    const { player, players, eth } = playerStore()
+    const { player, eth } = playerStore()
     const [nickName, setNickName] = useState("")
 
     const {
@@ -190,7 +190,7 @@ export default function Header() {
                     <img src={ethicon} width={25} height={25} />  {parseFloat(ethers.utils.formatEther(eth)).toFixed(5)} ETH
                 </div>
 
-                {/* {
+                {
                     (account && !player) &&
                     <div>
                         <input value={nickName} onChange={inputChange} style={{ height: 20 }} placeholder="input user name" />
@@ -203,7 +203,7 @@ export default function Header() {
                             Mint Player
                         </button>
                     </div>
-                } */}
+                }
                 <div>
                     {
                         <select onChange={e => selectAccount(e)} value={account?.address}>

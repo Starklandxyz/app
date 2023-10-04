@@ -4,41 +4,14 @@ import { defineComponent, Type as RecsType, World } from "@latticexyz/recs";
 
 export function defineContractComponents(world: World) {
   return {
-    Player: (() => {
-      const name = "Player";
-      return defineComponent(
-        world,
-        {
-          nick_name: RecsType.String,
-          joined_time: RecsType.Number,
-          direction: RecsType.Number,
-          gold: RecsType.Number,
-          position: RecsType.Number,
-          steps: RecsType.Number,
-          last_point: RecsType.Number,
-          last_time: RecsType.Number,
-          total_steps: RecsType.Number,
-          banks: RecsType.Number,
-          total_used_eth: RecsType.String,
-        },
-        {
-          metadata: {
-            name: name,
-          },
-        }
-      );
-    })(),
     Land: (() => {
       const name = "Land";
       return defineComponent(
         world,
         {
           owner: RecsType.Number,
-          building_type: RecsType.Number,
-          price: RecsType.Number,
-          bomb: RecsType.Boolean,
-          bomber: RecsType.Number,
-          bomb_price: RecsType.Number,
+          building: RecsType.Number,
+          level: RecsType.Number,
         },
         {
           metadata: {
@@ -47,12 +20,115 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    Townhall: (() => {
-      const name = "Townhall";
+    GlobalConfig: (() => {
+      const name = "GlobalConfig";
       return defineComponent(
         world,
         {
-          gold: RecsType.Number,
+          MAX_MAP_X: RecsType.Number,
+          MAX_MAP_Y: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Player: (() => {
+      const name = "Player";
+      return defineComponent(
+        world,
+        {
+          nick_name: RecsType.Number,
+          joined_time: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Food: (() => {
+      const name = "Food";
+      return defineComponent(
+        world,
+        {
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Iron: (() => {
+      const name = "Iron";
+      return defineComponent(
+        world,
+        {
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Gold: (() => {
+      const name = "Gold";
+      return defineComponent(
+        world,
+        {
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Warrior: (() => {
+      const name = "Warrior";
+      return defineComponent(
+        world,
+        {
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Base: (() => {
+      const name = "Base";
+      return defineComponent(
+        world,
+        {
+          x: RecsType.Number,
+          y: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    LandCost: (() => {
+      const name = "LandCost";
+      return defineComponent(
+        world,
+        {
+          cost_gold: RecsType.Number,
+          cost_food: RecsType.Number,
+          cost_iron: RecsType.Number,
         },
         {
           metadata: {

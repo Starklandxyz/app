@@ -9,15 +9,6 @@ query getAllPlayers {
           ... on Player {
             nick_name
             joined_time
-            direction
-            gold
-            position
-            steps
-            last_point
-            last_time
-            total_steps
-            banks
-            total_used_eth
           }
           __typename
           ... on ETH{
@@ -40,15 +31,6 @@ query getPlayerByKey($key: String) {
           ... on Player {
             nick_name
             joined_time
-            direction
-            gold
-            position
-            steps
-            last_point
-            last_time
-            total_steps
-            banks
-            total_used_eth
           }
           __typename
           ... on ETH{

@@ -66,7 +66,7 @@ export default function ChooseBuildUI() {
         const buildinfo = BuildInfos.get(selectBuild)
         return (
             <div className="buildinfo">
-                <div style={{ marginLeft: 10, marginTop: 10,overflowWrap: "break-word", whiteSpace: 'normal' }}>{buildinfo?.desc}</div>
+                <div style={{ marginLeft: 10,height:40, marginTop: 10,overflowWrap: "break-word", whiteSpace: 'normal' }}>{buildinfo?.desc}</div>
                 <p style={{ marginLeft: 10, marginTop: 10 }}>Output : {buildinfo?.output}</p>
                 <div style={{ display: "flex" }}>
                     <div className="buildneedbox buildneedenough">{buildinfo?.foodNeed} Food</div>
