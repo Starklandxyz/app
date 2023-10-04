@@ -101,7 +101,7 @@ export default function SendTroopPanel() {
         sendTroop.show &&
         <ClickWrapper>
             <Container>
-                <div style={{ width: 320, height: 260, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                <div style={{ width: 340, height: 260, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                     <p style={{ color: "pink" }}>Send Troop</p>
                     <table cellSpacing={13}>
                         <tr>

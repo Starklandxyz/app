@@ -6,7 +6,6 @@ import {
     defineCameraConfig,
 } from "@latticexyz/phaserx";
 import worldTileset from "/assets/tilesets/world.png";
-import arrowIcon from "/assets/tilesets/arrow.png";
 import arrow1Icon from "/assets/tilesets/arrow1.png";
 import arrow2Icon from "/assets/tilesets/arrow2.png";
 import arrow3Icon from "/assets/tilesets/arrow3.png";
@@ -65,6 +64,14 @@ export const phaserConfig = {
                     type: AssetType.Image,
                     key: Assets.Armey,
                     path: armeyIcon,
+                },
+                [Assets.IconAtlas]:{
+                    type:AssetType.MultiAtlas,
+                    key:Assets.IconAtlas,
+                    path:`assets/tilesets/atlas.json?timestamp=${Date.now()}`,
+                    options:{
+                        imagePath:"assets/tilesets",
+                    }
                 },
                 [Assets.MainAtlas]: {
                     type: AssetType.MultiAtlas,

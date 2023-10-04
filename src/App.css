@@ -21,6 +21,58 @@
     white-space: nowrap;
 }
 
-button{
+button {
     cursor: pointer;
+}
+
+.selectbox {
+    cursor: pointer;
+    width: 100px;
+    border: 2px solid white
+}
+
+.notselectbox {
+    cursor: pointer;
+    width: 100px;
+    border: 2px solid #00000000
+}
+
+.choosebuildpanel {
+    position: absolute;
+    bottom: 5%;
+    left: 33%;
+    color: white;
+    width: 430px;
+    height: 290px;
+    background-color: #03030379;
+    padding: 10px;
+    border-radius: 15px;
+    padding-top: 1px;
+}
+
+.buildinfo {
+    border: 2px solid white;
+    margin-top: 10px;
+    width: 310px;
+    height: 140px;
+    border-radius: 10px;
+}
+
+.buildneedbox{
+    margin-left: 8px;
+    text-align: center;
+    vertical-align: middle;
+    width: 90px;
+    height: 25px;
+    border-radius: 6px;
+}
+
+.buildneedenough{
+    border: 1px solid yellow;
+    color: yellow;
+}
+
+.buildnotenough{
+    border: 1px solid red;
+    color: red;
 }
