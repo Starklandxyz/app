@@ -62,22 +62,39 @@ export const useBurner = () => {
     const setActiveAccount = async () => {
       const storage: BurnerStorage = Storage.get("burners");
       if (storage) {
-        // check one to see if exists, perhaps appchain restarted
-        const firstAddr = Object.keys(storage)[0];
-        
-        try {
-          await admin.getTransactionReceipt(storage[firstAddr].deployTx)
-
-          // set first account to active account if it was deployed.
-          const burner = new Account(
+        // try to get active account
+        let activeAccount = null;
+        for (let address in storage) {
+          if (storage[address].active) {
+            activeAccount = new Account(
+              provider,
+              address,
+              storage[address].privateKey,
+            );
+          }
+        }
+        // set first account as active account if not
+        if(!activeAccount){
+          const firstAddr = Object.keys(storage)[0];
+          activeAccount = new Account(
             provider,
             firstAddr,
             storage[firstAddr].privateKey,
           );
-          setAccount(burner);
+        }
+        
+        // check if active account is deployed
+        try {
+          await admin.getTransactionReceipt(storage[activeAccount.address].deployTx)
+          // set first account to active account if it was deployed.
+          setAccount(activeAccount);
         }
         catch {
           setAccount(undefined);
+
+          // set to false
+          storage[activeAccount.address].active = false;
+          Storage.set("burners", storage);
           console.log("burners not deployed, try redeploy or resetting local storage");
           return;
         }
