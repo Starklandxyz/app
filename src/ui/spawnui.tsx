@@ -34,6 +34,8 @@ export default function SpawnUI() {
     } = networkLayer!
 
     const baseClick = () => {
+        console.log("baseClick",player);
+        
         if(!player){
             toastError("Mint your player first.")
             return
@@ -78,7 +80,7 @@ export default function SpawnUI() {
             newBases.set(account?.address!, lastCoord)
             buildStore.setState({ bases: newBases })
         } else {
-            toastError("Build Fail")
+            toastError("Can't build here")
         }
     }
 
@@ -127,7 +129,7 @@ export default function SpawnUI() {
         }
 
         return <button onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</button>
-    }, [account, bases, show])
+    }, [account, bases, show,player])
 
     return (
         <ClickWrapper>
