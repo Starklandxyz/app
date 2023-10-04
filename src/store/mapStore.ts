@@ -4,6 +4,7 @@ import { Land } from "../types/Land";
 
 export type MapStore = {
     //land id => land
+    //land id = x_y
     lands: Map<string, Land>,
 };
 

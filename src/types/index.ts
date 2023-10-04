@@ -1,6 +1,8 @@
 import { BANK_ID, BOMB_ID, BUILDING_PRICES, HOTEL_ID, STARKBUCKS_ID } from "../config"
 import { ComponentEvents, Player } from "../dojo/createSystemCalls"
-import { Player as PlayerSQL} from "../generated/graphql";
+import { Land as LandSQL, Player as PlayerSQL } from "../generated/graphql";
+import { BuildType } from "./Build";
+import { Land } from "./Land";
 
 export class Building {
     public position: number = 0
@@ -40,7 +42,7 @@ export class Building {
         var price0 = 0;
         var level = 1;
         if (this.type == BOMB_ID) {
-            for (let index = 0; index <Building.BombPrices.length; index++) {
+            for (let index = 0; index < Building.BombPrices.length; index++) {
                 const element = Building.BombPrices[index];
                 if (element == this.price) {
                     level = index + 1;
@@ -63,22 +65,42 @@ export class Building {
     }
 }
 
-export function Player2Player(player_:PlayerSQL):Player{
-    const player:Player = {
+export function Player2Player(player_: PlayerSQL): Player {
+    const player: Player = {
         type: ComponentEvents.Player,
         entity: "",
-        nick_name:player_.nick_name,
-        joined_time:player_.joined_time,
+        nick_name: player_.nick_name,
+        joined_time: player_.joined_time,
     }
     return player;
 }
 
-export function copyPlayer(player_:Player):Player{
-    const player:Player = {
+
+export const Land2Land = (land_: LandSQL) => {
+    const land: Land = {
+        x: land_.x,
+        y: land_.y,
+        owner: land_.owner,
+        build: BuildType.None,
+        map_id: land_.map_id,
+        level: land_.level
+    }
+    switch (land_.building) {
+        case 1: land.build = BuildType.Base; break;
+        case 2: land.build = BuildType.Farmland; break;
+        case 3: land.build = BuildType.IronMine; break;
+        case 4: land.build = BuildType.GoldMine; break;
+        case 5: land.build = BuildType.Camp; break;
+    }
+    return land;
+}
+
+export function copyPlayer(player_: Player): Player {
+    const player: Player = {
         type: player_.type,
         entity: player_.entity,
-        nick_name:player_.nick_name,
-        joined_time:player_.joined_time,
+        nick_name: player_.nick_name,
+        joined_time: player_.joined_time,
     }
     return player;
 }

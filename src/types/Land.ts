@@ -9,11 +9,12 @@ export enum LandType{
 }
 
 export class Land {
-    public id:string|undefined
     public x = -1
     public y = -1
     public owner: string|undefined
     public build: BuildType = BuildType.None
+    public map_id = 0
+    public level = 0
 }
 
 export const get_land_type = (map_id: number, x: number, y: number) => {

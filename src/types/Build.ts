@@ -1,5 +1,6 @@
 export enum BuildType{
     None,
+    Base,
     Farmland,
     IronMine,
     GoldMine,

@@ -61,6 +61,50 @@ query getBaseByKey($key: String,$map_id:String) {
   }
 }
 
+query getAllBase($map_id:String) {
+  entities(first:1000, keys: ["%",$map_id]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Base {
+            id
+            map_id
+            x
+            y
+          }
+        }
+      }
+    }
+  }
+}
+
+
+query getAllLands($map_id:String) {
+  entities(first:1000, keys: ["%","%",$map_id]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Land {
+            x,
+            y,
+            map_id,
+            owner,
+            building,
+            level
+            
+          }
+        }
+      }
+    }
+  }
+}
+
 query getETHByKey($key: String) {
   entities(first:1000, keys: [$key]) {
     edges {
