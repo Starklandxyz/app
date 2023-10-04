@@ -7,7 +7,6 @@ import soldierIcon from "../../public/assets/icons/soldier.png"
 import flagIcon from "../../public/assets/icons/flag.png"
 import landIcon from "../../public/assets/icons/landicon.png"
 import { store } from "../store/store";
-import { EntityIndex } from "@latticexyz/recs";
 import { useEffect, useRef } from "react";
 import { Player2Player } from "../types";
 import { Player } from "../generated/graphql";
@@ -19,15 +18,7 @@ export default function PlayerPanel() {
     const accountRef = useRef<string>()
 
     const {
-        scenes: {
-            Main: { maps: {
-                Main: { putTileAt },
-            } },
-        },
         networkLayer: {
-            components: {
-                Player: PlayerComponent,
-            },
             network: { graphSdk, wsClient }
         }
     } = phaserLayer!

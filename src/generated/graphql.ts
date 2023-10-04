@@ -860,6 +860,14 @@ export type GetPlayerByKeyQueryVariables = Exact<{
 
 export type GetPlayerByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player', nick_name?: any | null, joined_time?: any | null } | { __typename: 'Warrior' } | null> | null } | null } | null> | null } | null };
 
+export type GetBaseByKeyQueryVariables = Exact<{
+  key?: InputMaybe<Scalars['String']['input']>;
+  map_id?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetBaseByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Warrior' } | null> | null } | null } | null> | null } | null };
+
 export type GetEthByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
 }>;
@@ -914,6 +922,25 @@ export const GetPlayerByKeyDocument = gql`
   }
 }
     `;
+export const GetBaseByKeyDocument = gql`
+    query getBaseByKey($key: String, $map_id: String) {
+  entities(first: 1000, keys: [$key, $map_id]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Base {
+            x
+            y
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 export const GetEthByKeyDocument = gql`
     query getETHByKey($key: String) {
   entities(first: 1000, keys: [$key]) {
@@ -938,6 +965,7 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
 const GetAllPlayersDocumentString = print(GetAllPlayersDocument);
 const GetPlayerByKeyDocumentString = print(GetPlayerByKeyDocument);
+const GetBaseByKeyDocumentString = print(GetBaseByKeyDocument);
 const GetEthByKeyDocumentString = print(GetEthByKeyDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
@@ -946,6 +974,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getPlayerByKey(variables?: GetPlayerByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetPlayerByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetPlayerByKeyQuery>(GetPlayerByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPlayerByKey', 'query');
+    },
+    getBaseByKey(variables?: GetBaseByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetBaseByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetBaseByKeyQuery>(GetBaseByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBaseByKey', 'query');
     },
     getETHByKey(variables?: GetEthByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetEthByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetEthByKeyQuery>(GetEthByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getETHByKey', 'query');

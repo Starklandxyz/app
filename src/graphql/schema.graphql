@@ -42,6 +42,25 @@ query getPlayerByKey($key: String) {
   }
 }
 
+
+query getBaseByKey($key: String,$map_id:String) {
+  entities(first:1000, keys: [$key,$map_id]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Base {
+            x
+            y
+          }
+        }
+      }
+    }
+  }
+}
+
 query getETHByKey($key: String) {
   entities(first:1000, keys: [$key]) {
     edges {

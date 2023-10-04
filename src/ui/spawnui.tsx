@@ -7,8 +7,9 @@ import { pixelCoordToTileCoord } from "@latticexyz/phaserx";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { Tileset, TilesetTown } from "../artTypes/world";
 import { Coord } from "@latticexyz/utils";
-import { toastSuccess } from "../utils";
+import { toastError, toastSuccess } from "../utils";
 import { buildStore } from "../store/buildstore";
+import { LandType, get_land_type } from "../types/Land";
 
 export default function SpawnUI() {
     const { bases } = buildStore()
@@ -41,12 +42,26 @@ export default function SpawnUI() {
         if (mouseDown) {
             return
         }
+        clickLand()
+    }, [mouseDown])
+
+    const clickLand = ()=>{
+        for (let width = 0; width < 2; width++) {
+            for (let height = 0; height < 2; height++) {
+                const landType = get_land_type(1, lastCoord.x + width, lastCoord.y+height)
+                if(landType!=LandType.None){
+                    toastError("Can't build here")
+                    return
+                }
+            }
+        }
+
         setShow(false)
         toastSuccess("Build Base Success!")
         const newBases = new Map(bases)
-        newBases.set(account.address, lastCoord)
+        newBases.set(account?.address!, lastCoord)
         buildStore.setState({ bases: newBases })
-    }, [mouseDown])
+    }
 
     useEffect(() => {
         if (!show) {
