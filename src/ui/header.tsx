@@ -10,6 +10,8 @@ import PlayerPanel from "./playerpanel";
 import ethicon from "../../public/ethereum.png"
 import starkicon from "../../public/starkneticon.png"
 import { ticStore } from "../store/ticStore";
+import { Player2Player } from "../types";
+import { Player } from "../generated/graphql";
 
 export default function Header() {
     const { account, networkLayer } = store();
@@ -75,7 +77,9 @@ export default function Header() {
         if (events && events.length > 0) {
             setNickName("")
             toastSuccess("Mint player success.")
-            playerStore.setState({ eth: BigInt(5e17) })
+            // playerStore.setState({ eth: BigInt(5e17) })
+            const p = Player2Player(events[0] as Player)
+            playerStore.setState({ eth: BigInt(5e17),player:p})
         } else {
             toastError("Mint failed")
         }
