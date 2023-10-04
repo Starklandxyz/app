@@ -5,6 +5,9 @@
 Clone repository
 `git clone https://github.com/Starklandxyz/app --recursive`
 
+Clone submodule
+`git submodule add https://github.com/Starklandxyz/contract contracts`
+
 - Build contracts
 
 - Build Frontend

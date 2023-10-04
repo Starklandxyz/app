@@ -11,7 +11,7 @@ query getAllPlayers {
             joined_time
           }
           __typename
-          ... on ETH{
+          ... on ETH {
             balance
           }
         }
@@ -33,56 +33,8 @@ query getPlayerByKey($key: String) {
             joined_time
           }
           __typename
-          ... on ETH{
+          ... on ETH {
             balance
-          }
-        }
-      }
-    }
-  }
-}
-
-
-query getAllBuildings {
-  entities(first:1000, keys: ["%"]) {
-    totalCount
-    edges {
-      node {
-        keys
-        components {
-          __typename
-          ... on
-           Land {
-            position
-            owner
-            building_type
-            price
-            bomb
-            bomber
-            bomb_price
-          }
-        }
-      }
-    }
-  }
-}
-
-query getBuildingByKey($key: String) {
-  entities(first:1000, keys: [$key]) {
-    edges {
-      node {
-        keys
-        components {
-          __typename
-          ... on
-           Land {
-            position
-            owner
-            building_type
-            price
-            bomb
-            bomber
-            bomb_price
           }
         }
       }
@@ -99,23 +51,6 @@ query getETHByKey($key: String) {
           __typename
           ... on ETH {
             balance
-          }
-        }
-      }
-    }
-  }
-}
-
-query getTownHallBalance{
-  entities(first:1000, keys: ["0x1"]) {
-    edges {
-      node {
-        keys
-        components {
-          __typename
-          ... on
-           Townhall {
-						gold
           }
         }
       }

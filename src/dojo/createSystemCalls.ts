@@ -170,17 +170,8 @@ export function createSystemCalls(
       console.log("spawn event nick name", playerEvent.nick_name);
 
       setComponent(contractComponents.Player, entity, {
-        banks: playerEvent.banks,
         nick_name: playerEvent.nick_name,
-        position: playerEvent.position,
         joined_time: playerEvent.joined_time,
-        direction: playerEvent.direction,
-        gold: playerEvent.gold,
-        steps: playerEvent.steps,
-        last_point: playerEvent.last_point,
-        last_time: playerEvent.last_time,
-        total_steps: playerEvent.total_steps,
-        total_used_eth: playerEvent.total_used_eth
       });
       return events;
       // store.setState({player})
@@ -287,18 +278,7 @@ export interface BaseEvent {
 
 export interface Player extends BaseEvent {
   nick_name: string,
-  position: number;
   joined_time: number;
-  direction: number;
-  gold: number;
-  steps: number;
-  total_steps: number;
-  last_point: number;
-  last_time: number;
-  banks: number;
-  hotels: number;
-  startbucks: number;
-  total_used_eth: string;
 }
 
 export interface Land extends BaseEvent {
@@ -345,17 +325,6 @@ export const parseEvent = (
           entity: raw.data[2],
           nick_name: (raw.data[5]),
           joined_time: Number(raw.data[6]),
-          direction: Number(raw.data[7]),
-          gold: Number(raw.data[8]),
-          position: Number(raw.data[9]),
-          steps: Number(raw.data[10]),
-          last_point: Number(raw.data[11]),
-          last_time: Number(raw.data[12]),
-          total_steps: Number(raw.data[13]),
-          banks: Number(raw.data[14]),
-          total_used_eth: (raw.data[15]),
-          hotels: 0,
-          startbucks: 0
         };
         console.log("parseEvent player", raw.data[5], playerData.nick_name);
         events.push(playerData);

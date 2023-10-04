@@ -5,9 +5,6 @@ import { useEffect, useState } from "react";
 import { useDojo } from "../hooks/useDojo";
 import { getTimestamp, stringToHex, toastError, toastInfo, toastSuccess, toastWarning, truncateString } from "../utils";
 import { ClickWrapper } from "./clickWrapper";
-import { EntityIndex, setComponent } from "@latticexyz/recs";
-import { Player } from "../dojo/createSystemCalls";
-import { Player2Player } from "../types";
 import { ethers } from "ethers";
 import PlayerPanel from "./playerpanel";
 import ethicon from "../../public/ethereum.png"
@@ -36,13 +33,6 @@ export default function Header() {
 
 
     useEffect(() => {
-        // if (players.size != 0) {
-        //     return
-        // }
-        fetchAllPlayers()
-    }, [account])
-
-    useEffect(() => {
         // 设置一个每秒执行的任务
         const intervalId = setInterval(() => {
             //   setCount(prevCount => prevCount + 1);
@@ -54,64 +44,6 @@ export default function Header() {
             clearInterval(intervalId);
         };
     }, []); // 注意这里的空依赖数组，这意味着useEffect只会在组件挂载时运行一次
-
-
-    const showAllPlayers = (edges: any) => {
-        if (!edges) {
-            return
-        }
-        const players = new Map<EntityIndex, Player>()
-
-        for (let index = 0; index < edges.length; index++) {
-            const element = edges[index];
-            if (element) {
-                if (element.node?.keys) {
-                    if (element.node.keys[0]) {
-                        const eth = element.node.components[1] as any
-                        if (eth && eth.__typename == "ETH" && element.node.keys[0] == account?.address) {
-                            //hex
-                            const b: string = eth.balance;
-                            playerStore.setState({ eth: BigInt(b) })
-                        }
-                        const player = element.node.components[0]
-                        if (player && player.__typename == "Player") {
-                            if (element.node.keys[0] == "0x0") {
-                                continue
-                            }
-                            const entityId = parseInt(element.node.keys[0]) as EntityIndex;
-                            const player_ = Player2Player(player)
-                            player_.entity = entityId.toString()
-                            players.set(entityId, player_)
-                            // console.log("showAllPlayers",entityId,element.node.keys[0]);
-                            setComponent(components.Player, entityId, {
-                                banks: player.banks,
-                                position: player.position,
-                                joined_time: player.joined_time,
-                                nick_name: player.nick_name,
-                                direction: player.direction,
-                                gold: player.gold,
-                                steps: player.steps,
-                                last_point: player.last_point,
-                                last_time: player.last_time,
-                                total_steps: player.total_steps,
-                                total_used_eth: player.total_used_eth
-                            })
-                        }
-                    }
-                }
-            }
-        }
-        playerStore.setState({ players: players })
-    }
-
-    const fetchAllPlayers = async () => {
-        console.log("fetchAllPlayers");
-        const allPlayers = await graphSdk.getAllPlayers()
-        // console.log("startGame allPlayers");
-        console.log("fetchAllPlayers", allPlayers);
-        const edges = allPlayers.data.entities?.edges
-        showAllPlayers(edges)
-    }
 
     const startGame = async () => {
         if (isDeploying) {
