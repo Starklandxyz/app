@@ -28,8 +28,6 @@ export default function SpawnUI() {
     } = phaserLayer!;
 
     const {
-        components,
-        network: { graphSdk },
         systemCalls: { build_base },
     } = networkLayer!
 
@@ -117,7 +115,7 @@ export default function SpawnUI() {
         if (!account) {
             return <></>
         }
-        console.log("showButton",account?.address,bases,bases.has(account.address));
+        // console.log("showButton",account?.address,bases,bases.has(account.address));
         if (bases.has(account.address)) {
             return <></>
         }

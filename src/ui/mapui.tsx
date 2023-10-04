@@ -1,9 +1,11 @@
 import { useEffect } from "react"
 import { buildStore } from "../store/buildstore"
 import { store } from "../store/store";
-import { TilesetTown } from "../artTypes/world";
+import { TilesetTown, TilesetZone } from "../artTypes/world";
 import { playerStore } from "../store/playerStore";
 import { Base } from "../generated/graphql";
+import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
+import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 
 export default function MapUI() {
     const { bases } = buildStore()
@@ -57,6 +59,8 @@ export default function MapUI() {
                 const newBases = new Map(bases);
                 newBases.set(account?.address!, {x,y})
                 buildStore.setState({ bases: newBases })
+                const pixelPosition = tileCoordToPixelCoord({x,y}, TILE_WIDTH, TILE_HEIGHT);
+                camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
             }
         }
     }
