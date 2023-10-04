@@ -2,9 +2,8 @@ import { SetupNetworkResult } from "./setupNetwork";
 import {
   Account,
   shortString,
-  GetTransactionReceiptResponse
+  GetTransactionReceiptResponse,
 } from "starknet";
-import { EntityIndex, setComponent } from "@latticexyz/recs";
 import { ClientComponents } from "./createClientComponents";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
@@ -13,26 +12,24 @@ export function createSystemCalls(
   { execute, contractComponents }: SetupNetworkResult,
   { Player }: ClientComponents
 ) {
-  const roll = async (signer: Account) => {
+  const build_base = async (signer: Account,map_id:number,x:number,y:number) => {
     try {
       console.log("roll start");
-      const tx = await execute(signer, "roll", []);
+      const tx = await execute(signer, "build_base", [map_id,x,y]);
       console.log("roll tx");
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
       console.log("roll receipt:", receipt);
+      // parseEvents
+
       const events = parseEvent(receipt);
       console.log(events);
       return events;
     } catch (e) {
       console.log(e);
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
     } finally {
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
     }
     return undefined;
   };
@@ -151,8 +148,6 @@ export function createSystemCalls(
 
   const spawn = async (signer: Account, nick_name: BigInt) => {
     console.log("spawn signer:" + signer.address + ",nickname:" + nick_name);
-
-    // const entityId = parseInt(signer.address) as EntityIndex;
     try {
       const tx = await execute(signer, "spawn", [nick_name.toString()]);
 
@@ -163,25 +158,20 @@ export function createSystemCalls(
 
       const events = parseEvent(receipt);
       console.log(events);
-      const entity = parseInt(events[0].entity.toString()) as EntityIndex;
+      // const entity = parseInt(events[0].entity.toString()) as EntityIndex;
 
       const playerEvent = events[0] as Player;
 
       console.log("spawn event nick name", playerEvent.nick_name);
 
-      setComponent(contractComponents.Player, entity, {
-        nick_name: playerEvent.nick_name,
-        joined_time: playerEvent.joined_time,
-      });
+      // setComponent(contractComponents.Player, entity, {
+      //   nick_name: playerEvent.nick_name,
+      //   joined_time: playerEvent.joined_time,
+      // });
       return events;
-      // store.setState({player})
     } catch (e) {
       console.log(e);
-      // Player.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
     } finally {
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
     }
     return null;
   };
@@ -244,7 +234,7 @@ export function createSystemCalls(
     recoverEnergy,
     buyEnergy,
     spawn,
-    roll,
+    build_base,
     buyBuilding,
     buyBack,
     explode,
@@ -263,11 +253,15 @@ export enum Direction {
 }
 
 export enum ComponentEvents {
-  Moves = "Moves",
-  Position = "Position",
   Player = "Player",
   Land = "Land",
-  Townhall = "Townhall",
+  GlobalConfig="GlobalConfig",
+  Food="Food",
+  Iron="Iron",
+  Gold="Gold",
+  Warrior="Warrior",
+  Base="Base",
+  LandCost="LandCost",
   ETH="ETH"
 }
 
@@ -298,9 +292,16 @@ export interface ETH extends BaseEvent {
   balance: bigint;
 }
 
+export interface Base extends BaseEvent {
+  id: number;
+  map_id: bigint;
+  x:bigint;
+  y:bigint;
+}
+
 export const parseEvent = (
   receipt: GetTransactionReceiptResponse
-): Array<Player | Land | ETH | Townhall> => {
+): Array<Player | Land | ETH | Base> => {
   // if(typeof receipt == SuccessfulTransactionReceiptResponse)
   if (receipt.status == "NOT_RECEIVED" || receipt.status == "REJECTED" || receipt.status == "REVERTED") {
     return []
@@ -310,7 +311,7 @@ export const parseEvent = (
     throw new Error(`No events found`);
   }
 
-  let events: Array<Player | Land | Townhall | ETH> = [];
+  let events: Array<Player | Land | Base | ETH> = [];
 
   for (let raw of receipt.events) {
     const decodedEventType = shortString.decodeShortString(raw.data[0]);
@@ -356,15 +357,16 @@ export const parseEvent = (
 
         events.push(eth);
         break;
-      case ComponentEvents.Townhall:
-        const townHall: Townhall = {
-          type: ComponentEvents.Townhall,
+      case ComponentEvents.Base:
+        const base: Base = {
+          type: ComponentEvents.Base,
           entity: raw.data[2],
           id: Number(raw.data[2]),
-          gold: Number(raw.data[5]),
+          map_id: BigInt(raw.data[5]),
+          x:BigInt(raw.data[6]),
+          y:BigInt(raw.data[7])
         };
-
-        events.push(townHall);
+        events.push(base);
         break;
 
       default:break;

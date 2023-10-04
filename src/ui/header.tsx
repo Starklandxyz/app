@@ -148,11 +148,11 @@ export default function Header() {
                         </select>
                     }
 
-                    {/* {
+                    {
                         player && <button data-tooltip-id="my-tooltip"
                             data-tooltip-content="create a new local wallet"
                             data-tooltip-place="top" style={{ marginLeft: 10 }} onClick={() => createNew()}>{isDeploying ? "deploying..." : "create new"}</button>
-                    } */}
+                    }
                     {
                         !account && <button data-tooltip-id="my-tooltip"
                             data-tooltip-content="create a local wallet"

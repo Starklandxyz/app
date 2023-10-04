@@ -3,8 +3,9 @@ import { buildStore } from "../store/buildstore"
 import { store } from "../store/store";
 import { TilesetTown } from "../artTypes/world";
 import { playerStore } from "../store/playerStore";
+import { Base } from "../generated/graphql";
 
-export default function Map() {
+export default function MapUI() {
     const { bases } = buildStore()
     const { account } = store()
     const { player } = playerStore()
@@ -44,9 +45,20 @@ export default function Map() {
     }, [player])
 
     const fetchPlayerBase = async () => {
-        const base =  await graphSdk.getBaseByKey({ key: account?.address!, map_id: "1" })
-        console.log("fetchPlayerBase",base);
-        base.data.entities?.edges
+        const base = await graphSdk.getBaseByKey({ key: account?.address!, map_id: "0x1" })
+        console.log("fetchPlayerBase", account?.address, base);
+        const edges = base.data.entities?.edges;
+        if (edges && edges.length > 0) {
+            const pos = edges[0]?.node?.components
+            if (pos && pos.length > 0 && pos[0]) {
+                const p = pos[0] as Base
+                const x = p.x;
+                const y = p.y;
+                const newBases = new Map(bases);
+                newBases.set(account?.address!, {x,y})
+                buildStore.setState({ bases: newBases })
+            }
+        }
     }
 
     return (

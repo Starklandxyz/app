@@ -15,7 +15,7 @@ export default function SpawnUI() {
     const { bases } = buildStore()
     const [show, setShow] = useState(false)
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
-    const { camera, phaserLayer,account } = store()
+    const { camera, phaserLayer, account, networkLayer } = store()
     const [lastCoord, setLastCoord] = useState<Coord>({ x: 0, y: 0 })
     const {
         scenes: {
@@ -27,40 +27,55 @@ export default function SpawnUI() {
         }
     } = phaserLayer!;
 
+    const {
+        components,
+        network: { graphSdk },
+        systemCalls: { build_base },
+    } = networkLayer!
+
     const baseClick = () => {
-        setShow(pre=>!pre)
+        setShow(pre => !pre)
     }
 
     useEffect(() => {
-        if(!account){
+        if (!account) {
             return
         }
-        if(!show){
+        if (!show) {
             return
         }
-        console.log("spawan mousedown",mouseDown);
+        console.log("spawan mousedown", mouseDown);
         if (mouseDown) {
             return
         }
         clickLand()
     }, [mouseDown])
 
-    const clickLand = ()=>{
+    const clickLand = async () => {
+        if (!account) {
+            return
+        }
         for (let width = 0; width < 2; width++) {
             for (let height = 0; height < 2; height++) {
-                const landType = get_land_type(1, lastCoord.x + width, lastCoord.y+height)
-                if(landType!=LandType.None){
+                const landType = get_land_type(1, lastCoord.x + width, lastCoord.y + height)
+                if (landType != LandType.None) {
                     toastError("Can't build here")
-                    return
+                    // return
                 }
             }
         }
-
-        setShow(false)
-        toastSuccess("Build Base Success!")
-        const newBases = new Map(bases)
-        newBases.set(account?.address!, lastCoord)
-        buildStore.setState({ bases: newBases })
+        console.log("clickLand",lastCoord);
+        
+        const result = await build_base(account, 1, lastCoord.x, lastCoord.y)
+        if (result && result.length > 0) {
+            setShow(false)
+            toastSuccess("Build Base Success!")
+            const newBases = new Map(bases)
+            newBases.set(account?.address!, lastCoord)
+            buildStore.setState({ bases: newBases })
+        } else {
+            toastError("Build Fail")
+        }
     }
 
     useEffect(() => {
@@ -98,16 +113,17 @@ export default function SpawnUI() {
 
     }, [ex, ey])
 
-    const showButton = useMemo(()=>{
-        if(!account){
+    const showButton = useMemo(() => {
+        if (!account) {
             return <></>
         }
-        if(bases.has(account.address)){
+        console.log("showButton",account?.address,bases,bases.has(account.address));
+        if (bases.has(account.address)) {
             return <></>
         }
 
         return <button onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</button>
-    },[account,bases,show])
+    }, [account, bases, show])
 
     return (
         <ClickWrapper>

@@ -40,7 +40,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          nick_name: RecsType.String,
+          nick_name: RecsType.Number,
           joined_time: RecsType.Number,
         },
         {

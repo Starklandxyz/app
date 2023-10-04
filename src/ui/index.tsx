@@ -9,10 +9,10 @@ import Header from "./header";
 import NotificationUI from "./NotificationUI";
 import TroopsUI from "./troopsUI";
 import SpawnUI from "./spawnui";
-import Map from "./map";
 import BottomIcons from "./bottomicons";
 import TroopPanel from "./troopPanel";
 import ChooseBuildUI from "./ChooseBuildUI";
+import MapUI from "./mapui";
 
 export default function UI() {
     const layers = store((state) => {
@@ -41,7 +41,7 @@ export default function UI() {
             <ChooseBuildUI/>
             <TroopsUI/>
             <TroopPanel/>
-            <Map/>
+            <MapUI/>
         </Wrapper>
     );
 };
