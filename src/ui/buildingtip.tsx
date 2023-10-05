@@ -81,14 +81,16 @@ export default function BuildingTip() {
             land_level = "Level : "+land.level
         }else{
             const land_type = get_land_type(1, lastCoord.x, lastCoord.y)
+            land_desc = "Can't be occupied"
             switch (land_type) {
-                case LandType.None: break;
+                case LandType.None: land_desc=""; break;
                 case LandType.Gold: land_name = "Gold"; break;
                 case LandType.Iron: land_name = "Iron"; break;
                 case LandType.Water: land_name = "Water"; break;
             }
             const land_baba = get_land_barbarians(1,lastCoord.x,lastCoord.y)
             land_warrior = land_baba.toString()
+            land_level = "Level : "+(1n + land_baba/10n)
         }
 
         settooltip({

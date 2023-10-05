@@ -5,6 +5,7 @@ import {
   GetTransactionReceiptResponse,
 } from "starknet";
 import { ClientComponents } from "./createClientComponents";
+import { getEvents } from "@dojoengine/utils";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -25,6 +26,7 @@ export function createSystemCalls(
       // parseEvents
 
       const events = parseEvent(receipt);
+      // getEvents(receipt)
       console.log(events);
       return events;
     } catch (e) {
@@ -104,15 +106,12 @@ export function createSystemCalls(
     return events;
   };
 
-  const buyBuilding = async (
+  const trainWarrior = async (
     signer: Account,
-    buidingId: number
+    map_id: number,
+    amount:number
   ) => {
-    const tx = await execute(signer, "build", [buidingId]);
-    console.log("buyBuilding signer:" + signer.address + ",buidingId:" + buidingId);
-
-    // TODO: override gold
-
+    const tx = await execute(signer, "train_warrior", [map_id,amount]);
     console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
       retryInterval: 100,
@@ -120,7 +119,7 @@ export function createSystemCalls(
 
     console.log(receipt);
 
-    const events = parseEvent(receipt);
+    const events = getEvents(receipt);
     console.log(events);
 
     // return player,land
@@ -235,7 +234,7 @@ export function createSystemCalls(
     buyEnergy,
     spawn,
     build_base,
-    buyBuilding,
+    trainWarrior,
     buyBack,
     explode,
     adminRoll,

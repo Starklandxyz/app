@@ -16,11 +16,11 @@ export default function MapUI() {
     const { bases } = buildStore()
     const { account } = store()
     const { lands: mapLands } = mapStore()
-    const {players} = playerStore()
+    const { player, players } = playerStore()
     const { camera, phaserLayer } = store()
     const {
         scenes: {
-            
+
             Main: {
                 objectPool,
                 maps: {
@@ -40,16 +40,16 @@ export default function MapUI() {
             const xStart = value.x
             const yStart = value.y
             var diff = 0
-            if(key == account?.address){
+            if (key == account?.address) {
                 diff = 6
             }
-            putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00+diff, "Top");
-            putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01+diff, "Top");
-            putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02+diff, "Top");
-            putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03+diff, "Top");
+            putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
+            putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");
+            putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Top");
+            putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Top");
 
             const nameObj = objectPool.get("townname_" + key, "Text")
-            const pixelPosition = tileCoordToPixelCoord({ x: xStart, y: yStart },TILE_WIDTH,TILE_HEIGHT)
+            const pixelPosition = tileCoordToPixelCoord({ x: xStart, y: yStart }, TILE_WIDTH, TILE_HEIGHT)
             nameObj.setComponent({
                 id: 'position',
                 once: (text) => {
@@ -67,11 +67,30 @@ export default function MapUI() {
         })
     }, [bases.keys()])
 
-    useEffect(()=>{
-        mapLands.forEach((value,key)=>{
-            
+    useEffect(() => {
+        if (!player || !account) {
+            return
+        }
+        const base = bases.get(account.address)
+        if(!base){
+            return
+        }
+        const xStart = base.x
+        const yStart = base.y
+        var diff = 6
+        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
+        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");
+        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Top");
+        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Top");
+        const pixelPosition = tileCoordToPixelCoord({ x: base.x, y: base.y }, TILE_WIDTH, TILE_HEIGHT);
+        camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
+    }, [player])
+
+    useEffect(() => {
+        mapLands.forEach((value, key) => {
+
         })
-    },[mapLands.keys()])
+    }, [mapLands.keys()])
 
     useEffect(() => {
         fetchAllLands("0x1")
@@ -91,7 +110,7 @@ export default function MapUI() {
                     const componenets = node?.components
                     // const c =  edge.node?.components
                     // if(c && c[0] && c[0].__typename=="Base"){
-                    if (componenets && componenets[0] && componenets[0].__typename=="Land") {
+                    if (componenets && componenets[0] && componenets[0].__typename == "Land") {
                         const component = componenets[0] as Land
                         const l = Land2Land(component)
                         ls.set(l.x + "_" + l.y, l)
@@ -121,24 +140,19 @@ export default function MapUI() {
         }
     }
 
-    const fetchAllBase = async (map_id:string)=>{
-        const base = await graphSdk.getAllBase({map_id: map_id })
+    const fetchAllBase = async (map_id: string) => {
+        const base = await graphSdk.getAllBase({ map_id: map_id })
         console.log("fetchAllBase", account?.address, base);
         const edges = base.data.entities?.edges;
         const newBases = new Map(bases);
         if (edges && edges.length > 0) {
             for (let index = 0; index < edges.length; index++) {
                 const edge = edges[index];
-                if(edge){
-                    const c =  edge.node?.components
-                    if(c && c[0] && c[0].__typename=="Base"){
+                if (edge) {
+                    const c = edge.node?.components
+                    if (c && c[0] && c[0].__typename == "Base") {
                         const b = c[0] as Base
-                        newBases.set(b.id,{x:b.x,y:b.y})
-
-                        if(b.id == account?.address){
-                            const pixelPosition = tileCoordToPixelCoord({ x:b.x, y:b.y }, TILE_WIDTH, TILE_HEIGHT);
-                            camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
-                        }
+                        newBases.set(b.id, { x: b.x, y: b.y })
                     }
                 }
             }
