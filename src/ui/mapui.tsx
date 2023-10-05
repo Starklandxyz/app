@@ -9,20 +9,20 @@ import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mapStore } from "../store/mapStore";
 import { Land2Land, Player2Player } from "../types";
 import { BuildType } from "../types/Build";
-import { LandType, get_land_type } from "../types/Land";
-import { Coord } from "@latticexyz/utils";
+import { hexToString } from "../utils";
 // import { Land } from "../types/Land";
 
 export default function MapUI() {
     const { bases } = buildStore()
     const { account } = store()
     const { lands: mapLands } = mapStore()
-    const { player } = playerStore()
-
+    const {players} = playerStore()
     const { camera, phaserLayer } = store()
     const {
         scenes: {
+            
             Main: {
+                objectPool,
                 maps: {
                     Main: { putTileAt },
                 },
@@ -39,19 +39,39 @@ export default function MapUI() {
         bases.forEach((value, key) => {
             const xStart = value.x
             const yStart = value.y
-            putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00, "Top");
-            putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01, "Top");
-            putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02, "Top");
-            putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03, "Top");
-        })
-    }, [bases.values()])
+            var diff = 0
+            if(key == account?.address){
+                diff = 6
+            }
+            putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00+diff, "Top");
+            putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01+diff, "Top");
+            putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02+diff, "Top");
+            putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03+diff, "Top");
 
-    // useEffect(() => {
-    //     if (!player || !account) {
-    //         return
-    //     }
-    //     fetchPlayerBase()
-    // }, [player])
+            const nameObj = objectPool.get("townname_" + key, "Text")
+            const pixelPosition = tileCoordToPixelCoord({ x: xStart, y: yStart },TILE_WIDTH,TILE_HEIGHT)
+            nameObj.setComponent({
+                id: 'position',
+                once: (text) => {
+                    text.setPosition(pixelPosition?.x, pixelPosition?.y - 14);
+                    text.setBackgroundColor("rgba(0,0,0,0.6)")
+                    text.setFontSize(11)
+                    if (key == account?.address) {
+                        text.setBackgroundColor("rgba(255,0,0,0.6)")
+                        text.setText("Me")
+                    } else {
+                        text.setText(hexToString(players.get(key)?.nick_name));
+                    }
+                }
+            })
+        })
+    }, [bases.keys()])
+
+    useEffect(()=>{
+        mapLands.forEach((value,key)=>{
+            
+        })
+    },[mapLands.keys()])
 
     useEffect(() => {
         fetchAllLands("0x1")

@@ -9,10 +9,11 @@ import landIcon from "../../public/assets/icons/landicon.png"
 import { store } from "../store/store";
 import { useEffect, useRef } from "react";
 import { Player2Player } from "../types";
-import { Player } from "../generated/graphql";
+import { Player as PlayerSQL } from "../generated/graphql";
+import { Player } from "../dojo/createSystemCalls";
 
 export default function PlayerPanel() {
-    const { player: storePlayer } = playerStore()
+    const { player: storePlayer,players,eths } = playerStore()
     const { account, phaserLayer } = store();
 
     const accountRef = useRef<string>()
@@ -32,6 +33,10 @@ export default function PlayerPanel() {
 
         fetchPlayerInfo(account.address)
     }, [account])
+
+    useEffect(()=>{
+        fetchPlayersInfo()
+    },[])
 
     useEffect(() => {
         const query = `subscription {
@@ -73,6 +78,35 @@ export default function PlayerPanel() {
         }
     }, [])
 
+    const fetchPlayersInfo = async () => {
+        const playerInfo = await graphSdk.getAllPlayers()
+        console.log("fetchPlayersInfo", playerInfo);
+        const edges = playerInfo.data.entities?.edges
+        const map = new Map<string,Player>()
+        const eths = new Map<string,bigint>()
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
+                const keys = element?.node?.keys
+                var player = undefined
+                var eth = 0n
+                if (components && components[0] && components[0].__typename == "Player") {
+                    console.log(components[0]);
+                    const player_ = components[0] as PlayerSQL
+                    player = Player2Player(player_)
+                    map.set(keys?.[0]!,player)
+                }
+                if(components && components[1] && components[1].__typename=="ETH"){
+                    const b: string = components[1].balance;
+                    eth = BigInt(b)
+                    eths.set(keys?.[0]!,eth)
+                }
+            }
+        }
+        playerStore.setState({eths:eths, players:map})
+    }
+
     const fetchPlayerInfo = async (entity: string) => {
         const playerInfo = await graphSdk.getPlayerByKey({ key: entity })
         console.log("fetchPlayerInfo", playerInfo);
@@ -86,7 +120,7 @@ export default function PlayerPanel() {
                 var eth = 0n
                 if (components && components[0] && components[0].__typename == "Player") {
                     console.log(components[0]);
-                    const player_ = components[0] as Player
+                    const player_ = components[0] as PlayerSQL
                     player = Player2Player(player_)
                 }
                 if(components && components[1] && components[1].__typename=="ETH"){

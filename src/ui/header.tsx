@@ -11,8 +11,7 @@ import ethicon from "../../public/ethereum.png"
 import starkicon from "../../public/starkneticon.png"
 import { ticStore } from "../store/ticStore";
 import { Player2Player } from "../types";
-import { Player } from "../generated/graphql";
-import { get_land_type } from "../types/Land";
+import { Player as PlayerSQL } from "../generated/graphql";
 
 export default function Header() {
     const { account, networkLayer } = store();
@@ -29,7 +28,6 @@ export default function Header() {
     } = useDojo();
 
     const {
-        components,
         network: { graphSdk },
         systemCalls: { spawn },
     } = networkLayer!
@@ -79,8 +77,8 @@ export default function Header() {
             setNickName("")
             toastSuccess("Mint player success.")
             // playerStore.setState({ eth: BigInt(5e17) })
-            const p = Player2Player(events[0] as Player)
-            playerStore.setState({ eth: BigInt(5e17),player:p})
+            const p = Player2Player(events[0] as PlayerSQL)
+            playerStore.setState({ eth: BigInt(5e17), player: p })
         } else {
             toastError("Mint failed")
         }
@@ -115,15 +113,10 @@ export default function Header() {
         }
     }, [isDeploying])
 
-    useEffect(()=>{
-        console.log("Player change",player);
-    },[player])
-
-
     return (
         <ClickWrapper style={{ height: "60px", width: "100%", lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
             <WalletContainer>
-                
+
                 <div data-tooltip-id="my-tooltip"
                     data-tooltip-content="ETH balance"
                     data-tooltip-place="top" style={{ marginTop: 0, marginRight: 4 }}>

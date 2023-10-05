@@ -15,14 +15,11 @@ export function mapSystem(layer: PhaserLayer) {
                 },
             },
         },
-        networkLayer: {
-            components
-        },
     } = layer;
     const size = MAP_WIDTH
 
     store.setState({ camera: camera })
-    playerStore.setState({ PlayerComponent: components.Player })
+    // playerStore.setState({ PlayerComponent: components.Player })
 
     const pRock = 0.015
 
