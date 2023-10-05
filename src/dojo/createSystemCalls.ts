@@ -5,6 +5,7 @@ import {
   GetTransactionReceiptResponse,
 } from "starknet";
 import { ClientComponents } from "./createClientComponents";
+import { getEvents, setComponentsFromEvents } from "@dojoengine/utils";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -23,9 +24,8 @@ export function createSystemCalls(
       });
       console.log("roll receipt:", receipt);
       // parseEvents
-
-      const events = parseEvent(receipt);
-      console.log(events);
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
       return events;
     } catch (e) {
       console.log(e);
@@ -43,7 +43,7 @@ export function createSystemCalls(
         retryInterval: 100,
       });
       console.log("roll receipt:", receipt);
-      const events = parseEvent(receipt);
+      const events = getEvents(receipt);
       console.log(events);
       return events;
     } catch (e) {
@@ -73,7 +73,7 @@ export function createSystemCalls(
 
     console.log(receipt);
 
-    const events = parseEvent(receipt);
+    const events = getEvents(receipt);
     console.log(events);
 
     // return player,land
@@ -97,7 +97,7 @@ export function createSystemCalls(
 
     console.log(receipt);
 
-    const events = parseEvent(receipt);
+    const events = getEvents(receipt);
     console.log(events);
 
     // return player,land
@@ -156,19 +156,10 @@ export function createSystemCalls(
         retryInterval: 100,
       });
 
-      const events = parseEvent(receipt);
-      console.log(events);
-      // const entity = parseInt(events[0].entity.toString()) as EntityIndex;
-
-      const playerEvent = events[0] as Player;
-
-      console.log("spawn event nick name", playerEvent.nick_name);
-
-      // setComponent(contractComponents.Player, entity, {
-      //   nick_name: playerEvent.nick_name,
-      //   joined_time: playerEvent.joined_time,
-      // });
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
       return events;
+
     } catch (e) {
       console.log(e);
     } finally {
