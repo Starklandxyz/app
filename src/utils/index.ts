@@ -196,6 +196,8 @@ export function toastSuccess(msg: string) {
 export const random_on_chain = (seed_: number) => {
     const seed = BigInt(seed_)
     let hashStr = scure.poseidonHashMany([seed, seed * 7n, seed * 29n])
-    let hex = BigInt(hashStr.toString(10))
+    let low ="0x"+ hashStr.toString(16).slice(-32)
+    // console.log("hash:",hashStr.toString(16),low);
+    let hex = BigInt(low)
     return hex
 }

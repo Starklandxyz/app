@@ -66,7 +66,7 @@ export default function SpawnUI() {
                 const landType = get_land_type(1, lastCoord.x + width, lastCoord.y + height)
                 if (landType != LandType.None) {
                     toastError("Can't build here")
-                    // return
+                    return
                 }
             }
         }

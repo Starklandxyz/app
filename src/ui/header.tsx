@@ -3,7 +3,7 @@ import { playerStore } from "../store/playerStore";
 import { store } from "../store/store";
 import { useEffect, useState } from "react";
 import { useDojo } from "../hooks/useDojo";
-import { getTimestamp, stringToHex, toastError, toastInfo, toastSuccess, toastWarning, truncateString } from "../utils";
+import { getTimestamp, random_on_chain, stringToHex, toastError, toastInfo, toastSuccess, toastWarning, truncateString } from "../utils";
 import { ClickWrapper } from "./clickWrapper";
 import { ethers } from "ethers";
 import PlayerPanel from "./playerpanel";
@@ -12,6 +12,7 @@ import starkicon from "../../public/starkneticon.png"
 import { ticStore } from "../store/ticStore";
 import { Player2Player } from "../types";
 import { Player } from "../generated/graphql";
+import { get_land_type } from "../types/Land";
 
 export default function Header() {
     const { account, networkLayer } = store();
