@@ -986,7 +986,6 @@ export type Warrior = {
   balance?: Maybe<Scalars['u64']['output']>;
   entity?: Maybe<Entity>;
   map_id?: Maybe<Scalars['u64']['output']>;
-  owner?: Maybe<Scalars['ContractAddress']['output']>;
   x?: Maybe<Scalars['u64']['output']>;
   y?: Maybe<Scalars['u64']['output']>;
 };
@@ -1079,7 +1078,6 @@ export type WarriorOrder = {
 export enum WarriorOrderOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
-  Owner = 'OWNER',
   X = 'X',
   Y = 'Y'
 }
@@ -1097,12 +1095,6 @@ export type WarriorWhereInput = {
   map_idLT?: InputMaybe<Scalars['Int']['input']>;
   map_idLTE?: InputMaybe<Scalars['Int']['input']>;
   map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
   x?: InputMaybe<Scalars['Int']['input']>;
   xGT?: InputMaybe<Scalars['Int']['input']>;
   xGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -1136,6 +1128,15 @@ export type GetBaseByKeyQueryVariables = Exact<{
 
 
 export type GetBaseByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
+export type GetWarriorByLocationQueryVariables = Exact<{
+  map_id?: InputMaybe<Scalars['String']['input']>;
+  x?: InputMaybe<Scalars['String']['input']>;
+  y?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetWarriorByLocationQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior', x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetTrainingByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
@@ -1233,6 +1234,26 @@ export const GetBaseByKeyDocument = gql`
           ... on Base {
             x
             y
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetWarriorByLocationDocument = gql`
+    query getWarriorByLocation($map_id: String, $x: String, $y: String) {
+  entities(first: 1000, keys: [$map_id, $x, $y]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Warrior {
+            x
+            y
+            balance
           }
         }
       }
@@ -1354,6 +1375,7 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 const GetAllPlayersDocumentString = print(GetAllPlayersDocument);
 const GetPlayerByKeyDocumentString = print(GetPlayerByKeyDocument);
 const GetBaseByKeyDocumentString = print(GetBaseByKeyDocument);
+const GetWarriorByLocationDocumentString = print(GetWarriorByLocationDocument);
 const GetTrainingByKeyDocumentString = print(GetTrainingByKeyDocument);
 const GetAllBaseDocumentString = print(GetAllBaseDocument);
 const GetAllLandsDocumentString = print(GetAllLandsDocument);
@@ -1369,6 +1391,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getBaseByKey(variables?: GetBaseByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetBaseByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetBaseByKeyQuery>(GetBaseByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBaseByKey', 'query');
+    },
+    getWarriorByLocation(variables?: GetWarriorByLocationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetWarriorByLocationQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetWarriorByLocationQuery>(GetWarriorByLocationDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWarriorByLocation', 'query');
     },
     getTrainingByKey(variables?: GetTrainingByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetTrainingByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetTrainingByKeyQuery>(GetTrainingByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTrainingByKey', 'query');

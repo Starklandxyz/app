@@ -1,30 +1,84 @@
 import styled from "styled-components";
 import { ClickWrapper } from "./clickWrapper";
 import { useEffect, useMemo, useState } from "react";
-import { parseTime, toastError } from "../utils";
+import { getTimestamp, parseTime, toastError, toastSuccess } from "../utils";
 import { buildStore } from "../store/buildstore";
 import { playerStore } from "../store/playerStore";
 import { store } from "../store/store";
+import { resourceStore } from "../store/resourcestore";
+import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from "../contractconfig";
+import { Account } from "starknet";
+import { Training } from "../types/Training";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
-
+    const { gold, food, iron } = resourceStore()
     const { bases } = buildStore()
     const { player } = playerStore()
-    const { account, networkLayer } = store()
+    const { account, networkLayer, phaserLayer } = store()
+
+    const [training, setTraining] = useState<Training>(new Training())
 
     const {
-        systemCalls: { trainWarrior, airdrop },
+        systemCalls: { trainWarrior, airdrop, takeWarrior },
     } = networkLayer!
+    const {
+        networkLayer: {
+            network: { graphSdk }
+        }
+    } = phaserLayer!
 
     const claimairdrop = async () => {
         if (!account) {
             return
         }
-        await airdrop(account,1)
+        await airdrop(account, 1)
     }
 
-    const train = () => {
+    useEffect(() => {
+        if (!player || !account) {
+            return
+        }
+        fetchTrainingInfo(account)
+    }, [player, account])
+
+    const fetchTrainingInfo = async (account: Account) => {
+        const training = await graphSdk.getTrainingByKey({ map_id: "0x1", key: account.address })
+        console.log("fetchTrainingInfo", training);
+        const edges = training.data.entities?.edges
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
+                if (components) {
+                    for (let index = 0; index < components.length; index++) {
+                        const element = components[index];
+                        if (element?.__typename == "Training") {
+                            const t = new Training()
+                            t.out = element.out;
+                            t.startTime = element.start_time;
+                            t.total = element.total
+                            setTraining(t)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    const claim = async () => {
+        if (!account) {
+            return
+        }
+        const result = await takeWarrior(account, 1)
+        if (result && result.length > 0) {
+            toastSuccess("Claim success")
+        } else {
+            toastError("Claim failed")
+        }
+    }
+
+    const train = async () => {
         if (!account) {
             toastError("Create Wallet First")
             return
@@ -38,7 +92,25 @@ export default function TrainPanel() {
             return
         }
 
+        if (gold < Train_Price_Gold * inputValue) {
+            toastError("Gold is not enough")
+            return
+        }
+        if (food < Train_Price_Food * inputValue) {
+            toastError("Food is not enough")
+            return
+        }
+        if (iron < Train_Price_Iron * inputValue) {
+            toastError("Iron is not enough")
+            return
+        }
 
+        const result = await trainWarrior(account, 1, inputValue)
+        if (result && result.length > 0) {
+            toastSuccess("Start training...")
+        } else {
+            toastError("Train failed")
+        }
     }
 
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,19 +126,34 @@ export default function TrainPanel() {
         }
     }
 
-    useEffect(() => {
-
-    }, [inputValue])
-
     const calTotalTime = useMemo(() => {
-        const total = 60 * inputValue
+        const total = Train_Time * inputValue
         return parseTime(total)
     }, [inputValue])
 
     const calConsume = useMemo(() => {
-        var result = (inputValue * 10) + " Food, " + (inputValue * 10) + " Gold"
+        var result = (inputValue * Train_Price_Food) + " Food, " + (inputValue * Train_Price_Gold) + " Gold"
         return result
     }, [inputValue])
+
+    const calClaimable = (train: Training) => {
+        const usedtime = getTimestamp() - train.startTime
+        var total = Math.floor(usedtime / Train_Time)
+        if (total > train.total) {
+            total = train.total
+        }
+        const out = train.out
+        var left = total - out
+        if(left<0){
+            left = 0
+        }
+        console.log("calClaimable",total,out,left);
+        return left
+    }
+
+    const claimable = useMemo(() => {
+        return calClaimable(training)
+    }, [training])
 
     return (<ClickWrapper>
         <Container>
@@ -81,17 +168,22 @@ export default function TrainPanel() {
                     </div>
                 </div>
                 <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => train()}>Start Train</button>
+                <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
+                    <p>Total Training : {training.total}</p>
+                    <p>Train Time : {getTimestamp() - training.startTime}s</p>
+                    <p>Claimable : {claimable}</p>
+                </div>
+                <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => claim()}>Claim Warrior</button>
+
             </div>
             <button onClick={(() => claimairdrop())}>Airdrop</button>
         </Container>
     </ClickWrapper>)
 }
 
-
-
 const Container = styled.div`
     position: absolute;
-    bottom: 10%;
+    bottom: 20%;
     left: 2%;
     color:white;
 `;

@@ -61,6 +61,25 @@ query getBaseByKey($key: String,$map_id:String) {
   }
 }
 
+query getWarriorByLocation($map_id:String,$x:String,$y:String) {
+  entities(first:1000, keys: [$map_id,$x,$y]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Warrior {
+            x,
+            y,
+            balance
+          }
+        }
+      }
+    }
+  }
+}
+
 
 query getTrainingByKey($key: String,$map_id:String) {
   entities(first:1000, keys: [$map_id,$key]) {
