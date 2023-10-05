@@ -196,8 +196,38 @@ export function toastSuccess(msg: string) {
 export const random_on_chain = (seed_: number) => {
     const seed = BigInt(seed_)
     let hashStr = scure.poseidonHashMany([seed, seed * 7n, seed * 29n])
-    let low ="0x"+ hashStr.toString(16).slice(-32)
+    let low = "0x" + hashStr.toString(16).slice(-32)
     // console.log("hash:",hashStr.toString(16),low);
     let hex = BigInt(low)
     return hex
+}
+
+export const parseTime = (sec: number) => {
+    const h = Math.floor(sec / 3600)
+    const m = Math.floor((sec - h * 3600) / 60)
+    const s = sec - h * 3600 - m * 60
+
+    
+    var hs = h + ""
+    if (h < 10) {
+        hs = "0" + h
+    }
+    var ms = m + ""
+    if (m < 10) {
+        ms = "0" + m
+    }
+    var ss = s + ""
+    if (s < 10) {
+        ss = "0" + s
+    }
+    var result = ""
+    if (h == 0) {
+        result = ms + "m" + ss + "s"
+    } else {
+        result = hs + "h" + ms + "m" + ss + "s"
+    }
+    // console.log("parseTime",sec,h,m,s);
+    // console.log("parseTime",hs,ms,ss,result);
+    
+    return result
 }

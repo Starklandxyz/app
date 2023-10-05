@@ -140,3 +140,27 @@ query getETHByKey($key: String) {
     }
   }
 }
+
+query getResoucesByKey($map_id:String,$key: String) {
+  entities(first:1000, keys: [$map_id,$key]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Food {
+            balance
+          }
+          __typename
+          ... on Gold {
+            balance
+          }
+          __typename
+          ... on Iron {
+            balance
+          }
+        }
+      }
+    }
+  }
+}

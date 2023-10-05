@@ -33,10 +33,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const recoverEnergy = async (signer: Account) => {
+  const airdrop = async (signer: Account,map_id:number) => {
     try {
       console.log("recoverEnergy start");
-      const tx = await execute(signer, "claim_energy", []);
+      const tx = await execute(signer, "admin", [map_id]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -218,7 +218,7 @@ export function createSystemCalls(
   };
 
   return {
-    recoverEnergy,
+    airdrop,
     buyEnergy,
     spawn,
     build_base,

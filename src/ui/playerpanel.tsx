@@ -11,11 +11,12 @@ import { useEffect, useRef } from "react";
 import { Player2Player } from "../types";
 import { Player as PlayerSQL } from "../generated/graphql";
 import { Player } from "../dojo/createSystemCalls";
+import { resourceStore } from "../store/resourcestore";
 
 export default function PlayerPanel() {
-    const { player: storePlayer,players,eths } = playerStore()
+    const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
-
+    const {food,gold,iron} = resourceStore()
     const accountRef = useRef<string>()
 
     const {
@@ -32,11 +33,12 @@ export default function PlayerPanel() {
         accountRef.current = account?.address
 
         fetchPlayerInfo(account.address)
+        fetchResources()
     }, [account])
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchPlayersInfo()
-    },[])
+    }, [])
 
     useEffect(() => {
         const query = `subscription {
@@ -78,12 +80,46 @@ export default function PlayerPanel() {
         }
     }, [])
 
+    const fetchResources = async () => {
+        const resources = await graphSdk.getResoucesByKey({ map_id: "0x1", key: account?.address })
+        console.log("fetchResources", resources);
+        const edges = resources.data.entities?.edges
+        const map = new Map<string, Player>()
+        const eths = new Map<string, bigint>()
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
+                const keys = element?.node?.keys
+                var gold = 0
+                var food = 0
+                var iron = 0
+                if(components){
+                    for (let index = 0; index < components.length; index++) {
+                        const node = components[index];
+                        if(node?.__typename=="Gold"){
+                            gold = node.balance
+                        }
+                        if(node?.__typename=="Food"){
+                            food = node.balance
+                        }
+                        if(node?.__typename=="Iron"){
+                            iron = node.balance
+                        }
+                        
+                    }
+                    resourceStore.setState({gold:gold,food:food,iron:iron})
+                }
+            }
+        }
+    }
+
     const fetchPlayersInfo = async () => {
         const playerInfo = await graphSdk.getAllPlayers()
         console.log("fetchPlayersInfo", playerInfo);
         const edges = playerInfo.data.entities?.edges
-        const map = new Map<string,Player>()
-        const eths = new Map<string,bigint>()
+        const map = new Map<string, Player>()
+        const eths = new Map<string, bigint>()
         if (edges) {
             for (let index = 0; index < edges.length; index++) {
                 const element = edges[index];
@@ -95,16 +131,16 @@ export default function PlayerPanel() {
                     console.log(components[0]);
                     const player_ = components[0] as PlayerSQL
                     player = Player2Player(player_)
-                    map.set(keys?.[0]!,player)
+                    map.set(keys?.[0]!, player)
                 }
-                if(components && components[1] && components[1].__typename=="ETH"){
+                if (components && components[1] && components[1].__typename == "ETH") {
                     const b: string = components[1].balance;
                     eth = BigInt(b)
-                    eths.set(keys?.[0]!,eth)
+                    eths.set(keys?.[0]!, eth)
                 }
             }
         }
-        playerStore.setState({eths:eths, players:map})
+        playerStore.setState({ eths: eths, players: map })
     }
 
     const fetchPlayerInfo = async (entity: string) => {
@@ -123,11 +159,11 @@ export default function PlayerPanel() {
                     const player_ = components[0] as PlayerSQL
                     player = Player2Player(player_)
                 }
-                if(components && components[1] && components[1].__typename=="ETH"){
+                if (components && components[1] && components[1].__typename == "ETH") {
                     const b: string = components[1].balance;
                     eth = BigInt(b)
                 }
-                playerStore.setState({ eth: eth,player:player})
+                playerStore.setState({ eth: eth, player: player })
             }
         }
     }
@@ -142,17 +178,17 @@ export default function PlayerPanel() {
             <div data-tooltip-id="my-tooltip"
                 data-tooltip-content="Food"
                 data-tooltip-place="top" style={{ marginTop: -5, marginRight: 4 }}>
-                <img src={foodIcon} width={30} height={30} style={{ marginRight: 5 }} />100
+                <img src={foodIcon} width={30} height={30} style={{ marginRight: 5 }} />{food}
             </div>
             <div data-tooltip-id="my-tooltip"
                 data-tooltip-content="Gold"
                 data-tooltip-place="top" style={{ marginTop: -5, marginRight: 4 }}>
-                <img src={goldIcon} width={30} height={30} style={{ marginRight: 5 }} />100
+                <img src={goldIcon} width={30} height={30} style={{ marginRight: 5 }} />{gold}
             </div>
             <div data-tooltip-id="my-tooltip"
                 data-tooltip-content="Iron"
                 data-tooltip-place="top" style={{ marginTop: -5, marginRight: 4 }}>
-                <img src={ironIcon} width={30} height={30} style={{ marginRight: 5 }} />100
+                <img src={ironIcon} width={30} height={30} style={{ marginRight: 5 }} />{iron}
             </div>
             <div data-tooltip-id="my-tooltip"
                 data-tooltip-content="Land"
