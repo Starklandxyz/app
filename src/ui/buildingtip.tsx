@@ -12,9 +12,15 @@ import { Troop } from "../types/Troop";
 import { buildStore } from "../store/buildstore";
 import SendTroopPanel from "./sendTroopPanel";
 import { controlStore } from "../store/controlStore";
+import { mapStore } from "../store/mapStore";
+import { BuildType } from "../types/Build";
+import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
+import { playerStore } from "../store/playerStore";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
+    const {players} = playerStore()
     const { bases } = buildStore()
+    const { lands } = mapStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
     const [showButtons, setShowButtons] = useState({ show: false, x: 0, y: 0 })
@@ -22,7 +28,7 @@ export default function BuildingTip() {
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const [lastCoord, setCoord] = useState<WorldCoord>({ x: 0, y: 0 })
 
-    const { sendTroop,buildLand } = controlStore()
+    const { sendTroop, buildLand } = controlStore()
 
     const {
         scenes: {
@@ -51,14 +57,48 @@ export default function BuildingTip() {
         if (ey > innerHeight - 200) {
             y = ey - 100
         }
+        const land = lands.get(lastCoord.x + "_" + lastCoord.y)
+        var land_name = "Land"
+        var land_owner = "No Owner"
+        var land_desc = ""
+        var land_level = ""
+        var land_warrior = "1"
+        if (land) {
+            switch (land.build) {
+                case BuildType.None: break;
+                case BuildType.Base: land_name = "Base"; break;
+                case BuildType.Farmland: land_name = "Farmland"; break;
+                case BuildType.IronMine: land_name = "IronMine"; break;
+                case BuildType.GoldMine: land_name = "GoldMine"; break;
+                case BuildType.Camp: land_name = "Camp"; break;
+            }
+            if(land.owner){
+                const name = players.get(land.owner)?.nick_name;
+                if(name){
+                    land_owner = hexToString(name)
+                }
+            }
+            land_level = "Level : "+land.level
+        }else{
+            const land_type = get_land_type(1, lastCoord.x, lastCoord.y)
+            switch (land_type) {
+                case LandType.None: break;
+                case LandType.Gold: land_name = "Gold"; break;
+                case LandType.Iron: land_name = "Iron"; break;
+                case LandType.Water: land_name = "Water"; break;
+            }
+            const land_baba = get_land_barbarians(1,lastCoord.x,lastCoord.y)
+            land_warrior = land_baba.toString()
+        }
+
         settooltip({
             show: true, x: x, y: y, content: <div>
-                <p>Gold</p>
-                <p>Owner : No Owner</p>
-                <p>Speed : 100 Gold/Day</p>
-                <p>Warrior : 1</p>
+                <p>{land_name}</p>
+                <p>Owner : {land_owner}</p>
+                <p>{land_desc}</p>
+                <p>{land_level}</p>
+                <p>Warrior : {land_warrior}</p>
             </div>
-
         })
     }, [lastCoord])
 
@@ -75,7 +115,7 @@ export default function BuildingTip() {
             return
         }
 
-        if(buildLand){
+        if (buildLand) {
             return
         }
 

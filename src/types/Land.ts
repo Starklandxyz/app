@@ -32,3 +32,13 @@ export const get_land_type = (map_id: number, x: number, y: number) => {
     }
     return type;
 }
+
+    //土著蛮族人数为1-50的随机数
+    // fn land_barbarians(map_id: u64, x: u64, y: u64) -> u64 {
+    //     let r1:u128 = random(x * 999 + y*3 + map_id * 77) % 50 + 1; // 1-50
+    //     r1.try_into().unwrap()
+    // }
+export const get_land_barbarians = (map_id: number, x: number, y: number) => {
+    const rand = random_on_chain(x * 999 + y*3 + map_id * 77) % 50n + 1n // 1-100
+    return rand
+}
