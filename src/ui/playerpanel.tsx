@@ -268,7 +268,7 @@ export default function PlayerPanel() {
             <div data-tooltip-id="my-tooltip"
                 data-tooltip-content="Soldiers"
                 data-tooltip-place="top" style={{ marginTop: -5, marginRight: 4 }}>
-                <img src={soldierIcon} width={30} height={30} style={{ marginRight: 5 }} />{calWarrior}/10
+                <img src={soldierIcon} width={30} height={30} style={{ marginRight: 5 }} />{calWarrior}/20
             </div>
             <div data-tooltip-id="my-tooltip"
                 data-tooltip-content="Troops"

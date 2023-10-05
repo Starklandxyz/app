@@ -9,10 +9,12 @@ import { resourceStore } from "../store/resourcestore";
 import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from "../contractconfig";
 import { Account } from "starknet";
 import { Training } from "../types/Training";
+import { ticStore } from "../store/ticStore";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
     const { gold, food, iron } = resourceStore()
+    const { timenow } = ticStore()
     const { bases } = buildStore()
     const { player } = playerStore()
     const { account, networkLayer, phaserLayer } = store()
@@ -144,46 +146,59 @@ export default function TrainPanel() {
         }
         const out = train.out
         var left = total - out
-        if(left<0){
+        if (left < 0) {
             left = 0
         }
-        console.log("calClaimable",total,out,left);
+        // console.log("calClaimable", total, out, left);
         return left
     }
 
+    const getTrainTime = useMemo(() => {
+        const m = Math.floor((timenow - training.startTime) % Train_Time)
+        // const left = timenow - m * Train_Time
+        return m + "/" + Train_Time
+    }, [timenow])
+
     const claimable = useMemo(() => {
         return calClaimable(training)
-    }, [training])
+    }, [training, timenow])
 
     return (<ClickWrapper>
         <Container>
             <div style={{ width: 240, height: 190, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                 <p>Train Warrior</p>
-                <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
-                    <p>Consume : {calConsume}</p>
-                    <p>Time : {calTotalTime}</p>
-                    <div style={{ display: "flex" }}>
-                        <div style={{ marginTop: 5, marginRight: 10 }}>Train Amount </div>
-                        <input onChange={inputChange} style={{ height: 18, width: 60, marginRight: 10 }} value={inputValue} type="number" />
-                    </div>
-                </div>
-                <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => train()}>Start Train</button>
-                <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
-                    <p>Total Training : {training.total}</p>
-                    <p>Train Time : {getTimestamp() - training.startTime}s</p>
-                    <p>Claimable : {claimable}</p>
-                </div>
-                <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => claim()}>Claim Warrior</button>
-
+                {
+                    (training.total != 0 && training.total != training.out) ?
+                        <div>
+                            <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
+                                <p>Claimed : {training.out}/{training.total}</p>
+                                <p>Next : {getTrainTime}s</p>
+                                <p>Claimable : {claimable}</p>
+                            </div>
+                            <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => claim()}>Claim Warrior</button>
+                        </div>
+                        :
+                        <div>
+                            <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
+                                <p>Consume : {calConsume}</p>
+                                <p>Time : {calTotalTime}</p>
+                                <div style={{ display: "flex" }}>
+                                    <div style={{ marginTop: 5, marginRight: 10 }}>Train Amount </div>
+                                    <input onChange={inputChange} style={{ height: 18, width: 60, marginRight: 10 }} value={inputValue} type="number" />
+                                </div>
+                            </div>
+                            <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => train()}>Start Train</button>
+                        </div>
+                }
+                <button style={{ marginTop: 20 }} onClick={(() => claimairdrop())}>Airdrop</button>
             </div>
-            <button onClick={(() => claimairdrop())}>Airdrop</button>
         </Container>
     </ClickWrapper>)
 }
 
 const Container = styled.div`
     position: absolute;
-    bottom: 20%;
+    bottom: 15%;
     left: 2%;
     color:white;
 `;
