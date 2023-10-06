@@ -18,6 +18,8 @@ import { buildStore } from "../store/buildstore";
 import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
 import { Has, defineSystem, getComponentValue } from "@latticexyz/recs";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useEntityQuery } from "@dojoengine/react";
 
 
 export default function PlayerPanel() {
@@ -175,12 +177,9 @@ export default function PlayerPanel() {
 
 
     useEffect(() => {
-        defineSystem(world, [Has(components.Gold)], ({ entity }) => {
-            const r = getComponentValue(components.Gold, entity);
-            if (!r) {
-                return
-            }
-            resourceStore.setState({ gold: r.balance })
+        defineSystem(world, [Has(components.Gold)], ({ entity, value, component }) => {
+            const gold = value[0]?.balance as number
+            resourceStore.setState({ gold: gold })
         })
         defineSystem(world, [Has(components.Food)], ({ entity }) => {
             const r = getComponentValue(components.Food, entity);
@@ -198,12 +197,21 @@ export default function PlayerPanel() {
         })
         defineSystem(world, [Has(components.UserWarrior)], ({ entity }) => {
             const r = getComponentValue(components.UserWarrior, entity);
-            if (!r || !account) {
+            console.log("UserWarrior",r);
+            if (!r || !accountRef.current) {
                 return
             }
             const uw = new Map(userWarriors)
-            uw.set(account.address,r.balance)
-            warriorStore.setState({userWarriors:uw})
+            uw.set(accountRef.current, r.balance)
+            warriorStore.setState({ userWarriors: uw })
+        })
+        defineSystem(world, [Has(components.Warrior)], ({ entity, value, component }) => {
+            console.log("Warrior", entity, value, component);
+            const r = getComponentValue(components.Warrior, entity);
+            if (!r || !account) {
+                return
+            }
+            // console.log("Warrior",r);
         })
     }, [])
 

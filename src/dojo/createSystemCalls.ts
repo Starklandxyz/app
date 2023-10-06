@@ -44,6 +44,7 @@ export function createSystemCalls(
       console.log("roll receipt:", receipt);
       const events = getEvents(receipt);
       console.log(events);
+      setComponentsFromEvents(contractComponents, events);
       return events;
     } catch (e) {
       console.log(e);
@@ -75,7 +76,6 @@ export function createSystemCalls(
     const events = getEvents(receipt);
     console.log(events);
     setComponentsFromEvents(contractComponents, events);
-    // return player,land
     return events;
   };
 
@@ -119,26 +119,6 @@ export function createSystemCalls(
     const events = getEvents(receipt);
     console.log(events);
     setComponentsFromEvents(contractComponents, events);
-    // return player,land
-    return events;
-  };
-
-  //TODO : buy back on chain
-  const buyBack = async (signer: Account) => {
-    const tx = await execute(signer, "buy", []);
-
-    // TODO: override gold
-
-    console.log(tx);
-    const receipt = await signer.waitForTransaction(tx.transaction_hash, {
-      retryInterval: 100,
-    });
-
-    console.log(receipt);
-
-    const events = parseEvent(receipt);
-    console.log(events);
-    // return player1 player2 townhall land
     return events;
   };
 
@@ -163,59 +143,6 @@ export function createSystemCalls(
     return null;
   };
 
-  const explode = async (signer: Account, price: number) => {
-    console.log(`explode`)
-    // const entityId = parseInt(signer.address) as EntityIndex;
-    try {
-      const tx = await execute(signer, "explode", [price]);
-
-      console.log(tx);
-      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
-        retryInterval: 100,
-      });
-
-      const events = parseEvent(receipt);
-      console.log(events);
-      // Player Townhall land
-      return events;
-      // const entity = parseInt(events[0].entity.toString()) as EntityIndex;
-
-      // const playerEvent = events[0] as Player;
-
-      // console.log("spawn event nick name",playerEvent.nick_name);
-      // store.setState({player})
-    } catch (e) {
-      console.log(e);
-      return null
-      // Player.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
-    } finally {
-      // Position.removeOverride(positionId);
-      // Moves.removeOverride(movesId);
-    }
-  };
-
-  const adminRoll = async (signer: Account, position: number) => {
-    console.log(`adminRoll`)
-    try {
-      const tx = await execute(signer, "admin_roll", [position]);
-
-      console.log(tx);
-      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
-        retryInterval: 100,
-      });
-      console.log(receipt);
-
-      const events = parseEvent(receipt);
-      console.log(events);
-      return events;
-    } catch (e) {
-      console.log(e);
-      return null
-    } finally {
-    }
-
-  };
 
   return {
     airdrop,
@@ -223,9 +150,6 @@ export function createSystemCalls(
     spawn,
     build_base,
     trainWarrior,
-    buyBack,
-    explode,
-    adminRoll,
     buyGold
   };
 }
