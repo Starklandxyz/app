@@ -79,6 +79,29 @@ export function createSystemCalls(
     return events;
   };
 
+  const sendTroop = async (
+    signer: Account,
+    map_id: number,
+    amount:number,
+    troop_id:number,
+    fromx:number,
+    fromy:number,
+    tox:number,
+    toy:number
+  ) => {
+    const tx = await execute(signer, "send_troop", [map_id,amount,troop_id,fromx,fromy,tox,toy]);
+    console.log(tx);
+    const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+      retryInterval: 100,
+    });
+
+    console.log(receipt);
+
+    const events = getEvents(receipt);
+    console.log(events);
+    setComponentsFromEvents(contractComponents, events);
+    return events;
+  };
 
   const buyGold = async (
     signer: Account,
@@ -147,6 +170,7 @@ export function createSystemCalls(
   return {
     airdrop,
     takeWarrior,
+    sendTroop,
     spawn,
     build_base,
     trainWarrior,

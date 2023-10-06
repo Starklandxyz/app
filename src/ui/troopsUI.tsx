@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Coord } from "@latticexyz/utils";
 import { Assets, MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
-import { TilesetNum, TilesetSoldier } from "../artTypes/world";
+import { TilesetNum, TilesetSoldier, TilesetZone } from "../artTypes/world";
 import { Troop } from "../types/Troop";
 import { getTimestamp } from "../utils";
 import { controlStore } from "../store/controlStore";
@@ -16,7 +16,7 @@ export default function TroopsUI() {
     const { phaserLayer } = store()
     const { timenow } = ticStore()
     const { troops } = troopStore()
-    const {sendTroop} = controlStore()
+    const {sendTroopCtr: sendTroop} = controlStore()
 
     const {
         scenes: {
@@ -35,7 +35,9 @@ export default function TroopsUI() {
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
             if (left < 0) {
-                removeTroop(value)
+                showTroop(value)
+                hideTroopArrow(objectPool, value);
+                // removeTroop(value)
                 return
             }
             const start = tileCoordToPixelCoord(value.from, TILE_WIDTH, TILE_HEIGHT)
@@ -190,19 +192,19 @@ export default function TroopsUI() {
     }
 
     const removeTroop = (troop: Troop) => {
-        showTroop(troop);
+        // showTroop(troop);
         hideTroopArrow(objectPool, troop);
-        if (troop.retreat) {
-            const newTroops = new Map(troops)
-            newTroops.delete(troop.id)
-            troopStore.setState({ troops: newTroops })
-        }
+        // if (troop.retreat) {
+        //     const newTroops = new Map(troops)
+        //     newTroops.delete(troop.id)
+        //     troopStore.setState({ troops: newTroops })
+        // }
     }
 
     const showTroop = (troop: Troop) => {
         const pos = troop.to
-        putTileAt(pos, TilesetSoldier.Soldier1, "Top2");
-        putTileAt(pos, TilesetNum.Num1 + troop.amount - 1, "Top3");
+        putTileAt(pos, TilesetSoldier.SoldierFlag, "Top2");
+        putTileAt(pos, TilesetZone.MyZoneWait, "Occupy");
     }
 
     const hideTroopArrow = (pool: ObjectPool, troop: Troop) => {

@@ -172,6 +172,9 @@ export default function PlayerPanel() {
         if (!account) {
             return 0
         }
+        if(!userWarriors.has(account.address)){
+            return 0
+        }
         return userWarriors.get(account.address)
     }, [userWarriors])
 
@@ -211,7 +214,6 @@ export default function PlayerPanel() {
             if (!r || !account) {
                 return
             }
-            // console.log("Warrior",r);
         })
     }, [])
 

@@ -6,19 +6,21 @@ import { ticStore } from "../../store/ticStore";
 import { troopStore } from "../../store/troopStore";
 import flag from "../../../public/assets/icons/flag.png";
 import soldierIcon from "../../../public/assets/icons/soldier.png"
+import { Coord } from "@latticexyz/utils";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
     const { troops } = troopStore()
 
     const troop: Troop = params.troop
+    const base: Coord = params.base
     const clickTroop = () => {
 
     }
 
-    const attackClick = ()=>{
+    const attackClick = () => {
         toastSuccess("Attack Success")
-        
+
     }
 
     const retreat = () => {
@@ -66,18 +68,29 @@ export default function TroopItem(params: any) {
         return result
     }, [troop, timenow])
 
+    const getFrom = useMemo(() => {
+        if(!base){
+            return `(${troop.from.x},${troop.from.y})`
+        }
+        if(base.x == troop.from.x && base.y == troop.from.y){
+            return "Base"
+        }else{
+            return `(${troop.from.x},${troop.from.y})`
+        }
+    }, [troop])
+
     return (
-        <ClickWrapper style={{ cursor: "pointer",marginBottom:15 }}>
+        <ClickWrapper style={{ cursor: "pointer", marginBottom: 15 }}>
             <div style={{ display: "flex" }}>
-                <img src={flag} width={25}/>
-                <div style={{marginTop:4,marginLeft:3}}>Troop{params.index + 1}</div>
-                <img style={{marginLeft:20}} width={25} src={soldierIcon}/>
-                <div style={{marginTop:4,marginLeft:3}}>x{troop.amount}</div>
+                <img src={flag} width={25} />
+                <div style={{ marginTop: 4, marginLeft: 3 }}>Troop{troop.index}</div>
+                <img style={{ marginLeft: 20 }} width={25} src={soldierIcon} />
+                <div style={{ marginTop: 4, marginLeft: 3 }}>x{troop.amount}</div>
             </div>
 
             <div style={{ display: "flex" }} onClick={() => clickTroop()}>
-                <p>({troop.from.x},{troop.from.y})</p>
-                <p>{"=>"}</p>
+                <p>{getFrom}</p>
+                <p> {" => "} </p>
                 <p>({troop.to.x},{troop.to.y})</p>
                 <p style={{ marginLeft: 10 }}>{getTime}</p>
                 {
@@ -85,7 +98,7 @@ export default function TroopItem(params: any) {
                         <p onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</p> : <p style={{ marginLeft: 10 }}>撤...</p>
                 }
                 {
-                    ((troop.totalTime - (getTimestamp() - troop.startTime)) <= 0 && !troop.retreat) && <p onClick={()=>attackClick()} style={{ cursor: "pointer", marginLeft: 10 }}>攻</p>
+                    ((troop.totalTime - (getTimestamp() - troop.startTime)) <= 0 && !troop.retreat) && <p onClick={() => attackClick()} style={{ cursor: "pointer", marginLeft: 10 }}>攻</p>
                 }
             </div>
         </ClickWrapper>

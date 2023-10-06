@@ -1,8 +1,11 @@
 import { Coord } from "@latticexyz/utils"
+import { Troop_Speed } from "../contractconfig"
 
 export class Troop {
+    //id => owner + "_" + index
     public id: string = ""
     public owner: string = ""
+    public index = 0
     public from: Coord = { x: 0, y: 0 }
     public to: Coord = { x: 0, y: 0 }
     public startTime: number = 0
@@ -16,4 +19,16 @@ export class Troop {
         this.to = to_;
         this.startTime = startTime_;
     }
+}
+
+export const getTroopDistance = (from:Coord,to:Coord)=>{
+    let xDiff = Math.abs(from.x-to.x)
+    let yDiff = Math.abs(to.y-from.y)
+    return xDiff + yDiff
+}
+
+export const getTroopTotalTime = (troop:Troop)=>{
+    let dis = getTroopDistance(troop.from,troop.to)
+    let total = dis * Troop_Speed
+    return total
 }

@@ -3,25 +3,72 @@ import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { troopStore } from "../store/troopStore";
 import { store } from "../store/store";
-import { Troop } from "../types/Troop";
+import { Troop, getTroopTotalTime } from "../types/Troop";
 import TroopItem from "./components/TroopItem";
+import { playerStore } from "../store/playerStore";
+import { mapStore } from "../store/mapStore";
+import { buildStore } from "../store/buildstore";
 
 export default function TroopPanel() {
     const { troops } = troopStore()
-    const { account } = store()
-    const [userTroop, setUserTroop] = useState<Array<Troop>>([])
+    const { account, phaserLayer } = store()
+    const { player } = playerStore()
+    const {bases} = buildStore()
+    // const [userTroop, setUserTroop] = useState<Array<Troop>>([])
+
+    const {
+        networkLayer: {
+            components,
+            network: { graphSdk }
+        }
+    } = phaserLayer!
+
+    // useEffect(() => {
+    //     if (!account) {
+    //         return
+    //     }
+    // const pTroops: Array<Troop> = []
+    // troops.forEach((value, _) => {
+    //     if (value.owner == account.address)
+    //         pTroops.push(value)
+    // })
+    // setUserTroop(pTroops)
+    // }, [troops.values()])
 
     useEffect(() => {
-        if (!account) {
+        if (!player || !account) {
             return
         }
-        // const pTroops: Array<Troop> = []
-        // troops.forEach((value, _) => {
-        //     if (value.owner == account.address)
-        //         pTroops.push(value)
-        // })
-        // setUserTroop(pTroops)
-    }, [troops.values()])
+        fetchTroops()
+    }, [player])
+
+    const fetchTroops = async () => {
+        const ts = await graphSdk.getTroopsByKey({ map_id: "0x1", key: account?.address })
+        console.log("fetchTroops", ts);
+        const edges = ts.data.entities?.edges
+        const tt = new Map(troops)
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
+                if (components) {
+                    for (let index = 0; index < components.length; index++) {
+                        const element = components[index];
+                        if (element?.__typename == "Troop") {
+                            const t = new Troop(element.owner, { x: element.from_x, y: element.from_y },
+                                { x: element.to_x, y: element.to_y }, element.start_time);
+                            t.amount = element.balance
+                            t.totalTime = getTroopTotalTime(t)
+                            t.index = element.index
+                            t.id = t.owner + "_" + t.index
+                            tt.set(t.id, t)
+                        }
+                    }
+                }
+            }
+        }
+        troopStore.setState({ troops: tt })
+    }
 
     return (<ClickWrapper>
         <Container>
@@ -30,8 +77,8 @@ export default function TroopPanel() {
                 <div style={{ width: 220, height: 460, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                     <p style={{ fontSize: 20, color: "pink" }}>Troops</p>
                     <div>
-                        {userTroop.map((item, index) => (
-                            <TroopItem index={index} troop={item} />
+                        {[...troops.values()].map(value => (
+                            (value.owner == account.address) && <TroopItem key={value.id} base={bases.get(account.address)} troop={value}/>
                         ))}
                     </div>
                 </div>

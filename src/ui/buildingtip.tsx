@@ -30,7 +30,7 @@ export default function BuildingTip() {
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const [lastCoord, setCoord] = useState<WorldCoord>({ x: 0, y: 0 })
 
-    const { sendTroop, buildLand } = controlStore()
+    const { sendTroopCtr: sendTroop, buildLand } = controlStore()
 
     const {
         scenes: {
@@ -81,8 +81,8 @@ export default function BuildingTip() {
                 }
             }
             land_level = "Level : " + land.level
-            if(landWarriors.get(lastCoord.x + "_" + lastCoord.y))
-            land_warrior = "" + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
+            if (landWarriors.get(lastCoord.x + "_" + lastCoord.y))
+                land_warrior = "" + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
             // console.log("land info", lastCoord, land_warrior);
         } else {
             const land_type = get_land_type(1, lastCoord.x, lastCoord.y)
@@ -100,11 +100,12 @@ export default function BuildingTip() {
 
         settooltip({
             show: true, x: x, y: y, content: <div>
-                <p>{land_name}</p>
-                <p>Owner : {land_owner}</p>
-                <p>{land_desc}</p>
-                <p>{land_level}</p>
-                <p>Warrior : {land_warrior}</p>
+                <div style={{marginTop:5}}>{land_name}</div>
+                <div style={{marginTop:5}}>({lastCoord.x},{lastCoord.y})</div>
+                <div style={{marginTop:5}}>Owner : {land_owner}</div>
+                <div style={{marginTop:5}}>{land_desc}</div>
+                <div style={{marginTop:5}}>{land_level}</div>
+                <div style={{marginTop:5}}>Warrior : {land_warrior}</div>
             </div>
         })
     }, [lastCoord])
@@ -147,6 +148,9 @@ export default function BuildingTip() {
         if (!bases.has(account.address)) {
             return
         }
+        if (sendTroop.show) {
+            return
+        }
         if (!mouseDown) {
             if (!showButtons.show) {
                 var x = ex
@@ -170,7 +174,7 @@ export default function BuildingTip() {
 
     const sendTroopClick = () => {
         const troop = new Troop(account?.address!, bases.get(account?.address!)!, lastCoord, getTimestamp())
-        controlStore.setState({ sendTroop: { troop: troop, show: true } })
+        controlStore.setState({ sendTroopCtr: { troop: troop, show: true } })
         setShowButtons({ show: false, x: 0, y: 0 })
     }
 

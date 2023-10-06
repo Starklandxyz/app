@@ -209,3 +209,26 @@ query getResoucesByKey($map_id:String,$key: String) {
     }
   }
 }
+
+query getTroopsByKey($map_id:String,$key: String) {
+  entities(first:1000, keys: [$map_id,$key,"%"]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Troop {
+            owner
+            index
+            balance
+            from_x
+            from_y
+            to_x
+            to_y
+            start_time
+          }
+        }
+      }
+    }
+  }
+}

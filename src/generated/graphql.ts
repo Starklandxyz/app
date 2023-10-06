@@ -936,9 +936,14 @@ export type Troop = {
   __typename?: 'Troop';
   balance?: Maybe<Scalars['u64']['output']>;
   entity?: Maybe<Entity>;
-  id?: Maybe<Scalars['u64']['output']>;
+  from_x?: Maybe<Scalars['u64']['output']>;
+  from_y?: Maybe<Scalars['u64']['output']>;
+  index?: Maybe<Scalars['u64']['output']>;
   map_id?: Maybe<Scalars['u64']['output']>;
   owner?: Maybe<Scalars['ContractAddress']['output']>;
+  start_time?: Maybe<Scalars['u64']['output']>;
+  to_x?: Maybe<Scalars['u64']['output']>;
+  to_y?: Maybe<Scalars['u64']['output']>;
 };
 
 export type TroopConnection = {
@@ -960,9 +965,14 @@ export type TroopOrder = {
 
 export enum TroopOrderOrderField {
   Balance = 'BALANCE',
-  Id = 'ID',
+  FromX = 'FROM_X',
+  FromY = 'FROM_Y',
+  Index = 'INDEX',
   MapId = 'MAP_ID',
-  Owner = 'OWNER'
+  Owner = 'OWNER',
+  StartTime = 'START_TIME',
+  ToX = 'TO_X',
+  ToY = 'TO_Y'
 }
 
 export type TroopWhereInput = {
@@ -972,12 +982,24 @@ export type TroopWhereInput = {
   balanceLT?: InputMaybe<Scalars['Int']['input']>;
   balanceLTE?: InputMaybe<Scalars['Int']['input']>;
   balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['Int']['input']>;
-  idGT?: InputMaybe<Scalars['Int']['input']>;
-  idGTE?: InputMaybe<Scalars['Int']['input']>;
-  idLT?: InputMaybe<Scalars['Int']['input']>;
-  idLTE?: InputMaybe<Scalars['Int']['input']>;
-  idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  from_x?: InputMaybe<Scalars['Int']['input']>;
+  from_xGT?: InputMaybe<Scalars['Int']['input']>;
+  from_xGTE?: InputMaybe<Scalars['Int']['input']>;
+  from_xLT?: InputMaybe<Scalars['Int']['input']>;
+  from_xLTE?: InputMaybe<Scalars['Int']['input']>;
+  from_xNEQ?: InputMaybe<Scalars['Int']['input']>;
+  from_y?: InputMaybe<Scalars['Int']['input']>;
+  from_yGT?: InputMaybe<Scalars['Int']['input']>;
+  from_yGTE?: InputMaybe<Scalars['Int']['input']>;
+  from_yLT?: InputMaybe<Scalars['Int']['input']>;
+  from_yLTE?: InputMaybe<Scalars['Int']['input']>;
+  from_yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  index?: InputMaybe<Scalars['Int']['input']>;
+  indexGT?: InputMaybe<Scalars['Int']['input']>;
+  indexGTE?: InputMaybe<Scalars['Int']['input']>;
+  indexLT?: InputMaybe<Scalars['Int']['input']>;
+  indexLTE?: InputMaybe<Scalars['Int']['input']>;
+  indexNEQ?: InputMaybe<Scalars['Int']['input']>;
   map_id?: InputMaybe<Scalars['Int']['input']>;
   map_idGT?: InputMaybe<Scalars['Int']['input']>;
   map_idGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -990,6 +1012,24 @@ export type TroopWhereInput = {
   ownerLT?: InputMaybe<Scalars['String']['input']>;
   ownerLTE?: InputMaybe<Scalars['String']['input']>;
   ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  start_time?: InputMaybe<Scalars['Int']['input']>;
+  start_timeGT?: InputMaybe<Scalars['Int']['input']>;
+  start_timeGTE?: InputMaybe<Scalars['Int']['input']>;
+  start_timeLT?: InputMaybe<Scalars['Int']['input']>;
+  start_timeLTE?: InputMaybe<Scalars['Int']['input']>;
+  start_timeNEQ?: InputMaybe<Scalars['Int']['input']>;
+  to_x?: InputMaybe<Scalars['Int']['input']>;
+  to_xGT?: InputMaybe<Scalars['Int']['input']>;
+  to_xGTE?: InputMaybe<Scalars['Int']['input']>;
+  to_xLT?: InputMaybe<Scalars['Int']['input']>;
+  to_xLTE?: InputMaybe<Scalars['Int']['input']>;
+  to_xNEQ?: InputMaybe<Scalars['Int']['input']>;
+  to_y?: InputMaybe<Scalars['Int']['input']>;
+  to_yGT?: InputMaybe<Scalars['Int']['input']>;
+  to_yGTE?: InputMaybe<Scalars['Int']['input']>;
+  to_yLT?: InputMaybe<Scalars['Int']['input']>;
+  to_yLTE?: InputMaybe<Scalars['Int']['input']>;
+  to_yNEQ?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type UserWarrior = {
@@ -1059,6 +1099,9 @@ export type WarriorConfig = {
   Train_Gold?: Maybe<Scalars['u64']['output']>;
   Train_Iron?: Maybe<Scalars['u64']['output']>;
   Train_Time?: Maybe<Scalars['u64']['output']>;
+  Troop_Food?: Maybe<Scalars['u64']['output']>;
+  Troop_Gold?: Maybe<Scalars['u64']['output']>;
+  Troop_Speed?: Maybe<Scalars['u64']['output']>;
   entity?: Maybe<Entity>;
   map_id?: Maybe<Scalars['u64']['output']>;
 };
@@ -1085,7 +1128,10 @@ export enum WarriorConfigOrderOrderField {
   TrainFood = 'TRAIN_FOOD',
   TrainGold = 'TRAIN_GOLD',
   TrainIron = 'TRAIN_IRON',
-  TrainTime = 'TRAIN_TIME'
+  TrainTime = 'TRAIN_TIME',
+  TroopFood = 'TROOP_FOOD',
+  TroopGold = 'TROOP_GOLD',
+  TroopSpeed = 'TROOP_SPEED'
 }
 
 export type WarriorConfigWhereInput = {
@@ -1113,6 +1159,24 @@ export type WarriorConfigWhereInput = {
   Train_TimeLT?: InputMaybe<Scalars['Int']['input']>;
   Train_TimeLTE?: InputMaybe<Scalars['Int']['input']>;
   Train_TimeNEQ?: InputMaybe<Scalars['Int']['input']>;
+  Troop_Food?: InputMaybe<Scalars['Int']['input']>;
+  Troop_FoodGT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_FoodGTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_FoodLT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_FoodLTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_FoodNEQ?: InputMaybe<Scalars['Int']['input']>;
+  Troop_Gold?: InputMaybe<Scalars['Int']['input']>;
+  Troop_GoldGT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_GoldGTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_GoldLT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_GoldLTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_GoldNEQ?: InputMaybe<Scalars['Int']['input']>;
+  Troop_Speed?: InputMaybe<Scalars['Int']['input']>;
+  Troop_SpeedGT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_SpeedGTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_SpeedLT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_SpeedLTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_SpeedNEQ?: InputMaybe<Scalars['Int']['input']>;
   map_id?: InputMaybe<Scalars['Int']['input']>;
   map_idGT?: InputMaybe<Scalars['Int']['input']>;
   map_idGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -1245,6 +1309,14 @@ export type GetResoucesByKeyQueryVariables = Exact<{
 
 
 export type GetResoucesByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food', balance?: any | null } | { __typename: 'GlobalConfig' } | { __typename: 'Gold', balance?: any | null } | { __typename: 'Iron', balance?: any | null } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
+export type GetTroopsByKeyQueryVariables = Exact<{
+  map_id?: InputMaybe<Scalars['String']['input']>;
+  key?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetTroopsByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop', owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 
 export const GetAllPlayersDocument = gql`
@@ -1465,6 +1537,30 @@ export const GetResoucesByKeyDocument = gql`
   }
 }
     `;
+export const GetTroopsByKeyDocument = gql`
+    query getTroopsByKey($map_id: String, $key: String) {
+  entities(first: 1000, keys: [$map_id, $key, "%"]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Troop {
+            owner
+            index
+            balance
+            from_x
+            from_y
+            to_x
+            to_y
+            start_time
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1480,6 +1576,7 @@ const GetAllBaseDocumentString = print(GetAllBaseDocument);
 const GetAllLandsDocumentString = print(GetAllLandsDocument);
 const GetEthByKeyDocumentString = print(GetEthByKeyDocument);
 const GetResoucesByKeyDocumentString = print(GetResoucesByKeyDocument);
+const GetTroopsByKeyDocumentString = print(GetTroopsByKeyDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getAllPlayers(variables?: GetAllPlayersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetAllPlayersQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
@@ -1511,6 +1608,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getResoucesByKey(variables?: GetResoucesByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetResoucesByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetResoucesByKeyQuery>(GetResoucesByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getResoucesByKey', 'query');
+    },
+    getTroopsByKey(variables?: GetTroopsByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetTroopsByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetTroopsByKeyQuery>(GetTroopsByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTroopsByKey', 'query');
     }
   };
 }

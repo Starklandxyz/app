@@ -171,7 +171,11 @@ export default function MapUI() {
             console.log("landWarriors", key, balance);
             const keys = key.split("_")
             const coord = { x: parseInt(keys[0]), y: parseInt(keys[1])}
-            if(balance<10){
+            if(balance==0){
+                putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
+                putTileAt(coord, TilesetNum.Num0, "Top3");
+            }
+            else if(balance<10){
                 putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
                 putTileAt(coord, TilesetNum.Num1 + balance - 1, "Top3");
             }else if(balance<100){
@@ -183,8 +187,6 @@ export default function MapUI() {
                 const b = Math.floor(balance/100)
                 putTileAt(coord, TilesetNum.Num1 + b- 1, "Top3");
             }
-
-
         })
     }, [landWarriors])
 
