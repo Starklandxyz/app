@@ -12,6 +12,7 @@ import starkicon from "../../public/starkneticon.png"
 import { ticStore } from "../store/ticStore";
 import { Player2Player } from "../types";
 import { Player as PlayerSQL } from "../generated/graphql";
+import { Display } from "phaser";
 
 export default function Header() {
     const { account, networkLayer } = store();
@@ -114,14 +115,19 @@ export default function Header() {
     }, [isDeploying])
 
     return (
-        <ClickWrapper style={{ height: "60px", width: "100%", lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+        <ClickWrapper style={{ display: "flex", width: "100%", lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+            <PlayerWrapper>
+                <PlayerPanel />
+            </PlayerWrapper>
+
             <WalletContainer>
 
-                <div data-tooltip-id="my-tooltip"
+                <ResourceItemWrapper data-tooltip-id="my-tooltip"
                     data-tooltip-content="ETH balance"
-                    data-tooltip-place="top" style={{ marginTop: 0, marginRight: 4 }}>
-                    <img src={ethicon} width={25} height={25} />  {parseFloat(ethers.utils.formatEther(eth)).toFixed(5)} ETH
-                </div>
+                    data-tooltip-place="top">
+                    <ResourceIcon src={ethicon} alt="gold" />
+                    <ResourceValue>{parseFloat(ethers.utils.formatEther(eth)).toFixed(5)} ETH</ResourceValue>
+                </ResourceItemWrapper>
 
                 {
                     (account && !player) &&
@@ -137,7 +143,7 @@ export default function Header() {
                         </button>
                     </div>
                 }
-                <div>
+                <div style={{ display: "flex", padding: "4px 0px", gap: "8px"}}>
                     {
                         <select onChange={e => selectAccount(e)} value={account?.address}>
                             {list().map((account, index) => {
@@ -156,32 +162,47 @@ export default function Header() {
                             data-tooltip-content="create a local wallet"
                             data-tooltip-place="top" onClick={createNew}>{isDeploying ? "deploying wallet" : "create wallet"}</button>
                     }
+
+                    <img data-tooltip-id="my-tooltip"
+                        data-tooltip-content="Powered by Starknet and Dojo"
+                        data-tooltip-place="top" src={starkicon} width={20} height={20} style={{alignSelf:"center"}} />
                 </div>
 
-                <img data-tooltip-id="my-tooltip"
-                    data-tooltip-content="Powered by Starknet and Dojo"
-                    data-tooltip-place="top" src={starkicon} width={20} height={20} />
+
             </WalletContainer>
-            <BalanceContainer>
-                <PlayerPanel />
-            </BalanceContainer>
+
         </ClickWrapper>
     )
 }
 
 const WalletContainer = styled.div`
-    position: absolute;
-    top: 20px;
+    display:flex;
+    justify-content: flex-end;
+    flex: 1;
     right: 10px;
     color: white;
-    display:flex;
-    height:60px;
     gap: 20px;
 `;
 
-const BalanceContainer = styled.div`
-    position: absolute;
-    top: 20px;
-    left: 55px;
-    color: white;
+const PlayerWrapper = styled.div`
+    flex: 1;
+`
+
+// 定义资源项容器
+const ResourceItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+`;
+
+// 定义资源图标
+const ResourceIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+`;
+
+// 定义资源数值
+const ResourceValue = styled.span`
+  font-size: 16px;
 `;
