@@ -1,7 +1,6 @@
 import { create } from "zustand";
 
 export type WarriorStore = {
-    // warriors: Array<Warrior>,
     userWarriors: Map<string, number>,
     landWarriors: Map<string, number>,
 };

@@ -17,7 +17,6 @@ import { BuildType } from "../types/Build";
 import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
 import { playerStore } from "../store/playerStore";
 import { warriorStore } from "../store/warriorstore";
-import { last } from "rxjs";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const { players } = playerStore()

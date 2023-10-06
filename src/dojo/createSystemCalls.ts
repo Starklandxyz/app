@@ -24,7 +24,7 @@ export function createSystemCalls(
       console.log("roll receipt:", receipt);
       // parseEvents
       let events = getEvents(receipt);
-      // setComponentsFromEvents(contractComponents, events);
+      setComponentsFromEvents(contractComponents, events);
       return events;
     } catch (e) {
       console.log(e);
@@ -74,7 +74,7 @@ export function createSystemCalls(
 
     const events = getEvents(receipt);
     console.log(events);
-
+    setComponentsFromEvents(contractComponents, events);
     // return player,land
     return events;
   };
@@ -118,7 +118,7 @@ export function createSystemCalls(
 
     const events = getEvents(receipt);
     console.log(events);
-
+    setComponentsFromEvents(contractComponents, events);
     // return player,land
     return events;
   };

@@ -10,6 +10,7 @@ import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from
 import { Account } from "starknet";
 import { Training } from "../types/Training";
 import { ticStore } from "../store/ticStore";
+import { Has, defineSystem, getComponentValue } from "@latticexyz/recs";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
@@ -25,10 +26,18 @@ export default function TrainPanel() {
         systemCalls: { trainWarrior, airdrop, takeWarrior },
     } = networkLayer!
     const {
+        world,
         networkLayer: {
+            components,
             network: { graphSdk }
         }
     } = phaserLayer!
+    // const {
+    //     world,
+    //     scenes: {
+    //         Main: { objectPool },
+    //     }
+    // } = layer!;
 
     const claimairdrop = async () => {
         if (!account) {
@@ -154,14 +163,33 @@ export default function TrainPanel() {
     }
 
     const getTrainTime = useMemo(() => {
-        const m = Math.floor((timenow - training.startTime) % Train_Time)
-        // const left = timenow - m * Train_Time
-        return m + "/" + Train_Time
+        const usedtime = timenow - training.startTime
+        if (usedtime >= training.total * Train_Time) {
+            return "Finish"
+        }
+        const m = Math.floor((usedtime) % Train_Time)
+        return m + "/" + Train_Time + "s"
     }, [timenow])
 
     const claimable = useMemo(() => {
         return calClaimable(training)
     }, [training, timenow])
+
+
+    useEffect(() => {
+        defineSystem(world, [Has(components.Training)], ({ entity }) => {
+            const training = getComponentValue(components.Training, entity);
+            if (!training) {
+                return
+            }
+            console.log("Training changed", training);
+            const t = new Training()
+            t.out = training.out
+            t.startTime = training.start_time
+            t.total = training.total
+            setTraining(_ => t)
+        })
+    }, [])
 
     return (<ClickWrapper>
         <Container>
@@ -172,7 +200,7 @@ export default function TrainPanel() {
                         <div>
                             <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
                                 <p>Claimed : {training.out}/{training.total}</p>
-                                <p>Next : {getTrainTime}s</p>
+                                <p>Next : {getTrainTime}</p>
                                 <p>Claimable : {claimable}</p>
                             </div>
                             <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => claim()}>Claim Warrior</button>
