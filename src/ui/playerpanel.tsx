@@ -9,10 +9,14 @@ import soldierIcon from "../../public/assets/icons/soldier.png"
 import flagIcon from "../../public/assets/icons/flag.png"
 import landIcon from "../../public/assets/icons/landicon.png"
 import { store } from "../store/store";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Player2Player } from "../types";
 import { Player as PlayerSQL } from "../generated/graphql";
 import { Player } from "../dojo/createSystemCalls";
+import { resourceStore } from "../store/resourcestore";
+import { buildStore } from "../store/buildstore";
+import { warriorStore } from "../store/warriorstore";
+import { Warrior } from "../types/Warrior";
 
 import styled from 'styled-components';
 
@@ -70,7 +74,9 @@ const CreateButton = styled.button`
 export default function PlayerPanel() {
     const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
-
+    const { bases } = buildStore()
+    const { warriors } = warriorStore()
+    const { food, gold, iron } = resourceStore()
     const accountRef = useRef<string>()
 
     const {
@@ -88,6 +94,25 @@ export default function PlayerPanel() {
 
         fetchPlayerInfo(account.address)
     }, [account])
+
+    useEffect(() => {
+        if (!storePlayer) {
+            return
+        }
+        fetchResources()
+    }, [storePlayer])
+
+    useEffect(() => {
+        if (!storePlayer || !account) {
+            return
+        }
+        const base = bases.get(account.address)
+        if (base) {
+            const x = '0x' + (base.x).toString(16)
+            const y = '0x' + (base.y).toString(16)
+            fetchWarrior(x, y)
+        }
+    }, [storePlayer])
 
     useEffect(() => {
         fetchPlayersInfo()
@@ -132,6 +157,78 @@ export default function PlayerPanel() {
             subscription.unsubscribe()
         }
     }, [])
+
+    const fetchWarrior = async (x: string, y: string) => {
+
+        const warrior = await graphSdk.getWarriorByLocation({ map_id: "0x1", x: x, y: y })
+        console.log("fetchWarrior", warrior);
+        const edges = warrior.data.entities?.edges
+
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
+                // const keys = element?.node?.keys
+                if (components) {
+                    for (let index = 0; index < components.length; index++) {
+                        const node = components[index];
+                        if (node?.__typename == "Warrior") {
+                            const ws: Array<Warrior> = Array.from(warriors);
+                            var has = false
+                            for (let index = 0; index < ws.length; index++) {
+                                const element = ws[index];
+                                if (element.x == node.x && element.y == node.y) {
+                                    ws[index].balance = node.balance;
+                                    has = true
+                                }
+                            }
+                            if (!has) {
+                                const newW = new Warrior()
+                                newW.balance = node.balance
+                                newW.x = node.x
+                                newW.y = node.y
+                                ws.push(newW);
+                            }
+                            warriorStore.setState({ warriors: ws })
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    const fetchResources = async () => {
+        const resources = await graphSdk.getResoucesByKey({ map_id: "0x1", key: account?.address })
+        console.log("fetchResources", resources);
+        const edges = resources.data.entities?.edges
+        const map = new Map<string, Player>()
+        const eths = new Map<string, bigint>()
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
+                const keys = element?.node?.keys
+                var gold = 0
+                var food = 0
+                var iron = 0
+                if (components) {
+                    for (let index = 0; index < components.length; index++) {
+                        const node = components[index];
+                        if (node?.__typename == "Gold") {
+                            gold = node.balance
+                        }
+                        if (node?.__typename == "Food") {
+                            food = node.balance
+                        }
+                        if (node?.__typename == "Iron") {
+                            iron = node.balance
+                        }
+                    }
+                    resourceStore.setState({ gold: gold, food: food, iron: iron })
+                }
+            }
+        }
+    }
 
     const fetchPlayersInfo = async () => {
         const playerInfo = await graphSdk.getAllPlayers()
@@ -187,37 +284,65 @@ export default function PlayerPanel() {
         }
     }
 
+    const calWarrior = useMemo(() => {
+        var result = 0
+        for (let index = 0; index < warriors.length; index++) {
+            const element = warriors[index];
+            result += element.balance
+        }
+        return result
+    }, [warriors])
+
     return (
         <TopBarWrapper>
 
             <LogoImage src={starklogo}>
 
             </LogoImage>
-            <UsernameWrapper>
+            <UsernameWrapper  data-tooltip-id="my-tooltip"
+                data-tooltip-content="user name"
+                data-tooltip-place="top">
                 {hexToString(storePlayer?.nick_name)}
             </UsernameWrapper>
 
-            <ResourceItemWrapper>
-                <ResourceIcon src={goldIcon} alt="gold" />
-                <ResourceValue>100</ResourceValue>
-            </ResourceItemWrapper>
-
-            <ResourceItemWrapper>
-                <ResourceIcon src={ironIcon} alt="iron" />
-                <ResourceValue>50</ResourceValue>
-            </ResourceItemWrapper>
-
-            <ResourceItemWrapper>
+            <ResourceItemWrapper data-tooltip-id="my-tooltip"
+                data-tooltip-content="Food"
+                data-tooltip-place="top">
                 <ResourceIcon src={foodIcon} alt="food" />
-                <ResourceValue>200</ResourceValue>
+                <ResourceValue>{food}</ResourceValue>
             </ResourceItemWrapper>
 
-            <ResourceItemWrapper>
+            <ResourceItemWrapper data-tooltip-id="my-tooltip"
+                data-tooltip-content="Gold"
+                data-tooltip-place="top" >
+                <ResourceIcon src={goldIcon} alt="gold" />
+                <ResourceValue>{gold}</ResourceValue>
+            </ResourceItemWrapper>
+
+            <ResourceItemWrapper data-tooltip-id="my-tooltip"
+                data-tooltip-content="Iron"
+                data-tooltip-place="top">
+                <ResourceIcon src={ironIcon} alt="iron" />
+                <ResourceValue>{iron}</ResourceValue>
+            </ResourceItemWrapper>
+
+            <ResourceItemWrapper data-tooltip-id="my-tooltip"
+                data-tooltip-content="Land"
+                data-tooltip-place="top">
+                <ResourceIcon src={landIcon} alt="land" />
+                <ResourceValue>1/10</ResourceValue>
+            </ResourceItemWrapper>
+
+            <ResourceItemWrapper data-tooltip-id="my-tooltip"
+                data-tooltip-content="Soldiers"
+                data-tooltip-place="top">
                 <ResourceIcon src={soldierIcon} alt="soldier" />
-                <ResourceValue>6/10</ResourceValue>
+                <ResourceValue>{calWarrior}/20</ResourceValue>
             </ResourceItemWrapper>
 
-            <ResourceItemWrapper>
+            <ResourceItemWrapper data-tooltip-id="my-tooltip"
+                data-tooltip-content="Troops"
+                data-tooltip-place="top">
                 <ResourceIcon src={flagIcon} alt="flag" />
                 <ResourceValue>1/1</ResourceValue>
             </ResourceItemWrapper>

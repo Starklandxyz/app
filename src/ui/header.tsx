@@ -143,7 +143,7 @@ export default function Header() {
                         </button>
                     </div>
                 }
-                <div style={{ display: "flex", padding: "4px 0px", gap: "8px"}}>
+                <div style={{ display: "flex", padding: "6px 0px", gap: "8px"}}>
                     {
                         <select onChange={e => selectAccount(e)} value={account?.address}>
                             {list().map((account, index) => {

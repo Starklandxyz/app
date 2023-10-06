@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { store } from "../store/store";
 import { Wrapper } from "./wrapper";
-import NamesUI from "./names";
 import BuildingTip from "./buildingtip";
 import Leaderboard from "./leaderboard";
 import { VERSION } from "../config";
@@ -13,6 +12,7 @@ import BottomIcons from "./bottomicons";
 import TroopPanel from "./troopPanel";
 import ChooseBuildUI from "./ChooseBuildUI";
 import MapUI from "./mapui";
+import TrainPanel from "./trainpanel";
 
 export default function UI() {
     const layers = store((state) => {
@@ -31,7 +31,6 @@ export default function UI() {
             <TopHeaderContainer>
                 <Header/>
             </TopHeaderContainer>
-            <NamesUI />
             <BottomIcons/>
             <BuildingTip />
             <Leaderboard />
@@ -42,6 +41,7 @@ export default function UI() {
             <TroopsUI/>
             <TroopPanel/>
             <MapUI/>
+            <TrainPanel/>
         </Wrapper>
     );
 };

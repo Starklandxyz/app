@@ -6,17 +6,16 @@ import {
 } from "starknet";
 import { ClientComponents } from "./createClientComponents";
 import { getEvents, setComponentsFromEvents } from "@dojoengine/utils";
-
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
 export function createSystemCalls(
   { execute, contractComponents }: SetupNetworkResult,
   { Player }: ClientComponents
 ) {
-  const build_base = async (signer: Account,map_id:number,x:number,y:number) => {
+  const build_base = async (signer: Account, map_id: number, x: number, y: number) => {
     try {
       console.log("roll start");
-      const tx = await execute(signer, "build_base", [map_id,x,y]);
+      const tx = await execute(signer, "build_base", [map_id, x, y]);
       console.log("roll tx");
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
@@ -25,7 +24,7 @@ export function createSystemCalls(
       console.log("roll receipt:", receipt);
       // parseEvents
       let events = getEvents(receipt);
-      setComponentsFromEvents(contractComponents, events);
+      // setComponentsFromEvents(contractComponents, events);
       return events;
     } catch (e) {
       console.log(e);
@@ -34,10 +33,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const recoverEnergy = async (signer: Account) => {
+  const airdrop = async (signer: Account, map_id: number) => {
     try {
       console.log("recoverEnergy start");
-      const tx = await execute(signer, "claim_energy", []);
+      const tx = await execute(signer, "admin", [map_id]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -57,12 +56,12 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const buyEnergy = async (
+  const takeWarrior = async (
     signer: Account,
-    amount: number
+    map_id: number
   ) => {
-    const tx = await execute(signer, "supplement", [amount]);
-    console.log("buyEnergy signer:" + signer.address + ",amount:" + amount);
+    const tx = await execute(signer, "take_warrior", [map_id]);
+    // console.log("buyEnergy signer:" + signer.address + ",amount:" + amount);
 
     // TODO: override gold
 
@@ -104,15 +103,12 @@ export function createSystemCalls(
     return events;
   };
 
-  const buyBuilding = async (
+  const trainWarrior = async (
     signer: Account,
-    buidingId: number
+    map_id: number,
+    amount: number
   ) => {
-    const tx = await execute(signer, "build", [buidingId]);
-    console.log("buyBuilding signer:" + signer.address + ",buidingId:" + buidingId);
-
-    // TODO: override gold
-
+    const tx = await execute(signer, "train_warrior", [map_id, amount]);
     console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
       retryInterval: 100,
@@ -120,7 +116,7 @@ export function createSystemCalls(
 
     console.log(receipt);
 
-    const events = parseEvent(receipt);
+    const events = getEvents(receipt);
     console.log(events);
 
     // return player,land
@@ -222,11 +218,11 @@ export function createSystemCalls(
   };
 
   return {
-    recoverEnergy,
-    buyEnergy,
+    airdrop,
+    takeWarrior,
     spawn,
     build_base,
-    buyBuilding,
+    trainWarrior,
     buyBack,
     explode,
     adminRoll,
@@ -246,14 +242,14 @@ export enum Direction {
 export enum ComponentEvents {
   Player = "Player",
   Land = "Land",
-  GlobalConfig="GlobalConfig",
-  Food="Food",
-  Iron="Iron",
-  Gold="Gold",
-  Warrior="Warrior",
-  Base="Base",
-  LandCost="LandCost",
-  ETH="ETH"
+  GlobalConfig = "GlobalConfig",
+  Food = "Food",
+  Iron = "Iron",
+  Gold = "Gold",
+  Warrior = "Warrior",
+  Base = "Base",
+  LandCost = "LandCost",
+  ETH = "ETH"
 }
 
 export interface BaseEvent {
@@ -286,8 +282,8 @@ export interface ETH extends BaseEvent {
 export interface Base extends BaseEvent {
   id: number;
   map_id: bigint;
-  x:bigint;
-  y:bigint;
+  x: bigint;
+  y: bigint;
 }
 
 export const parseEvent = (
@@ -354,14 +350,14 @@ export const parseEvent = (
           entity: raw.data[2],
           id: Number(raw.data[2]),
           map_id: BigInt(raw.data[5]),
-          x:BigInt(raw.data[6]),
-          y:BigInt(raw.data[7])
+          x: BigInt(raw.data[6]),
+          y: BigInt(raw.data[7])
         };
         events.push(base);
         break;
 
-      default:break;
-        // throw new Error("Unsupported event type.");
+      default: break;
+      // throw new Error("Unsupported event type.");
     }
   }
 

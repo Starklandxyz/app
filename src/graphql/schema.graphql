@@ -44,7 +44,7 @@ query getPlayerByKey($key: String) {
 
 
 query getBaseByKey($key: String,$map_id:String) {
-  entities(first:1000, keys: [$key,$map_id]) {
+  entities(first:1000, keys: [$map_id,$key]) {
     totalCount
     edges {
       node {
@@ -61,8 +61,47 @@ query getBaseByKey($key: String,$map_id:String) {
   }
 }
 
+query getWarriorByLocation($map_id:String,$x:String,$y:String) {
+  entities(first:1000, keys: [$map_id,$x,$y]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Warrior {
+            x,
+            y,
+            balance
+          }
+        }
+      }
+    }
+  }
+}
+
+
+query getTrainingByKey($key: String,$map_id:String) {
+  entities(first:1000, keys: [$map_id,$key]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Training {
+            start_time,
+            total,
+            out
+          }
+        }
+      }
+    }
+  }
+}
+
 query getAllBase($map_id:String) {
-  entities(first:1000, keys: ["%",$map_id]) {
+  entities(first:1000, keys: [$map_id,"%"]) {
     totalCount
     edges {
       node {
@@ -83,7 +122,7 @@ query getAllBase($map_id:String) {
 
 
 query getAllLands($map_id:String) {
-  entities(first:1000, keys: ["%","%",$map_id]) {
+  entities(first:1000, keys: [$map_id,"%","%"]) {
     totalCount
     edges {
       node {
@@ -113,6 +152,30 @@ query getETHByKey($key: String) {
         components {
           __typename
           ... on ETH {
+            balance
+          }
+        }
+      }
+    }
+  }
+}
+
+query getResoucesByKey($map_id:String,$key: String) {
+  entities(first:1000, keys: [$map_id,$key]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Food {
+            balance
+          }
+          __typename
+          ... on Gold {
+            balance
+          }
+          __typename
+          ... on Iron {
             balance
           }
         }
