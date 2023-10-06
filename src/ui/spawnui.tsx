@@ -71,7 +71,7 @@ export default function SpawnUI() {
             }
         }
         console.log("clickLand",lastCoord);
-        
+        setShow(false)
         const result = await build_base(account, 1, lastCoord.x, lastCoord.y)
         if (result && result.length > 0) {
             setShow(false)

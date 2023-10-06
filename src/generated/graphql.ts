@@ -105,7 +105,7 @@ export type ComponentEdge = {
   node?: Maybe<Component>;
 };
 
-export type ComponentUnion = Base | Eth | Food | GlobalConfig | Gold | Iron | Land | LandCost | Player | Training | Troop | Warrior | WarriorConfig;
+export type ComponentUnion = Base | Eth | Food | GlobalConfig | Gold | Iron | Land | LandCost | Player | Training | Troop | UserWarrior | Warrior | WarriorConfig;
 
 export enum Direction {
   Asc = 'ASC',
@@ -635,6 +635,7 @@ export type Query = {
   systems?: Maybe<SystemConnection>;
   trainingComponents?: Maybe<TrainingConnection>;
   troopComponents?: Maybe<TroopConnection>;
+  userwarriorComponents?: Maybe<UserWarriorConnection>;
   warriorComponents?: Maybe<WarriorConnection>;
   warriorconfigComponents?: Maybe<WarriorConfigConnection>;
 };
@@ -781,6 +782,16 @@ export type QueryTroopComponentsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<TroopOrder>;
   where?: InputMaybe<TroopWhereInput>;
+};
+
+
+export type QueryUserwarriorComponentsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<UserWarriorOrder>;
+  where?: InputMaybe<UserWarriorWhereInput>;
 };
 
 
@@ -981,6 +992,58 @@ export type TroopWhereInput = {
   ownerNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type UserWarrior = {
+  __typename?: 'UserWarrior';
+  balance?: Maybe<Scalars['u64']['output']>;
+  entity?: Maybe<Entity>;
+  map_id?: Maybe<Scalars['u64']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
+};
+
+export type UserWarriorConnection = {
+  __typename?: 'UserWarriorConnection';
+  edges?: Maybe<Array<Maybe<UserWarriorEdge>>>;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type UserWarriorEdge = {
+  __typename?: 'UserWarriorEdge';
+  cursor: Scalars['Cursor']['output'];
+  node?: Maybe<UserWarrior>;
+};
+
+export type UserWarriorOrder = {
+  direction: Direction;
+  field: UserWarriorOrderOrderField;
+};
+
+export enum UserWarriorOrderOrderField {
+  Balance = 'BALANCE',
+  MapId = 'MAP_ID',
+  Owner = 'OWNER'
+}
+
+export type UserWarriorWhereInput = {
+  balance?: InputMaybe<Scalars['Int']['input']>;
+  balanceGT?: InputMaybe<Scalars['Int']['input']>;
+  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
+  balanceLT?: InputMaybe<Scalars['Int']['input']>;
+  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
+  map_id?: InputMaybe<Scalars['Int']['input']>;
+  map_idGT?: InputMaybe<Scalars['Int']['input']>;
+  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
+  map_idLT?: InputMaybe<Scalars['Int']['input']>;
+  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  ownerGT?: InputMaybe<Scalars['String']['input']>;
+  ownerGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerLT?: InputMaybe<Scalars['String']['input']>;
+  ownerLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Warrior = {
   __typename?: 'Warrior';
   balance?: Maybe<Scalars['u64']['output']>;
@@ -1112,14 +1175,14 @@ export type WarriorWhereInput = {
 export type GetAllPlayersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPlayersQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player', nick_name?: any | null, joined_time?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllPlayersQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player', nick_name?: any | null, joined_time?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetPlayerByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetPlayerByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player', nick_name?: any | null, joined_time?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetPlayerByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player', nick_name?: any | null, joined_time?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetBaseByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
@@ -1127,7 +1190,15 @@ export type GetBaseByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetBaseByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetBaseByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
+export type GetUserWarriorByKeyQueryVariables = Exact<{
+  key?: InputMaybe<Scalars['String']['input']>;
+  map_id?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetUserWarriorByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetWarriorByLocationQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -1136,7 +1207,7 @@ export type GetWarriorByLocationQueryVariables = Exact<{
 }>;
 
 
-export type GetWarriorByLocationQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior', x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetWarriorByLocationQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetTrainingByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
@@ -1144,28 +1215,28 @@ export type GetTrainingByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetTrainingByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training', start_time?: any | null, total?: any | null, out?: any | null } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetTrainingByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training', start_time?: any | null, total?: any | null, out?: any | null } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetAllBaseQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAllBaseQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', id?: any | null, map_id?: any | null, x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllBaseQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', id?: any | null, map_id?: any | null, x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetAllLandsQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAllLandsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', x?: any | null, y?: any | null, map_id?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllLandsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', x?: any | null, y?: any | null, map_id?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetEthByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetEthByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetEthByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetResoucesByKeyQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -1173,7 +1244,7 @@ export type GetResoucesByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetResoucesByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food', balance?: any | null } | { __typename: 'GlobalConfig' } | { __typename: 'Gold', balance?: any | null } | { __typename: 'Iron', balance?: any | null } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetResoucesByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food', balance?: any | null } | { __typename: 'GlobalConfig' } | { __typename: 'Gold', balance?: any | null } | { __typename: 'Iron', balance?: any | null } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 
 export const GetAllPlayersDocument = gql`
@@ -1234,6 +1305,26 @@ export const GetBaseByKeyDocument = gql`
           ... on Base {
             x
             y
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetUserWarriorByKeyDocument = gql`
+    query getUserWarriorByKey($key: String, $map_id: String) {
+  entities(first: 1000, keys: [$map_id, $key]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on UserWarrior {
+            map_id
+            owner
+            balance
           }
         }
       }
@@ -1375,6 +1466,7 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 const GetAllPlayersDocumentString = print(GetAllPlayersDocument);
 const GetPlayerByKeyDocumentString = print(GetPlayerByKeyDocument);
 const GetBaseByKeyDocumentString = print(GetBaseByKeyDocument);
+const GetUserWarriorByKeyDocumentString = print(GetUserWarriorByKeyDocument);
 const GetWarriorByLocationDocumentString = print(GetWarriorByLocationDocument);
 const GetTrainingByKeyDocumentString = print(GetTrainingByKeyDocument);
 const GetAllBaseDocumentString = print(GetAllBaseDocument);
@@ -1391,6 +1483,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getBaseByKey(variables?: GetBaseByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetBaseByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetBaseByKeyQuery>(GetBaseByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getBaseByKey', 'query');
+    },
+    getUserWarriorByKey(variables?: GetUserWarriorByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetUserWarriorByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetUserWarriorByKeyQuery>(GetUserWarriorByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserWarriorByKey', 'query');
     },
     getWarriorByLocation(variables?: GetWarriorByLocationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetWarriorByLocationQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetWarriorByLocationQuery>(GetWarriorByLocationDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWarriorByLocation', 'query');

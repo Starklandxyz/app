@@ -20,62 +20,12 @@ import { Warrior } from "../types/Warrior";
 
 import styled from 'styled-components';
 
-// 定义顶部横条容器
-const TopBarWrapper = styled.div`
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const LogoImage = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
-`;
-
-
-const UsernameWrapper = styled.div`
-  margin-right: 16px;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-// 定义资源项容器
-const ResourceItemWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 16px;
-`;
-
-// 定义资源图标
-const ResourceIcon = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-right: 4px;
-`;
-
-// 定义资源数值
-const ResourceValue = styled.span`
-  font-size: 16px;
-`;
-
-// 定义创建按钮
-const CreateButton = styled.button`
-  background-color: #4caf50;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-`;
-
 
 export default function PlayerPanel() {
     const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
     const { bases } = buildStore()
-    const { warriors } = warriorStore()
+    const { userWarriors, warriors } = warriorStore()
     const { food, gold, iron } = resourceStore()
     const accountRef = useRef<string>()
 
@@ -100,13 +50,8 @@ export default function PlayerPanel() {
             return
         }
         fetchResources()
-    }, [storePlayer])
-
-    useEffect(() => {
-        if (!storePlayer || !account) {
-            return
-        }
-        const base = bases.get(account.address)
+        fetchUserWarrior()
+        const base = bases.get(account?.address!)
         if (base) {
             const x = '0x' + (base.x).toString(16)
             const y = '0x' + (base.y).toString(16)
@@ -159,7 +104,6 @@ export default function PlayerPanel() {
     }, [])
 
     const fetchWarrior = async (x: string, y: string) => {
-
         const warrior = await graphSdk.getWarriorByLocation({ map_id: "0x1", x: x, y: y })
         console.log("fetchWarrior", warrior);
         const edges = warrior.data.entities?.edges
@@ -197,17 +141,36 @@ export default function PlayerPanel() {
         }
     }
 
-    const fetchResources = async () => {
-        const resources = await graphSdk.getResoucesByKey({ map_id: "0x1", key: account?.address })
-        console.log("fetchResources", resources);
-        const edges = resources.data.entities?.edges
-        const map = new Map<string, Player>()
-        const eths = new Map<string, bigint>()
+    const fetchUserWarrior = async () => {
+        const userWarrior = await graphSdk.getUserWarriorByKey({ map_id: "0x1", key: account?.address })
+        console.log("fetchUserWarrior", userWarrior);
+        const edges = userWarrior.data.entities?.edges
+        const ws = new Map(userWarriors);
         if (edges) {
             for (let index = 0; index < edges.length; index++) {
                 const element = edges[index];
                 const components = element?.node?.components
-                const keys = element?.node?.keys
+                if (components) {
+                    for (let index = 0; index < components.length; index++) {
+                        const node = components[index];
+                        if (node?.__typename == "UserWarrior") {
+                            ws.set(node.owner, node.balance)
+                        }
+                    }
+                }
+            }
+        }
+        warriorStore.setState({ userWarriors: ws })
+    }
+
+    const fetchResources = async () => {
+        const resources = await graphSdk.getResoucesByKey({ map_id: "0x1", key: account?.address })
+        console.log("fetchResources", resources);
+        const edges = resources.data.entities?.edges
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
                 var gold = 0
                 var food = 0
                 var iron = 0
@@ -224,6 +187,7 @@ export default function PlayerPanel() {
                             iron = node.balance
                         }
                     }
+                    console.log("fetchResources", gold, food, iron);
                     resourceStore.setState({ gold: gold, food: food, iron: iron })
                 }
             }
@@ -284,14 +248,26 @@ export default function PlayerPanel() {
         }
     }
 
-    const calWarrior = useMemo(() => {
-        var result = 0
-        for (let index = 0; index < warriors.length; index++) {
-            const element = warriors[index];
-            result += element.balance
+    // const calWarrior = useMemo(() => {
+    //     var result = 0
+    //     for (let index = 0; index < warriors.length; index++) {
+    //         const element = warriors[index];
+    //         result += element.balance
+    //     }
+    //     return result
+    // }, [warriors])
+
+    const calUserWarrior = useMemo(() => {
+        if (!account) {
+            return 0
         }
-        return result
-    }, [warriors])
+        return userWarriors.get(account.address)
+    }, [userWarriors])
+
+    useEffect(() => {
+        console.log("gold", gold);
+
+    }, [gold])
 
     return (
         <TopBarWrapper>
@@ -299,7 +275,7 @@ export default function PlayerPanel() {
             <LogoImage src={starklogo}>
 
             </LogoImage>
-            <UsernameWrapper  data-tooltip-id="my-tooltip"
+            <UsernameWrapper data-tooltip-id="my-tooltip"
                 data-tooltip-content="user name"
                 data-tooltip-place="top">
                 {hexToString(storePlayer?.nick_name)}
@@ -337,7 +313,7 @@ export default function PlayerPanel() {
                 data-tooltip-content="Soldiers"
                 data-tooltip-place="top">
                 <ResourceIcon src={soldierIcon} alt="soldier" />
-                <ResourceValue>{calWarrior}/20</ResourceValue>
+                <ResourceValue>{calUserWarrior}/20</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"
@@ -350,3 +326,54 @@ export default function PlayerPanel() {
         </TopBarWrapper>
     )
 }
+
+
+// 定义顶部横条容器
+const TopBarWrapper = styled.div`
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const LogoImage = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
+`;
+
+
+const UsernameWrapper = styled.div`
+  margin-right: 16px;
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+// 定义资源项容器
+const ResourceItemWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 16px;
+`;
+
+// 定义资源图标
+const ResourceIcon = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+`;
+
+// 定义资源数值
+const ResourceValue = styled.span`
+  font-size: 16px;
+`;
+
+// 定义创建按钮
+const CreateButton = styled.button`
+  background-color: #4caf50;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+`;

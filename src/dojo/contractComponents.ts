@@ -35,6 +35,23 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    WarriorConfig: (() => {
+      const name = "WarriorConfig";
+      return defineComponent(
+        world,
+        {
+          Train_Food: RecsType.Number,
+          Train_Gold: RecsType.Number,
+          Train_Iron: RecsType.Number,
+          Train_Time: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
     Player: (() => {
       const name = "Player";
       return defineComponent(
@@ -139,6 +156,50 @@ export function defineContractComponents(world: World) {
     })(),
     ETH: (() => {
       const name = "ETH";
+      return defineComponent(
+        world,
+        {
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Troop: (() => {
+      const name = "Troop";
+      return defineComponent(
+        world,
+        {
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Training: (() => {
+      const name = "Training";
+      return defineComponent(
+        world,
+        {
+          start_time: RecsType.Number,
+          total: RecsType.Number,
+          out: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    UserWarrior: (() => {
+      const name = "UserWarrior";
       return defineComponent(
         world,
         {
