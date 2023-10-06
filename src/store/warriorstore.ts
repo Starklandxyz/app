@@ -1,12 +1,14 @@
+import { WorldCoord } from "@latticexyz/phaserx/dist/types";
 import { create } from "zustand";
-import { Warrior } from "../types/Warrior";
 
 export type WarriorStore = {
-    warriors: Array<Warrior>,
+    // warriors: Array<Warrior>,
     userWarriors: Map<string, number>,
+    landWarriors: Map<WorldCoord, number>,
 };
 
 export const warriorStore = create<WarriorStore>(() => ({
-    warriors: [],
-    userWarriors: new Map()
+    // warriors: [],
+    userWarriors: new Map(),
+    landWarriors: new Map()
 }));

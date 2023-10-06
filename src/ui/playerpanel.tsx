@@ -25,7 +25,7 @@ export default function PlayerPanel() {
     const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
     const { bases } = buildStore()
-    const { userWarriors, warriors } = warriorStore()
+    const { userWarriors } = warriorStore()
     const { food, gold, iron } = resourceStore()
     const accountRef = useRef<string>()
 
@@ -51,12 +51,12 @@ export default function PlayerPanel() {
         }
         fetchResources()
         fetchUserWarrior()
-        const base = bases.get(account?.address!)
-        if (base) {
-            const x = '0x' + (base.x).toString(16)
-            const y = '0x' + (base.y).toString(16)
-            fetchWarrior(x, y)
-        }
+        // const base = bases.get(account?.address!)
+        // if (base) {
+        //     const x = '0x' + (base.x).toString(16)
+        //     const y = '0x' + (base.y).toString(16)
+        //     fetchWarrior(x, y)
+        // }
     }, [storePlayer])
 
     useEffect(() => {
@@ -103,43 +103,43 @@ export default function PlayerPanel() {
         }
     }, [])
 
-    const fetchWarrior = async (x: string, y: string) => {
-        const warrior = await graphSdk.getWarriorByLocation({ map_id: "0x1", x: x, y: y })
-        console.log("fetchWarrior", warrior);
-        const edges = warrior.data.entities?.edges
+    // const fetchWarrior = async (x: string, y: string) => {
+    //     const warrior = await graphSdk.getWarriorByLocation({ map_id: "0x1", x: x, y: y })
+    //     console.log("fetchWarrior", warrior);
+    //     const edges = warrior.data.entities?.edges
 
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                // const keys = element?.node?.keys
-                if (components) {
-                    for (let index = 0; index < components.length; index++) {
-                        const node = components[index];
-                        if (node?.__typename == "Warrior") {
-                            const ws: Array<Warrior> = Array.from(warriors);
-                            var has = false
-                            for (let index = 0; index < ws.length; index++) {
-                                const element = ws[index];
-                                if (element.x == node.x && element.y == node.y) {
-                                    ws[index].balance = node.balance;
-                                    has = true
-                                }
-                            }
-                            if (!has) {
-                                const newW = new Warrior()
-                                newW.balance = node.balance
-                                newW.x = node.x
-                                newW.y = node.y
-                                ws.push(newW);
-                            }
-                            warriorStore.setState({ warriors: ws })
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //     if (edges) {
+    //         for (let index = 0; index < edges.length; index++) {
+    //             const element = edges[index];
+    //             const components = element?.node?.components
+    //             // const keys = element?.node?.keys
+    //             if (components) {
+    //                 for (let index = 0; index < components.length; index++) {
+    //                     const node = components[index];
+    //                     if (node?.__typename == "Warrior") {
+    //                         const ws: Array<Warrior> = Array.from(warriors);
+    //                         var has = false
+    //                         for (let index = 0; index < ws.length; index++) {
+    //                             const element = ws[index];
+    //                             if (element.x == node.x && element.y == node.y) {
+    //                                 ws[index].balance = node.balance;
+    //                                 has = true
+    //                             }
+    //                         }
+    //                         if (!has) {
+    //                             const newW = new Warrior()
+    //                             newW.balance = node.balance
+    //                             newW.x = node.x
+    //                             newW.y = node.y
+    //                             ws.push(newW);
+    //                         }
+    //                         warriorStore.setState({ warriors: ws })
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     const fetchUserWarrior = async () => {
         const userWarrior = await graphSdk.getUserWarriorByKey({ map_id: "0x1", key: account?.address })

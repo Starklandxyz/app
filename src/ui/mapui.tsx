@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { buildStore } from "../store/buildstore"
 import { store } from "../store/store";
-import { Tileset, TilesetBuilding, TilesetTown, TilesetZone } from "../artTypes/world";
+import { Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, TilesetZone } from "../artTypes/world";
 import { playerStore } from "../store/playerStore";
 import { Base, Land } from "../generated/graphql";
 import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
@@ -10,11 +10,13 @@ import { mapStore } from "../store/mapStore";
 import { Land2Land, Player2Player } from "../types";
 import { BuildType } from "../types/Build";
 import { hexToString } from "../utils";
+import { warriorStore } from "../store/warriorstore";
 // import { Land } from "../types/Land";
 
 export default function MapUI() {
     const { bases } = buildStore()
     const { account } = store()
+    const { landWarriors } = warriorStore()
     const { lands: mapLands } = mapStore()
     const { player, players } = playerStore()
     const { camera, phaserLayer } = store()
@@ -87,12 +89,6 @@ export default function MapUI() {
     }, [player])
 
     useEffect(() => {
-        mapLands.forEach((value, key) => {
-
-        })
-    }, [mapLands.keys()])
-
-    useEffect(() => {
         fetchAllLands("0x1")
         fetchAllBase("0x1")
     }, [])
@@ -102,43 +98,53 @@ export default function MapUI() {
         console.log("fetchAllLands", lands);
         const edges = lands.data.entities?.edges
         const ls = new Map(mapLands)
+        const landW = new Map(landWarriors);
         if (edges) {
             for (let index = 0; index < edges.length; index++) {
                 const element = edges[index];
                 if (element) {
                     const node = element.node
                     const componenets = node?.components
-                    // const c =  edge.node?.components
-                    // if(c && c[0] && c[0].__typename=="Base"){
-                    if (componenets && componenets[0] && componenets[0].__typename == "Land") {
-                        const component = componenets[0] as Land
-                        const l = Land2Land(component)
-                        ls.set(l.x + "_" + l.y, l)
+                    if(componenets){
+                        for (let index = 0; index < componenets.length; index++) {
+                            const componenet = componenets[index];
+                            if(componenet){
+                                if(componenet.__typename == "Land"){
+                                    // const component = componenets[0] as Land
+                                    const l = Land2Land(componenet)
+                                    ls.set(l.x + "_" + l.y, l)
+                                }
+                                if(componenet.__typename=="Warrior"){
+                                    landW.set({x:componenet.x,y:componenet.y},componenet.balance)
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
         mapStore.setState({ lands: ls })
+        warriorStore.setState({landWarriors:landW})
     }
 
-    const fetchPlayerBase = async () => {
-        const base = await graphSdk.getBaseByKey({ key: account?.address!, map_id: "0x1" })
-        console.log("fetchPlayerBase", account?.address, base);
-        const edges = base.data.entities?.edges;
-        if (edges && edges.length > 0) {
-            const pos = edges[0]?.node?.components
-            if (pos && pos.length > 0 && pos[0]) {
-                const p = pos[0] as Base
-                const x = p.x;
-                const y = p.y;
-                const newBases = new Map(bases);
-                newBases.set(account?.address!, { x, y })
-                buildStore.setState({ bases: newBases })
-                const pixelPosition = tileCoordToPixelCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT);
-                camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
-            }
-        }
-    }
+    // const fetchPlayerBase = async () => {
+    //     const base = await graphSdk.getBaseByKey({ key: account?.address!, map_id: "0x1" })
+    //     console.log("fetchPlayerBase", account?.address, base);
+    //     const edges = base.data.entities?.edges;
+    //     if (edges && edges.length > 0) {
+    //         const pos = edges[0]?.node?.components
+    //         if (pos && pos.length > 0 && pos[0]) {
+    //             const p = pos[0] as Base
+    //             const x = p.x;
+    //             const y = p.y;
+    //             const newBases = new Map(bases);
+    //             newBases.set(account?.address!, { x, y })
+    //             buildStore.setState({ bases: newBases })
+    //             const pixelPosition = tileCoordToPixelCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT);
+    //             camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
+    //         }
+    //     }
+    // }
 
     const fetchAllBase = async (map_id: string) => {
         const base = await graphSdk.getAllBase({ map_id: map_id })
@@ -159,6 +165,13 @@ export default function MapUI() {
         }
         buildStore.setState({ bases: newBases })
     }
+
+    useEffect(()=>{
+        landWarriors.forEach((balance,coord)=>{
+            putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
+            putTileAt(coord, TilesetNum.Num1 + balance - 1, "Top3");
+        })
+    },[landWarriors])
 
     useEffect(() => {
         mapLands.forEach((land, id) => {

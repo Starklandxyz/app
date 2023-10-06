@@ -149,13 +149,20 @@ query getAllLands($map_id:String) {
         components {
           __typename
           ... on Land {
+            map_id,
             x,
             y,
-            map_id,
             owner,
             building,
             level
             
+          }
+          __typename
+          ... on Warrior {
+            map_id,
+            x,
+            y,
+            balance
           }
         }
       }
