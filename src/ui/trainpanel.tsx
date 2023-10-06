@@ -10,7 +10,7 @@ import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from
 import { Account } from "starknet";
 import { Training } from "../types/Training";
 import { ticStore } from "../store/ticStore";
-import { Has, defineSystem, getComponentValue } from "@latticexyz/recs";
+import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)

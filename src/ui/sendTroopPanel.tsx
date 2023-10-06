@@ -1,10 +1,10 @@
-import { ObjectPool } from "@latticexyz/phaserx/dist/types";
 import { buildStore } from "../store/buildstore";
 import { store } from "../store/store";
 import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { controlStore } from "../store/controlStore";
-import { Coord } from "@latticexyz/utils";
+// ../../node_modules/@latticexyz/recs/src/index
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { Troop } from "../types/Troop";
 import { troopStore } from "../store/troopStore";
 import { getTimestamp, toastError, toastSuccess } from "../utils";
@@ -18,7 +18,7 @@ export default function SendTroopPanel() {
     const { bases } = buildStore()
     const { account, phaserLayer, networkLayer } = store()
     const { sendTroopCtr } = controlStore()
-    const { userWarriors } = warriorStore()
+    const { landWarriors } = warriorStore()
     const { food } = resourceStore()
     const { troops } = troopStore()
     const [inputValue, setInputValue] = useState(1)
@@ -41,7 +41,8 @@ export default function SendTroopPanel() {
         }
         const value = event.target.value
         try {
-            const w = userWarriors.get(account.address)
+            // const w = userWarriors.get(account.address)
+            const w = calWarrior()
             if (w) {
                 if (parseInt(value) > w) {
                     return
@@ -73,7 +74,7 @@ export default function SendTroopPanel() {
             toastError("Food is not enough")
             return
         }
-        const w = userWarriors.get(account.address)
+        const w = calWarrior()
         if (!w || inputValue > w) {
             toastError("Warrior is not enough")
             return
@@ -83,7 +84,7 @@ export default function SendTroopPanel() {
             toastError("Send failed")
             return
         }
-        const troop_id = 1
+        const troop_id = calTroopID()
         const result = await sendTroop(account, 1, inputValue, troop_id, troop.from.x, troop.from.y, troop.to.x, troop.to.y);
         if (result && result.length > 0) {
             toastSuccess("Troop Success")
@@ -146,17 +147,42 @@ export default function SendTroopPanel() {
         return result + "s"
     }, [sendTroopCtr, inputValue])
 
-    const getWarrior = useMemo(() => {
+    const calWarrior = () => {
         if (!account) {
             return 0
         }
-        const w = userWarriors.get(account.address)
+        const base = bases.get(account.address)
+        if (!base) {
+            return 0
+        }
+        const w = landWarriors.get(base.x + "_" + base.y)
         if (w) {
             return w
         } else {
             return 0
         }
-    }, [account, userWarriors])
+    }
+
+    const getWarrior = useMemo(() => {
+        return calWarrior()
+    }, [account, landWarriors.values()])
+
+    const calTroopID = ()=>{
+        if(!account){
+            return 1
+        }
+
+        troops.forEach((value,key)=>{
+            const ks = key.split("_")
+            console.log("calTroopID",key,value);
+            if(ks[0] == account.address){
+                if(value.startTime==0){
+                    return ks[1]
+                }
+            }
+        })
+        return troops.size + 1
+    }
 
     return (
         sendTroopCtr.show &&
@@ -174,7 +200,7 @@ export default function SendTroopPanel() {
                                 Distance : {calDistance()}
                             </td>
                             <td>
-
+                                TroopID : {calTroopID()}
                             </td>
                         </tr>
                         <tr>

@@ -1,7 +1,6 @@
 import { getTimestamp, hexToString, positionToCoorp } from "../utils";
 import { playerStore } from "../store/playerStore";
 import starklogo from "../../public/starkneticon.png"
-
 import foodIcon from "../../public/assets/icons/food.png"
 import ironIcon from "../../public/assets/icons/iron.png"
 import goldIcon from "../../public/assets/icons/gold.png"
@@ -17,16 +16,13 @@ import { resourceStore } from "../store/resourcestore";
 import { buildStore } from "../store/buildstore";
 import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
-import { Has, defineSystem, getComponentValue } from "@latticexyz/recs";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
-import { useEntityQuery } from "@dojoengine/react";
-
+import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 
 export default function PlayerPanel() {
     const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
     const { bases } = buildStore()
-    const { userWarriors } = warriorStore()
+    const { userWarriors,landWarriors } = warriorStore()
     const { food, gold, iron } = resourceStore()
     const accountRef = useRef<string>()
 
@@ -109,6 +105,7 @@ export default function PlayerPanel() {
                     }
                     console.log("fetchResources", gold, food, iron);
                     resourceStore.setState({ gold: gold, food: food, iron: iron })
+                    return
                 }
             }
         }
@@ -180,7 +177,7 @@ export default function PlayerPanel() {
 
 
     useEffect(() => {
-        defineSystem(world, [Has(components.Gold)], ({ entity, value, component }) => {
+        defineSystem(world, [Has(components.Gold)], ({ entity, value }) => {
             const gold = value[0]?.balance as number
             resourceStore.setState({ gold: gold })
         })
@@ -208,11 +205,13 @@ export default function PlayerPanel() {
             uw.set(accountRef.current, r.balance)
             warriorStore.setState({ userWarriors: uw })
         })
-        defineSystem(world, [Has(components.Warrior)], ({ entity, value, component }) => {
-            console.log("Warrior", entity, value, component);
-            const r = getComponentValue(components.Warrior, entity);
-            if (!r || !account) {
-                return
+        defineSystem(world, [Has(components.Warrior)], ({ entity, value }) => {
+            console.log("Warrior", entity, value);
+            const w = value[0]
+            if(w){
+                const ls = new Map(landWarriors)
+                ls.set(w.x+"_"+w.y,w.balance as number)
+                warriorStore.setState({landWarriors:ls})
             }
         })
     }, [])
