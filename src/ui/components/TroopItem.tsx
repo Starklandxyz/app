@@ -24,6 +24,7 @@ export default function TroopItem(params: any) {
     }
 
     const retreat = () => {
+        console.log("retreat");
         const nt = new Map(troops)
         const t = new Troop(troop.owner, troop.to, troop.from, getTimestamp())
         t.id = troop.id

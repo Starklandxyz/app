@@ -9,7 +9,7 @@ import { Troop } from "../types/Troop";
 import { troopStore } from "../store/troopStore";
 import { getTimestamp, toastError, toastSuccess } from "../utils";
 import { TilesetZone } from "../artTypes/world";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
 import { resourceStore } from "../store/resourcestore";
 import { warriorStore } from "../store/warriorstore";
@@ -123,6 +123,8 @@ export default function SendTroopPanel() {
     }
 
     const calDistance = () => {
+        console.log("calDistance");
+        
         if (!account) {
             return 0
         }
@@ -174,7 +176,7 @@ export default function SendTroopPanel() {
 
         troops.forEach((value,key)=>{
             const ks = key.split("_")
-            console.log("calTroopID",key,value);
+            // console.log("calTroopID",key,value);
             if(ks[0] == account.address){
                 if(value.startTime==0){
                     return ks[1]
@@ -183,6 +185,11 @@ export default function SendTroopPanel() {
         })
         return troops.size + 1
     }
+
+    const getTroopID = useMemo(()=>{
+        // console.log("getTroopID");
+        return calTroopID()
+    },[account,troops.keys()])
 
     return (
         sendTroopCtr.show &&
@@ -200,7 +207,7 @@ export default function SendTroopPanel() {
                                 Distance : {calDistance()}
                             </td>
                             <td>
-                                TroopID : {calTroopID()}
+                                TroopID : {getTroopID}
                             </td>
                         </tr>
                         <tr>

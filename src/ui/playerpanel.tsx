@@ -91,9 +91,11 @@ export default function PlayerPanel() {
                 var food = 0
                 var iron = 0
                 if (components) {
+                    let has = false
                     for (let index = 0; index < components.length; index++) {
                         const node = components[index];
                         if (node?.__typename == "Gold") {
+                            has =true
                             gold = node.balance
                         }
                         if (node?.__typename == "Food") {
@@ -103,9 +105,11 @@ export default function PlayerPanel() {
                             iron = node.balance
                         }
                     }
-                    console.log("fetchResources", gold, food, iron);
-                    resourceStore.setState({ gold: gold, food: food, iron: iron })
-                    return
+                    if(has){
+                        console.log("fetchResources", gold, food, iron);
+                        resourceStore.setState({ gold: gold, food: food, iron: iron })
+                        return
+                    }
                 }
             }
         }

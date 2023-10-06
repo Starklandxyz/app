@@ -32,6 +32,8 @@ export default function BuildingTip() {
 
     const { sendTroopCtr: sendTroop, buildLand } = controlStore()
 
+    // console.error("refresh : ");
+
     const {
         scenes: {
             Main: {
@@ -100,12 +102,12 @@ export default function BuildingTip() {
 
         settooltip({
             show: true, x: x, y: y, content: <div>
-                <div style={{marginTop:5}}>{land_name}</div>
-                <div style={{marginTop:5}}>({lastCoord.x},{lastCoord.y})</div>
-                <div style={{marginTop:5}}>Owner : {land_owner}</div>
-                <div style={{marginTop:5}}>{land_desc}</div>
-                <div style={{marginTop:5}}>{land_level}</div>
-                <div style={{marginTop:5}}>Warrior : {land_warrior}</div>
+                <div style={{ marginTop: 5 }}>{land_name}</div>
+                <div style={{ marginTop: 5 }}>({lastCoord.x},{lastCoord.y})</div>
+                <div style={{ marginTop: 5 }}>Owner : {land_owner}</div>
+                <div style={{ marginTop: 5 }}>{land_desc}</div>
+                <div style={{ marginTop: 5 }}>{land_level}</div>
+                <div style={{ marginTop: 5 }}>Warrior : {land_warrior}</div>
             </div>
         })
     }, [lastCoord])
@@ -129,7 +131,6 @@ export default function BuildingTip() {
 
         const x = (ex + camera.phaserCamera.worldView.x * 2) / 2;
         const y = (ey + camera.phaserCamera.worldView.y * 2) / 2;
-
 
         const coord = pixelCoordToTileCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT)
         if (coord.x == lastCoord.x && coord.y == lastCoord.y) {
@@ -216,7 +217,6 @@ export default function BuildingTip() {
                     }
                 </div>
             )}
-            <SendTroopPanel />
         </ClickWrapper>
     )
 }
