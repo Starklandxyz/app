@@ -16,9 +16,12 @@ import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
 import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
 import { playerStore } from "../store/playerStore";
+import { warriorStore } from "../store/warriorstore";
+import { last } from "rxjs";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
-    const {players} = playerStore()
+    const { players } = playerStore()
+    const { landWarriors } = warriorStore()
     const { bases } = buildStore()
     const { lands } = mapStore()
     const { tooltip: ptooltip } = tipStore();
@@ -62,7 +65,7 @@ export default function BuildingTip() {
         var land_owner = "No Owner"
         var land_desc = ""
         var land_level = ""
-        var land_warrior = "1"
+        var land_warrior = "0"
         if (land) {
             switch (land.build) {
                 case BuildType.None: break;
@@ -72,25 +75,28 @@ export default function BuildingTip() {
                 case BuildType.GoldMine: land_name = "GoldMine"; break;
                 case BuildType.Camp: land_name = "Camp"; break;
             }
-            if(land.owner){
+            if (land.owner) {
                 const name = players.get(land.owner)?.nick_name;
-                if(name){
+                if (name) {
                     land_owner = hexToString(name)
                 }
             }
-            land_level = "Level : "+land.level
-        }else{
+            land_level = "Level : " + land.level
+            if(landWarriors.get(lastCoord.x + "_" + lastCoord.y))
+            land_warrior = "" + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
+            // console.log("land info", lastCoord, land_warrior);
+        } else {
             const land_type = get_land_type(1, lastCoord.x, lastCoord.y)
             land_desc = "Can't be occupied"
             switch (land_type) {
-                case LandType.None: land_desc=""; break;
+                case LandType.None: land_desc = ""; break;
                 case LandType.Gold: land_name = "Gold"; break;
                 case LandType.Iron: land_name = "Iron"; break;
                 case LandType.Water: land_name = "Water"; break;
             }
-            const land_baba = get_land_barbarians(1,lastCoord.x,lastCoord.y)
+            const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y)
             land_warrior = land_baba.toString()
-            land_level = "Level : "+(1n + land_baba/10n)
+            land_level = "Level : " + (1n + land_baba / 10n)
         }
 
         settooltip({

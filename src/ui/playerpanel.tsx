@@ -16,8 +16,6 @@ import { Player } from "../dojo/createSystemCalls";
 import { resourceStore } from "../store/resourcestore";
 import { buildStore } from "../store/buildstore";
 import { warriorStore } from "../store/warriorstore";
-import { Warrior } from "../types/Warrior";
-
 import styled from 'styled-components';
 
 

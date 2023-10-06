@@ -74,7 +74,7 @@ export default function MapUI() {
             return
         }
         const base = bases.get(account.address)
-        if(!base){
+        if (!base) {
             return
         }
         const xStart = base.x
@@ -105,17 +105,17 @@ export default function MapUI() {
                 if (element) {
                     const node = element.node
                     const componenets = node?.components
-                    if(componenets){
+                    if (componenets) {
                         for (let index = 0; index < componenets.length; index++) {
                             const componenet = componenets[index];
-                            if(componenet){
-                                if(componenet.__typename == "Land"){
+                            if (componenet) {
+                                if (componenet.__typename == "Land") {
                                     // const component = componenets[0] as Land
                                     const l = Land2Land(componenet)
                                     ls.set(l.x + "_" + l.y, l)
                                 }
-                                if(componenet.__typename=="Warrior"){
-                                    landW.set({x:componenet.x,y:componenet.y},componenet.balance)
+                                if (componenet.__typename == "Warrior") {
+                                    landW.set(componenet.x + "_" + componenet.y, componenet.balance)
                                 }
                             }
                         }
@@ -124,7 +124,7 @@ export default function MapUI() {
             }
         }
         mapStore.setState({ lands: ls })
-        warriorStore.setState({landWarriors:landW})
+        warriorStore.setState({ landWarriors: landW })
     }
 
     // const fetchPlayerBase = async () => {
@@ -166,12 +166,15 @@ export default function MapUI() {
         buildStore.setState({ bases: newBases })
     }
 
-    useEffect(()=>{
-        landWarriors.forEach((balance,coord)=>{
+    useEffect(() => {
+        landWarriors.forEach((balance, key) => {
+            console.log("landWarriors", key, balance);
+            const keys = key.split("_")
+            const coord = { x: parseInt(keys[0]), y: parseInt(keys[1])}
             putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
             putTileAt(coord, TilesetNum.Num1 + balance - 1, "Top3");
         })
-    },[landWarriors])
+    }, [landWarriors])
 
     useEffect(() => {
         mapLands.forEach((land, id) => {
