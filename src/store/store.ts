@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { NetworkLayer } from "../dojo/createNetworkLayer";
 import { PhaserLayer } from "../phaser";
 import { Account, Provider } from "starknet";
-import { Camera } from "@latticexyz/phaserx";
+import { Camera } from "../../node_modules/@latticexyz/phaserx/src/index";
 // import { Player } from "../dojo/createSystemCalls";
 
 export type Store = {

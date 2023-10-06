@@ -3,8 +3,6 @@ import { playerStore } from "../store/playerStore";
 import { store } from "../store/store";
 import { buildStore } from "../store/buildstore";
 import { warriorStore } from "../store/warriorstore";
-import { resourceStore } from "../store/resourcestore";
-import { Has, defineSystem, getComponentValue } from "@latticexyz/recs";
 
 export default function ListenEvent() {
     // const { player: storePlayer, players, eths } = playerStore()

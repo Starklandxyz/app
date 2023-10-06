@@ -1,4 +1,4 @@
-import { Coord } from "@latticexyz/utils"
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index"
 import { Troop_Speed } from "../contractconfig"
 
 export class Troop {

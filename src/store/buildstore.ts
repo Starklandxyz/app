@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Building } from "../types";
-import { Coord } from "@latticexyz/utils";
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 // import { Player } from "../dojo/createSystemCalls";
 
 export type BuildStore = {

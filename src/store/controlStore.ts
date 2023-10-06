@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Troop } from "../types/Troop";
-import { Coord } from "@latticexyz/utils";
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 
 export type ControlStore = {
     sendTroopCtr: { troop: Troop | undefined, show: boolean },

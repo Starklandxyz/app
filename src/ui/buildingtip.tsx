@@ -1,4 +1,4 @@
-import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "@latticexyz/phaserx";
+import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mouseStore } from "../store/mouseStore";
 import { useEffect, useState } from "react";
@@ -6,7 +6,7 @@ import { store } from "../store/store";
 import { buildingCoorpToPosition, getTimestamp, hexToString, toastSuccess } from "../utils";
 import { tipStore } from "../store/tipStore";
 import { TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetZone } from "../artTypes/world";
-import { ObjectPool, WorldCoord } from "@latticexyz/phaserx/dist/types";
+import { Coord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ClickWrapper } from "./clickWrapper";
 import { Troop } from "../types/Troop";
 import { buildStore } from "../store/buildstore";
@@ -28,7 +28,7 @@ export default function BuildingTip() {
     const [showButtons, setShowButtons] = useState({ show: false, x: 0, y: 0 })
 
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
-    const [lastCoord, setCoord] = useState<WorldCoord>({ x: 0, y: 0 })
+    const [lastCoord, setCoord] = useState<Coord>({ x: 0, y: 0 })
 
     const { sendTroopCtr: sendTroop, buildLand } = controlStore()
 

@@ -1,7 +1,7 @@
-import { createPhaserEngine } from "@latticexyz/phaserx";
+import { createPhaserEngine } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { NetworkLayer } from '../dojo/createNetworkLayer';
 import { registerSystems } from './systems/registerSystems';
-import { namespaceWorld } from '@latticexyz/recs';
+import { namespaceWorld } from '../../node_modules/@latticexyz/recs/src/index';
 
 export type PhaserLayer = Awaited<ReturnType<typeof createPhaserLayer>>;
 type PhaserEngineConfig = Parameters<typeof createPhaserEngine>[0];

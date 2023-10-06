@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
+import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ClickWrapper } from "./clickWrapper";
 import { store } from "../store/store";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { positionToCoorp, toastError } from "../utils";
-import { EntityIndex, getComponentValue, getComponentValueStrict } from "@latticexyz/recs";
 import twitter from "/twitterlogo.png"
 import telegram from "/telegram.png"
 import { buildStore } from "../store/buildstore";

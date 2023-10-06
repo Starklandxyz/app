@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { store } from "../store/store";
 import { Wrapper } from "./wrapper";
 import BuildingTip from "./buildingtip";
-import Leaderboard from "./leaderboard";
 import { VERSION } from "../config";
 import Header from "./header";
 import NotificationUI from "./NotificationUI";
@@ -34,7 +33,6 @@ export default function UI() {
             </TopHeaderContainer>
             <BottomIcons/>
             <BuildingTip />
-            <Leaderboard />
             <VersionContainer>
                 <p>version:{VERSION}</p>
             </VersionContainer>

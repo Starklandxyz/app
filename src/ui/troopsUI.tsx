@@ -1,15 +1,16 @@
-import { ObjectPool, WorldCoord } from "@latticexyz/phaserx/dist/types";
 import { store } from "../store/store";
 import { ticStore } from "../store/ticStore";
 import { troopStore } from "../store/troopStore";
 import { useEffect, useState } from "react";
-import { Coord } from "@latticexyz/utils";
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { Assets, MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
-import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
+// import { tileCoordToPixelCoord,ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { TilesetNum, TilesetSoldier, TilesetZone } from "../artTypes/world";
 import { Troop } from "../types/Troop";
 import { getTimestamp } from "../utils";
 import { controlStore } from "../store/controlStore";
+import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
+import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
 const SIZE = 12
 
 export default function TroopsUI() {
@@ -107,7 +108,7 @@ export default function TroopsUI() {
             playerObj.spawn()
             playerObj.setComponent({
                 id: "position",
-                once: (sprite) => {
+                once: (sprite:any) => {
                     if (sprite.active != true) {
                         return
                     }
@@ -137,7 +138,7 @@ export default function TroopsUI() {
         playerObj.spawn()
         playerObj.setComponent({
             id: "position",
-            once: (sprite) => {
+            once: (sprite:any) => {
                 if (sprite.active != true) {
                     return
                 }
@@ -154,7 +155,7 @@ export default function TroopsUI() {
         nameObj.spawn()
         nameObj.setComponent({
             id: 'position',
-            once: (text) => {
+            once: (text:any) => {
                 if (text.active != true) {
                     return
                 }

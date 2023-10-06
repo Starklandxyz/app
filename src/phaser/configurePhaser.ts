@@ -4,7 +4,7 @@ import {
     defineScaleConfig,
     defineMapConfig,
     defineCameraConfig,
-} from "@latticexyz/phaserx";
+} from "../../node_modules/@latticexyz/phaserx/src/index";
 import worldTileset from "/assets/tilesets/world.png";
 import arrow1Icon from "/assets/tilesets/arrow1.png";
 import arrow2Icon from "/assets/tilesets/arrow2.png";

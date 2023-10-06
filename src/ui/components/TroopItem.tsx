@@ -6,7 +6,7 @@ import { ticStore } from "../../store/ticStore";
 import { troopStore } from "../../store/troopStore";
 import flag from "../../../public/assets/icons/flag.png";
 import soldierIcon from "../../../public/assets/icons/soldier.png"
-import { Coord } from "@latticexyz/utils";
+import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()

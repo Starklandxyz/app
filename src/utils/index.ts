@@ -1,4 +1,4 @@
-import { Coord } from "@latticexyz/utils";
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { Direction } from "../dojo/createSystemCalls";
 import { MAP_WIDTH } from "../phaser/constants";
 import { ToastContainer, toast } from 'react-toastify';

@@ -4,7 +4,7 @@ import { store } from "../store/store";
 import { Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, TilesetZone } from "../artTypes/world";
 import { playerStore } from "../store/playerStore";
 import { Base, Land } from "../generated/graphql";
-import { tileCoordToPixelCoord } from "@latticexyz/phaserx";
+import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mapStore } from "../store/mapStore";
 import { Land2Land, Player2Player } from "../types";
@@ -54,7 +54,7 @@ export default function MapUI() {
             const pixelPosition = tileCoordToPixelCoord({ x: xStart, y: yStart }, TILE_WIDTH, TILE_HEIGHT)
             nameObj.setComponent({
                 id: 'position',
-                once: (text) => {
+                once: (text:any) => {
                     text.setPosition(pixelPosition?.x, pixelPosition?.y - 14);
                     text.setBackgroundColor("rgba(0,0,0,0.6)")
                     text.setFontSize(11)
