@@ -5,14 +5,14 @@ import styled from "styled-components";
 import { controlStore } from "../store/controlStore";
 // ../../node_modules/@latticexyz/recs/src/index
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
-import { Troop } from "../types/Troop";
+import { Troop, getTroopDistance } from "../types/Troop";
 import { troopStore } from "../store/troopStore";
 import { getTimestamp, toastError, toastSuccess } from "../utils";
-import { TilesetZone } from "../artTypes/world";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
 import { resourceStore } from "../store/resourcestore";
 import { warriorStore } from "../store/warriorstore";
+import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 
 export default function SendTroopPanel() {
     const { bases } = buildStore()
@@ -22,15 +22,20 @@ export default function SendTroopPanel() {
     const { food } = resourceStore()
     const { troops } = troopStore()
     const [inputValue, setInputValue] = useState(1)
+
+    const troopsRef = useRef<Map<string,Troop>>(new Map())
+
+    useEffect(()=>{
+        troopsRef.current = troops
+    },[troops])
+
     const {
-        scenes: {
-            Main: {
-                maps: {
-                    Main: { putTileAt },
-                },
-            },
+        networkLayer: {
+            world,
+            components,
         }
-    } = phaserLayer!;
+    } = phaserLayer!
+
     const {
         systemCalls: { sendTroop },
     } = networkLayer!
@@ -88,43 +93,52 @@ export default function SendTroopPanel() {
         const result = await sendTroop(account, 1, inputValue, troop_id, troop.from.x, troop.from.y, troop.to.x, troop.to.y);
         if (result && result.length > 0) {
             toastSuccess("Troop Success")
-            addTroop(sendTroopCtr?.troop!.to)
-            putTileAt(sendTroopCtr?.troop!.to, TilesetZone.MyZoneWait, "Occupy");
+            // addTroop(sendTroopCtr?.troop!.to)
+            // putTileAt(sendTroopCtr?.troop!.to, TilesetZone.MyZoneWait, "Occupy");
         } else {
             toastError("Troop failed")
         }
         cancel()
     }
 
-    const addTroop = (end: Coord) => {
-        console.log("addTroopArrow");
-        if (!account) {
-            return
-        }
-        const baseCoord = bases.get(account.address)
-        if (!baseCoord) {
-            return
-        }
-        const x = baseCoord.x + 1
-        const y = baseCoord.y + 1
-
-        const start = { x, y }
-
-        const newTroops = new Map(troops)
-        const troop = new Troop(account.address, start, end, getTimestamp())
-        const tid = troop.owner + "_" + troop.startTime
-        troop.amount = inputValue;
+    const addTroop = (t: any) => {
+        const newTroops = new Map(troopsRef.current)
+        const balance = t.balance as number
+        const from_x = t.from_x as number
+        const from_y = t.from_y as number
+        const index = t.index as number
+        const to_x = t.to_x as number
+        const to_y = t.to_y as number
+        const owner = t.owner as string
+        const start_time = t.start_time as number
+        const from = { x: from_x, y: from_y }
+        const to = { x: to_x, y: to_y }
+        const troop = new Troop(owner, from, to, start_time)
+        const tid = troop.owner + "_" + index
+        troop.amount = balance;
         troop.id = tid
-        troop.totalTime = 10
+        troop.index = index
+        troop.totalTime = getTroopDistance(from, to) * Troop_Speed
         newTroops.set(tid, troop)
         troopStore.setState({
             troops: newTroops
         })
     }
 
+    useEffect(() => {
+        defineSystem(world, [Has(components.Troop)], ({ value }) => {
+            console.log("Troop", value);
+            const t = value[0]
+            if (t) {
+                console.log("Troop size", troopsRef.current.size);
+                addTroop(t)
+            }
+        })
+    }, [])
+
     const calDistance = () => {
         console.log("calDistance");
-        
+
         if (!account) {
             return 0
         }
@@ -169,16 +183,16 @@ export default function SendTroopPanel() {
         return calWarrior()
     }, [account, landWarriors.values()])
 
-    const calTroopID = ()=>{
-        if(!account){
+    const calTroopID = () => {
+        if (!account) {
             return 1
         }
 
-        troops.forEach((value,key)=>{
+        troops.forEach((value, key) => {
             const ks = key.split("_")
             // console.log("calTroopID",key,value);
-            if(ks[0] == account.address){
-                if(value.startTime==0){
+            if (ks[0] == account.address) {
+                if (value.startTime == 0) {
                     return ks[1]
                 }
             }
@@ -186,10 +200,9 @@ export default function SendTroopPanel() {
         return troops.size + 1
     }
 
-    const getTroopID = useMemo(()=>{
-        // console.log("getTroopID");
+    const getTroopID = useMemo(() => {
         return calTroopID()
-    },[account,troops.keys()])
+    }, [account, troops.keys()])
 
     return (
         sendTroopCtr.show &&

@@ -49,6 +49,9 @@ export function defineContractComponents(world: World) {
           Train_Gold: RecsType.Number,
           Train_Iron: RecsType.Number,
           Train_Time: RecsType.Number,
+          Troop_Food: RecsType.Number,
+          Troop_Gold: RecsType.Number,
+          Troop_Speed: RecsType.Number,
         },
         {
           metadata: {
@@ -196,8 +199,13 @@ export function defineContractComponents(world: World) {
         {
           map_id: RecsType.Number,
           owner: RecsType.Number,
-          id: RecsType.Number,
+          index: RecsType.Number,
           balance: RecsType.Number,
+          from_x: RecsType.Number,
+          from_y: RecsType.Number,
+          to_x: RecsType.Number,
+          to_y: RecsType.Number,
+          start_time: RecsType.Number,
         },
         {
           metadata: {

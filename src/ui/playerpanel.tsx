@@ -21,10 +21,19 @@ import { Has, defineSystem, getComponentValue } from "../../node_modules/@lattic
 export default function PlayerPanel() {
     const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
-    const { bases } = buildStore()
-    const { userWarriors,landWarriors } = warriorStore()
+    const { userWarriors, landWarriors } = warriorStore()
     const { food, gold, iron } = resourceStore()
     const accountRef = useRef<string>()
+
+    const userWarriorsRef = useRef<typeof userWarriors>(new Map())
+    useEffect(()=>{
+        userWarriorsRef.current = userWarriors
+    },[userWarriors])
+
+    const landWarriorsRef = useRef<typeof landWarriors>(new Map())
+    useEffect(()=>{
+        landWarriorsRef.current = landWarriors
+    },[landWarriors])
 
     const {
         networkLayer: {
@@ -95,7 +104,7 @@ export default function PlayerPanel() {
                     for (let index = 0; index < components.length; index++) {
                         const node = components[index];
                         if (node?.__typename == "Gold") {
-                            has =true
+                            has = true
                             gold = node.balance
                         }
                         if (node?.__typename == "Food") {
@@ -105,7 +114,7 @@ export default function PlayerPanel() {
                             iron = node.balance
                         }
                     }
-                    if(has){
+                    if (has) {
                         console.log("fetchResources", gold, food, iron);
                         resourceStore.setState({ gold: gold, food: food, iron: iron })
                         return
@@ -173,7 +182,7 @@ export default function PlayerPanel() {
         if (!account) {
             return 0
         }
-        if(!userWarriors.has(account.address)){
+        if (!userWarriors.has(account.address)) {
             return 0
         }
         return userWarriors.get(account.address)
@@ -187,35 +196,36 @@ export default function PlayerPanel() {
         })
         defineSystem(world, [Has(components.Food)], ({ entity }) => {
             const r = getComponentValue(components.Food, entity);
-            if (!r) {
-                return
+            if (r) {
+                resourceStore.setState({ food: r.balance })
             }
-            resourceStore.setState({ food: r.balance })
         })
         defineSystem(world, [Has(components.Iron)], ({ entity }) => {
             const r = getComponentValue(components.Iron, entity);
-            if (!r) {
-                return
+            if (r) {
+                resourceStore.setState({ iron: r.balance })
             }
-            resourceStore.setState({ iron: r.balance })
+
         })
         defineSystem(world, [Has(components.UserWarrior)], ({ entity }) => {
             const r = getComponentValue(components.UserWarrior, entity);
-            console.log("UserWarrior",r);
+            console.log("UserWarrior", r);
             if (!r || !accountRef.current) {
                 return
             }
-            const uw = new Map(userWarriors)
+            console.log("userWarriors size",userWarriorsRef.current.size);
+            
+            const uw = new Map(userWarriorsRef.current)
             uw.set(accountRef.current, r.balance)
             warriorStore.setState({ userWarriors: uw })
         })
         defineSystem(world, [Has(components.Warrior)], ({ entity, value }) => {
             console.log("Warrior", entity, value);
             const w = value[0]
-            if(w){
-                const ls = new Map(landWarriors)
-                ls.set(w.x+"_"+w.y,w.balance as number)
-                warriorStore.setState({landWarriors:ls})
+            if (w) {
+                const ls = new Map(landWarriorsRef.current)
+                ls.set(w.x + "_" + w.y, w.balance as number)
+                warriorStore.setState({ landWarriors: ls })
             }
         })
     }, [])
