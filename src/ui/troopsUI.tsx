@@ -248,8 +248,9 @@ export default function TroopsUI() {
     }
 
     const hideFlag = (troop:Troop)=>{
-        putTileAt(troop.to, Tileset.Empty, "Flag");
-        putTileAt(troop.to, Tileset.Empty, "TempOccupy");
+        console.log("hideFlag");
+        putTileAt(troop.from, Tileset.Empty, "Flag");
+        putTileAt(troop.from, Tileset.Empty, "TempOccupy");
     }
 
     const showFlag = (troop: Troop) => {

@@ -6,14 +6,12 @@ import { store } from "../store/store";
 import { Troop } from "../types/Troop";
 import TroopItem from "./components/TroopItem";
 import { playerStore } from "../store/playerStore";
-import { mapStore } from "../store/mapStore";
 import { buildStore } from "../store/buildstore";
 import { Troop_Speed } from "../contractconfig";
 
 export default function TroopPanel() {
     const { troops } = troopStore()
     const { account, phaserLayer } = store()
-    const { player } = playerStore()
     const { bases } = buildStore()
     const [showContent, setShowContent] = useState(true);
     const toggleContent = useCallback(() => {
@@ -23,29 +21,9 @@ export default function TroopPanel() {
 
     const {
         networkLayer: {
-            components,
             network: { graphSdk }
         }
     } = phaserLayer!
-
-    // useEffect(() => {
-    //     if (!account) {
-    //         return
-    //     }
-    // const pTroops: Array<Troop> = []
-    // troops.forEach((value, _) => {
-    //     if (value.owner == account.address)
-    //         pTroops.push(value)
-    // })
-    // setUserTroop(pTroops)
-    // }, [troops.values()])
-
-    // useEffect(() => {
-    //     if (!player || !account) {
-    //         return
-    //     }
-    //     fetchTroops()
-    // }, [player])
 
     useEffect(() => {
         fetchTroops()
@@ -87,7 +65,7 @@ export default function TroopPanel() {
 
     const getMyTroopSize= useMemo(()=>{
         var size = 0
-        troops.forEach((value,key)=>{
+        troops.forEach((value,_)=>{
             if(value.owner == account?.address && value.startTime!=0){
                 size++
             }
@@ -113,7 +91,6 @@ export default function TroopPanel() {
                     )}
                 </div>
             }
-
         </Container>
     </ClickWrapper>)
 }
