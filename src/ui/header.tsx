@@ -115,73 +115,87 @@ export default function Header() {
     }, [isDeploying])
 
     return (
-        <ClickWrapper style={{ display: "flex", width: "100%", lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-            <PlayerWrapper>
-                <PlayerPanel />
-            </PlayerWrapper>
+        <ClickWrapper>
+            <HeaderUIContainer>
+                <PlayerWrapper>
+                    <PlayerPanel />
+                </PlayerWrapper>
 
-            <WalletContainer>
+                <WalletContainer>
 
-                <ResourceItemWrapper data-tooltip-id="my-tooltip"
-                    data-tooltip-content="ETH balance"
-                    data-tooltip-place="top">
-                    <ResourceIcon src={ethicon} alt="gold" />
-                    <ResourceValue>{parseFloat(ethers.utils.formatEther(eth)).toFixed(5)} ETH</ResourceValue>
-                </ResourceItemWrapper>
+                    <ResourceItemWrapper data-tooltip-id="my-tooltip"
+                        data-tooltip-content="ETH balance"
+                        data-tooltip-place="top">
+                        <ResourceIcon src={ethicon} alt="gold" />
+                        <ResourceValue>{parseFloat(ethers.utils.formatEther(eth)).toFixed(5)}</ResourceValue>
+                    </ResourceItemWrapper>
 
-                {
-                    (account && !player) &&
-                    <div>
-                        <input value={nickName} onChange={inputChange} style={{ height: 20 }} placeholder="input user name" />
-                        <button
-                            style={{ marginLeft: 10, marginRight: 10 }}
-                            onClick={() => {
-                                startGame();
-                            }}
-                        >
-                            Mint Player
-                        </button>
+                    {
+                        (account && !player) &&
+                        <div style={{ display: "flex", flexDirection:"column", alignSelf:"center",marginRight:"6px" }}>
+                            <input value={nickName} onChange={inputChange} style={{ fontWeight: "bold" }} placeholder="Enter your nickname" />
+                            <button
+                                style={{  }}
+                                onClick={() => {
+                                    startGame();
+                                }}
+                            >
+                                Create Player
+                            </button>
+                        </div>
+                    }
+                    <div style={{ display: "flex", padding: "6px 0px", gap: "8px" }}>
+                         {
+                            <select onChange={e => selectAccount(e)} value={account?.address}>
+                                {list().map((account, index) => {
+                                    return <option value={account.address} key={index}>{truncateString(account.address, 6, 6)}</option>
+                                })}
+                            </select>
+                        }
+
+                        {
+                            player && <button data-tooltip-id="my-tooltip"
+                                data-tooltip-content="create a new local wallet"
+                                data-tooltip-place="top" style={{ marginLeft: 10 }} onClick={() => createNew()}>{isDeploying ? "deploying..." : "create new"}</button>
+                        }
+                        {
+                            !account && <button data-tooltip-id="my-tooltip"
+                                data-tooltip-content="create a local wallet"
+                                data-tooltip-place="top" onClick={createNew}>{isDeploying ? "deploying wallet" : "create wallet"}</button>
+                        }
+
+                        <img data-tooltip-id="my-tooltip"
+                            data-tooltip-content="Powered by Starknet and Dojo"
+                            data-tooltip-place="top" src={starkicon} width={20} height={20} style={{ alignSelf: "center" }} />
                     </div>
-                }
-                <div style={{ display: "flex", padding: "6px 0px", gap: "8px"}}>
-                    {
-                        <select onChange={e => selectAccount(e)} value={account?.address}>
-                            {list().map((account, index) => {
-                                return <option value={account.address} key={index}>{truncateString(account.address, 6, 6)}</option>
-                            })}
-                        </select>
-                    }
-
-                    {
-                        player && <button data-tooltip-id="my-tooltip"
-                            data-tooltip-content="create a new local wallet"
-                            data-tooltip-place="top" style={{ marginLeft: 10 }} onClick={() => createNew()}>{isDeploying ? "deploying..." : "create new"}</button>
-                    }
-                    {
-                        !account && <button data-tooltip-id="my-tooltip"
-                            data-tooltip-content="create a local wallet"
-                            data-tooltip-place="top" onClick={createNew}>{isDeploying ? "deploying wallet" : "create wallet"}</button>
-                    }
-
-                    <img data-tooltip-id="my-tooltip"
-                        data-tooltip-content="Powered by Starknet and Dojo"
-                        data-tooltip-place="top" src={starkicon} width={20} height={20} style={{alignSelf:"center"}} />
-                </div>
 
 
-            </WalletContainer>
-
+                </WalletContainer>
+            </HeaderUIContainer>
         </ClickWrapper>
     )
 }
+
+const HeaderUIContainer = styled.div`
+    display:flex;
+    padding: 6px 0px;
+    gap: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+    }
+`
 
 const WalletContainer = styled.div`
     display:flex;
     justify-content: flex-end;
     flex: 1;
-    right: 10px;
     color: white;
-    gap: 20px;
+
+    @media (max-width: 480px) {
+        justify-content: start;
+    }
 `;
 
 const PlayerWrapper = styled.div`
