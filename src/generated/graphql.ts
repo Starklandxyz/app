@@ -1318,6 +1318,13 @@ export type GetTroopsByKeyQueryVariables = Exact<{
 
 export type GetTroopsByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop', owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
+export type GetAllTroopsQueryVariables = Exact<{
+  map_id?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetAllTroopsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop', owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
 
 export const GetAllPlayersDocument = gql`
     query getAllPlayers {
@@ -1561,6 +1568,30 @@ export const GetTroopsByKeyDocument = gql`
   }
 }
     `;
+export const GetAllTroopsDocument = gql`
+    query getAllTroops($map_id: String) {
+  entities(first: 1000, keys: [$map_id, "%", "%"]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Troop {
+            owner
+            index
+            balance
+            from_x
+            from_y
+            to_x
+            to_y
+            start_time
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1577,6 +1608,7 @@ const GetAllLandsDocumentString = print(GetAllLandsDocument);
 const GetEthByKeyDocumentString = print(GetEthByKeyDocument);
 const GetResoucesByKeyDocumentString = print(GetResoucesByKeyDocument);
 const GetTroopsByKeyDocumentString = print(GetTroopsByKeyDocument);
+const GetAllTroopsDocumentString = print(GetAllTroopsDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getAllPlayers(variables?: GetAllPlayersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetAllPlayersQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
@@ -1611,6 +1643,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getTroopsByKey(variables?: GetTroopsByKeyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetTroopsByKeyQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetTroopsByKeyQuery>(GetTroopsByKeyDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTroopsByKey', 'query');
+    },
+    getAllTroops(variables?: GetAllTroopsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetAllTroopsQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetAllTroopsQuery>(GetAllTroopsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAllTroops', 'query');
     }
   };
 }

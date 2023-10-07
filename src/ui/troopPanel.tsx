@@ -35,15 +35,19 @@ export default function TroopPanel() {
     // setUserTroop(pTroops)
     // }, [troops.values()])
 
-    useEffect(() => {
-        if (!player || !account) {
-            return
-        }
+    // useEffect(() => {
+    //     if (!player || !account) {
+    //         return
+    //     }
+    //     fetchTroops()
+    // }, [player])
+
+    useEffect(()=>{
         fetchTroops()
-    }, [player])
+    },[])
 
     const fetchTroops = async () => {
-        const ts = await graphSdk.getTroopsByKey({ map_id: "0x1", key: account?.address })
+        const ts = await graphSdk.getAllTroops({ map_id: "0x1" })
         console.log("fetchTroops", ts);
         const edges = ts.data.entities?.edges
         const tt = new Map(troops)

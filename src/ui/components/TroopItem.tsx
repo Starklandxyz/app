@@ -25,21 +25,21 @@ export default function TroopItem(params: any) {
 
     const retreat = () => {
         console.log("retreat");
-        const nt = new Map(troops)
-        const t = new Troop(troop.owner, troop.to, troop.from, getTimestamp())
-        t.id = troop.id
-        t.amount = troop.amount
-        t.totalTime = troop.totalTime
-        const leftTime = troop.totalTime - (getTimestamp() - troop.startTime)
-        if (leftTime < 0) {
-            t.startTime = getTimestamp()
-        } else {
-            t.startTime = getTimestamp() - leftTime
-        }
+        // const nt = new Map(troops)
+        // const t = new Troop(troop.owner, troop.to, troop.from, getTimestamp())
+        // t.id = troop.id
+        // t.amount = troop.amount
+        // t.totalTime = troop.totalTime
+        // const leftTime = troop.totalTime - (getTimestamp() - troop.startTime)
+        // if (leftTime < 0) {
+        //     t.startTime = getTimestamp()
+        // } else {
+        //     t.startTime = getTimestamp() - leftTime
+        // }
 
-        t.retreat = true
-        nt.set(t.id, t)
-        troopStore.setState({ troops: nt })
+        // t.retreat = true
+        // nt.set(t.id, t)
+        // troopStore.setState({ troops: nt })
     }
 
     const getTime = useMemo(() => {

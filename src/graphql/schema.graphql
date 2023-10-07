@@ -232,3 +232,27 @@ query getTroopsByKey($map_id:String,$key: String) {
     }
   }
 }
+
+
+query getAllTroops($map_id:String) {
+  entities(first:1000, keys: [$map_id,"%","%"]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Troop {
+            owner
+            index
+            balance
+            from_x
+            from_y
+            to_x
+            to_y
+            start_time
+          }
+        }
+      }
+    }
+  }
+}

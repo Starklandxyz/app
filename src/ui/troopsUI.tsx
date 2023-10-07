@@ -11,13 +11,14 @@ import { getTimestamp } from "../utils";
 import { controlStore } from "../store/controlStore";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
+import sha256 from 'crypto-js/sha256';
 const SIZE = 12
 
 export default function TroopsUI() {
-    const { phaserLayer } = store()
+    const { account, phaserLayer } = store()
     const { timenow } = ticStore()
     const { troops } = troopStore()
-    const {sendTroopCtr: sendTroop} = controlStore()
+    const { sendTroopCtr: sendTroop } = controlStore()
 
     const {
         scenes: {
@@ -35,6 +36,7 @@ export default function TroopsUI() {
         troops.forEach((value, _) => {
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
+            // console.log("troop tic", value, left);
             if (left < 0) {
                 showTroop(value)
                 hideTroopArrow(objectPool, value);
@@ -57,7 +59,7 @@ export default function TroopsUI() {
     }, [timenow])
 
     useEffect(() => {
-        troops.forEach((value, id) => {
+        troops.forEach((value, _) => {
             if (value.startTime + value.totalTime <= getTimestamp()) {
                 return
             }
@@ -70,13 +72,14 @@ export default function TroopsUI() {
             return
         }
         if (sendTroop.show) {
-            createArrowLine(objectPool,sendTroop.troop)
+            createArrowLine(objectPool, sendTroop.troop)
         } else {
             hideTroopArrow(objectPool, sendTroop.troop)
         }
     }, [sendTroop])
 
     const createArrowLine = (pool: ObjectPool, troop: Troop) => {
+        putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
         const start = tileCoordToPixelCoord(troop.from, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
         if (troop.retreat) {
@@ -108,7 +111,7 @@ export default function TroopsUI() {
             playerObj.spawn()
             playerObj.setComponent({
                 id: "position",
-                once: (sprite:any) => {
+                once: (sprite: any) => {
                     if (sprite.active != true) {
                         return
                     }
@@ -127,6 +130,7 @@ export default function TroopsUI() {
                         sprite.rotation = theta + Math.PI
                     }
                     sprite.setPosition(x, y)
+                    sprite.z = 0
                 }
             })
         }
@@ -138,7 +142,7 @@ export default function TroopsUI() {
         playerObj.spawn()
         playerObj.setComponent({
             id: "position",
-            once: (sprite:any) => {
+            once: (sprite: any) => {
                 if (sprite.active != true) {
                     return
                 }
@@ -155,7 +159,7 @@ export default function TroopsUI() {
         nameObj.spawn()
         nameObj.setComponent({
             id: 'position',
-            once: (text:any) => {
+            once: (text: any) => {
                 if (text.active != true) {
                     return
                 }
@@ -203,8 +207,21 @@ export default function TroopsUI() {
     }
 
     const showTroop = (troop: Troop) => {
+        // console.log("showTroop", troop.to);
         const pos = troop.to
-        putTileAt(pos, TilesetSoldier.SoldierFlag, "Top2");
+        var flag = TilesetSoldier.SoldierFlag
+        const owner = troop.owner
+        if (owner != account?.address) {
+            const sha256Hash = sha256(owner).words[0] + sha256(owner).words[1];
+            if (sha256Hash % 3 == 0) {
+                flag = TilesetSoldier.SoldierFlag2
+            } else if (sha256Hash % 3 == 1) {
+                flag = TilesetSoldier.SoldierFlag3
+            } else {
+                flag = TilesetSoldier.SoldierFlag4
+            }
+        }
+        putTileAt(pos, flag, "Top2");
         putTileAt(pos, TilesetZone.MyZoneWait, "Occupy");
     }
 
