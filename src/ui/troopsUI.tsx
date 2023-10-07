@@ -193,7 +193,7 @@ export default function TroopsUI() {
                 sprite.flipX = flip
                 sprite.rotation = 0
                 sprite.z = 10
-                sprite.depth = 10
+                sprite.depth = 12
                 // console.log("createArmey", sprite.active == true, sprite.flipX, sprite.rotation, sprite.angle);
             }
         })
