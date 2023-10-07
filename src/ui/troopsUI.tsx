@@ -14,12 +14,14 @@ import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
 import sha256 from 'crypto-js/sha256';
 import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
+import { buildStore } from "../store/buildstore";
 const SIZE = 12
 
 export default function TroopsUI() {
     const { account, phaserLayer } = store()
     const { timenow } = ticStore()
     const { troops } = troopStore()
+    const { bases } = buildStore()
     const { lands } = mapStore()
     const { sendTroopCtr } = controlStore()
 
@@ -37,6 +39,9 @@ export default function TroopsUI() {
     useEffect(() => {
         // console.log("time change", timenow);
         troops.forEach((value, _) => {
+            // console.log(value.owner);
+            const base = bases.get(value.owner)
+            // console.log("troop",value.owner,base);
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
             // console.log("troop tic", value, left);
@@ -46,7 +51,15 @@ export default function TroopsUI() {
                 // removeTroop(value)
                 return
             }
-            const start = tileCoordToPixelCoord(value.from, TILE_WIDTH, TILE_HEIGHT)
+            
+            var from = { x: value.from.x, y: value.from.y }
+            if (base) {
+                if (base.x == value.from.x && base.y == value.from.y) {
+                    from.x = from.x + 1
+                    from.y = from.y + 1
+                }
+            }
+            const start = tileCoordToPixelCoord(from, TILE_WIDTH, TILE_HEIGHT)
             const end = tileCoordToPixelCoord(value.to, TILE_WIDTH, TILE_HEIGHT)
             var speedx = (end.x - start.x) / value.totalTime
             var speedy = (end.y - start.y) / value.totalTime
@@ -57,7 +70,7 @@ export default function TroopsUI() {
             if (end.x < start.x) {
                 flip = true
             }
-            console.log("createArmey",value);
+            // console.log("createArmey", value);
             createArmey(objectPool, value.id, pos, left, flip)
         })
     }, [timenow])
@@ -97,8 +110,8 @@ export default function TroopsUI() {
     }
 
     const createArrowLine = (pool: ObjectPool, troop: Troop) => {
-        console.log("createArrowLine",troop);
-        
+        console.log("createArrowLine", troop);
+
         var from_x = troop.from.x
         var from_y = troop.from.y
         putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
@@ -108,7 +121,7 @@ export default function TroopsUI() {
             from_x = from_x + 1
             from_y = from_y + 1
         }
-        const start = tileCoordToPixelCoord({x:from_x,y:from_y}, TILE_WIDTH, TILE_HEIGHT)
+        const start = tileCoordToPixelCoord({ x: from_x, y: from_y }, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
         if (troop.retreat) {
             start.x = start.x + MAP_WIDTH / 2
@@ -167,7 +180,7 @@ export default function TroopsUI() {
 
     const createArmey = (pool: ObjectPool, id: number | string, pos: Coord, leftTime: number, flip = false) => {
         const playerObj = pool.get("armey_" + id, "Sprite")
-        console.log("createArmey",pos,leftTime);
+        // console.log("createArmey", pos, leftTime);
         playerObj.spawn()
         playerObj.setComponent({
             id: "position",
@@ -257,7 +270,7 @@ export default function TroopsUI() {
     const hideTroopArrow = (pool: ObjectPool, troop: Troop) => {
         pool.remove("armey_" + troop.id)
         pool.remove("armey_name_" + troop.id)
-        putTileAt(troop.to, Tileset.Empty, "Occupy");
+        // putTileAt(troop.to, Tileset.Empty, "Occupy");
         const start = tileCoordToPixelCoord(troop.from, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
         end.x = end.x + MAP_WIDTH / 4

@@ -40,8 +40,11 @@ fs.readFile(jsonFilePath, "utf8", (err, jsonString) => {
           memberType = "RecsType.Boolean";
         } else if (member.type === "u256") {
           memberType = "RecsType.NumberArray";
-        } else if (
-          ["u8", "u16", "u32", "usize", "u64", "u128", "u250", "felt252", "ContractAddress"].includes(member.type)
+        } else if (member.type === "ContractAddress") {
+          memberType = "RecsType.String";
+        }
+        else if (
+          ["u8", "u16", "u32", "usize", "u64", "u128", "u250", "felt252"].includes(member.type)
         ) {
           memberType = "RecsType.Number";
         }

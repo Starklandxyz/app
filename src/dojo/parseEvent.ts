@@ -59,10 +59,13 @@ export function setComponentFromEvent(components: Components, eventData: string[
         let value
         if (index < keysNumber) {
             value = keys[index]
-            acc[key] = value
+            const parsedValue = parseKeyValue(value,component.schema[key])
+            // console.log("parse key",key,value,parsedValue);
+            acc[key] = parsedValue
         } else {
             value = values[index - keysNumber];
             const parsedValue = parseComponentValue(value, component.schema[key])
+            console.log("parse",key,value,parsedValue);
             acc[key] = parsedValue
         }
         // const value = values[index];
@@ -97,6 +100,18 @@ export function parseComponentValue(value: string, type: RecsType) {
     }
 }
 
+export function parseKeyValue(value: bigint, type: RecsType) {
+    // console.log("parseKeyValue",value,type);
+
+    switch (type) {
+        case RecsType.Number:
+            return (value);
+        case RecsType.String:
+            return "0x"+value.toString(16)
+        default:
+            return value
+    }
+}
 /**
  * Converts a hexadecimal string to an ASCII string.
  *

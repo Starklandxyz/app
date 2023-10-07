@@ -27,8 +27,8 @@ export type Scalars = {
 export type Base = {
   __typename?: 'Base';
   entity?: Maybe<Entity>;
-  id?: Maybe<Scalars['ContractAddress']['output']>;
   map_id?: Maybe<Scalars['u64']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
   x?: Maybe<Scalars['u64']['output']>;
   y?: Maybe<Scalars['u64']['output']>;
 };
@@ -51,25 +51,25 @@ export type BaseOrder = {
 };
 
 export enum BaseOrderOrderField {
-  Id = 'ID',
   MapId = 'MAP_ID',
+  Owner = 'OWNER',
   X = 'X',
   Y = 'Y'
 }
 
 export type BaseWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  idGT?: InputMaybe<Scalars['String']['input']>;
-  idGTE?: InputMaybe<Scalars['String']['input']>;
-  idLT?: InputMaybe<Scalars['String']['input']>;
-  idLTE?: InputMaybe<Scalars['String']['input']>;
-  idNEQ?: InputMaybe<Scalars['String']['input']>;
   map_id?: InputMaybe<Scalars['Int']['input']>;
   map_idGT?: InputMaybe<Scalars['Int']['input']>;
   map_idGTE?: InputMaybe<Scalars['Int']['input']>;
   map_idLT?: InputMaybe<Scalars['Int']['input']>;
   map_idLTE?: InputMaybe<Scalars['Int']['input']>;
   map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  ownerGT?: InputMaybe<Scalars['String']['input']>;
+  ownerGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerLT?: InputMaybe<Scalars['String']['input']>;
+  ownerLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
   x?: InputMaybe<Scalars['Int']['input']>;
   xGT?: InputMaybe<Scalars['Int']['input']>;
   xGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -116,7 +116,7 @@ export type Eth = {
   __typename?: 'ETH';
   balance?: Maybe<Scalars['u128']['output']>;
   entity?: Maybe<Entity>;
-  id?: Maybe<Scalars['ContractAddress']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
 };
 
 export type EthConnection = {
@@ -138,7 +138,7 @@ export type EthOrder = {
 
 export enum EthOrderOrderField {
   Balance = 'BALANCE',
-  Id = 'ID'
+  Owner = 'OWNER'
 }
 
 export type EthWhereInput = {
@@ -148,12 +148,12 @@ export type EthWhereInput = {
   balanceLT?: InputMaybe<Scalars['String']['input']>;
   balanceLTE?: InputMaybe<Scalars['String']['input']>;
   balanceNEQ?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  idGT?: InputMaybe<Scalars['String']['input']>;
-  idGTE?: InputMaybe<Scalars['String']['input']>;
-  idLT?: InputMaybe<Scalars['String']['input']>;
-  idLTE?: InputMaybe<Scalars['String']['input']>;
-  idNEQ?: InputMaybe<Scalars['String']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  ownerGT?: InputMaybe<Scalars['String']['input']>;
+  ownerGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerLT?: InputMaybe<Scalars['String']['input']>;
+  ownerLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Entity = {
@@ -204,8 +204,8 @@ export type Food = {
   __typename?: 'Food';
   balance?: Maybe<Scalars['u64']['output']>;
   entity?: Maybe<Entity>;
-  id?: Maybe<Scalars['ContractAddress']['output']>;
   map_id?: Maybe<Scalars['u64']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
 };
 
 export type FoodConnection = {
@@ -227,8 +227,8 @@ export type FoodOrder = {
 
 export enum FoodOrderOrderField {
   Balance = 'BALANCE',
-  Id = 'ID',
-  MapId = 'MAP_ID'
+  MapId = 'MAP_ID',
+  Owner = 'OWNER'
 }
 
 export type FoodWhereInput = {
@@ -238,18 +238,18 @@ export type FoodWhereInput = {
   balanceLT?: InputMaybe<Scalars['Int']['input']>;
   balanceLTE?: InputMaybe<Scalars['Int']['input']>;
   balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  idGT?: InputMaybe<Scalars['String']['input']>;
-  idGTE?: InputMaybe<Scalars['String']['input']>;
-  idLT?: InputMaybe<Scalars['String']['input']>;
-  idLTE?: InputMaybe<Scalars['String']['input']>;
-  idNEQ?: InputMaybe<Scalars['String']['input']>;
   map_id?: InputMaybe<Scalars['Int']['input']>;
   map_idGT?: InputMaybe<Scalars['Int']['input']>;
   map_idGTE?: InputMaybe<Scalars['Int']['input']>;
   map_idLT?: InputMaybe<Scalars['Int']['input']>;
   map_idLTE?: InputMaybe<Scalars['Int']['input']>;
   map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  ownerGT?: InputMaybe<Scalars['String']['input']>;
+  ownerGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerLT?: InputMaybe<Scalars['String']['input']>;
+  ownerLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GlobalConfig = {
@@ -308,8 +308,8 @@ export type Gold = {
   __typename?: 'Gold';
   balance?: Maybe<Scalars['u64']['output']>;
   entity?: Maybe<Entity>;
-  id?: Maybe<Scalars['ContractAddress']['output']>;
   map_id?: Maybe<Scalars['u64']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
 };
 
 export type GoldConnection = {
@@ -331,8 +331,8 @@ export type GoldOrder = {
 
 export enum GoldOrderOrderField {
   Balance = 'BALANCE',
-  Id = 'ID',
-  MapId = 'MAP_ID'
+  MapId = 'MAP_ID',
+  Owner = 'OWNER'
 }
 
 export type GoldWhereInput = {
@@ -342,26 +342,26 @@ export type GoldWhereInput = {
   balanceLT?: InputMaybe<Scalars['Int']['input']>;
   balanceLTE?: InputMaybe<Scalars['Int']['input']>;
   balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  idGT?: InputMaybe<Scalars['String']['input']>;
-  idGTE?: InputMaybe<Scalars['String']['input']>;
-  idLT?: InputMaybe<Scalars['String']['input']>;
-  idLTE?: InputMaybe<Scalars['String']['input']>;
-  idNEQ?: InputMaybe<Scalars['String']['input']>;
   map_id?: InputMaybe<Scalars['Int']['input']>;
   map_idGT?: InputMaybe<Scalars['Int']['input']>;
   map_idGTE?: InputMaybe<Scalars['Int']['input']>;
   map_idLT?: InputMaybe<Scalars['Int']['input']>;
   map_idLTE?: InputMaybe<Scalars['Int']['input']>;
   map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  ownerGT?: InputMaybe<Scalars['String']['input']>;
+  ownerGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerLT?: InputMaybe<Scalars['String']['input']>;
+  ownerLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Iron = {
   __typename?: 'Iron';
   balance?: Maybe<Scalars['u64']['output']>;
   entity?: Maybe<Entity>;
-  id?: Maybe<Scalars['ContractAddress']['output']>;
   map_id?: Maybe<Scalars['u64']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
 };
 
 export type IronConnection = {
@@ -383,8 +383,8 @@ export type IronOrder = {
 
 export enum IronOrderOrderField {
   Balance = 'BALANCE',
-  Id = 'ID',
-  MapId = 'MAP_ID'
+  MapId = 'MAP_ID',
+  Owner = 'OWNER'
 }
 
 export type IronWhereInput = {
@@ -394,18 +394,18 @@ export type IronWhereInput = {
   balanceLT?: InputMaybe<Scalars['Int']['input']>;
   balanceLTE?: InputMaybe<Scalars['Int']['input']>;
   balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  idGT?: InputMaybe<Scalars['String']['input']>;
-  idGTE?: InputMaybe<Scalars['String']['input']>;
-  idLT?: InputMaybe<Scalars['String']['input']>;
-  idLTE?: InputMaybe<Scalars['String']['input']>;
-  idNEQ?: InputMaybe<Scalars['String']['input']>;
   map_id?: InputMaybe<Scalars['Int']['input']>;
   map_idGT?: InputMaybe<Scalars['Int']['input']>;
   map_idGTE?: InputMaybe<Scalars['Int']['input']>;
   map_idLT?: InputMaybe<Scalars['Int']['input']>;
   map_idLTE?: InputMaybe<Scalars['Int']['input']>;
   map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  ownerGT?: InputMaybe<Scalars['String']['input']>;
+  ownerGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerLT?: InputMaybe<Scalars['String']['input']>;
+  ownerLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Land = {
@@ -563,9 +563,9 @@ export type LandWhereInput = {
 export type Player = {
   __typename?: 'Player';
   entity?: Maybe<Entity>;
-  id?: Maybe<Scalars['ContractAddress']['output']>;
   joined_time?: Maybe<Scalars['u64']['output']>;
   nick_name?: Maybe<Scalars['felt252']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
 };
 
 export type PlayerConnection = {
@@ -586,18 +586,12 @@ export type PlayerOrder = {
 };
 
 export enum PlayerOrderOrderField {
-  Id = 'ID',
   JoinedTime = 'JOINED_TIME',
-  NickName = 'NICK_NAME'
+  NickName = 'NICK_NAME',
+  Owner = 'OWNER'
 }
 
 export type PlayerWhereInput = {
-  id?: InputMaybe<Scalars['String']['input']>;
-  idGT?: InputMaybe<Scalars['String']['input']>;
-  idGTE?: InputMaybe<Scalars['String']['input']>;
-  idLT?: InputMaybe<Scalars['String']['input']>;
-  idLTE?: InputMaybe<Scalars['String']['input']>;
-  idNEQ?: InputMaybe<Scalars['String']['input']>;
   joined_time?: InputMaybe<Scalars['Int']['input']>;
   joined_timeGT?: InputMaybe<Scalars['Int']['input']>;
   joined_timeGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -610,6 +604,12 @@ export type PlayerWhereInput = {
   nick_nameLT?: InputMaybe<Scalars['String']['input']>;
   nick_nameLTE?: InputMaybe<Scalars['String']['input']>;
   nick_nameNEQ?: InputMaybe<Scalars['String']['input']>;
+  owner?: InputMaybe<Scalars['String']['input']>;
+  ownerGT?: InputMaybe<Scalars['String']['input']>;
+  ownerGTE?: InputMaybe<Scalars['String']['input']>;
+  ownerLT?: InputMaybe<Scalars['String']['input']>;
+  ownerLTE?: InputMaybe<Scalars['String']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Query = {
@@ -1294,7 +1294,7 @@ export type GetAllBaseQueryVariables = Exact<{
 }>;
 
 
-export type GetAllBaseQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', id?: any | null, map_id?: any | null, x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllBaseQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base', owner?: any | null, map_id?: any | null, x?: any | null, y?: any | null } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetAllLandsQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -1469,7 +1469,7 @@ export const GetAllBaseDocument = gql`
         components {
           __typename
           ... on Base {
-            id
+            owner
             map_id
             x
             y

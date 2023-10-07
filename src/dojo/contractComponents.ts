@@ -12,7 +12,7 @@ export function defineContractComponents(world: World) {
           map_id: RecsType.Number,
           x: RecsType.Number,
           y: RecsType.Number,
-          owner: RecsType.Number,
+          owner: RecsType.String,
           building: RecsType.Number,
           level: RecsType.Number,
         },
@@ -65,7 +65,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          id: RecsType.Number,
+          id: RecsType.String,
           nick_name: RecsType.Number,
           joined_time: RecsType.Number,
         },
@@ -82,7 +82,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.Number,
+          id: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -98,7 +98,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.Number,
+          id: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -114,7 +114,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.Number,
+          id: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -147,7 +147,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.Number,
+          id: RecsType.String,
           x: RecsType.Number,
           y: RecsType.Number,
         },
@@ -182,7 +182,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          id: RecsType.Number,
+          id: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -198,7 +198,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          owner: RecsType.Number,
+          owner: RecsType.String,
           index: RecsType.Number,
           balance: RecsType.Number,
           from_x: RecsType.Number,
@@ -221,7 +221,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          owner: RecsType.Number,
+          owner: RecsType.String,
           start_time: RecsType.Number,
           total: RecsType.Number,
           out: RecsType.Number,
@@ -239,7 +239,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          owner: RecsType.Number,
+          owner: RecsType.String,
           balance: RecsType.Number,
         },
         {

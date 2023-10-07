@@ -128,7 +128,7 @@ query getAllBase($map_id:String) {
         components {
           __typename
           ... on Base {
-            id
+            owner
             map_id
             x
             y

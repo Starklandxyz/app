@@ -158,7 +158,7 @@ export default function MapUI() {
                     if (c && c[0] && c[0].__typename == "Base") {
                         const b = c[0] as Base
                         const coord = { x: b.x, y: b.y }
-                        newBases.set(b.id, coord)
+                        newBases.set(b.owner, coord)
                     }
                 }
             }

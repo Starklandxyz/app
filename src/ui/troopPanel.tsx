@@ -53,7 +53,7 @@ export default function TroopPanel() {
 
     const fetchTroops = async () => {
         const ts = await graphSdk.getAllTroops({ map_id: "0x1" })
-        console.log("fetchTroops", ts);
+        // console.log("fetchTroops", ts);
         const edges = ts.data.entities?.edges
         const tt = new Map(troops)
         if (edges) {
@@ -71,6 +71,8 @@ export default function TroopPanel() {
                             t.totalTime = element.distance * Troop_Speed
                             t.index = element.index
                             t.id = t.owner + "_" + t.index
+                            console.log("fetchTroops",t);
+                            
                             tt.set(t.id, t)
                         }
                     }
