@@ -1,16 +1,22 @@
 import { useMemo } from "react";
 import { Troop } from "../../types/Troop";
 import { ClickWrapper } from "../clickWrapper";
-import { getTimestamp, toastSuccess } from "../../utils";
+import { getTimestamp, toastError, toastSuccess } from "../../utils";
 import { ticStore } from "../../store/ticStore";
 import { troopStore } from "../../store/troopStore";
 import flag from "../../../public/assets/icons/flag.png";
 import soldierIcon from "../../../public/assets/icons/soldier.png"
 import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
+import { store } from "../../store/store";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
     const { troops } = troopStore()
+    const { account, phaserLayer, networkLayer } = store()
+
+    const {
+        systemCalls: { retreatTroop },
+    } = networkLayer!
 
     const troop: Troop = params.troop
     const base: Coord = params.base
@@ -18,28 +24,26 @@ export default function TroopItem(params: any) {
 
     }
 
+    //todo
     const attackClick = () => {
         toastSuccess("Attack Success")
+    }
+
+    const enterLand = ()=>{
 
     }
 
-    const retreat = () => {
+    const retreat = async () => {
         console.log("retreat");
-        // const nt = new Map(troops)
-        // const t = new Troop(troop.owner, troop.to, troop.from, getTimestamp())
-        // t.id = troop.id
-        // t.amount = troop.amount
-        // t.totalTime = troop.totalTime
-        // const leftTime = troop.totalTime - (getTimestamp() - troop.startTime)
-        // if (leftTime < 0) {
-        //     t.startTime = getTimestamp()
-        // } else {
-        //     t.startTime = getTimestamp() - leftTime
-        // }
-
-        // t.retreat = true
-        // nt.set(t.id, t)
-        // troopStore.setState({ troops: nt })
+        if(!account){
+            return
+        }
+        const result = await retreatTroop(account,1,troop.index)
+        if(result&&result.length>0){
+            toastSuccess("Retreat...")
+        }else{
+            toastError("Retreat fail")
+        }
     }
 
     const getTime = useMemo(() => {
@@ -80,6 +84,17 @@ export default function TroopItem(params: any) {
         }
     }, [troop])
 
+    const getTo = useMemo(()=>{
+        if (!base) {
+            return `(${troop.to.x},${troop.to.y})`
+        }
+        if (base.x == troop.to.x && base.y == troop.to.y) {
+            return "Base"
+        } else {
+            return `(${troop.to.x},${troop.to.y})`
+        }
+    },[troop])
+
     return (
         <ClickWrapper style={{ cursor: "pointer", marginBottom: 20 }}>
             <div style={{ display: "flex" }}>
@@ -97,17 +112,25 @@ export default function TroopItem(params: any) {
                 <div style={{display: "flex", flex: 1 }}>
                     <span>{getFrom}</span>
                     <span> {" => "} </span>
-                    <span>({troop.to.x},{troop.to.y})</span>
+                    <span>{getTo}</span>
                 </div>
 
                 <div style={{ color:"coral", display: "flex", justifyContent: "flex-end",alignItems: "center" }}>
                     <p style={{ marginLeft: 10 }}>{getTime}</p>
                     {
                         !troop.retreat ?
-                            <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span> : <p style={{ marginLeft: 10 }}>撤...</p>
+                            <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span> : 
+                            <>
+                            {
+                                ((troop.totalTime - (getTimestamp() - troop.startTime)) > 0) && <p style={{ marginLeft: 10 }}>撤...</p>
+                            }
+                            </>
                     }
                     {
                         ((troop.totalTime - (getTimestamp() - troop.startTime)) <= 0 && !troop.retreat) && <span onClick={() => attackClick()} style={{ cursor: "pointer", marginLeft: 10 }}>攻</span>
+                    }
+                    {
+                        ((troop.totalTime - (getTimestamp() - troop.startTime)) <= 0) &&<span onClick={()=>{enterLand()}}>驻</span>
                     }
                 </div>
 

@@ -108,6 +108,7 @@ export default function SendTroopPanel() {
         const index = t.index as number
         const to_x = t.to_x as number
         const to_y = t.to_y as number
+        const retreat = t.retreat as boolean
         const owner = t.owner as string
         const distance = t.distance as number
         const start_time = t.start_time as number
@@ -116,6 +117,7 @@ export default function SendTroopPanel() {
         const troop = new Troop(owner, from, to, start_time)
         const tid = troop.owner + "_" + index
         troop.amount = balance;
+        troop.retreat = retreat
         troop.id = tid
         troop.index = index
         troop.distance = distance

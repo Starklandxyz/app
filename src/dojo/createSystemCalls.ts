@@ -58,6 +58,30 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const retreatTroop = async (signer: Account, map_id: number,index:number) => {
+    try {
+      console.log("recoverEnergy start");
+      const tx = await execute(signer, "retreat_troop", [map_id,index]);
+
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      console.log("roll receipt:", receipt);
+      const events = getEvents(receipt);
+      console.log(events);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    } finally {
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    }
+    return undefined;
+  };
+
   const takeWarrior = async (
     signer: Account,
     map_id: number
@@ -170,6 +194,7 @@ export function createSystemCalls(
 
   return {
     airdrop,
+    retreatTroop,
     takeWarrior,
     sendTroop,
     spawn,

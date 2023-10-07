@@ -65,7 +65,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          id: RecsType.String,
+          owner: RecsType.String,
           nick_name: RecsType.Number,
           joined_time: RecsType.Number,
         },
@@ -82,7 +82,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.String,
+          owner: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -98,7 +98,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.String,
+          owner: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -114,7 +114,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.String,
+          owner: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -147,7 +147,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           map_id: RecsType.Number,
-          id: RecsType.String,
+          owner: RecsType.String,
           x: RecsType.Number,
           y: RecsType.Number,
         },
@@ -182,7 +182,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          id: RecsType.String,
+          owner: RecsType.String,
           balance: RecsType.Number,
         },
         {
@@ -207,6 +207,7 @@ export function defineContractComponents(world: World) {
           to_y: RecsType.Number,
           start_time: RecsType.Number,
           distance: RecsType.Number,
+          retreat: RecsType.Boolean,
         },
         {
           metadata: {

@@ -71,6 +71,7 @@ export default function TroopPanel() {
                             t.totalTime = element.distance * Troop_Speed
                             t.index = element.index
                             t.id = t.owner + "_" + t.index
+                            t.retreat = element.retreat
                             console.log("fetchTroops",t);
                             
                             tt.set(t.id, t)

@@ -39,12 +39,9 @@ export default function TroopsUI() {
     useEffect(() => {
         // console.log("time change", timenow);
         troops.forEach((value, _) => {
-            // console.log(value.owner);
             const base = bases.get(value.owner)
-            // console.log("troop",value.owner,base);
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
-            // console.log("troop tic", value, left);
             if (left < 0) {
                 showTroop(value)
                 hideTroopArrow(objectPool, value);

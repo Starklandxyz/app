@@ -19,6 +19,7 @@ export type Scalars = {
   ContractAddress: { input: any; output: any; }
   Cursor: { input: any; output: any; }
   DateTime: { input: any; output: any; }
+  bool: { input: any; output: any; }
   felt252: { input: any; output: any; }
   u64: { input: any; output: any; }
   u128: { input: any; output: any; }
@@ -942,6 +943,7 @@ export type Troop = {
   index?: Maybe<Scalars['u64']['output']>;
   map_id?: Maybe<Scalars['u64']['output']>;
   owner?: Maybe<Scalars['ContractAddress']['output']>;
+  retreat?: Maybe<Scalars['bool']['output']>;
   start_time?: Maybe<Scalars['u64']['output']>;
   to_x?: Maybe<Scalars['u64']['output']>;
   to_y?: Maybe<Scalars['u64']['output']>;
@@ -972,6 +974,7 @@ export enum TroopOrderOrderField {
   Index = 'INDEX',
   MapId = 'MAP_ID',
   Owner = 'OWNER',
+  Retreat = 'RETREAT',
   StartTime = 'START_TIME',
   ToX = 'TO_X',
   ToY = 'TO_Y'
@@ -1020,6 +1023,12 @@ export type TroopWhereInput = {
   ownerLT?: InputMaybe<Scalars['String']['input']>;
   ownerLTE?: InputMaybe<Scalars['String']['input']>;
   ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  retreat?: InputMaybe<Scalars['Int']['input']>;
+  retreatGT?: InputMaybe<Scalars['Int']['input']>;
+  retreatGTE?: InputMaybe<Scalars['Int']['input']>;
+  retreatLT?: InputMaybe<Scalars['Int']['input']>;
+  retreatLTE?: InputMaybe<Scalars['Int']['input']>;
+  retreatNEQ?: InputMaybe<Scalars['Int']['input']>;
   start_time?: InputMaybe<Scalars['Int']['input']>;
   start_timeGT?: InputMaybe<Scalars['Int']['input']>;
   start_timeGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -1331,7 +1340,7 @@ export type GetAllTroopsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllTroopsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop', owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllTroopsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Base' } | { __typename: 'ETH' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop', owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null, retreat?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 
 export const GetAllPlayersDocument = gql`
@@ -1595,6 +1604,7 @@ export const GetAllTroopsDocument = gql`
             to_y
             start_time
             distance
+            retreat
           }
         }
       }

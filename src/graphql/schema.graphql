@@ -252,6 +252,7 @@ query getAllTroops($map_id:String) {
             to_y
             start_time
             distance
+            retreat
           }
         }
       }
