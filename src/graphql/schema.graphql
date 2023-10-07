@@ -226,6 +226,7 @@ query getTroopsByKey($map_id:String,$key: String) {
             to_x
             to_y
             start_time
+            distance
           }
         }
       }
@@ -250,6 +251,7 @@ query getAllTroops($map_id:String) {
             to_x
             to_y
             start_time
+            distance
           }
         }
       }

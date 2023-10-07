@@ -3,7 +3,7 @@ import { store } from "../store/store";
 import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { controlStore } from "../store/controlStore";
-import { Troop, getTroopDistance } from "../types/Troop";
+import { Troop } from "../types/Troop";
 import { troopStore } from "../store/troopStore";
 import { getTimestamp, toastError, toastSuccess } from "../utils";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -100,6 +100,7 @@ export default function SendTroopPanel() {
     }
 
     const addTroop = (t: any) => {
+        console.log("addTroop",t);
         const newTroops = new Map(troopsRef.current)
         const balance = t.balance as number
         const from_x = t.from_x as number
@@ -108,6 +109,7 @@ export default function SendTroopPanel() {
         const to_x = t.to_x as number
         const to_y = t.to_y as number
         const owner = t.owner as string
+        const distance = t.distance as number
         const start_time = t.start_time as number
         const from = { x: from_x, y: from_y }
         const to = { x: to_x, y: to_y }
@@ -116,7 +118,8 @@ export default function SendTroopPanel() {
         troop.amount = balance;
         troop.id = tid
         troop.index = index
-        troop.totalTime = getTroopDistance(from, to) * Troop_Speed
+        troop.distance = distance
+        troop.totalTime = distance * Troop_Speed
         newTroops.set(tid, troop)
         troopStore.setState({
             troops: newTroops
@@ -125,7 +128,7 @@ export default function SendTroopPanel() {
 
     useEffect(() => {
         defineSystem(world, [Has(components.Troop)], ({ value }) => {
-            console.log("Troop", value);
+            console.log("Troop change", value);
             const t = value[0]
             if (t) {
                 console.log("Troop size", troopsRef.current.size);
@@ -147,7 +150,20 @@ export default function SendTroopPanel() {
         if (!sendTroopCtr.troop) {
             return 0
         }
-        const dis = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y - sendTroopCtr.troop.to.y)
+        const dis1 = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y - sendTroopCtr.troop.to.y)
+        let dis = dis1
+        const dis2 = Math.abs(base.x + 1 - sendTroopCtr.troop.to.x) + Math.abs(base.y - sendTroopCtr.troop.to.y)
+        if(dis>dis2){
+            dis = dis2
+        }
+        const dis3 = Math.abs(base.x + 1 - sendTroopCtr.troop.to.x) + Math.abs(base.y +1 - sendTroopCtr.troop.to.y)
+        if(dis>dis3){
+            dis = dis3
+        }
+        const dis4 = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y+1 - sendTroopCtr.troop.to.y)
+        if(dis>dis4){
+            dis = dis4
+        }
         return dis
     }
 
@@ -161,11 +177,6 @@ export default function SendTroopPanel() {
         return result + "s"
     }, [sendTroopCtr, inputValue])
 
-    useEffect(() => {
-        console.log("calWarrior base change", bases);
-
-    }, [bases.keys()])
-
     const calWarrior = () => {
         if (!account) {
             return 0
@@ -175,10 +186,10 @@ export default function SendTroopPanel() {
             return 0
         }
         const key = base.x + "_" + base.y
-        console.log("calWarrior", key);
+        // console.log("calWarrior", key);
         const w = landWarriors.get(key)
-        console.log("calWarrior", bases);
-        console.log("calWarrior", base, w, account.address);
+        // console.log("calWarrior", bases);
+        // console.log("calWarrior", base, w, account.address);
         if (w) {
             return w
         } else {
@@ -200,7 +211,7 @@ export default function SendTroopPanel() {
             const ks = key.split("_")
             // console.log("calTroopID",key,value);
             if (ks[0] == account.address) {
-                console.log("calTroopID", ks, account.address);
+                // console.log("calTroopID", ks, account.address);
                 if (value.startTime == 0) {
                     id = ks[1]
                 }

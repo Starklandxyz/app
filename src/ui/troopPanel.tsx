@@ -3,11 +3,12 @@ import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { troopStore } from "../store/troopStore";
 import { store } from "../store/store";
-import { Troop, getTroopTotalTime } from "../types/Troop";
+import { Troop } from "../types/Troop";
 import TroopItem from "./components/TroopItem";
 import { playerStore } from "../store/playerStore";
 import { mapStore } from "../store/mapStore";
 import { buildStore } from "../store/buildstore";
+import { Troop_Speed } from "../contractconfig";
 
 export default function TroopPanel() {
     const { troops } = troopStore()
@@ -66,7 +67,8 @@ export default function TroopPanel() {
                             const t = new Troop(element.owner, { x: element.from_x, y: element.from_y },
                                 { x: element.to_x, y: element.to_y }, element.start_time);
                             t.amount = element.balance
-                            t.totalTime = getTroopTotalTime(t)
+                            t.distance = element.distance
+                            t.totalTime = element.distance * Troop_Speed
                             t.index = element.index
                             t.id = t.owner + "_" + t.index
                             tt.set(t.id, t)

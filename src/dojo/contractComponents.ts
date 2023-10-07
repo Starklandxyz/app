@@ -206,6 +206,7 @@ export function defineContractComponents(world: World) {
           to_x: RecsType.Number,
           to_y: RecsType.Number,
           start_time: RecsType.Number,
+          distance: RecsType.Number,
         },
         {
           metadata: {

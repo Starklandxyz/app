@@ -57,6 +57,7 @@ export default function TroopsUI() {
             if (end.x < start.x) {
                 flip = true
             }
+            console.log("createArmey",value);
             createArmey(objectPool, value.id, pos, left, flip)
         })
     }, [timenow])
@@ -96,6 +97,8 @@ export default function TroopsUI() {
     }
 
     const createArrowLine = (pool: ObjectPool, troop: Troop) => {
+        console.log("createArrowLine",troop);
+        
         var from_x = troop.from.x
         var from_y = troop.from.y
         putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
@@ -164,7 +167,7 @@ export default function TroopsUI() {
 
     const createArmey = (pool: ObjectPool, id: number | string, pos: Coord, leftTime: number, flip = false) => {
         const playerObj = pool.get("armey_" + id, "Sprite")
-        // console.log("createArmey",id,flip);
+        console.log("createArmey",pos,leftTime);
         playerObj.spawn()
         playerObj.setComponent({
             id: "position",

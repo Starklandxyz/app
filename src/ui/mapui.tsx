@@ -145,10 +145,6 @@ export default function MapUI() {
     //         }
     //     }
     // }
-    useEffect(() => {
-        console.log("calWarrior base change", bases);
-
-    }, [bases.keys()])
     const fetchAllBase = async (map_id: string) => {
         const base = await graphSdk.getAllBase({ map_id: map_id })
         console.log("fetchAllBase", account?.address, base);

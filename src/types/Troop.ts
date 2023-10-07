@@ -11,6 +11,7 @@ export class Troop {
     public startTime: number = 0
     public totalTime: number = 0
     public amount: number = 0;
+    public distance = 0
     public retreat = false
 
     constructor(owner_: string, from_: Coord, to_: Coord, startTime_: number) {
@@ -19,16 +20,4 @@ export class Troop {
         this.to = to_;
         this.startTime = startTime_;
     }
-}
-
-export const getTroopDistance = (from:Coord,to:Coord)=>{
-    let xDiff = Math.abs(from.x-to.x)
-    let yDiff = Math.abs(to.y-from.y)
-    return xDiff + yDiff
-}
-
-export const getTroopTotalTime = (troop:Troop)=>{
-    let dis = getTroopDistance(troop.from,troop.to)
-    let total = dis * Troop_Speed
-    return total
 }
