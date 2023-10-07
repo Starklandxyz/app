@@ -133,7 +133,7 @@ export default function SendTroopPanel() {
             console.log("Troop change", value);
             const t = value[0]
             if (t) {
-                console.log("Troop size", troopsRef.current.size);
+                // console.log("Troop size", troopsRef.current.size);
                 addTroop(t)
             }
         })
@@ -207,22 +207,20 @@ export default function SendTroopPanel() {
         if (!account) {
             return 1
         }
-
-        let id = null
+        let id = 1
         troops.forEach((value, key) => {
             const ks = key.split("_")
-            // console.log("calTroopID",key,value);
+            // console.log("calTroopID",ks,account.address);
             if (ks[0] == account.address) {
-                // console.log("calTroopID", ks, account.address);
                 if (value.startTime == 0) {
-                    id = ks[1]
+                    id = parseInt(ks[1])
+                    return
                 }
+                id++
             }
         })
-        if (id) {
-            return id
-        }
-        return troops.size + 1
+        console.log("calTroopID",id);
+        return id
     }
 
     const getTroopID = useMemo(() => {

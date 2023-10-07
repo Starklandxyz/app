@@ -105,7 +105,7 @@ export function parseKeyValue(value: bigint, type: RecsType) {
 
     switch (type) {
         case RecsType.Number:
-            return (value);
+            return Number(value);
         case RecsType.String:
             return "0x"+value.toString(16)
         default:

@@ -72,7 +72,7 @@ export default function TroopPanel() {
                             t.index = element.index
                             t.id = t.owner + "_" + t.index
                             t.retreat = element.retreat
-                            console.log("fetchTroops",t);
+                            // console.log("fetchTroops",t);
                             
                             tt.set(t.id, t)
                         }
@@ -83,13 +83,23 @@ export default function TroopPanel() {
         troopStore.setState({ troops: tt })
     }
 
+    const getMyTroopSize= useMemo(()=>{
+        var size = 0
+        troops.forEach((value,key)=>{
+            if(value.owner == account?.address){
+                size++
+            }
+        })
+        return size
+    },[troops,account])
+
     return (<ClickWrapper>
         <Container>
             {
                 account &&
                 <div style={{ overflow: "auto", width: 220, maxHeight: 420, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                     <div style={{display:"flex"}}>
-                        <p style={{ flex:1, fontSize: 20, color: "pink" }}>Troops - <span style={{ fontSize: "17px", color: "lightblue" }}> {troops.size}</span></p>
+                        <p style={{ flex:1, fontSize: 20, color: "pink" }}>Troops - <span style={{ fontSize: "17px", color: "lightblue" }}> {getMyTroopSize}</span></p>
                         <button style={{ height:"22px", alignSelf:"center", justifyContent:"flex-end"}} onClick={toggleContent}>Show/Hide</button>
                     </div>
                     {showContent && (
