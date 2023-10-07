@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { troopStore } from "../store/troopStore";
@@ -13,7 +13,11 @@ export default function TroopPanel() {
     const { troops } = troopStore()
     const { account, phaserLayer } = store()
     const { player } = playerStore()
-    const {bases} = buildStore()
+    const { bases } = buildStore()
+    const [showContent, setShowContent] = useState(true);
+    const toggleContent = useCallback(() => {
+        setShowContent(!showContent);
+    }, [showContent]);
     // const [userTroop, setUserTroop] = useState<Array<Troop>>([])
 
     const {
@@ -42,9 +46,9 @@ export default function TroopPanel() {
     //     fetchTroops()
     // }, [player])
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchTroops()
-    },[])
+    }, [])
 
     const fetchTroops = async () => {
         const ts = await graphSdk.getAllTroops({ map_id: "0x1" })
@@ -78,13 +82,18 @@ export default function TroopPanel() {
         <Container>
             {
                 account &&
-                <div style={{overflow:"auto",  width: 220, maxHeight: 420, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-                    <p style={{ fontSize: 20, color: "pink" }}>Troops</p>
-                    <div>
-                        {[...troops.values()].map(value => (
-                            (value.owner == account.address) && <TroopItem key={value.id} base={bases.get(account.address)} troop={value}/>
-                        ))}
+                <div style={{ overflow: "auto", width: 220, maxHeight: 420, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                    <div style={{display:"flex"}}>
+                        <p style={{ flex:1, fontSize: 20, color: "pink" }}>Troops - <span style={{ fontSize: "17px", color: "lightblue" }}> {troops.size}</span></p>
+                        <button style={{ height:"22px", alignSelf:"center", justifyContent:"flex-end"}} onClick={toggleContent}>Show/Hide</button>
                     </div>
+                    {showContent && (
+                        <div>
+                            {[...troops.values()].map(value => (
+                                (value.owner == account.address) && <TroopItem key={value.id} base={bases.get(account.address)} troop={value} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             }
 
