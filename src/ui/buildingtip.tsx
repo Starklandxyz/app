@@ -86,6 +86,7 @@ export default function BuildingTip() {
             if (landWarriors.get(lastCoord.x + "_" + lastCoord.y))
                 land_warrior = "" + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
             // console.log("land info", lastCoord, land_warrior);
+            // bases.get(account?.address!)
         } else {
             const land_type = get_land_type(1, lastCoord.x, lastCoord.y)
             land_desc = "Can't be occupied"
@@ -174,7 +175,15 @@ export default function BuildingTip() {
     }
 
     const sendTroopClick = () => {
-        const troop = new Troop(account?.address!, bases.get(account?.address!)!, lastCoord, getTimestamp())
+        console.log("sendTroopClick");
+        if(!account){
+            return
+        }
+        const base = bases.get(account.address)
+        if(!base){
+            return
+        }
+        const troop = new Troop(account.address, base, lastCoord, getTimestamp())
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true } })
         setShowButtons({ show: false, x: 0, y: 0 })
     }

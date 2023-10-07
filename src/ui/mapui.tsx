@@ -145,7 +145,10 @@ export default function MapUI() {
     //         }
     //     }
     // }
+    useEffect(() => {
+        console.log("calWarrior base change", bases);
 
+    }, [bases.keys()])
     const fetchAllBase = async (map_id: string) => {
         const base = await graphSdk.getAllBase({ map_id: map_id })
         console.log("fetchAllBase", account?.address, base);
@@ -158,11 +161,13 @@ export default function MapUI() {
                     const c = edge.node?.components
                     if (c && c[0] && c[0].__typename == "Base") {
                         const b = c[0] as Base
-                        newBases.set(b.id, { x: b.x, y: b.y })
+                        const coord = { x: b.x, y: b.y }
+                        newBases.set(b.id, coord)
                     }
                 }
             }
         }
+        console.log("fetchAllBase");
         buildStore.setState({ bases: newBases })
     }
 

@@ -3,8 +3,6 @@ import { store } from "../store/store";
 import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { controlStore } from "../store/controlStore";
-// ../../node_modules/@latticexyz/recs/src/index
-import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { Troop, getTroopDistance } from "../types/Troop";
 import { troopStore } from "../store/troopStore";
 import { getTimestamp, toastError, toastSuccess } from "../utils";
@@ -23,11 +21,11 @@ export default function SendTroopPanel() {
     const { troops } = troopStore()
     const [inputValue, setInputValue] = useState(1)
 
-    const troopsRef = useRef<Map<string,Troop>>(new Map())
+    const troopsRef = useRef<Map<string, Troop>>(new Map())
 
-    useEffect(()=>{
+    useEffect(() => {
         troopsRef.current = troops
-    },[troops])
+    }, [troops])
 
     const {
         networkLayer: {
@@ -80,6 +78,8 @@ export default function SendTroopPanel() {
             return
         }
         const w = calWarrior()
+        console.log("confirm", w, inputValue);
+
         if (!w || inputValue > w) {
             toastError("Warrior is not enough")
             return
@@ -93,8 +93,6 @@ export default function SendTroopPanel() {
         const result = await sendTroop(account, 1, inputValue, troop_id, troop.from.x, troop.from.y, troop.to.x, troop.to.y);
         if (result && result.length > 0) {
             toastSuccess("Troop Success")
-            // addTroop(sendTroopCtr?.troop!.to)
-            // putTileAt(sendTroopCtr?.troop!.to, TilesetZone.MyZoneWait, "Occupy");
         } else {
             toastError("Troop failed")
         }
@@ -163,6 +161,11 @@ export default function SendTroopPanel() {
         return result + "s"
     }, [sendTroopCtr, inputValue])
 
+    useEffect(() => {
+        console.log("calWarrior base change", bases);
+
+    }, [bases.keys()])
+
     const calWarrior = () => {
         if (!account) {
             return 0
@@ -171,7 +174,11 @@ export default function SendTroopPanel() {
         if (!base) {
             return 0
         }
-        const w = landWarriors.get(base.x + "_" + base.y)
+        const key = base.x + "_" + base.y
+        console.log("calWarrior", key);
+        const w = landWarriors.get(key)
+        console.log("calWarrior", bases);
+        console.log("calWarrior", base, w, account.address);
         if (w) {
             return w
         } else {
@@ -188,15 +195,20 @@ export default function SendTroopPanel() {
             return 1
         }
 
+        let id = null
         troops.forEach((value, key) => {
             const ks = key.split("_")
             // console.log("calTroopID",key,value);
             if (ks[0] == account.address) {
+                console.log("calTroopID", ks, account.address);
                 if (value.startTime == 0) {
-                    return ks[1]
+                    id = ks[1]
                 }
             }
         })
+        if (id) {
+            return id
+        }
         return troops.size + 1
     }
 
@@ -205,40 +217,41 @@ export default function SendTroopPanel() {
     }, [account, troops.keys()])
 
     return (
-        sendTroopCtr.show &&
         <ClickWrapper>
             <Container>
-                <div style={{ width: 340, height: 260, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-                    <p style={{ color: "pink" }}>Send Troop</p>
-                    <table cellSpacing={13}>
-                        <tr>
-                            <td>Position : ({sendTroopCtr.troop!.to.x},{sendTroopCtr.troop!.to.y})</td>
-                            <td>Owner : None</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Distance : {calDistance()}
-                            </td>
-                            <td>
-                                TroopID : {getTroopID}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Time : {calTime}</td>
-                            <td>Consume : {calFood} Food</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Send Soldier:
-                            </td>
-                            <td>
-                                <input onChange={inputChange} type="number" style={{ width: 50 }} value={inputValue} /> / {getWarrior}
-                            </td>
-                        </tr>
-                    </table>
-                    <button onClick={() => cancel()} style={{ marginLeft: 10, marginRight: 10 }}>Cancel</button>
-                    <button onClick={() => confirm()}>Confirm</button>
-                </div>
+                {
+                    sendTroopCtr.show && <div style={{ width: 340, height: 260, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                        <p style={{ color: "pink" }}>Send Troop</p>
+                        <table cellSpacing={13}>
+                            <tr>
+                                <td>Position : ({sendTroopCtr.troop!.to.x},{sendTroopCtr.troop!.to.y})</td>
+                                <td>Owner : None</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Distance : {calDistance()}
+                                </td>
+                                <td>
+                                    TroopID : {getTroopID}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Time : {calTime}</td>
+                                <td>Consume : {calFood} Food</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Send Soldier:
+                                </td>
+                                <td>
+                                    <input onChange={inputChange} type="number" style={{ width: 50 }} value={inputValue} /> / {getWarrior}
+                                </td>
+                            </tr>
+                        </table>
+                        <button onClick={() => cancel()} style={{ marginLeft: 10, marginRight: 10 }}>Cancel</button>
+                        <button onClick={() => confirm()}>Confirm</button>
+                    </div>
+                }
             </Container>
         </ClickWrapper>
     )

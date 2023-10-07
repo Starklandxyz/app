@@ -13,7 +13,6 @@ import { Player2Player } from "../types";
 import { Player as PlayerSQL } from "../generated/graphql";
 import { Player } from "../dojo/createSystemCalls";
 import { resourceStore } from "../store/resourcestore";
-import { buildStore } from "../store/buildstore";
 import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";

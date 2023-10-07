@@ -163,6 +163,7 @@ export default function TrainPanel() {
     }
 
     const getTrainTime = useMemo(() => {
+        // console.log("base change",bases.get(account?.address!));
         const usedtime = timenow - training.startTime
         if (usedtime >= training.total * Train_Time) {
             return "Finish"
@@ -190,6 +191,10 @@ export default function TrainPanel() {
             setTraining(_ => t)
         })
     }, [])
+    
+    // useEffect(()=>{
+
+    // },[bases.keys()])
 
     return (<ClickWrapper>
         <Container>

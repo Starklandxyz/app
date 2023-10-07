@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { Assets, MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 // import { tileCoordToPixelCoord,ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/index";
-import { TilesetNum, TilesetSoldier, TilesetZone } from "../artTypes/world";
+import { Tileset, TilesetNum, TilesetSoldier, TilesetZone } from "../artTypes/world";
 import { Troop } from "../types/Troop";
 import { getTimestamp } from "../utils";
 import { controlStore } from "../store/controlStore";
@@ -20,8 +20,8 @@ export default function TroopsUI() {
     const { account, phaserLayer } = store()
     const { timenow } = ticStore()
     const { troops } = troopStore()
-    const {lands} = mapStore()
-    const { sendTroopCtr: sendTroop } = controlStore()
+    const { lands } = mapStore()
+    const { sendTroopCtr } = controlStore()
 
     const {
         scenes: {
@@ -62,7 +62,7 @@ export default function TroopsUI() {
     }, [timenow])
 
     useEffect(() => {
-        if(lands.size==0){
+        if (lands.size == 0) {
             return
         }
         troops.forEach((value, _) => {
@@ -71,24 +71,24 @@ export default function TroopsUI() {
             }
             createArrowLine(objectPool, value)
         })
-    }, [troops,lands])
+    }, [troops, lands])
 
     useEffect(() => {
-        if (!sendTroop.troop) {
+        if (!sendTroopCtr.troop) {
             return
         }
-        if (sendTroop.show) {
-            createArrowLine(objectPool, sendTroop.troop)
+        if (sendTroopCtr.show) {
+            createArrowLine(objectPool, sendTroopCtr.troop)
         } else {
-            hideTroopArrow(objectPool, sendTroop.troop)
+            hideTroopArrow(objectPool, sendTroopCtr.troop)
         }
-    }, [sendTroop])
+    }, [sendTroopCtr])
 
-    const isBase = (pos:Coord)=>{
-        const land = lands.get(pos.x+"_"+pos.y)
-        console.log("isBase",pos,land);
-        if(land){
-            if(land.build == BuildType.Base){
+    const isBase = (pos: Coord) => {
+        const land = lands.get(pos.x + "_" + pos.y)
+        console.log("isBase", pos, land);
+        if (land) {
+            if (land.build == BuildType.Base) {
                 return true
             }
         }
@@ -96,12 +96,16 @@ export default function TroopsUI() {
     }
 
     const createArrowLine = (pool: ObjectPool, troop: Troop) => {
+        var from_x = troop.from.x
+        var from_y = troop.from.y
         putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
-        if(isBase(troop.from)){
-            troop.from.x = troop.from.x + 1
-            troop.from.y = troop.from.y + 1
+        if (isBase(troop.from)) {
+            // troop.from.x = troop.from.x + 1
+            // troop.from.y = troop.from.y + 1
+            from_x = from_x + 1
+            from_y = from_y + 1
         }
-        const start = tileCoordToPixelCoord(troop.from, TILE_WIDTH, TILE_HEIGHT)
+        const start = tileCoordToPixelCoord({x:from_x,y:from_y}, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
         if (troop.retreat) {
             start.x = start.x + MAP_WIDTH / 2
@@ -250,7 +254,7 @@ export default function TroopsUI() {
     const hideTroopArrow = (pool: ObjectPool, troop: Troop) => {
         pool.remove("armey_" + troop.id)
         pool.remove("armey_name_" + troop.id)
-
+        putTileAt(troop.to, Tileset.Empty, "Occupy");
         const start = tileCoordToPixelCoord(troop.from, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
         end.x = end.x + MAP_WIDTH / 4
