@@ -78,7 +78,7 @@ export default function TroopPanel() {
         <Container>
             {
                 account &&
-                <div style={{ width: 220, height: 460, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                <div style={{overflow:"auto",  width: 220, maxHeight: 420, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                     <p style={{ fontSize: 20, color: "pink" }}>Troops</p>
                     <div>
                         {[...troops.values()].map(value => (
