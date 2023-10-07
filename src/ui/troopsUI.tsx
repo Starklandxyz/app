@@ -37,12 +37,12 @@ export default function TroopsUI() {
     } = phaserLayer!;
 
     useEffect(() => {
-        // console.log("time change", timenow);
+        // console.log("time change", timenow,troops);
         troops.forEach((value, _) => {
             const base = bases.get(value.owner)
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
-            if (left < 0) {
+            if (value.startTime!=0 && left < 0) {
                 showFlag(value)
                 hideTroopArrow(objectPool, value);
                 return
@@ -72,10 +72,13 @@ export default function TroopsUI() {
             }
             // console.log("createArmey", value);
             createArmey(objectPool, value.id, pos, left, flip)
-            if(value.owner == account?.address){
-                if(value.retreat){
-                    hideFlag(value)
+            if (value.owner == account?.address) {
+                if (value.retreat) {
+                    hideFlag(value.from)
                 }
+            }
+            if (value.startTime == 0) {
+                hideFlag(value.to)
             }
         })
     }, [timenow])
@@ -96,11 +99,11 @@ export default function TroopsUI() {
     //     if (!sendTroopCtr.troop) {
     //         return
     //     }
-        // if (sendTroopCtr.show) {
-        //     createArrowLine(objectPool, sendTroopCtr.troop)
-        // } else {
-        //     hideTroopArrow(objectPool, sendTroopCtr.troop)
-        // }
+    // if (sendTroopCtr.show) {
+    //     createArrowLine(objectPool, sendTroopCtr.troop)
+    // } else {
+    //     hideTroopArrow(objectPool, sendTroopCtr.troop)
+    // }
     // }, [sendTroopCtr])
 
     const isBase = (pos: Coord) => {
@@ -247,10 +250,10 @@ export default function TroopsUI() {
         })
     }
 
-    const hideFlag = (troop:Troop)=>{
-        console.log("hideFlag");
-        putTileAt(troop.from, Tileset.Empty, "Flag");
-        putTileAt(troop.from, Tileset.Empty, "TempOccupy");
+    const hideFlag = (pos: Coord) => {
+        // console.log("hideFlag");
+        putTileAt(pos, Tileset.Empty, "Flag");
+        putTileAt(pos, Tileset.Empty, "TempOccupy");
     }
 
     const showFlag = (troop: Troop) => {
