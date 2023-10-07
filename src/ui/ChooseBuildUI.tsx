@@ -13,11 +13,12 @@ import { useEffect, useMemo, useState } from "react";
 import { BuildInfos } from "../types/BuildInfo";
 import { buildPriceStore } from "../store/buildpricestore";
 import { resourceStore } from "../store/resourcestore";
+import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, networkLayer, account } = store()
     const { buildLand } = controlStore()
-    const {food,iron,gold} = resourceStore()
+    const { food, iron, gold } = resourceStore()
     const { goldprices, foodprices, ironprices } = buildPriceStore()
     const [selectBuild, setSelect] = useState<BuildType>(BuildType.Farmland)
 
@@ -30,6 +31,13 @@ export default function ChooseBuildUI() {
             },
         }
     } = phaserLayer!;
+    const {
+        networkLayer: {
+            world,
+            components,
+        }
+    } = phaserLayer!
+
     const {
         network: { graphSdk },
         systemCalls: { buildBuilding },
@@ -48,6 +56,10 @@ export default function ChooseBuildUI() {
 
     useEffect(() => {
         fetchBuildPrice()
+        defineSystem(world, [Has(components.Land)], ({ value }) => {
+            console.log("land change", value);
+
+        })
     }, [])
 
     const fetchBuildPrice = async () => {
@@ -87,15 +99,15 @@ export default function ChooseBuildUI() {
             return
         }
 
-        if(gold< goldprices.get(selectBuild)!){
+        if (gold < goldprices.get(selectBuild)!) {
             toastError("Gold is not enough")
             return
         }
-        if(food< foodprices.get(selectBuild)!){
+        if (food < foodprices.get(selectBuild)!) {
             toastError("Food is not enough")
             return
         }
-        if(iron< ironprices.get(selectBuild)!){
+        if (iron < ironprices.get(selectBuild)!) {
             toastError("Iron is not enough")
             return
         }
@@ -103,23 +115,22 @@ export default function ChooseBuildUI() {
         const result = await buildBuilding(account, 1, buildLand.x, buildLand.y, selectBuild)
         if (result && result.length > 0) {
             toastSuccess("Build Success")
+
+            putTileAt(buildLand, Tileset.Empty, "Top3");
+            controlStore.setState({ buildLand: undefined })
+            var tile = TilesetBuilding.Farmland
+            switch (selectBuild) {
+                case BuildType.Camp: tile = TilesetBuilding.Camp; break;
+                case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
+                case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
+                case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
+            }
+            putTileAt(buildLand, tile, "Top");
+            putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
         } else {
             toastError("Build failed")
         }
 
-        // putTileAt(buildLand, Tileset.Empty, "Top3");
-        // controlStore.setState({ buildLand: undefined })
-
-        // toastSuccess("Build success")
-        // var tile = TilesetBuilding.Farmland
-        // switch (selectBuild) {
-        //     case BuildType.Camp: tile = TilesetBuilding.Camp; break;
-        //     case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
-        //     case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
-        //     case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
-        // }
-        // putTileAt(buildLand, tile, "Top");
-        // putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
     }
 
     const cancel = () => {

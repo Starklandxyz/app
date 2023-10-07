@@ -203,7 +203,11 @@ export default function MapUI() {
                 // case BuildType.Base: tile = TilesetTown.Town00; break;
             }
             putTileAt(buildLand, tile, "Top");
-            putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
+            if(land.owner==account?.address){
+                putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
+            }else{
+                putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");
+            }
         })
     }, [mapLands])
 
