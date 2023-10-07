@@ -1,7 +1,7 @@
 import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mouseStore } from "../store/mouseStore";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { store } from "../store/store";
 import { buildingCoorpToPosition, getTimestamp, hexToString, toastSuccess } from "../utils";
 import { tipStore } from "../store/tipStore";
@@ -176,11 +176,11 @@ export default function BuildingTip() {
 
     const sendTroopClick = () => {
         console.log("sendTroopClick");
-        if(!account){
+        if (!account) {
             return
         }
         const base = bases.get(account.address)
-        if(!base){
+        if (!base) {
             return
         }
         const troop = new Troop(account.address, base, lastCoord, getTimestamp())
@@ -190,9 +190,32 @@ export default function BuildingTip() {
 
     const buildClick = () => {
         controlStore.setState({ buildLand: lastCoord })
-        // putTileAt(lastCoord, TilesetZone.MyZoneWait, "Occupy");
         setShowButtons({ show: false, x: 0, y: 0 })
     }
+
+    const getButtons = useMemo(() => {
+        if (!account) {
+            return <></>
+        }
+        const land = lands.get(lastCoord.x + "_" + lastCoord.y)
+        if (land) {
+            if(land.build==BuildType.Base){
+                return <></>
+            }
+            if (land.owner == account.address) {
+                return <>
+                    <button onClick={() => sendTroopClick()}>Send Troop</button>
+                    <button onClick={() => buildClick()}>Build</button>
+                </>
+            }
+        }else{
+            const type = get_land_type(1,lastCoord.x,lastCoord.y)
+            if(type<6){
+                return <></>
+            }
+        }
+        return  <button onClick={() => sendTroopClick()}>Send Troop</button>
+    }, [lands,bases,account,lastCoord])
 
     return (
         <ClickWrapper>
@@ -209,9 +232,9 @@ export default function BuildingTip() {
             {
                 showButtons.show &&
                 <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${showButtons.x - 10}px`, top: `${showButtons.y + 20}px` }}>
-                    <button onClick={() => sendTroopClick()}>Send Troop</button>
-                    {/* <button onClick={() => occupyClick()}>Attack</button> */}
-                    <button onClick={() => buildClick()}>Build</button>
+                    {
+                        getButtons
+                    }
                     <button style={{ marginTop: 10 }} onClick={() => setShowButtons({ show: false, x: 0, y: 0 })}>Cancel</button>
                 </div>
             }
