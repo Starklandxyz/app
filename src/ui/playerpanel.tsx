@@ -291,20 +291,23 @@ export default function PlayerPanel() {
 
 // 定义顶部横条容器
 const TopBarWrapper = styled.div`
-  height: 45px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
+
 `;
 
 const LogoImage = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
+  width: 25px;
+  height: 25px;
+  margin-left: 2px;
 `;
 
 
 const UsernameWrapper = styled.div`
+  margin-left: 4px;
   margin-right: 16px;
   font-size: 18px;
   font-weight: bold;
