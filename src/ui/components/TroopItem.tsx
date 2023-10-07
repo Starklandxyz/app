@@ -3,7 +3,6 @@ import { Troop } from "../../types/Troop";
 import { ClickWrapper } from "../clickWrapper";
 import { getTimestamp, toastError, toastSuccess } from "../../utils";
 import { ticStore } from "../../store/ticStore";
-import { troopStore } from "../../store/troopStore";
 import flag from "../../../public/assets/icons/flag.png";
 import soldierIcon from "../../../public/assets/icons/soldier.png"
 import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
@@ -13,11 +12,10 @@ import { mapStore } from "../../store/mapStore";
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
     const { lands } = mapStore()
-    const { troops } = troopStore()
-    const { account, phaserLayer, networkLayer } = store()
+    const { account, networkLayer } = store()
 
     const {
-        systemCalls: { retreatTroop },
+        systemCalls: { retreatTroop, troopEnterLand },
     } = networkLayer!
 
     const troop: Troop = params.troop
@@ -31,8 +29,16 @@ export default function TroopItem(params: any) {
         toastSuccess("Attack Success")
     }
 
-    const enterLand = () => {
-
+    const enterLand = async () => {
+        if (!account) {
+            return
+        }
+        const result = await troopEnterLand(account, 1, troop.index)
+        if (result && result.length > 0) {
+            toastSuccess("Enter success")
+        } else {
+            toastError("Enter fail")
+        }
     }
 
     const retreat = async () => {
@@ -90,12 +96,14 @@ export default function TroopItem(params: any) {
         if (!base) {
             return `(${troop.to.x},${troop.to.y})`
         }
+        console.log("getTo",troop,base);
+        
         if (base.x == troop.to.x && base.y == troop.to.y) {
             return "Base"
         } else {
             return `(${troop.to.x},${troop.to.y})`
         }
-    }, [troop])
+    }, [troop,account,base])
 
     const attackButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
@@ -143,8 +151,6 @@ export default function TroopItem(params: any) {
         } else {
             return <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span>
         }
-
-        return <></>
     }, [troop, timenow])
 
     return (
@@ -169,16 +175,9 @@ export default function TroopItem(params: any) {
 
                 <div style={{ color: "coral", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
                     <p style={{ marginLeft: 10 }}>{getTime}</p>
-                    {/* {
-                        !troop.retreat ?
-                            <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span> :
-                            <>
-                                {
-                                    ((troop.totalTime - (getTimestamp() - troop.startTime)) > 0) && <p style={{ marginLeft: 10 }}>撤...</p>
-                                }
-                            </>
-                    } */}
-                    {retreatButton}
+                    {
+                        retreatButton
+                    }
                     {
                         attackButton
                     }

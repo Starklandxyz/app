@@ -100,7 +100,7 @@ export default function SendTroopPanel() {
     }
 
     const addTroop = (t: any) => {
-        console.log("addTroop",t);
+        console.log("addTroop", t);
         const newTroops = new Map(troopsRef.current)
         const balance = t.balance as number
         const from_x = t.from_x as number
@@ -133,7 +133,6 @@ export default function SendTroopPanel() {
             console.log("Troop change", value);
             const t = value[0]
             if (t) {
-                // console.log("Troop size", troopsRef.current.size);
                 addTroop(t)
             }
         })
@@ -155,15 +154,15 @@ export default function SendTroopPanel() {
         const dis1 = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y - sendTroopCtr.troop.to.y)
         let dis = dis1
         const dis2 = Math.abs(base.x + 1 - sendTroopCtr.troop.to.x) + Math.abs(base.y - sendTroopCtr.troop.to.y)
-        if(dis>dis2){
+        if (dis > dis2) {
             dis = dis2
         }
-        const dis3 = Math.abs(base.x + 1 - sendTroopCtr.troop.to.x) + Math.abs(base.y +1 - sendTroopCtr.troop.to.y)
-        if(dis>dis3){
+        const dis3 = Math.abs(base.x + 1 - sendTroopCtr.troop.to.x) + Math.abs(base.y + 1 - sendTroopCtr.troop.to.y)
+        if (dis > dis3) {
             dis = dis3
         }
-        const dis4 = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y+1 - sendTroopCtr.troop.to.y)
-        if(dis>dis4){
+        const dis4 = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y + 1 - sendTroopCtr.troop.to.y)
+        if (dis > dis4) {
             dis = dis4
         }
         return dis
@@ -219,7 +218,7 @@ export default function SendTroopPanel() {
                 id++
             }
         })
-        console.log("calTroopID",id);
+        console.log("calTroopID", id);
         return id
     }
 

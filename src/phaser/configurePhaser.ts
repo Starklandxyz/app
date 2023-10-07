@@ -26,11 +26,13 @@ const mainMap = defineMapConfig({
         layers: {
             Background: { tilesets: ["Default"] },
             Foreground: { tilesets: ["Default"] },
+            TempOccupy: { tilesets: ["Default"] },
             Occupy: { tilesets: ["Default"] },
             Top: { tilesets: ["Default"] },
             Top2: { tilesets: ["Default"] },
             Top3: { tilesets: ["Default"] },
             Select: { tilesets: ["Default"] },
+            Flag: { tilesets: ["Default"] },
         },
         defaultLayer: "Background",
     },

@@ -43,12 +43,10 @@ export default function TroopsUI() {
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
             if (left < 0) {
-                showTroop(value)
+                showFlag(value)
                 hideTroopArrow(objectPool, value);
-                // removeTroop(value)
                 return
             }
-
             var from = { x: value.from.x, y: value.from.y }
             var to = { x: value.to.x, y: value.to.y }
             if (base) {
@@ -74,6 +72,11 @@ export default function TroopsUI() {
             }
             // console.log("createArmey", value);
             createArmey(objectPool, value.id, pos, left, flip)
+            if(value.owner == account?.address){
+                if(value.retreat){
+                    hideFlag(value)
+                }
+            }
         })
     }, [timenow])
 
@@ -89,16 +92,16 @@ export default function TroopsUI() {
         })
     }, [troops, lands])
 
-    useEffect(() => {
-        if (!sendTroopCtr.troop) {
-            return
-        }
-        if (sendTroopCtr.show) {
-            createArrowLine(objectPool, sendTroopCtr.troop)
-        } else {
-            hideTroopArrow(objectPool, sendTroopCtr.troop)
-        }
-    }, [sendTroopCtr])
+    // useEffect(() => {
+    //     if (!sendTroopCtr.troop) {
+    //         return
+    //     }
+        // if (sendTroopCtr.show) {
+        //     createArrowLine(objectPool, sendTroopCtr.troop)
+        // } else {
+        //     hideTroopArrow(objectPool, sendTroopCtr.troop)
+        // }
+    // }, [sendTroopCtr])
 
     const isBase = (pos: Coord) => {
         const land = lands.get(pos.x + "_" + pos.y)
@@ -244,17 +247,12 @@ export default function TroopsUI() {
         })
     }
 
-    const removeTroop = (troop: Troop) => {
-        // showTroop(troop);
-        hideTroopArrow(objectPool, troop);
-        // if (troop.retreat) {
-        //     const newTroops = new Map(troops)
-        //     newTroops.delete(troop.id)
-        //     troopStore.setState({ troops: newTroops })
-        // }
+    const hideFlag = (troop:Troop)=>{
+        putTileAt(troop.to, Tileset.Empty, "Flag");
+        putTileAt(troop.to, Tileset.Empty, "TempOccupy");
     }
 
-    const showTroop = (troop: Troop) => {
+    const showFlag = (troop: Troop) => {
         // console.log("showTroop", troop.to);
         const pos = troop.to
         var flag = TilesetSoldier.SoldierFlag
@@ -269,14 +267,13 @@ export default function TroopsUI() {
                 flag = TilesetSoldier.SoldierFlag4
             }
         }
-        putTileAt(pos, flag, "Top2");
-        putTileAt(pos, TilesetZone.MyZoneWait, "Occupy");
+        putTileAt(pos, flag, "Flag");
+        putTileAt(pos, TilesetZone.MyZoneWait, "TempOccupy");
     }
 
     const hideTroopArrow = (pool: ObjectPool, troop: Troop) => {
         pool.remove("armey_" + troop.id)
         pool.remove("armey_name_" + troop.id)
-        // putTileAt(troop.to, Tileset.Empty, "Occupy");
         const start = tileCoordToPixelCoord(troop.from, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
         end.x = end.x + MAP_WIDTH / 4

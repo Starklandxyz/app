@@ -64,6 +64,9 @@ export default function TroopPanel() {
                     for (let index = 0; index < components.length; index++) {
                         const element = components[index];
                         if (element?.__typename == "Troop") {
+                            if(element.start_time==0){
+                                continue
+                            }
                             const t = new Troop(element.owner, { x: element.from_x, y: element.from_y },
                                 { x: element.to_x, y: element.to_y }, element.start_time);
                             t.amount = element.balance
@@ -73,7 +76,6 @@ export default function TroopPanel() {
                             t.id = t.owner + "_" + t.index
                             t.retreat = element.retreat
                             // console.log("fetchTroops",t);
-                            
                             tt.set(t.id, t)
                         }
                     }
@@ -86,7 +88,7 @@ export default function TroopPanel() {
     const getMyTroopSize= useMemo(()=>{
         var size = 0
         troops.forEach((value,key)=>{
-            if(value.owner == account?.address){
+            if(value.owner == account?.address && value.startTime!=0){
                 size++
             }
         })
@@ -105,7 +107,7 @@ export default function TroopPanel() {
                     {showContent && (
                         <div>
                             {[...troops.values()].map(value => (
-                                (value.owner == account.address) && <TroopItem key={value.id} base={bases.get(account.address)} troop={value} />
+                                (value.owner == account.address && value.startTime!=0 ) && <TroopItem key={value.id} base={bases.get(account.address)} troop={value} />
                             ))}
                         </div>
                     )}
