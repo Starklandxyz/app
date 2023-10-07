@@ -12,12 +12,15 @@ import { controlStore } from "../store/controlStore";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
 import sha256 from 'crypto-js/sha256';
+import { mapStore } from "../store/mapStore";
+import { BuildType } from "../types/Build";
 const SIZE = 12
 
 export default function TroopsUI() {
     const { account, phaserLayer } = store()
     const { timenow } = ticStore()
     const { troops } = troopStore()
+    const {lands} = mapStore()
     const { sendTroopCtr: sendTroop } = controlStore()
 
     const {
@@ -59,13 +62,16 @@ export default function TroopsUI() {
     }, [timenow])
 
     useEffect(() => {
+        if(lands.size==0){
+            return
+        }
         troops.forEach((value, _) => {
             if (value.startTime + value.totalTime <= getTimestamp()) {
                 return
             }
             createArrowLine(objectPool, value)
         })
-    }, [troops])
+    }, [troops,lands])
 
     useEffect(() => {
         if (!sendTroop.troop) {
@@ -78,8 +84,23 @@ export default function TroopsUI() {
         }
     }, [sendTroop])
 
+    const isBase = (pos:Coord)=>{
+        const land = lands.get(pos.x+"_"+pos.y)
+        console.log("isBase",pos,land);
+        if(land){
+            if(land.build == BuildType.Base){
+                return true
+            }
+        }
+        return false
+    }
+
     const createArrowLine = (pool: ObjectPool, troop: Troop) => {
         putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
+        if(isBase(troop.from)){
+            troop.from.x = troop.from.x + 1
+            troop.from.y = troop.from.y + 1
+        }
         const start = tileCoordToPixelCoord(troop.from, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
         if (troop.retreat) {
@@ -104,12 +125,13 @@ export default function TroopsUI() {
 
         const rr = (start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)
         const length = Math.sqrt(rr) / SIZE
+
         for (let index = 0; index < Math.ceil(length); index++) {
             const sid = "arrow_" + troop.id + "_" + index
-            const playerObj = pool.get(sid, "Sprite")
-            // console.log("createArrowLine",sid,playerObj);
-            playerObj.spawn()
-            playerObj.setComponent({
+            const arrowObj = pool.get(sid, "Sprite")
+            // console.log("createArrowLine",sid,arrowObj);
+            arrowObj.spawn()
+            arrowObj.setComponent({
                 id: "position",
                 once: (sprite: any) => {
                     if (sprite.active != true) {
