@@ -199,7 +199,7 @@ export default function BuildingTip() {
         }
         const land = lands.get(lastCoord.x + "_" + lastCoord.y)
         if (land) {
-            if(land.build==BuildType.Base){
+            if (land.build == BuildType.Base) {
                 return <></>
             }
             if (land.owner == account.address) {
@@ -208,14 +208,14 @@ export default function BuildingTip() {
                     <button onClick={() => buildClick()}>Build</button>
                 </>
             }
-        }else{
-            const type = get_land_type(1,lastCoord.x,lastCoord.y)
-            if(type<6){
+        } else {
+            const type = get_land_type(1, lastCoord.x, lastCoord.y)
+            if (type != LandType.None) {
                 return <></>
             }
         }
-        return  <button onClick={() => sendTroopClick()}>Send Troop</button>
-    }, [lands,bases,account,lastCoord])
+        return <button onClick={() => sendTroopClick()}>Send Troop</button>
+    }, [lands, bases, account, lastCoord])
 
     return (
         <ClickWrapper>
