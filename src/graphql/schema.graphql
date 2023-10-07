@@ -210,6 +210,26 @@ query getResoucesByKey($map_id:String,$key: String) {
   }
 }
 
+query getBuildPrice($map_id:String) {
+  entities(first:1000, keys: [$map_id,"%"]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on BuildPrice {
+            map_id
+            build_type
+            gold
+            food
+            iron
+          }
+        }
+      }
+    }
+  }
+}
+
 query getTroopsByKey($map_id:String,$key: String) {
   entities(first:1000, keys: [$map_id,$key,"%"]) {
     edges {

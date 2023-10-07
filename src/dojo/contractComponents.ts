@@ -60,6 +60,29 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    BuildConfig: (() => {
+      const name = "BuildConfig";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          Land_Gold: RecsType.Number,
+          Land_Iron: RecsType.Number,
+          Land_Water: RecsType.Number,
+          Land_None: RecsType.Number,
+          Build_Type_Base: RecsType.Number,
+          Build_Type_Farmland: RecsType.Number,
+          Build_Type_IronMine: RecsType.Number,
+          Build_Type_GoldMine: RecsType.Number,
+          Build_Type_Camp: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
     Player: (() => {
       const name = "Player";
       return defineComponent(
@@ -242,6 +265,24 @@ export function defineContractComponents(world: World) {
           map_id: RecsType.Number,
           owner: RecsType.String,
           balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    BuildPrice: (() => {
+      const name = "BuildPrice";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          build_type: RecsType.Number,
+          gold: RecsType.Number,
+          food: RecsType.Number,
+          iron: RecsType.Number,
         },
         {
           metadata: {

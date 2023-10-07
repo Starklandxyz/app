@@ -32,8 +32,6 @@ export default function BuildingTip() {
 
     const { sendTroopCtr: sendTroop, buildLand } = controlStore()
 
-    // console.error("refresh : ");
-
     const {
         scenes: {
             Main: {
@@ -235,7 +233,9 @@ export default function BuildingTip() {
                     {
                         getButtons
                     }
+                    <button onClick={() => buildClick()}>Build</button>
                     <button style={{ marginTop: 10 }} onClick={() => setShowButtons({ show: false, x: 0, y: 0 })}>Cancel</button>
+                    
                 </div>
             }
 
