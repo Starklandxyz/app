@@ -48,16 +48,21 @@ export default function TroopsUI() {
                 // removeTroop(value)
                 return
             }
-            
+
             var from = { x: value.from.x, y: value.from.y }
+            var to = { x: value.to.x, y: value.to.y }
             if (base) {
                 if (base.x == value.from.x && base.y == value.from.y) {
                     from.x = from.x + 1
                     from.y = from.y + 1
                 }
+                if (base.x == value.to.x && base.y == value.to.y) {
+                    to.x = to.x + 1
+                    to.y = to.y + 1
+                }
             }
             const start = tileCoordToPixelCoord(from, TILE_WIDTH, TILE_HEIGHT)
-            const end = tileCoordToPixelCoord(value.to, TILE_WIDTH, TILE_HEIGHT)
+            const end = tileCoordToPixelCoord(to, TILE_WIDTH, TILE_HEIGHT)
             var speedx = (end.x - start.x) / value.totalTime
             var speedy = (end.y - start.y) / value.totalTime
             var x = start.x + speedx * usedtime
@@ -111,15 +116,19 @@ export default function TroopsUI() {
 
         var from_x = troop.from.x
         var from_y = troop.from.y
+        var to_x = troop.to.x
+        var to_y = troop.to.y
         putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
         if (isBase(troop.from)) {
-            // troop.from.x = troop.from.x + 1
-            // troop.from.y = troop.from.y + 1
             from_x = from_x + 1
             from_y = from_y + 1
         }
+        if (isBase(troop.to)) {
+            to_x = to_x + 1
+            to_y = to_y + 1
+        }
         const start = tileCoordToPixelCoord({ x: from_x, y: from_y }, TILE_WIDTH, TILE_HEIGHT)
-        const end = tileCoordToPixelCoord(troop.to, TILE_WIDTH, TILE_HEIGHT)
+        const end = tileCoordToPixelCoord({ x: to_x, y: to_y }, TILE_WIDTH, TILE_HEIGHT)
         if (troop.retreat) {
             start.x = start.x + MAP_WIDTH / 2
             start.y = start.y + MAP_HEIGHT / 2
