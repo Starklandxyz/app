@@ -70,37 +70,47 @@ export default function TroopItem(params: any) {
     }, [troop, timenow])
 
     const getFrom = useMemo(() => {
-        if(!base){
+        if (!base) {
             return `(${troop.from.x},${troop.from.y})`
         }
-        if(base.x == troop.from.x && base.y == troop.from.y){
+        if (base.x == troop.from.x && base.y == troop.from.y) {
             return "Base"
-        }else{
+        } else {
             return `(${troop.from.x},${troop.from.y})`
         }
     }, [troop])
 
     return (
-        <ClickWrapper style={{ cursor: "pointer", marginBottom: 15 }}>
+        <ClickWrapper style={{ cursor: "pointer", marginBottom: 20 }}>
             <div style={{ display: "flex" }}>
-                <img src={flag} width={25} />
-                <div style={{ marginTop: 4, marginLeft: 3 }}>Troop{troop.index}</div>
-                <img style={{ marginLeft: 20 }} width={25} src={soldierIcon} />
-                <div style={{ marginTop: 4, marginLeft: 3 }}>x{troop.amount}</div>
+                <div style={{ display: "flex", flex: 1 }}>
+                    <img src={flag} width={25} />
+                    <div style={{ marginTop: 4, marginLeft: 3 }}>Troop{troop.index}</div>
+                </div>
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <img style={{ marginLeft: 20 }} height={25} src={soldierIcon} />
+                    <div style={{ marginTop: 4, marginLeft: 3 }}>x{troop.amount}</div>
+                </div>
             </div>
 
-            <div style={{ display: "flex" }} onClick={() => clickTroop()}>
-                <p>{getFrom}</p>
-                <p> {" => "} </p>
-                <p>({troop.to.x},{troop.to.y})</p>
-                <p style={{ marginLeft: 10 }}>{getTime}</p>
-                {
-                    !troop.retreat ?
-                        <p onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</p> : <p style={{ marginLeft: 10 }}>撤...</p>
-                }
-                {
-                    ((troop.totalTime - (getTimestamp() - troop.startTime)) <= 0 && !troop.retreat) && <p onClick={() => attackClick()} style={{ cursor: "pointer", marginLeft: 10 }}>攻</p>
-                }
+            <div style={{display: "flex", alignItems:"center" }} onClick={() => clickTroop()}>
+                <div style={{display: "flex", flex: 1 }}>
+                    <span>{getFrom}</span>
+                    <span> {" => "} </span>
+                    <span>({troop.to.x},{troop.to.y})</span>
+                </div>
+
+                <div style={{ color:"coral", display: "flex", justifyContent: "flex-end",alignItems: "center" }}>
+                    <p style={{ marginLeft: 10 }}>{getTime}</p>
+                    {
+                        !troop.retreat ?
+                            <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span> : <p style={{ marginLeft: 10 }}>撤...</p>
+                    }
+                    {
+                        ((troop.totalTime - (getTimestamp() - troop.startTime)) <= 0 && !troop.retreat) && <span onClick={() => attackClick()} style={{ cursor: "pointer", marginLeft: 10 }}>攻</span>
+                    }
+                </div>
+
             </div>
         </ClickWrapper>
     )

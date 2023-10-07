@@ -220,7 +220,7 @@ export default function TrainPanel() {
                                     <input onChange={inputChange} style={{ height: 18, width: 60, marginRight: 10 }} value={inputValue} type="number" />
                                 </div>
                             </div>
-                            <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => train()}>Start Train</button>
+                            <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => train()}>Start Training</button>
                         </div>
                 }
                 <button style={{ marginTop: 20 }} onClick={(() => claimairdrop())}>Airdrop</button>

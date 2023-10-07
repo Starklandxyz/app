@@ -222,9 +222,9 @@ export const parseTime = (sec: number) => {
     }
     var result = ""
     if (h == 0) {
-        result = ms + "m" + ss + "s"
+        result = `${m}m: ${s}s`
     } else {
-        result = hs + "h" + ms + "m" + ss + "s"
+        result = `${h}h: ${m}m: ${s}s`
     }
     // console.log("parseTime",sec,h,m,s);
     // console.log("parseTime",hs,ms,ss,result);
