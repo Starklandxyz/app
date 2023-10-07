@@ -16,12 +16,14 @@ import { resourceStore } from "../store/resourcestore";
 import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
+import { troopStore } from "../store/troopStore";
 
 export default function PlayerPanel() {
     const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
     const { userWarriors, landWarriors } = warriorStore()
     const { food, gold, iron } = resourceStore()
+    const {troops} = troopStore()
     const accountRef = useRef<string>()
 
     const userWarriorsRef = useRef<typeof userWarriors>(new Map())
@@ -229,6 +231,17 @@ export default function PlayerPanel() {
         })
     }, [])
 
+
+    const getMyTroopSize= useMemo(()=>{
+        var size = 0
+        troops.forEach((value,_)=>{
+            if(value.owner == account?.address && value.startTime!=0){
+                size++
+            }
+        })
+        return size
+    },[troops,account])
+
     return (
         <TopBarWrapper>
 
@@ -280,7 +293,7 @@ export default function PlayerPanel() {
                 data-tooltip-content="Troops"
                 data-tooltip-place="top">
                 <ResourceIcon src={flagIcon} alt="flag" />
-                <ResourceValue>1/1</ResourceValue>
+                <ResourceValue>{getMyTroopSize}/1</ResourceValue>
             </ResourceItemWrapper>
 
         </TopBarWrapper>
