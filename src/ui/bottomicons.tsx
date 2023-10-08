@@ -45,7 +45,7 @@ export default function BottomIcons() {
         <ClickWrapper style={{ display: "flex", flexDirection: "column" }}>
             <Container>
                 {
-                    (account && bases.has(account.address)) && <button onClick={() => center()}>Zoom to Base</button>
+                    // (account && bases.has(account.address)) && <button onClick={() => center()}>Zoom to Base</button>
                 }
                 <div>
                     <img style={{ cursor: "pointer", marginTop: 15, marginRight: 10 }} width={25} src={twitter} onClick={() => gotoTwitter()} />
