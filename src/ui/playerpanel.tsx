@@ -307,7 +307,7 @@ const TopBarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
+  align-self: center;
 
 `;
 
