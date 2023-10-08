@@ -291,5 +291,40 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    LandMiner: (() => {
+      const name = "LandMiner";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          x: RecsType.Number,
+          y: RecsType.Number,
+          miner_x: RecsType.Number,
+          miner_y: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    LandMining: (() => {
+      const name = "LandMining";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          x: RecsType.Number,
+          y: RecsType.Number,
+          start_time: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
   };
 }

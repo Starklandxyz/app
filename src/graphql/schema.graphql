@@ -198,6 +198,12 @@ query getAllLands($map_id:String) {
             level
             
           }
+          ... on LandMining {
+            map_id,
+            x,
+            y,
+            start_time,
+          }
           __typename
           ... on Warrior {
             map_id,

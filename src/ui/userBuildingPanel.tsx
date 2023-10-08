@@ -110,7 +110,7 @@ export default function UserBuildingPanel() {
                         <p>Farmlands - </p>
                         <p style={{ marginLeft: 5 }}>{farmland.length}</p>
                         <p style={{ marginLeft: 10 }}>+100Food/H</p>
-                        <button style={{ height: 24, marginLeft: 10, marginTop: 12 }} onClick={() => setShowFarm(pre => !pre)} >Show/Hide</button>
+                        <button style={{ height: 24, marginLeft: 10, marginTop: 12 }} onClick={() => setShowFarm(pre => !pre)} >+/-</button>
                     </div>
                     {
                         showFarm &&
@@ -128,12 +128,11 @@ export default function UserBuildingPanel() {
                         </table>
                     }
 
-
                     <div style={{ display: "flex" }}>
                         <p>Camp - </p>
                         <p style={{ marginLeft: 5 }}>{camp.length}</p>
                         <p style={{ marginLeft: 10 }}>+100 Capacity</p>
-                        <button style={{ height: 24, marginLeft: 10, marginTop: 12 }} onClick={() => setShowCamp(pre => !pre)}>Show/Hide</button>
+                        <button style={{ height: 24, marginLeft: 10, marginTop: 12 }} onClick={() => setShowCamp(pre => !pre)}>+/-</button>
                     </div>
                     {
                         showCamp &&
@@ -154,7 +153,7 @@ export default function UserBuildingPanel() {
                         <p>GoldMine - </p>
                         <p style={{ marginLeft: 5 }}>{goldmine.length}</p>
                         <p style={{ marginLeft: 10 }}>+100Gold/H</p>
-                        <button onClick={() => setShowGold(pre => !pre)} style={{ height: 24, marginLeft: 10, marginTop: 12 }}>Show/Hide</button>
+                        <button onClick={() => setShowGold(pre => !pre)} style={{ height: 24, marginLeft: 10, marginTop: 12 }}>+/-</button>
                     </div>
                     {
                         showGold &&
@@ -175,7 +174,7 @@ export default function UserBuildingPanel() {
                         <p>IronMine - </p>
                         <p style={{ marginLeft: 5 }}>{ironMine.length}</p>
                         <p style={{ marginLeft: 10 }}>+100Iron/H</p>
-                        <button onClick={() => setShowIron(pre => !pre)} style={{ height: 24, marginLeft: 10, marginTop: 12 }}>Show/Hide</button>
+                        <button onClick={() => setShowIron(pre => !pre)} style={{ height: 24, marginLeft: 10, marginTop: 12 }}>+/-</button>
                     </div>
                     {
                         showIron &&

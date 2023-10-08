@@ -155,7 +155,7 @@ export default function BuildingTip() {
             return
         }
         if (!mouseDown) {
-            if (!showButtons.show) {
+            // if (!showButtons.show) {
                 var x = ex
                 if (ex > innerWidth - 100) {
                     x = ex - 100
@@ -165,7 +165,7 @@ export default function BuildingTip() {
                     y = ey - 180
                 }
                 setShowButtons({ show: true, x: x, y: y })
-            }
+            // }
         }
     }, [mouseDown])
 
