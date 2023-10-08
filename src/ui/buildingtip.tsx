@@ -10,7 +10,6 @@ import { Coord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ClickWrapper } from "./clickWrapper";
 import { Troop } from "../types/Troop";
 import { buildStore } from "../store/buildstore";
-import SendTroopPanel from "./sendTroopPanel";
 import { controlStore } from "../store/controlStore";
 import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
@@ -64,7 +63,7 @@ export default function BuildingTip() {
         var land_owner = "No Owner"
         var land_desc = ""
         var land_level = ""
-        var land_warrior = "0"
+        var land_warrior = "Warrior : 0"
         if (land) {
             switch (land.build) {
                 case BuildType.None: break;
@@ -82,7 +81,7 @@ export default function BuildingTip() {
             }
             land_level = "Level : " + land.level
             if (landWarriors.get(lastCoord.x + "_" + lastCoord.y))
-                land_warrior = "" + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
+                land_warrior = "Warrior : " + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
             // console.log("land info", lastCoord, land_warrior);
             // bases.get(account?.address!)
         } else {
@@ -95,8 +94,12 @@ export default function BuildingTip() {
                 case LandType.Water: land_name = "Water"; break;
             }
             const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y)
-            land_warrior = land_baba.toString()
+            land_warrior ="Warrior : " + land_baba.toString()
             land_level = "Level : " + (1n + land_baba / 10n)
+            if(land_type!=LandType.None){
+                land_warrior = ""
+                land_level = ""
+            }
         }
 
         settooltip({
@@ -106,7 +109,7 @@ export default function BuildingTip() {
                 <div style={{ marginTop: 5 }}>Owner : {land_owner}</div>
                 <div style={{ marginTop: 5 }}>{land_desc}</div>
                 <div style={{ marginTop: 5 }}>{land_level}</div>
-                <div style={{ marginTop: 5 }}>Warrior : {land_warrior}</div>
+                <div style={{ marginTop: 5 }}>{land_warrior}</div>
             </div>
         })
     }, [lastCoord])
