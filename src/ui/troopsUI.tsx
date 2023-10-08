@@ -88,6 +88,7 @@ export default function TroopsUI() {
             return
         }
         troops.forEach((value, _) => {
+
             if (value.startTime + value.totalTime <= getTimestamp()) {
                 return
             }

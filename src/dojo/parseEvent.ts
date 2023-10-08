@@ -65,7 +65,7 @@ export function setComponentFromEvent(components: Components, eventData: string[
         } else {
             value = values[index - keysNumber];
             const parsedValue = parseComponentValue(value, component.schema[key])
-            console.log("parse",key,value,parsedValue);
+            // console.log("parse",key,value,parsedValue);
             acc[key] = parsedValue
         }
         // const value = values[index];

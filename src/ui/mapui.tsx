@@ -45,6 +45,8 @@ export default function MapUI() {
             if (key == account?.address) {
                 diff = 6
             }
+            console.log("put base ", xStart);
+
             putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
             putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");
             putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Top");
@@ -54,7 +56,7 @@ export default function MapUI() {
             const pixelPosition = tileCoordToPixelCoord({ x: xStart, y: yStart }, TILE_WIDTH, TILE_HEIGHT)
             nameObj.setComponent({
                 id: 'position',
-                once: (text:any) => {
+                once: (text: any) => {
                     text.setPosition(pixelPosition?.x, pixelPosition?.y - 14);
                     text.setBackgroundColor("rgba(0,0,0,0.6)")
                     text.setFontSize(11)
@@ -171,28 +173,31 @@ export default function MapUI() {
         landWarriors.forEach((balance, key) => {
             console.log("landWarriors", key, balance);
             const keys = key.split("_")
-            const coord = { x: parseInt(keys[0]), y: parseInt(keys[1])}
-            if(balance==0){
+            const coord = { x: parseInt(keys[0]), y: parseInt(keys[1]) }
+            if (balance == 0) {
                 putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
                 putTileAt(coord, TilesetNum.Num0, "Top3");
             }
-            else if(balance<10){
+            else if (balance < 10) {
                 putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
                 putTileAt(coord, TilesetNum.Num1 + balance - 1, "Top3");
-            }else if(balance<100){
+            } else if (balance < 100) {
                 putTileAt(coord, TilesetSoldier.Soldier10, "Top2");
-                const b = Math.floor(balance/10)
+                const b = Math.floor(balance / 10)
                 putTileAt(coord, TilesetNum.Num1 + b - 1, "Top3");
-            }else if(balance<1000){
+            } else if (balance < 1000) {
                 putTileAt(coord, TilesetSoldier.Soldier100, "Top2");
-                const b = Math.floor(balance/100)
-                putTileAt(coord, TilesetNum.Num1 + b- 1, "Top3");
+                const b = Math.floor(balance / 100)
+                putTileAt(coord, TilesetNum.Num1 + b - 1, "Top3");
             }
         })
     }, [landWarriors])
 
     useEffect(() => {
         mapLands.forEach((land, id) => {
+            if(land.build==BuildType.Base){
+                return
+            }
             var tile = 1
             const buildLand = { x: land.x, y: land.y }
             switch (land.build) {
@@ -203,9 +208,9 @@ export default function MapUI() {
                 // case BuildType.Base: tile = TilesetTown.Town00; break;
             }
             putTileAt(buildLand, tile, "Top");
-            if(land.owner==account?.address){
+            if (land.owner == account?.address) {
                 putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
-            }else{
+            } else {
                 putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");
             }
         })

@@ -14,6 +14,7 @@ import MapUI from "./mapui";
 import TrainPanel from "./trainpanel";
 import ListenEvent from "./listenevent";
 import SendTroopPanel from "./sendTroopPanel";
+import UserBuildingPanel from "./userBuildingPanel";
 
 export default function UI() {
     const layers = store((state) => {
@@ -44,6 +45,7 @@ export default function UI() {
             <TrainPanel/>
             <ListenEvent/>
             <SendTroopPanel />
+            <UserBuildingPanel/>
         </Wrapper>
     );
 };

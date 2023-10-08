@@ -52,6 +52,8 @@ query getBaseByKey($key: String,$map_id:String) {
         components {
           __typename
           ... on Base {
+            map_id
+            owner
             x
             y
           }
@@ -139,6 +141,45 @@ query getAllBase($map_id:String) {
   }
 }
 
+
+
+query getLandByKey($map_id:String,$x:String,$y:String) {
+  entities(first:1, keys: [$map_id,$x,$y]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Land {
+            map_id,
+            x,
+            y,
+            owner,
+            building,
+            level
+          }
+          __typename
+          ... on Warrior {
+            map_id,
+            x,
+            y,
+            balance
+          }
+           __typename
+          ... on LandCost {
+            map_id,
+            x,
+            y,
+            cost_gold
+            cost_iron
+            cost_food
+          }
+        }
+      }
+    }
+  }
+}
 
 query getAllLands($map_id:String) {
   entities(first:1000, keys: [$map_id,"%","%"]) {
