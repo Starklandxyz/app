@@ -24,13 +24,13 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
     };
 
     const moveCamera = (e:any)=>{
-        console.log("moveCamera",e.clientX);
+        // console.log("moveCamera",e.clientX);
         if(lastEvent){
             const diffX = e.clientX - lastEvent.clientX
             const diffY = e.clientY - lastEvent.clientY
-            console.log("moveCamera",diffX,diffY);
-            const x = camera?.phaserCamera.scrollX! + diffX
-            const y = camera?.phaserCamera.scrollY! + diffY
+            // console.log("moveCamera",diffX,diffY);
+            const x = camera?.phaserCamera.scrollX! - diffX
+            const y = camera?.phaserCamera.scrollY! - diffY
             camera?.phaserCamera.setScroll(x,y);
         }
         setEvent(e)
