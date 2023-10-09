@@ -17,18 +17,14 @@ import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValue
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
-    // const { players } = playerStore()
-    // const { landWarriors } = warriorStore()
-    // const { bases } = buildStore()
-    // const { lands } = mapStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
-    const [showButtons, setShowButtons] = useState({ show: false, x: 0, y: 0 })
+    // const [showButtons, setShowButtons] = useState({ show: false, x: 0, y: 0 })
 
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const [lastCoord, setCoord] = useState<Coord>({ x: 0, y: 0 })
 
-    const { sendTroopCtr: sendTroop, buildLand ,startMiningLand} = controlStore()
+    const { sendTroopCtr: sendTroop, buildLand, showTipButtons, tipButtonShow } = controlStore()
 
     const {
         scenes: {
@@ -38,8 +34,8 @@ export default function BuildingTip() {
                 },
             },
         },
-        networkLayer:{
-            components:contractComponents
+        networkLayer: {
+            components: contractComponents
         }
     } = phaserLayer!;
 
@@ -63,10 +59,9 @@ export default function BuildingTip() {
         if (ey > innerHeight - 200) {
             y = ey - 100
         }
-        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(lastCoord.x),BigInt(lastCoord.y)]))
-        // const land = lands.get(lastCoord.x + "_" + lastCoord.y)
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
         var land_name = "Land"
-        var land_owner = "No Owner"
+        var land_owner = "Owner : No Owner"
         var land_desc = ""
         var land_level = ""
         var land_warrior = "Warrior : 0"
@@ -80,21 +75,17 @@ export default function BuildingTip() {
                 case BuildType.Camp: land_name = "Camp"; break;
             }
             if (land.owner) {
-                const p = getComponentValue(contractComponents.Player,getEntityIdFromKeys([BigInt(land.owner)]))
+                const p = getComponentValue(contractComponents.Player, getEntityIdFromKeys([BigInt(land.owner)]))
                 const name = p?.nick_name;
                 if (name) {
-                    land_owner = hexToString(name)
+                    land_owner ="Owner : "+ hexToString(name)
                 }
             }
             land_level = "Level : " + land.level
-            const w = getComponentValue(contractComponents.Warrior,getEntityIdFromKeys([1n,BigInt(lastCoord.x),BigInt(lastCoord.y)]))
-            if(w){
+            const w = getComponentValue(contractComponents.Warrior, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+            if (w) {
                 land_warrior = "Warrior : " + w.balance
             }
-            // if (landWarriors.get(lastCoord.x + "_" + lastCoord.y))
-                // land_warrior = "Warrior : " + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
-            // console.log("land info", lastCoord, land_warrior);
-            // bases.get(account?.address!)
         } else {
             const land_type = get_land_type(1, lastCoord.x, lastCoord.y)
             land_desc = "Can't be occupied"
@@ -104,10 +95,18 @@ export default function BuildingTip() {
                 case LandType.Iron: land_name = "Iron"; break;
                 case LandType.Water: land_name = "Water"; break;
             }
+            if(land_type==LandType.Gold||land_type==LandType.Iron){
+                const w = getComponentValue(contractComponents.LandMiner, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+                land_owner = "Miner : None"
+                if(w){
+                    // const w = getComponentValue(contractComponents.LandMiner, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+                    land_owner = "Miner : " + w.miner_x +","+w.miner_y
+                }
+            }
             const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y)
-            land_warrior ="Warrior : " + land_baba.toString()
+            land_warrior = "Warrior : " + land_baba.toString()
             land_level = "Level : " + (1n + land_baba / 10n)
-            if(land_type!=LandType.None){
+            if (land_type != LandType.None) {
                 land_warrior = ""
                 land_level = ""
             }
@@ -117,7 +116,7 @@ export default function BuildingTip() {
             show: true, x: x, y: y, content: <div>
                 <div style={{ marginTop: 5 }}>{land_name}</div>
                 <div style={{ marginTop: 5 }}>({lastCoord.x},{lastCoord.y})</div>
-                <div style={{ marginTop: 5 }}>Owner : {land_owner}</div>
+                <div style={{ marginTop: 5 }}>{land_owner}</div>
                 <div style={{ marginTop: 5 }}>{land_desc}</div>
                 <div style={{ marginTop: 5 }}>{land_level}</div>
                 <div style={{ marginTop: 5 }}>{land_warrior}</div>
@@ -130,7 +129,7 @@ export default function BuildingTip() {
             return
         }
 
-        if (showButtons.show) {
+        if (tipButtonShow.show) {
             return
         }
 
@@ -166,25 +165,20 @@ export default function BuildingTip() {
             return
         }
         if (!mouseDown) {
-            // if (!showButtons.show) {
-                var x = ex
-                if (ex > innerWidth - 100) {
-                    x = ex - 100
-                }
-                var y = ey
-                if (ey > innerHeight - 200) {
-                    y = ey - 180
-                }
-                setShowButtons({ show: true, x: x, y: y })
-            // }
+            var x = ex
+            if (ex > innerWidth - 100) {
+                x = ex - 100
+            }
+            var y = ey
+            if (ey > innerHeight - 200) {
+                y = ey - 180
+            }
+            console.log("click", lastCoord);
+            // controlStore.setState({ clickedLand: { x: lastCoord.x, y: lastCoord.y } })
+            controlStore.setState({ tipButtonShow: { show: true, x: x, y: y }, clickedLand: { x: lastCoord.x, y: lastCoord.y } })
+            // setShowButtons({ show: true, x: x, y: y })
         }
     }, [mouseDown])
-
-    const occupyClick = () => {
-        toastSuccess("Occupy success")
-        setShowButtons({ show: false, x: 0, y: 0 })
-        putTileAt(lastCoord, TilesetZone.MyZone, "Occupy");
-    }
 
     const sendTroopClick = () => {
         console.log("sendTroopClick");
@@ -196,20 +190,24 @@ export default function BuildingTip() {
             return
         }
         const troop = new Troop(account.address, myBase, lastCoord, getTimestamp())
-        controlStore.setState({ sendTroopCtr: { troop: troop, show: true } })
-        setShowButtons({ show: false, x: 0, y: 0 })
+        controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
 
     const buildClick = () => {
-        controlStore.setState({ buildLand: lastCoord })
-        setShowButtons({ show: false, x: 0, y: 0 })
+        controlStore.setState({ buildLand: lastCoord, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
 
     const getButtons = useMemo(() => {
         if (!account) {
             return <></>
         }
-        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(lastCoord.x),BigInt(lastCoord.y)]))
+        if (tipButtonShow.show) {
+            return
+        }
+        if (showTipButtons) {
+            return showTipButtons
+        }
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
         if (land) {
             if (land.building == BuildType.Base) {
                 return <></>
@@ -242,14 +240,14 @@ export default function BuildingTip() {
                 </div>
             )}
             {
-                showButtons.show &&
-                <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${showButtons.x - 10}px`, top: `${showButtons.y + 20}px` }}>
+                tipButtonShow.show &&
+                <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${tipButtonShow.x - 10}px`, top: `${tipButtonShow.y + 20}px` }}>
                     {
                         getButtons
                     }
                     <button onClick={() => buildClick()}>Build</button>
-                    <button style={{ marginTop: 10 }} onClick={() => setShowButtons({ show: false, x: 0, y: 0 })}>Cancel</button>
-                    
+                    <button style={{ marginTop: 10 }} onClick={() => controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })}>Cancel</button>
+
                 </div>
             }
 

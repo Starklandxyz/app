@@ -9,21 +9,26 @@ import ironmineicon from "../../public/assets/icons/ironmine.png"
 import campicon from "../../public/assets/icons/camp.png"
 import farmlandicon from "../../public/assets/icons/farmland.png"
 import { BuildType, getBuildName } from "../types/Build";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BuildInfos } from "../types/BuildInfo";
 import { Account } from "starknet";
 import { LandType, get_land_type } from "../types/Land";
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, networkLayer, account } = store()
-    const { buildLand, startMiningLand } = controlStore()
-    // const { food, iron, gold } = resourceStore()
-    // const { goldprices, foodprices, ironprices } = buildPriceStore()
+    const { buildLand, clickedLand } = controlStore()
     const [selectBuild, setSelect] = useState<BuildType>(BuildType.Farmland)
-    // const [showStartMining, setShowStartMining] = useState(false)
+    const [selectMined, setSelectMined] = useState(false)
+
+    const clickedLandRef = useRef<Coord>()
+
+    useEffect(() => {
+        clickedLandRef.current = clickedLand
+    }, [clickedLand])
 
     const {
         scenes: {
@@ -61,29 +66,7 @@ export default function ChooseBuildUI() {
         console.log("fetchBuildPrice", prices);
 
         const edges = prices.data.entities?.edges
-        handleSQLResult(edges,components)
-        // const goldp = new Map(goldprices)
-        // const ironp = new Map(ironprices)
-        // const foodp = new Map(foodprices)
-
-        // if (edges) {
-        //     for (let index = 0; index < edges.length; index++) {
-        //         const element = edges[index];
-        //         const components = element?.node?.components
-        //         if (components && components[0] && components[0].__typename == "BuildPrice") {
-        //             const component = components[0]
-        //             const build_type = component.build_type
-        //             goldp.set(build_type, component.gold)
-        //             foodp.set(build_type, component.food)
-        //             ironp.set(build_type, component.iron)
-        //         }
-        //     }
-        // }
-        // buildPriceStore.setState({
-        //     goldprices: goldp,
-        //     foodprices: foodp,
-        //     ironprices: ironp
-        // })
+        handleSQLResult(edges, components)
     }
 
 
@@ -96,20 +79,20 @@ export default function ChooseBuildUI() {
             return
         }
 
-        const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
-        const price =  getComponentValue(components.BuildPrice,getEntityIdFromKeys([1n,BigInt(selectBuild)]))
-        if(!price){
+        const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
+        const price = getComponentValue(components.BuildPrice, getEntityIdFromKeys([1n, BigInt(selectBuild)]))
+        if (!price) {
             return
         }
-        if (getComponentValue(components.Gold,entityIndex)?.balance! < price.gold) {
+        if (getComponentValue(components.Gold, entityIndex)?.balance! < price.gold) {
             toastError("Gold is not enough")
             return
         }
-        if (getComponentValue(components.Food,entityIndex)?.balance! <price.food) {
+        if (getComponentValue(components.Food, entityIndex)?.balance! < price.food) {
             toastError("Food is not enough")
             return
         }
-        if (getComponentValue(components.Iron,entityIndex)?.balance! < price.iron) {
+        if (getComponentValue(components.Iron, entityIndex)?.balance! < price.iron) {
             toastError("Iron is not enough")
             return
         }
@@ -177,8 +160,66 @@ export default function ChooseBuildUI() {
         }
     }
 
+    const chooseArea = async () => {
+        console.log("chooseArea", clickedLandRef.current, buildLand);
+        if (!clickedLandRef.current || !buildLand) {
+            return
+        }
+        controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })
+        if (clickedLandRef.current.x >= buildLand.x - 1 && clickedLandRef.current.x <= buildLand.x + 1 && clickedLandRef.current.y >= buildLand.y - 1 && clickedLandRef.current.y <= buildLand.y + 1) {
+            const type = get_land_type(1, clickedLandRef.current.x, clickedLandRef.current.y)
+            let correct = false
+            if (type == LandType.Gold && selectBuild == BuildType.GoldMine) {
+                correct = true
+            }
+            if (type == LandType.Iron && selectBuild == BuildType.IronMine) {
+                correct = true
+            }
+            if (correct) {
+                const has = await fetchHasMiner(1, clickedLandRef.current.x, clickedLandRef.current.y)
+                if (has) {
+                    toastError("This land has miner")
+                    return
+                }
+                const result = await startMining(account!, 1, buildLand.x, buildLand.y, clickedLandRef.current.x, clickedLandRef.current.y)
+                if (result && result.length > 0) {
+                    toastSuccess("Start mining success")
+                    startSucces()
+                } else {
+                    toastError("Start Mining failed")
+                }
+            } else {
+                toastError("Wrong land")
+            }
+
+        } else {
+            toastError("Wrong land")
+        }
+    }
+
+    const startSucces = () => {
+        if (!buildLand) { return }
+        const miner_x = buildLand.x
+        const miner_y = buildLand.y
+        setSelectMined(false)
+        controlStore.setState({buildLand:undefined,showTipButtons:undefined})
+
+        for (let i = -1; i < 2; i++) {
+            for (let j = -1; j < 2; j++) {
+                const x = miner_x + i
+                const y = miner_y + j
+                putTileAt({ x, y }, Tileset.Empty, "SelectArea");
+            }
+        }
+    }
+
     const showSelectArea = (miner_x: number, miner_y: number) => {
-        controlStore.setState({ startMiningLand: { x: miner_x, y: miner_y } })
+        setSelectMined(true)
+        controlStore.setState({
+            showTipButtons: <>
+                <button onClick={() => chooseArea()}>Choose</button>
+            </>
+        })
         for (let i = -1; i < 2; i++) {
             for (let j = -1; j < 2; j++) {
                 const x = miner_x + i
@@ -186,10 +227,6 @@ export default function ChooseBuildUI() {
                 putTileAt({ x, y }, TilesetZone.MyZone, "SelectArea");
             }
         }
-    }
-
-    const hideSelectArea = () => {
-
     }
 
     const cancel = () => {
@@ -212,13 +249,6 @@ export default function ChooseBuildUI() {
         )
     }, [selectBuild])
 
-    const startMine = async () => {
-        if (!account) {
-            return
-        }
-        controlStore.setState({ startMiningLand: undefined })
-        // setShowStartMining(false)
-    }
 
     const claimToMine = async (account: Account, map_id: number, miner_x: number, miner_y: number, mined_x: number, mined_y: number) => {
         const result = await startMining(account, map_id, miner_x, miner_y, mined_x, mined_y)
@@ -230,10 +260,10 @@ export default function ChooseBuildUI() {
     }
 
     const fetchHasMiner = async (map_id_: number, x_: number, y_: number) => {
-        const map_id = map_id_.toString(16)
-        const x = x_.toString(16)
-        const y = y_.toString(16)
-        console.log("fetchHasMiner", x, y);
+        const map_id ="0x"+ map_id_.toString(16)
+        const x ="0x"+ x_.toString(16)
+        const y ="0x"+ y_.toString(16)
+        console.log("fetchHasMiner", x, y,map_id);
         const miner = await graphSdk.getLandMinerByKey({ map_id: map_id, x: x, y: y })
         console.log("fetchHasMiner", miner);
         const edges = miner.data.entities?.edges
@@ -256,15 +286,14 @@ export default function ChooseBuildUI() {
     return (
         <ClickWrapper>
             {
-                startMiningLand &&
+                selectMined &&
                 <div className="startbuildpanel">
                     <p>Build {getBuildName(selectBuild)} Success</p>
                     <p>Should select a land to mine.</p>
-                    <button onClick={() => startMine()}>Start Farming</button>
                 </div>
             }
             {
-                (buildLand && !startMiningLand) &&
+                (buildLand && !selectMined) &&
                 <div className="choosebuildpanel">
 
                     <table style={{ width: 400, marginTop: 1 }}>

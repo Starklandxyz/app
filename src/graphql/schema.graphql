@@ -202,6 +202,15 @@ query getAllLands($map_id:String) {
             level
             
           }
+          __typename
+          ... on LandMiner {
+            map_id,
+            x,
+            y,
+            miner_x,
+            miner_y
+          }
+          __typename
           ... on LandMining {
             map_id,
             x,
