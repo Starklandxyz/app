@@ -19,9 +19,6 @@ const SIZE = 12
 export default function TroopsUI() {
     const { account, phaserLayer } = store()
     const { timenow } = ticStore()
-    // const { troops } = troopStore()
-    // const { bases } = buildStore()
-    // const { lands } = mapStore()
 
     const {
         scenes: {
@@ -41,7 +38,6 @@ export default function TroopsUI() {
     const troops = useEntityQuery([Has(components.Troop)], { updateOnValueChange: true })
 
     useEffect(() => {
-        // console.log("time change", timenow,troops);
         troops.map(entity => {
             const t = getComponentValue(components.Troop, entity)
             if (!t) {
@@ -51,6 +47,8 @@ export default function TroopsUI() {
             const base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(value.owner)]))
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
+            console.log("time change",timenow,value);
+            
             if (value.startTime != 0 && left < 0) {
                 showFlag(value)
                 hideTroopArrow(objectPool, value);
@@ -93,9 +91,6 @@ export default function TroopsUI() {
     }, [timenow])
 
     useEffect(() => {
-        // if (lands.size == 0) {
-        //     return
-        // }
         troops.map(entity => {
             const t = getComponentValue(components.Troop, entity)
             if (!t) {
@@ -108,17 +103,6 @@ export default function TroopsUI() {
             createArrowLine(objectPool, value)
         })
     }, [troops])
-
-    // useEffect(() => {
-    //     if (!sendTroopCtr.troop) {
-    //         return
-    //     }
-    // if (sendTroopCtr.show) {
-    //     createArrowLine(objectPool, sendTroopCtr.troop)
-    // } else {
-    //     hideTroopArrow(objectPool, sendTroopCtr.troop)
-    // }
-    // }, [sendTroopCtr])
 
     const isBase = (pos: Coord) => {
         // const land = lands.get(pos.x + "_" + pos.y)

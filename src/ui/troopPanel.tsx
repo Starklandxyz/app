@@ -41,13 +41,11 @@ export default function TroopPanel() {
         if(!account){
             return
         }
-        // var size = 0
         const array:Array<Troop> = []
         troops.map(entity=>{
             const troop = getComponentValue(components.Troop,entity)
             if(troop?.owner == account.address && troop?.start_time!=0){
                 array.push(Troop2Troop(troop))
-                // size++
             }
         })
         setMyTroops(array)

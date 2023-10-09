@@ -12,7 +12,6 @@ import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
-    // const { lands } = mapStore()
     const { account, networkLayer } = store()
 
     const {
@@ -22,6 +21,7 @@ export default function TroopItem(params: any) {
 
     const troop: Troop = params.troop
     const base: Coord = params.base
+
     const clickTroop = () => {
 
     }
@@ -44,7 +44,7 @@ export default function TroopItem(params: any) {
     }
 
     const retreat = async () => {
-        console.log("retreat");
+        console.log("retreat",troop);
         if (!account) {
             return
         }

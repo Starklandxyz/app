@@ -1,4 +1,5 @@
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index"
+import { Troop_Speed } from "../contractconfig"
 
 export class Troop {
     //id => owner + "_" + index
@@ -34,5 +35,7 @@ export function Troop2Troop(t:any){
     troop.retreat = retreat
     troop.id = owner +"_"+index
     troop.distance = t.distance
+    troop.index = index
+    troop.totalTime = t.distance * Troop_Speed
     return troop
 }
