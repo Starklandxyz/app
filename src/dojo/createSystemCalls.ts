@@ -186,29 +186,6 @@ export function createSystemCalls(
     return events;
   };
 
-  const buyGold = async (
-    signer: Account,
-    amount: number
-  ) => {
-    const tx = await execute(signer, "buy_gold", [amount]);
-    console.log("buyGold signer:" + signer.address + ",amount:" + amount);
-
-    // TODO: override gold
-
-    console.log(tx);
-    const receipt = await signer.waitForTransaction(tx.transaction_hash, {
-      retryInterval: 100,
-    });
-
-    console.log(receipt);
-
-    const events = getEvents(receipt);
-    console.log(events);
-
-    // return player,land
-    return events;
-  };
-
   const trainWarrior = async (
     signer: Account,
     map_id: number,
@@ -261,7 +238,6 @@ export function createSystemCalls(
     buildBuilding,
     build_base,
     trainWarrior,
-    buyGold
   };
 }
 

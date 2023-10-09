@@ -8,12 +8,12 @@ import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { Tileset, TilesetTown } from "../artTypes/world";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { toastError, toastInfo, toastSuccess } from "../utils";
-import { buildStore } from "../store/buildstore";
 import { LandType, get_land_type } from "../types/Land";
 import { playerStore } from "../store/playerStore";
+import { useComponentValue } from "@dojoengine/react";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export default function SpawnUI() {
-    const { bases } = buildStore()
     const {player} = playerStore()
     const [show, setShow] = useState(false)
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
@@ -30,8 +30,10 @@ export default function SpawnUI() {
     } = phaserLayer!;
 
     const {
+        components,
         systemCalls: { build_base },
     } = networkLayer!
+    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     const baseClick = () => {
         console.log("baseClick",player);
@@ -76,9 +78,9 @@ export default function SpawnUI() {
         if (result && result.length > 0) {
             setShow(false)
             toastSuccess("Build Base Success!")
-            const newBases = new Map(bases)
-            newBases.set(account?.address!, lastCoord)
-            buildStore.setState({ bases: newBases })
+            // const newBases = new Map(bases)
+            // newBases.set(account?.address!, lastCoord)
+            // buildStore.setState({ bases: newBases })
         } else {
             toastError("Can't build here")
         }
@@ -124,12 +126,12 @@ export default function SpawnUI() {
             return <></>
         }
         // console.log("showButton",account?.address,bases,bases.has(account.address));
-        if (bases.has(account.address)) {
+        if (myBase) {
             return <></>
         }
 
         return <button onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</button>
-    }, [account, bases, show,player])
+    }, [account, myBase, show,player])
 
     return (
         <ClickWrapper>

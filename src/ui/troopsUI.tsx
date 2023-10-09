@@ -14,16 +14,16 @@ import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
 import sha256 from 'crypto-js/sha256';
 import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
-import { buildStore } from "../store/buildstore";
+import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 const SIZE = 12
 
 export default function TroopsUI() {
     const { account, phaserLayer } = store()
     const { timenow } = ticStore()
     const { troops } = troopStore()
-    const { bases } = buildStore()
+    // const { bases } = buildStore()
     const { lands } = mapStore()
-    const { sendTroopCtr } = controlStore()
 
     const {
         scenes: {
@@ -33,13 +33,16 @@ export default function TroopsUI() {
                     Main: { putTileAt },
                 },
             },
+        },
+        networkLayer:{
+            components
         }
     } = phaserLayer!;
 
     useEffect(() => {
         // console.log("time change", timenow,troops);
         troops.forEach((value, _) => {
-            const base = bases.get(value.owner)
+            const base = getComponentValue(components.Base,getEntityIdFromKeys([1n,BigInt(value.owner)]))
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
             if (value.startTime!=0 && left < 0) {

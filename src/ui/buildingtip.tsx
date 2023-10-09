@@ -9,18 +9,19 @@ import { TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetZone
 import { Coord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ClickWrapper } from "./clickWrapper";
 import { Troop } from "../types/Troop";
-import { buildStore } from "../store/buildstore";
 import { controlStore } from "../store/controlStore";
 import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
 import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
 import { playerStore } from "../store/playerStore";
 import { warriorStore } from "../store/warriorstore";
+import { useComponentValue } from "@dojoengine/react";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const { players } = playerStore()
     const { landWarriors } = warriorStore()
-    const { bases } = buildStore()
+    // const { bases } = buildStore()
     const { lands } = mapStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
@@ -38,8 +39,14 @@ export default function BuildingTip() {
                     Main: { putTileAt },
                 },
             },
+        },
+        networkLayer:{
+            components:contractComponents
         }
     } = phaserLayer!;
+
+
+    const myBase = useComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     useEffect(() => {
         const x = MAP_WIDTH / 2
@@ -148,7 +155,7 @@ export default function BuildingTip() {
         if (!account) {
             return
         }
-        if (!bases.has(account.address)) {
+        if (!myBase) {
             return
         }
         if (sendTroop.show) {
@@ -180,11 +187,11 @@ export default function BuildingTip() {
         if (!account) {
             return
         }
-        const base = bases.get(account.address)
-        if (!base) {
+        // const base = bases.get(account.address)
+        if (!myBase) {
             return
         }
-        const troop = new Troop(account.address, base, lastCoord, getTimestamp())
+        const troop = new Troop(account.address, myBase, lastCoord, getTimestamp())
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true } })
         setShowButtons({ show: false, x: 0, y: 0 })
     }
@@ -216,7 +223,7 @@ export default function BuildingTip() {
             }
         }
         return <button onClick={() => sendTroopClick()}>Send Troop</button>
-    }, [lands, bases, account, lastCoord])
+    }, [lands, myBase, account, lastCoord])
 
     return (
         <ClickWrapper>

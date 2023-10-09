@@ -5,14 +5,14 @@ import { troopStore } from "../store/troopStore";
 import { store } from "../store/store";
 import { Troop } from "../types/Troop";
 import TroopItem from "./components/TroopItem";
-import { playerStore } from "../store/playerStore";
-import { buildStore } from "../store/buildstore";
 import { Troop_Speed } from "../contractconfig";
+import { useComponentValue } from "@dojoengine/react";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export default function TroopPanel() {
     const { troops } = troopStore()
     const { account, phaserLayer } = store()
-    const { bases } = buildStore()
+    // const { bases } = buildStore()
     const [showContent, setShowContent] = useState(true);
     const toggleContent = useCallback(() => {
         setShowContent(!showContent);
@@ -21,10 +21,11 @@ export default function TroopPanel() {
 
     const {
         networkLayer: {
+            components,
             network: { graphSdk }
         }
     } = phaserLayer!
-
+    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     useEffect(() => {
         fetchTroops()
     }, [])
@@ -85,7 +86,7 @@ export default function TroopPanel() {
                     {showContent && (
                         <div>
                             {[...troops.values()].map(value => (
-                                (value.owner == account.address && value.startTime!=0 ) && <TroopItem key={value.id} base={bases.get(account.address)} troop={value} />
+                                (value.owner == account.address && value.startTime!=0 ) && <TroopItem key={value.id} base={myBase} troop={value} />
                             ))}
                         </div>
                     )}

@@ -1,9 +1,7 @@
 import { useEffect } from "react"
-import { buildStore } from "../store/buildstore"
 import { store } from "../store/store";
 import { Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, TilesetZone } from "../artTypes/world";
 import { playerStore } from "../store/playerStore";
-import { Base, Land } from "../generated/graphql";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mapStore } from "../store/mapStore";
@@ -11,10 +9,13 @@ import { Land2Land, Player2Player } from "../types";
 import { BuildType } from "../types/Build";
 import { hexToString } from "../utils";
 import { warriorStore } from "../store/warriorstore";
+import { handleSQLResult } from "../utils/handleutils";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 // import { Land } from "../types/Land";
-
+import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 export default function MapUI() {
-    const { bases } = buildStore()
+    // const { bases } = buildStore()
     const { account } = store()
     const { landWarriors } = warriorStore()
     const { lands: mapLands } = mapStore()
@@ -31,18 +32,22 @@ export default function MapUI() {
             },
         },
         networkLayer: {
+            components,
             network: { graphSdk }
         }
     } = phaserLayer!;
-
+    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const bases = useEntityQuery([Has(components.Base)],{updateOnValueChange:true})
+  
     useEffect(() => {
         console.log("map base change");
 
-        bases.forEach((value, key) => {
+        bases.map((entity) => {
+            const value = getComponentValueStrict(components.Base,entity)
             const xStart = value.x
             const yStart = value.y
             var diff = 0
-            if (key == account?.address) {
+            if (value.owner == account?.address) {
                 diff = 6
             }
             console.log("put base ", xStart);
@@ -52,7 +57,7 @@ export default function MapUI() {
             putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Top");
             putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Top");
 
-            const nameObj = objectPool.get("townname_" + key, "Text")
+            const nameObj = objectPool.get("townname_" + value.owner, "Text")
             const pixelPosition = tileCoordToPixelCoord({ x: xStart, y: yStart }, TILE_WIDTH, TILE_HEIGHT)
             nameObj.setComponent({
                 id: 'position',
@@ -60,33 +65,33 @@ export default function MapUI() {
                     text.setPosition(pixelPosition?.x, pixelPosition?.y - 14);
                     text.setBackgroundColor("rgba(0,0,0,0.6)")
                     text.setFontSize(11)
-                    if (key == account?.address) {
+                    if (value.owner == account?.address) {
                         text.setBackgroundColor("rgba(255,0,0,0.6)")
                         text.setText("Me")
                     } else {
-                        text.setText(hexToString(players.get(key)?.nick_name));
+                        text.setText(hexToString(players.get(value.owner)?.nick_name));
                     }
                 }
             })
         })
-    }, [bases.keys()])
+    }, [bases])
 
     useEffect(() => {
         if (!player || !account) {
             return
         }
-        const base = bases.get(account.address)
-        if (!base) {
+        // const base = bases.get(account.address)
+        if (!myBase) {
             return
         }
-        const xStart = base.x
-        const yStart = base.y
+        const xStart = myBase.x
+        const yStart = myBase.y
         var diff = 6
         putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
         putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");
         putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Top");
         putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Top");
-        const pixelPosition = tileCoordToPixelCoord({ x: base.x, y: base.y }, TILE_WIDTH, TILE_HEIGHT);
+        const pixelPosition = tileCoordToPixelCoord({ x: myBase.x, y: myBase.y }, TILE_WIDTH, TILE_HEIGHT);
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }, [player])
 
@@ -151,22 +156,23 @@ export default function MapUI() {
         const base = await graphSdk.getAllBase({ map_id: map_id })
         console.log("fetchAllBase", account?.address, base);
         const edges = base.data.entities?.edges;
-        const newBases = new Map(bases);
-        if (edges && edges.length > 0) {
-            for (let index = 0; index < edges.length; index++) {
-                const edge = edges[index];
-                if (edge) {
-                    const c = edge.node?.components
-                    if (c && c[0] && c[0].__typename == "Base") {
-                        const b = c[0] as Base
-                        const coord = { x: b.x, y: b.y }
-                        newBases.set(b.owner, coord)
-                    }
-                }
-            }
-        }
-        console.log("fetchAllBase");
-        buildStore.setState({ bases: newBases })
+        handleSQLResult(edges,components)
+        // const newBases = new Map(bases);
+        // if (edges && edges.length > 0) {
+        //     for (let index = 0; index < edges.length; index++) {
+        //         const edge = edges[index];
+        //         if (edge) {
+        //             const c = edge.node?.components
+        //             if (c && c[0] && c[0].__typename == "Base") {
+        //                 const b = c[0] as Base
+        //                 const coord = { x: b.x, y: b.y }
+        //                 newBases.set(b.owner, coord)
+        //             }
+        //         }
+        //     }
+        // }
+        // console.log("fetchAllBase");
+        // buildStore.setState({ bases: newBases })
     }
 
     useEffect(() => {

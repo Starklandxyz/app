@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { ClickWrapper } from "./clickWrapper";
 import { useEffect, useMemo, useState } from "react";
 import { getTimestamp, parseTime, toastError, toastSuccess } from "../utils";
-import { buildStore } from "../store/buildstore";
 import { playerStore } from "../store/playerStore";
 import { store } from "../store/store";
 import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from "../contractconfig";
@@ -11,12 +10,12 @@ import { Training } from "../types/Training";
 import { ticStore } from "../store/ticStore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useComponentValue } from "@dojoengine/react";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
-    // const { gold, food, iron } = resourceStore()
     const { timenow } = ticStore()
-    const { bases } = buildStore()
+    // const { bases } = buildStore()
     const { player } = playerStore()
     const { account, networkLayer, phaserLayer } = store()
 
@@ -32,13 +31,7 @@ export default function TrainPanel() {
             network: { graphSdk }
         }
     } = phaserLayer!
-    // const {
-    //     world,
-    //     scenes: {
-    //         Main: { objectPool },
-    //     }
-    // } = layer!;
-
+    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const claimairdrop = async () => {
         if (!account) {
             return
@@ -98,7 +91,7 @@ export default function TrainPanel() {
             toastError("Mint player first")
             return
         }
-        if (!bases.has(account.address)) {
+        if (!myBase) {
             toastError("Build a base first.")
             return
         }

@@ -1,4 +1,3 @@
-import { buildStore } from "../store/buildstore";
 import { store } from "../store/store";
 import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
@@ -10,10 +9,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
 import { warriorStore } from "../store/warriorstore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
+import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { useComponentValue } from "@dojoengine/react";
 
 export default function SendTroopPanel() {
-    const { bases } = buildStore()
+    // const { bases } = buildStore()
     const { account, phaserLayer, networkLayer } = store()
     const { sendTroopCtr } = controlStore()
     const { landWarriors } = warriorStore()
@@ -36,7 +37,7 @@ export default function SendTroopPanel() {
     const {
         systemCalls: { sendTroop },
     } = networkLayer!
-
+    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!account) {
             return 0
@@ -71,7 +72,10 @@ export default function SendTroopPanel() {
         if (!account) {
             return
         }
-        const food_need = Troop_Food * calDistance() * inputValue
+        if(!sendTroopCtr.troop){
+            return
+        }
+        const food_need = Troop_Food * calDistance(myBase,sendTroopCtr.troop.to) * inputValue
 
         const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
         if (getComponentValue(components.Food,entityIndex)?.balance! < food_need) {
@@ -139,43 +143,48 @@ export default function SendTroopPanel() {
         })
     }, [])
 
-    const calDistance = () => {
+    const calDistance = (base:Coord,to:Coord) => {
         console.log("calDistance");
-
         if (!account) {
             return 0
         }
-        const base = bases.get(account.address)
-        if (!base) {
-            return 0
-        }
-        if (!sendTroopCtr.troop) {
-            return 0
-        }
-        const dis1 = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y - sendTroopCtr.troop.to.y)
+        const dis1 = Math.abs(base.x - to.x) + Math.abs(base.y - to.y)
         let dis = dis1
-        const dis2 = Math.abs(base.x + 1 - sendTroopCtr.troop.to.x) + Math.abs(base.y - sendTroopCtr.troop.to.y)
+        const dis2 = Math.abs(base.x + 1 - to.x) + Math.abs(base.y - to.y)
         if (dis > dis2) {
             dis = dis2
         }
-        const dis3 = Math.abs(base.x + 1 - sendTroopCtr.troop.to.x) + Math.abs(base.y + 1 - sendTroopCtr.troop.to.y)
+        const dis3 = Math.abs(base.x + 1 - to.x) + Math.abs(base.y + 1 - to.y)
         if (dis > dis3) {
             dis = dis3
         }
-        const dis4 = Math.abs(base.x - sendTroopCtr.troop.to.x) + Math.abs(base.y + 1 - sendTroopCtr.troop.to.y)
+        const dis4 = Math.abs(base.x - to.x) + Math.abs(base.y + 1 - to.y)
         if (dis > dis4) {
             dis = dis4
         }
         return dis
     }
 
+    const getDistance = useMemo(()=>{
+        if(!sendTroopCtr.troop){
+            return 0
+        }
+        return calDistance(myBase,sendTroopCtr.troop.to)
+    },[myBase,sendTroopCtr])
+
     const calFood = useMemo(() => {
-        const result = Troop_Food * calDistance() * inputValue
+        if(!sendTroopCtr.troop){
+            return 0
+        }
+        const result = Troop_Food * calDistance(myBase,sendTroopCtr.troop.to) * inputValue
         return result
     }, [sendTroopCtr, inputValue])
 
     const calTime = useMemo(() => {
-        const result = Troop_Speed * calDistance() * inputValue
+        if(!sendTroopCtr.troop){
+            return "0s"
+        }
+        const result = Troop_Speed * calDistance(myBase,sendTroopCtr.troop.to)
         return result + "s"
     }, [sendTroopCtr, inputValue])
 
@@ -183,11 +192,11 @@ export default function SendTroopPanel() {
         if (!account) {
             return 0
         }
-        const base = bases.get(account.address)
-        if (!base) {
+        // const base = bases.get(account.address)
+        if (!myBase) {
             return 0
         }
-        const key = base.x + "_" + base.y
+        const key = myBase.x + "_" + myBase.y
         // console.log("calWarrior", key);
         const w = landWarriors.get(key)
         // console.log("calWarrior", bases);
@@ -240,7 +249,7 @@ export default function SendTroopPanel() {
                             </tr>
                             <tr>
                                 <td>
-                                    Distance : {calDistance()}
+                                    Distance : {getDistance}
                                 </td>
                                 <td>
                                     TroopID : {getTroopID}
