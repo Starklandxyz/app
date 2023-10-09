@@ -47,7 +47,7 @@ export default function TroopsUI() {
             const base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(value.owner)]))
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
-            console.log("time change",timenow,value);
+            // console.log("time change",timenow,value);
             
             if (value.startTime != 0 && left < 0) {
                 showFlag(value)
@@ -161,13 +161,14 @@ export default function TroopsUI() {
             const sid = "arrow_" + troop.id + "_" + index
             const arrowObj = pool.get(sid, "Sprite")
             // console.log("createArrowLine",sid,arrowObj);
-            arrowObj.spawn()
+            // arrowObj.spawn()
             arrowObj.setComponent({
                 id: "position",
-                once: (sprite: any) => {
+                once: (sprite) => {
                     if (sprite.active != true) {
                         return
                     }
+                    sprite.setActive(true)
                     sprite.setTexture(Assets.Arrow, 0)
                     var x = 0
                     var y = 0
@@ -183,7 +184,8 @@ export default function TroopsUI() {
                         sprite.rotation = theta + Math.PI
                     }
                     sprite.setPosition(x, y)
-                    sprite.z = 0
+                    sprite.z = 1
+                    console.log("createArrowLine",sprite);
                 }
             })
         }
@@ -192,7 +194,7 @@ export default function TroopsUI() {
     const createArmey = (pool: ObjectPool, id: number | string, pos: Coord, leftTime: number, flip = false) => {
         const playerObj = pool.get("armey_" + id, "Sprite")
         // console.log("createArmey", pos, leftTime);
-        playerObj.spawn()
+        // playerObj.spawn()
         playerObj.setComponent({
             id: "position",
             once: (sprite: any) => {
@@ -209,7 +211,7 @@ export default function TroopsUI() {
             }
         })
         const nameObj = pool.get("armey_name_" + id, "Text")
-        nameObj.spawn()
+        // nameObj.spawn()
         nameObj.setComponent({
             id: 'position',
             once: (text: any) => {

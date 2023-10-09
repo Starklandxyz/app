@@ -98,7 +98,7 @@ export default function TroopItem(params: any) {
         if (!base) {
             return `(${troop.to.x},${troop.to.y})`
         }
-        console.log("getTo",troop,base);
+        // console.log("getTo",troop,base);
         
         if (base.x == troop.to.x && base.y == troop.to.y) {
             return "Base"

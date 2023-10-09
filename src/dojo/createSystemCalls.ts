@@ -15,14 +15,14 @@ export function createSystemCalls(
 ) {
   const build_base = async (signer: Account, map_id: number, x: number, y: number) => {
     try {
-      console.log("roll start");
+      // console.log("roll start");
       const tx = await execute(signer, "build_base", [map_id, x, y]);
-      console.log("roll tx");
+      // console.log("roll tx");
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-      console.log("roll receipt:", receipt);
+      // console.log("roll receipt:", receipt);
       // parseEvents
       let events = getEvents(receipt);
       setComponentsFromEvents(contractComponents, events);
@@ -40,7 +40,7 @@ export function createSystemCalls(
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-      console.log("roll receipt:", receipt);
+      // console.log("roll receipt:", receipt);
       let events = getEvents(receipt);
       setComponentsFromEvents(contractComponents, events);
       return events;
@@ -57,7 +57,7 @@ export function createSystemCalls(
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-      console.log("roll receipt:", receipt);
+      // console.log("roll receipt:", receipt);
       let events = getEvents(receipt);
       setComponentsFromEvents(contractComponents, events);
       return events;
@@ -70,15 +70,15 @@ export function createSystemCalls(
 
   const airdrop = async (signer: Account, map_id: number) => {
     try {
-      console.log("recoverEnergy start");
+      // console.log("recoverEnergy start");
       const tx = await execute(signer, "admin", [map_id]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-      console.log("roll receipt:", receipt);
+      // console.log("roll receipt:", receipt);
       const events = getEvents(receipt);
-      console.log(events);
+      // console.log(events);
       setComponentsFromEvents(contractComponents, events);
       return events;
     } catch (e) {
@@ -94,15 +94,15 @@ export function createSystemCalls(
 
   const retreatTroop = async (signer: Account, map_id: number,index:number) => {
     try {
-      console.log("recoverEnergy start");
+      // console.log("recoverEnergy start");
       const tx = await execute(signer, "retreat_troop", [map_id,index]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-      console.log("roll receipt:", receipt);
+      // console.log("roll receipt:", receipt);
       const events = getEvents(receipt);
-      console.log(events);
+      // console.log(events);
       setComponentsFromEvents(contractComponents, events);
       return events;
     } catch (e) {
@@ -118,15 +118,15 @@ export function createSystemCalls(
 
   const troopEnterLand = async (signer: Account, map_id: number,index:number) => {
     try {
-      console.log("troopEnterLand start");
+      // console.log("troopEnterLand start");
       const tx = await execute(signer, "enter_land", [map_id,index]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-      console.log("roll receipt:", receipt);
+      // console.log("roll receipt:", receipt);
       const events = getEvents(receipt);
-      console.log(events);
+      // console.log(events);
       setComponentsFromEvents(contractComponents, events);
       return events;
     } catch (e) {
@@ -149,15 +149,15 @@ export function createSystemCalls(
 
     // TODO: override gold
 
-    console.log(tx);
+    // console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
       retryInterval: 100,
     });
 
-    console.log(receipt);
+    // console.log(receipt);
 
     const events = getEvents(receipt);
-    console.log(events);
+    // console.log(events);
     setComponentsFromEvents(contractComponents, events);
     return events;
   };
@@ -173,15 +173,15 @@ export function createSystemCalls(
     toy:number
   ) => {
     const tx = await execute(signer, "send_troop", [map_id,amount,troop_id,fromx,fromy,tox,toy]);
-    console.log(tx);
+    // console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
       retryInterval: 100,
     });
 
-    console.log(receipt);
+    // console.log(receipt);
 
     const events = getEvents(receipt);
-    console.log(events);
+    // console.log(events);
     setComponentsFromEvents(contractComponents, events);
     return events;
   };
@@ -192,25 +192,25 @@ export function createSystemCalls(
     amount: number
   ) => {
     const tx = await execute(signer, "train_warrior", [map_id, amount]);
-    console.log(tx);
+    // console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
       retryInterval: 100,
     });
 
-    console.log(receipt);
+    // console.log(receipt);
 
     const events = getEvents(receipt);
-    console.log(events);
+    // console.log(events);
     setComponentsFromEvents(contractComponents, events);
     return events;
   };
 
   const spawn = async (signer: Account, nick_name: BigInt) => {
-    console.log("spawn signer:" + signer.address + ",nickname:" + nick_name);
+    // console.log("spawn signer:" + signer.address + ",nickname:" + nick_name);
     try {
       const tx = await execute(signer, "spawn", [nick_name.toString()]);
 
-      console.log(tx);
+      // console.log(tx);
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
@@ -239,60 +239,4 @@ export function createSystemCalls(
     build_base,
     trainWarrior,
   };
-}
-
-// TODO: Move types and generalise this
-
-export enum Direction {
-  Left = 0,
-  Right = 1,
-  Up = 2,
-  Down = 3,
-}
-
-export enum ComponentEvents {
-  Player = "Player",
-  Land = "Land",
-  GlobalConfig = "GlobalConfig",
-  Food = "Food",
-  Iron = "Iron",
-  Gold = "Gold",
-  Warrior = "Warrior",
-  Base = "Base",
-  LandCost = "LandCost",
-  ETH = "ETH"
-}
-
-export interface BaseEvent {
-  type: ComponentEvents;
-  entity: string;
-}
-
-export interface Player extends BaseEvent {
-  nick_name: string,
-  joined_time: number;
-}
-
-export interface Land extends BaseEvent {
-  position: number;
-  owner: string;
-  building_type: number;
-  price: number;
-}
-
-export interface Townhall extends BaseEvent {
-  id: number;
-  gold: number;
-}
-
-export interface ETH extends BaseEvent {
-  id: number;
-  balance: bigint;
-}
-
-export interface Base extends BaseEvent {
-  id: number;
-  map_id: bigint;
-  x: bigint;
-  y: bigint;
 }

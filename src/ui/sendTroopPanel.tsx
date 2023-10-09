@@ -87,7 +87,7 @@ export default function SendTroopPanel() {
             toastError("Send failed")
             return
         }
-        const troop_id = getMyTroopSize() + 1
+        const troop_id = getAvailableTroopId()
         const result = await sendTroop(account, 1, inputValue, troop_id, troop.from.x, troop.from.y, troop.to.x, troop.to.y);
         if (result && result.length > 0) {
             toastSuccess("Troop Success")
@@ -158,7 +158,7 @@ export default function SendTroopPanel() {
     // }
 
 
-    const getMyTroopSize = () => {
+    const getAvailableTroopId = () => {
         // console.log("getMyTroopSize",account,troops);
         if(!account){
             return 0 
@@ -168,15 +168,19 @@ export default function SendTroopPanel() {
         troops.map(entity=>{
             const troop = getComponentValue(components.Troop,entity)
             // console.log("getMyTroopSize",entity,troop);
-            if(troop?.owner == account.address && troop?.start_time!=0){
-                size++
+            if(troop?.owner == account.address){
+                if(troop?.start_time!=0){
+                    size++
+                }else{
+                    return troop.index
+                }
             }
         })
         return size
     }
 
     const getTroopID = useMemo(() => {
-        return getMyTroopSize() + 1
+        return getAvailableTroopId()
     }, [account, troops]) 
 
     return (

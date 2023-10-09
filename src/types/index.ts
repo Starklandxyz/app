@@ -1,5 +1,4 @@
 import { BANK_ID, BOMB_ID, BUILDING_PRICES, HOTEL_ID, STARKBUCKS_ID } from "../config"
-import { ComponentEvents, Player } from "../dojo/createSystemCalls"
 import { Land as LandSQL, Player as PlayerSQL } from "../generated/graphql";
 import { BuildType } from "./Build";
 import { Land } from "./Land";
@@ -65,16 +64,6 @@ export class Building {
     }
 }
 
-export function Player2Player(player_: PlayerSQL): Player {
-    const player: Player = {
-        type: ComponentEvents.Player,
-        entity: "",
-        nick_name: player_.nick_name,
-        joined_time: player_.joined_time,
-    }
-    return player;
-}
-
 
 export const Land2Land = (land_: LandSQL) => {
     const land: Land = {
@@ -93,14 +82,4 @@ export const Land2Land = (land_: LandSQL) => {
         case 5: land.build = BuildType.Camp; break;
     }
     return land;
-}
-
-export function copyPlayer(player_: Player): Player {
-    const player: Player = {
-        type: player_.type,
-        entity: player_.entity,
-        nick_name: player_.nick_name,
-        joined_time: player_.joined_time,
-    }
-    return player;
 }
