@@ -7,14 +7,16 @@ import flag from "../../../public/assets/icons/flag.png";
 import soldierIcon from "../../../public/assets/icons/soldier.png"
 import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
 import { store } from "../../store/store";
-import { mapStore } from "../../store/mapStore";
+import { Has, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
-    const { lands } = mapStore()
+    // const { lands } = mapStore()
     const { account, networkLayer } = store()
 
     const {
+        components:contractComponents,
         systemCalls: { retreatTroop, troopEnterLand },
     } = networkLayer!
 
@@ -108,7 +110,10 @@ export default function TroopItem(params: any) {
     const attackButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
         const retreat = troop.retreat
-        const land = lands.get(troop.to.x + "_" + troop.to.y)
+
+        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+
+        // const land = lands.get(troop.to.x + "_" + troop.to.y)
         let isMy = false
         if (land && land.owner == account?.address) {
             isMy = true
@@ -121,7 +126,8 @@ export default function TroopItem(params: any) {
 
     const enterButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
-        const land = lands.get(troop.to.x + "_" + troop.to.y)
+        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        // const land = lands.get(troop.to.x + "_" + troop.to.y)
         let isMy = false
         if (land && land.owner == account?.address) {
             isMy = true
@@ -137,7 +143,8 @@ export default function TroopItem(params: any) {
     const retreatButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
         const re = troop.retreat
-        const land = lands.get(troop.to.x + "_" + troop.to.y)
+        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        // const land = lands.get(troop.to.x + "_" + troop.to.y)
         let isMy = false
         if (land && land.owner == account?.address) {
             isMy = true

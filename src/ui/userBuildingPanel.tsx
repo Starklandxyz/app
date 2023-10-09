@@ -2,25 +2,38 @@ import { ClickWrapper } from "./clickWrapper";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { store } from "../store/store";
-import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
 import { Land } from "../types/Land";
-
+import { useEntityQuery } from "@dojoengine/react";
+import { Has, HasValue, getComponentValue, getComponentValueStrict } from "../../node_modules/@latticexyz/recs/src/index";
 
 export default function UserBuildingPanel() {
-    const { lands } = mapStore()
-    const { account } = store()
+    // const { lands } = mapStore()
+    const { account, phaserLayer } = store()
+
+    const [showFarm, setShowFarm] = useState(false)
+    const [showCamp, setShowCamp] = useState(false)
+    const [showGold, setShowGold] = useState(false)
+    const [showIron, setShowIron] = useState(false)
+
+    const {
+        scenes: {
+            Main: {
+                maps: {
+                    Main: { putTileAt },
+                },
+            },
+        },
+        networkLayer: {
+            components: contractComponents
+        }
+    } = phaserLayer!;
 
     const [base, setBase] = useState<Land>()
     const [farmland, setFarmland] = useState<Array<Land>>([])
     const [ironMine, setIronmine] = useState<Array<Land>>([])
     const [goldmine, setGoldmine] = useState<Array<Land>>([])
     const [camp, setcamp] = useState<Array<Land>>([])
-
-    const [showFarm, setShowFarm] = useState(false)
-    const [showCamp, setShowCamp] = useState(false)
-    const [showGold, setShowGold] = useState(false)
-    const [showIron, setShowIron] = useState(false)
 
     useEffect(() => {
         if (showFarm) {
@@ -54,22 +67,33 @@ export default function UserBuildingPanel() {
         }
     }, [showIron])
 
+
+    const landEntities = useEntityQuery([Has(contractComponents.Land)], { updateOnValueChange: true })
+
     useEffect(() => {
         if (!account) {
             return
         }
-        lands.forEach((value, _) => {
-            if (value.owner == account.address) {
-                switch (value.build) {
-                    case BuildType.Base: setBase(value); break;
-                    case BuildType.Farmland: addFarmland(value); break;
-                    case BuildType.GoldMine: addGold(value); break;
-                    case BuildType.IronMine: addIron(value); break;
-                    case BuildType.Camp: addCamp(value); break;
+        landEntities.map(entity => {
+            const value = getComponentValue(contractComponents.Land, entity)
+            if (value && value.owner == account.address) {
+                const land = new Land()
+                land.build = value.building
+                land.level = value.level
+                land.map_id = value.map_id
+                land.owner = value.owner
+                land.x = value.x
+                land.y = value.y
+                switch (value.building) {
+                    case BuildType.Base: setBase(land); break;
+                    case BuildType.Farmland: addFarmland(land); break;
+                    case BuildType.GoldMine: addGold(land); break;
+                    case BuildType.IronMine: addIron(land); break;
+                    case BuildType.Camp: addCamp(land); break;
                 }
             }
         })
-    }, [lands, account])
+    }, [landEntities, account])
 
     const addFarmland = async (land: Land) => {
         const a = [...farmland]
@@ -179,7 +203,7 @@ export default function UserBuildingPanel() {
                     {
                         showIron &&
                         <table cellSpacing={1} style={{ marginTop: 10 }}>
-                           {
+                            {
                                 ironMine.map((value, _) => (
                                     <tr>
                                         <td>({value?.x},{value?.y})</td>

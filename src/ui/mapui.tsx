@@ -4,8 +4,6 @@ import { Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, Tile
 import { playerStore } from "../store/playerStore";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
-import { mapStore } from "../store/mapStore";
-import { Land2Land, Player2Player } from "../types";
 import { BuildType } from "../types/Build";
 import { hexToString } from "../utils";
 import { warriorStore } from "../store/warriorstore";
@@ -18,7 +16,6 @@ export default function MapUI() {
     // const { bases } = buildStore()
     const { account } = store()
     const { landWarriors } = warriorStore()
-    const { lands: mapLands } = mapStore()
     const { player, players } = playerStore()
     const { camera, phaserLayer } = store()
     const {
@@ -38,6 +35,7 @@ export default function MapUI() {
     } = phaserLayer!;
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const bases = useEntityQuery([Has(components.Base)],{updateOnValueChange:true})
+    const mapLands = useEntityQuery([Has(components.Land)],{updateOnValueChange:true})
   
     useEffect(() => {
         console.log("map base change");
@@ -104,34 +102,35 @@ export default function MapUI() {
         const lands = await graphSdk.getAllLands({ map_id: map_id })
         console.log("fetchAllLands", lands);
         const edges = lands.data.entities?.edges
-        const ls = new Map(mapLands)
-        const landW = new Map(landWarriors);
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                if (element) {
-                    const node = element.node
-                    const componenets = node?.components
-                    if (componenets) {
-                        for (let index = 0; index < componenets.length; index++) {
-                            const componenet = componenets[index];
-                            if (componenet) {
-                                if (componenet.__typename == "Land") {
-                                    // const component = componenets[0] as Land
-                                    const l = Land2Land(componenet)
-                                    ls.set(l.x + "_" + l.y, l)
-                                }
-                                if (componenet.__typename == "Warrior") {
-                                    landW.set(componenet.x + "_" + componenet.y, componenet.balance)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        mapStore.setState({ lands: ls })
-        warriorStore.setState({ landWarriors: landW })
+        handleSQLResult(edges,components)
+        // const ls = new Map(mapLands)
+        // const landW = new Map(landWarriors);
+        // if (edges) {
+        //     for (let index = 0; index < edges.length; index++) {
+        //         const element = edges[index];
+        //         if (element) {
+        //             const node = element.node
+        //             const componenets = node?.components
+        //             if (componenets) {
+        //                 for (let index = 0; index < componenets.length; index++) {
+        //                     const componenet = componenets[index];
+        //                     if (componenet) {
+        //                         if (componenet.__typename == "Land") {
+        //                             // const component = componenets[0] as Land
+        //                             const l = Land2Land(componenet)
+        //                             ls.set(l.x + "_" + l.y, l)
+        //                         }
+        //                         if (componenet.__typename == "Warrior") {
+        //                             landW.set(componenet.x + "_" + componenet.y, componenet.balance)
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // mapStore.setState({ lands: ls })
+        // warriorStore.setState({ landWarriors: landW })
     }
 
     // const fetchPlayerBase = async () => {
@@ -200,13 +199,14 @@ export default function MapUI() {
     }, [landWarriors])
 
     useEffect(() => {
-        mapLands.forEach((land, id) => {
-            if(land.build==BuildType.Base){
+        mapLands.map(entity => {
+            const land = getComponentValue(components.Land,entity)
+            if(!land || land?.building==BuildType.Base){
                 return
             }
             var tile = 1
             const buildLand = { x: land.x, y: land.y }
-            switch (land.build) {
+            switch (land?.building) {
                 case BuildType.Camp: tile = TilesetBuilding.Camp; break;
                 case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
                 case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;

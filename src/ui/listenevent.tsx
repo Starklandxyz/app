@@ -1,14 +1,9 @@
 import { useEffect, useRef } from "react";
 import { store } from "../store/store";
-import { mapStore } from "../store/mapStore";
 import { handleSQLResult } from "../utils/handleutils";
 
 export default function ListenEvent() {
-    // const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
-    // const { bases } = buildStore()
-    const {lands:mapLands} = mapStore()
-    // const { food, gold, iron } = resourceStore()
     const accountRef = useRef<string>()
 
     useEffect(() => {

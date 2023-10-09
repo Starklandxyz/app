@@ -12,7 +12,6 @@ import { controlStore } from "../store/controlStore";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
 import sha256 from 'crypto-js/sha256';
-import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
@@ -23,7 +22,7 @@ export default function TroopsUI() {
     const { timenow } = ticStore()
     const { troops } = troopStore()
     // const { bases } = buildStore()
-    const { lands } = mapStore()
+    // const { lands } = mapStore()
 
     const {
         scenes: {
@@ -87,9 +86,9 @@ export default function TroopsUI() {
     }, [timenow])
 
     useEffect(() => {
-        if (lands.size == 0) {
-            return
-        }
+        // if (lands.size == 0) {
+        //     return
+        // }
         troops.forEach((value, _) => {
 
             if (value.startTime + value.totalTime <= getTimestamp()) {
@@ -97,7 +96,7 @@ export default function TroopsUI() {
             }
             createArrowLine(objectPool, value)
         })
-    }, [troops, lands])
+    }, [troops])
 
     // useEffect(() => {
     //     if (!sendTroopCtr.troop) {
@@ -111,10 +110,11 @@ export default function TroopsUI() {
     // }, [sendTroopCtr])
 
     const isBase = (pos: Coord) => {
-        const land = lands.get(pos.x + "_" + pos.y)
+        // const land = lands.get(pos.x + "_" + pos.y)
+        const land = getComponentValue(components.Land,getEntityIdFromKeys([1n,BigInt(pos.x),BigInt(pos.y)]))
         console.log("isBase", pos, land);
         if (land) {
-            if (land.build == BuildType.Base) {
+            if (land.building == BuildType.Base) {
                 return true
             }
         }

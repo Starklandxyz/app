@@ -10,19 +10,19 @@ import { Coord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ClickWrapper } from "./clickWrapper";
 import { Troop } from "../types/Troop";
 import { controlStore } from "../store/controlStore";
-import { mapStore } from "../store/mapStore";
 import { BuildType } from "../types/Build";
 import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
 import { playerStore } from "../store/playerStore";
 import { warriorStore } from "../store/warriorstore";
 import { useComponentValue } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const { players } = playerStore()
     const { landWarriors } = warriorStore()
     // const { bases } = buildStore()
-    const { lands } = mapStore()
+    // const { lands } = mapStore()
     const { tooltip: ptooltip } = tipStore();
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
     const [showButtons, setShowButtons] = useState({ show: false, x: 0, y: 0 })
@@ -65,14 +65,15 @@ export default function BuildingTip() {
         if (ey > innerHeight - 200) {
             y = ey - 100
         }
-        const land = lands.get(lastCoord.x + "_" + lastCoord.y)
+        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(lastCoord.x),BigInt(lastCoord.y)]))
+        // const land = lands.get(lastCoord.x + "_" + lastCoord.y)
         var land_name = "Land"
         var land_owner = "No Owner"
         var land_desc = ""
         var land_level = ""
         var land_warrior = "Warrior : 0"
         if (land) {
-            switch (land.build) {
+            switch (land.building) {
                 case BuildType.None: break;
                 case BuildType.Base: land_name = "Base"; break;
                 case BuildType.Farmland: land_name = "Farmland"; break;
@@ -205,9 +206,9 @@ export default function BuildingTip() {
         if (!account) {
             return <></>
         }
-        const land = lands.get(lastCoord.x + "_" + lastCoord.y)
+        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(lastCoord.x),BigInt(lastCoord.y)]))
         if (land) {
-            if (land.build == BuildType.Base) {
+            if (land.building == BuildType.Base) {
                 return <></>
             }
             if (land.owner == account.address) {
@@ -223,7 +224,7 @@ export default function BuildingTip() {
             }
         }
         return <button onClick={() => sendTroopClick()}>Send Troop</button>
-    }, [lands, myBase, account, lastCoord])
+    }, [myBase, account, lastCoord])
 
     return (
         <ClickWrapper>
