@@ -9,7 +9,6 @@ import { Tileset, TilesetTown } from "../artTypes/world";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { toastError, toastInfo, toastSuccess } from "../utils";
 import { LandType, get_land_type } from "../types/Land";
-import { playerStore } from "../store/playerStore";
 import { useComponentValue } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 

@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { ClickWrapper } from "./clickWrapper";
 import { useEffect, useMemo, useState } from "react";
 import { getTimestamp, parseTime, toastError, toastSuccess } from "../utils";
-import { playerStore } from "../store/playerStore";
 import { store } from "../store/store";
 import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from "../contractconfig";
 import { Account } from "starknet";
@@ -15,8 +14,6 @@ import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
     const { timenow } = ticStore()
-    // const { bases } = buildStore()
-    const { player } = playerStore()
     const { account, networkLayer, phaserLayer } = store()
 
     const [training, setTraining] = useState<Training>(new Training())
@@ -32,6 +29,7 @@ export default function TrainPanel() {
         }
     } = phaserLayer!
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
     const claimairdrop = async () => {
         if (!account) {
             return

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { playerStore } from "../store/playerStore";
 import { store } from "../store/store";
 import { useEffect, useState } from "react";
 import { useDojo } from "../hooks/useDojo";

@@ -12,15 +12,13 @@ import { Troop } from "../types/Troop";
 import { controlStore } from "../store/controlStore";
 import { BuildType } from "../types/Build";
 import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
-import { playerStore } from "../store/playerStore";
-import { warriorStore } from "../store/warriorstore";
 import { useComponentValue } from "@dojoengine/react";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
-    const { players } = playerStore()
-    const { landWarriors } = warriorStore()
+    // const { players } = playerStore()
+    // const { landWarriors } = warriorStore()
     // const { bases } = buildStore()
     // const { lands } = mapStore()
     const { tooltip: ptooltip } = tipStore();
@@ -82,14 +80,19 @@ export default function BuildingTip() {
                 case BuildType.Camp: land_name = "Camp"; break;
             }
             if (land.owner) {
-                const name = players.get(land.owner)?.nick_name;
+                const p = getComponentValue(contractComponents.Player,getEntityIdFromKeys([BigInt(land.owner)]))
+                const name = p?.nick_name;
                 if (name) {
                     land_owner = hexToString(name)
                 }
             }
             land_level = "Level : " + land.level
-            if (landWarriors.get(lastCoord.x + "_" + lastCoord.y))
-                land_warrior = "Warrior : " + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
+            const w = getComponentValue(contractComponents.Warrior,getEntityIdFromKeys([1n,BigInt(lastCoord.x),BigInt(lastCoord.y)]))
+            if(w){
+                land_warrior = "Warrior : " + w.balance
+            }
+            // if (landWarriors.get(lastCoord.x + "_" + lastCoord.y))
+                // land_warrior = "Warrior : " + landWarriors.get(lastCoord.x + "_" + lastCoord.y)
             // console.log("land info", lastCoord, land_warrior);
             // bases.get(account?.address!)
         } else {

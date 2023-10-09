@@ -4,8 +4,9 @@ import styled from "styled-components";
 import { store } from "../store/store";
 import { BuildType } from "../types/Build";
 import { Land } from "../types/Land";
-import { useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { Has, HasValue, getComponentValue, getComponentValueStrict } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function UserBuildingPanel() {
     // const { lands } = mapStore()
@@ -29,7 +30,9 @@ export default function UserBuildingPanel() {
         }
     } = phaserLayer!;
 
-    const [base, setBase] = useState<Land>()
+    // const [base, setBase] = useState<Land>()
+    const base = useComponentValue(contractComponents.Base, getEntityIdFromKeys([1n,account ? BigInt(account.address) : 0n]))
+
     const [farmland, setFarmland] = useState<Array<Land>>([])
     const [ironMine, setIronmine] = useState<Array<Land>>([])
     const [goldmine, setGoldmine] = useState<Array<Land>>([])
@@ -85,7 +88,7 @@ export default function UserBuildingPanel() {
                 land.x = value.x
                 land.y = value.y
                 switch (value.building) {
-                    case BuildType.Base: setBase(land); break;
+                    // case BuildType.Base: setBase(land); break;
                     case BuildType.Farmland: addFarmland(land); break;
                     case BuildType.GoldMine: addGold(land); break;
                     case BuildType.IronMine: addIron(land); break;

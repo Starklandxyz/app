@@ -2,7 +2,6 @@ import { Tileset, TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, Ti
 import { PhaserLayer } from "..";
 import { MAP_HEIGHT, MAP_WIDTH } from "../constants";
 import { store } from "../../store/store";
-import { playerStore } from "../../store/playerStore";
 import { LandType, get_land_type } from "../../types/Land";
 
 export function mapSystem(layer: PhaserLayer) {

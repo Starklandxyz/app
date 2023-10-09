@@ -1,5 +1,4 @@
 import { getTimestamp, hexToString, positionToCoorp } from "../utils";
-import { playerStore } from "../store/playerStore";
 import starklogo from "../../public/starkneticon.png"
 import foodIcon from "../../public/assets/icons/food.png"
 import ironIcon from "../../public/assets/icons/iron.png"
@@ -9,9 +8,6 @@ import flagIcon from "../../public/assets/icons/flag.png"
 import landIcon from "../../public/assets/icons/landicon.png"
 import { store } from "../store/store";
 import { useEffect, useMemo, useRef } from "react";
-import { Player2Player } from "../types";
-import { Player as PlayerSQL } from "../generated/graphql";
-import { Player } from "../dojo/createSystemCalls";
 import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
@@ -43,10 +39,10 @@ export default function PlayerPanel() {
         }
     } = phaserLayer!
 
-    const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
-    const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
-    const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
-    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
+    const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
+    const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
+    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
 
     const player = useComponentValue(sqlComponent.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 

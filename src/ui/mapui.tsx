@@ -1,12 +1,10 @@
 import { useEffect } from "react"
 import { store } from "../store/store";
 import { Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, TilesetZone } from "../artTypes/world";
-import { playerStore } from "../store/playerStore";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { BuildType } from "../types/Build";
 import { hexToString } from "../utils";
-import { warriorStore } from "../store/warriorstore";
 import { handleSQLResult } from "../utils/handleutils";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 // import { Land } from "../types/Land";
@@ -15,7 +13,7 @@ import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function MapUI() {
     // const { bases } = buildStore()
     const { account } = store()
-    const { landWarriors } = warriorStore()
+    // const { landWarriors } = warriorStore()
     // const { player, players } = playerStore()
     const { camera, phaserLayer } = store()
     const {
@@ -37,6 +35,8 @@ export default function MapUI() {
     const bases = useEntityQuery([Has(components.Base)],{updateOnValueChange:true})
     const mapLands = useEntityQuery([Has(components.Land)],{updateOnValueChange:true})
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
+
+    const landWarriors = useEntityQuery([Has(components.Warrior)],{updateOnValueChange:true})
   
     useEffect(() => {
         console.log("map base change");
@@ -95,7 +95,7 @@ export default function MapUI() {
         putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Top");
         const pixelPosition = tileCoordToPixelCoord({ x: myBase.x, y: myBase.y }, TILE_WIDTH, TILE_HEIGHT);
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
-    }, [player])
+    }, [player,myBase])
 
     useEffect(() => {
         fetchAllLands("0x1")
@@ -179,10 +179,17 @@ export default function MapUI() {
     }
 
     useEffect(() => {
-        landWarriors.forEach((balance, key) => {
-            console.log("landWarriors", key, balance);
-            const keys = key.split("_")
-            const coord = { x: parseInt(keys[0]), y: parseInt(keys[1]) }
+        landWarriors.map(value => {
+            const warrior = getComponentValue(components.Warrior,value)
+            if(!warrior){
+                return
+            }
+            // console.log("landWarriors", key, balance);
+            // const keys = key.split("_")
+            console.log("landWarriors",warrior);
+            
+            const coord = { x: warrior.x, y: warrior.y }
+            const balance = warrior.balance
             if (balance == 0) {
                 putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
                 putTileAt(coord, TilesetNum.Num0, "Top3");
