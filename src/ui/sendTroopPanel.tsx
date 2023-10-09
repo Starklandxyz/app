@@ -7,7 +7,6 @@ import { troopStore } from "../store/troopStore";
 import { getTimestamp, toastError, toastSuccess } from "../utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
-import { warriorStore } from "../store/warriorstore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { useComponentValue } from "@dojoengine/react";
@@ -17,7 +16,6 @@ export default function SendTroopPanel() {
     // const { bases } = buildStore()
     const { account, phaserLayer, networkLayer } = store()
     const { sendTroopCtr } = controlStore()
-    const { landWarriors } = warriorStore()
     const { troops } = troopStore()
     const [inputValue, setInputValue] = useState(1)
 
@@ -189,28 +187,20 @@ export default function SendTroopPanel() {
     }, [sendTroopCtr, inputValue])
 
     const calWarrior = () => {
-        if (!account) {
-            return 0
+        if(!myBase){
+            return 0 
         }
-        // const base = bases.get(account.address)
-        if (!myBase) {
-            return 0
-        }
-        const key = myBase.x + "_" + myBase.y
-        // console.log("calWarrior", key);
-        const w = landWarriors.get(key)
-        // console.log("calWarrior", bases);
-        // console.log("calWarrior", base, w, account.address);
-        if (w) {
-            return w
-        } else {
-            return 0
+        const w = getComponentValue(components.Warrior,getEntityIdFromKeys([1n,BigInt(myBase.x),BigInt(myBase.y)]))
+        if(w){
+            return w.balance
+        }else{
+            return 0 
         }
     }
 
     const getWarrior = useMemo(() => {
         return calWarrior()
-    }, [account, landWarriors.values()])
+    }, [account,myBase])
 
     const calTroopID = () => {
         if (!account) {

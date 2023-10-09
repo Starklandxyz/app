@@ -8,7 +8,6 @@ import flagIcon from "../../public/assets/icons/flag.png"
 import landIcon from "../../public/assets/icons/landicon.png"
 import { store } from "../store/store";
 import { useEffect, useMemo, useRef } from "react";
-import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 // import { useComponentValue } from "../../node_modules/@latticexyz/react/src/index";
@@ -21,15 +20,10 @@ import { useComponentValue } from "@dojoengine/react";
 export default function PlayerPanel() {
     // const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
-    const { landWarriors } = warriorStore()
+    // const { landWarriors } = warriorStore()
 
     const { troops } = troopStore()
     const accountRef = useRef<string>()
-
-    const landWarriorsRef = useRef<typeof landWarriors>(new Map())
-    useEffect(() => {
-        landWarriorsRef.current = landWarriors
-    }, [landWarriors])
 
     const {
         networkLayer: {
@@ -87,27 +81,6 @@ export default function PlayerPanel() {
         const edges = playerInfo.data.entities?.edges
         handleSQLResult(edges,sqlComponent)
     }
-
-    useEffect(() => {
-        defineSystem(world, [Has(sqlComponent.Warrior)], ({ entity, value }) => {
-            console.log("Warrior", entity, value);
-            const w = value[0]
-            if (w) {
-                const ls = new Map(landWarriorsRef.current)
-                ls.set(w.x + "_" + w.y, w.balance as number)
-                warriorStore.setState({ landWarriors: ls })
-            }
-        })
-        defineSystem(world, [Has(sqlComponent.Food)], ({ entity, value }) => {
-            console.log("Food change", entity, value);
-        })
-    }, [])
-
-    useEffect(()=>{
-        console.log("food",food);
-        
-    },[food])
-
 
     const getMyTroopSize = useMemo(() => {
         var size = 0
