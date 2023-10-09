@@ -8,19 +8,22 @@ import goldmineicon from "../../public/assets/icons/goldmine.png"
 import ironmineicon from "../../public/assets/icons/ironmine.png"
 import campicon from "../../public/assets/icons/camp.png"
 import farmlandicon from "../../public/assets/icons/farmland.png"
-import { BuildType } from "../types/Build";
+import { BuildType, getBuildName } from "../types/Build";
 import { useEffect, useMemo, useState } from "react";
 import { BuildInfos } from "../types/BuildInfo";
 import { buildPriceStore } from "../store/buildpricestore";
-import { resourceStore } from "../store/resourcestore";
-import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
+import { Account } from "starknet";
+import { LandType, get_land_type } from "../types/Land";
+import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, networkLayer, account } = store()
-    const { buildLand } = controlStore()
-    const { food, iron, gold } = resourceStore()
+    const { buildLand, startMiningLand } = controlStore()
+    // const { food, iron, gold } = resourceStore()
     const { goldprices, foodprices, ironprices } = buildPriceStore()
     const [selectBuild, setSelect] = useState<BuildType>(BuildType.Farmland)
+    // const [showStartMining, setShowStartMining] = useState(false)
 
     const {
         scenes: {
@@ -31,16 +34,11 @@ export default function ChooseBuildUI() {
             },
         }
     } = phaserLayer!;
-    const {
-        networkLayer: {
-            world,
-            components,
-        }
-    } = phaserLayer!
 
     const {
+        components,
         network: { graphSdk },
-        systemCalls: { buildBuilding },
+        systemCalls: { buildBuilding, startMining },
     } = networkLayer!
 
     useEffect(() => {
@@ -56,10 +54,6 @@ export default function ChooseBuildUI() {
 
     useEffect(() => {
         fetchBuildPrice()
-        defineSystem(world, [Has(components.Land)], ({ value }) => {
-            console.log("land change", value);
-
-        })
     }, [])
 
     const fetchBuildPrice = async () => {
@@ -91,6 +85,8 @@ export default function ChooseBuildUI() {
         })
     }
 
+
+
     const buildConfirm = async () => {
         if (!buildLand) {
             return
@@ -99,25 +95,69 @@ export default function ChooseBuildUI() {
             return
         }
 
-        if (gold < goldprices.get(selectBuild)!) {
+        const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
+        if (getComponentValue(components.Gold,entityIndex)?.balance! < goldprices.get(selectBuild)!) {
             toastError("Gold is not enough")
             return
         }
-        if (food < foodprices.get(selectBuild)!) {
+        if (getComponentValue(components.Food,entityIndex)?.balance! < foodprices.get(selectBuild)!) {
             toastError("Food is not enough")
             return
         }
-        if (iron < ironprices.get(selectBuild)!) {
+        if (getComponentValue(components.Iron,entityIndex)?.balance! < ironprices.get(selectBuild)!) {
             toastError("Iron is not enough")
             return
         }
 
+        if (selectBuild == BuildType.GoldMine || selectBuild == BuildType.IronMine) {
+            let hasMine = false
+            for (let i = -1; i < 2; i++) {
+                for (let j = -1; j < 2; j++) {
+                    const x = buildLand.x + i
+                    const y = buildLand.y + j
+                    const land_type = get_land_type(1, x, y)
+                    if (selectBuild == BuildType.GoldMine) {
+                        if (land_type == LandType.Gold) {
+                            hasMine = true
+                        }
+                    }
+                    if (selectBuild == BuildType.IronMine) {
+                        if (land_type == LandType.Iron) {
+                            hasMine = true
+                        }
+                    }
+                }
+            }
+            if (!hasMine) {
+                toastError("There is no mine around")
+                return
+            }
+
+            for (let i = -1; i < 2; i++) {
+                for (let j = -1; j < 2; j++) {
+                    const x = buildLand.x + i
+                    const y = buildLand.y + j
+                    const has = await fetchHasMiner(1, x, y)
+                    if (has) {
+                        toastError("There is no available mine around")
+                        return
+                    }
+                }
+            }
+        }
+
+
         const result = await buildBuilding(account, 1, buildLand.x, buildLand.y, selectBuild)
         if (result && result.length > 0) {
             toastSuccess("Build Success")
-
+            if (selectBuild == BuildType.Farmland) {
+                claimToMine(account, 1, buildLand.x, buildLand.y, buildLand.x, buildLand.y)
+            } else {
+                showSelectArea(buildLand.x, buildLand.y)
+            }
             putTileAt(buildLand, Tileset.Empty, "Top3");
             controlStore.setState({ buildLand: undefined })
+
             var tile = TilesetBuilding.Farmland
             switch (selectBuild) {
                 case BuildType.Camp: tile = TilesetBuilding.Camp; break;
@@ -130,6 +170,20 @@ export default function ChooseBuildUI() {
         } else {
             toastError("Build failed")
         }
+    }
+
+    const showSelectArea = (miner_x: number, miner_y: number) => {
+        controlStore.setState({ startMiningLand: { x: miner_x, y: miner_y } })
+        for (let i = -1; i < 2; i++) {
+            for (let j = -1; j < 2; j++) {
+                const x = miner_x + i
+                const y = miner_y + j
+                putTileAt({ x, y }, TilesetZone.MyZone, "SelectArea");
+            }
+        }
+    }
+
+    const hideSelectArea = () => {
 
     }
 
@@ -153,11 +207,61 @@ export default function ChooseBuildUI() {
         )
     }, [selectBuild])
 
+    const startMine = async () => {
+        if (!account) {
+            return
+        }
+        controlStore.setState({ startMiningLand: undefined })
+        // setShowStartMining(false)
+    }
+
+    const claimToMine = async (account: Account, map_id: number, miner_x: number, miner_y: number, mined_x: number, mined_y: number) => {
+        const result = await startMining(account, map_id, miner_x, miner_y, mined_x, mined_y)
+        if (result && result.length > 0) {
+            toastSuccess("Farming start")
+        } else {
+            toastError("Farm failed")
+        }
+    }
+
+    const fetchHasMiner = async (map_id_: number, x_: number, y_: number) => {
+        const map_id = map_id_.toString(16)
+        const x = x_.toString(16)
+        const y = y_.toString(16)
+        console.log("fetchHasMiner", x, y);
+        const miner = await graphSdk.getLandMinerByKey({ map_id: map_id, x: x, y: y })
+        console.log("fetchHasMiner", miner);
+        const edges = miner.data.entities?.edges
+        if (edges && edges.length == 0) {
+            return false
+        }
+
+        if (edges) {
+            for (let index = 0; index < edges.length; index++) {
+                const element = edges[index];
+                const components = element?.node?.components
+                if (components && components[0] && components[0].__typename == "Player") {
+
+                }
+            }
+        }
+        return true
+    }
+
     return (
         <ClickWrapper>
             {
-                buildLand &&
+                startMiningLand &&
+                <div className="startbuildpanel">
+                    <p>Build {getBuildName(selectBuild)} Success</p>
+                    <p>Should select a land to mine.</p>
+                    <button onClick={() => startMine()}>Start Farming</button>
+                </div>
+            }
+            {
+                (buildLand && !startMiningLand) &&
                 <div className="choosebuildpanel">
+
                     <table style={{ width: 400, marginTop: 1 }}>
                         <tr style={{ height: 100, width: 400 }}>
                             <td

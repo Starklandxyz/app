@@ -233,6 +233,26 @@ query getETHByKey($key: String) {
   }
 }
 
+query getLandMinerByKey($map_id: String,$x:String,$y:String) {
+  entities(first:1000, keys: [$map_id,$x,$y]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on LandMiner {
+            map_id
+            x
+            y
+            miner_x
+            miner_y
+          }
+        }
+      }
+    }
+  }
+}
+
 query getResoucesByKey($map_id:String,$key: String) {
   entities(first:1000, keys: [$map_id,$key]) {
     edges {
@@ -241,14 +261,20 @@ query getResoucesByKey($map_id:String,$key: String) {
         components {
           __typename
           ... on Food {
+            map_id
+            owner
             balance
           }
           __typename
           ... on Gold {
+            map_id
+            owner
             balance
           }
           __typename
           ... on Iron {
+            map_id
+            owner
             balance
           }
         }

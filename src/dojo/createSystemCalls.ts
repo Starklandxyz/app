@@ -34,6 +34,23 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const startMining = async (signer: Account, map_id: number, miner_x: number, miner_y: number,mined_x:number,mined_y:number) => {
+    try {
+      const tx = await execute(signer, "start_mining", [map_id, miner_x,miner_y,mined_x,mined_y]);
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      console.log("roll receipt:", receipt);
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
+    return undefined;
+  };
+
   const buildBuilding = async (signer: Account, map_id: number, x: number, y: number,build_type:number) => {
     try {
       const tx = await execute(signer, "build_building", [map_id, x, y,build_type]);
@@ -240,6 +257,7 @@ export function createSystemCalls(
     takeWarrior,
     sendTroop,
     spawn,
+    startMining,
     buildBuilding,
     build_base,
     trainWarrior,

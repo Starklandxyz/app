@@ -29,7 +29,7 @@ export default function BuildingTip() {
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const [lastCoord, setCoord] = useState<Coord>({ x: 0, y: 0 })
 
-    const { sendTroopCtr: sendTroop, buildLand } = controlStore()
+    const { sendTroopCtr: sendTroop, buildLand ,startMiningLand} = controlStore()
 
     const {
         scenes: {

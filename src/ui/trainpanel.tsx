@@ -5,16 +5,16 @@ import { getTimestamp, parseTime, toastError, toastSuccess } from "../utils";
 import { buildStore } from "../store/buildstore";
 import { playerStore } from "../store/playerStore";
 import { store } from "../store/store";
-import { resourceStore } from "../store/resourcestore";
 import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from "../contractconfig";
 import { Account } from "starknet";
 import { Training } from "../types/Training";
 import { ticStore } from "../store/ticStore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
-    const { gold, food, iron } = resourceStore()
+    // const { gold, food, iron } = resourceStore()
     const { timenow } = ticStore()
     const { bases } = buildStore()
     const { player } = playerStore()
@@ -103,15 +103,16 @@ export default function TrainPanel() {
             return
         }
 
-        if (gold < Train_Price_Gold * inputValue) {
+        const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
+        if (getComponentValue(components.Gold,entityIndex)?.balance!  < Train_Price_Gold * inputValue) {
             toastError("Gold is not enough")
             return
         }
-        if (food < Train_Price_Food * inputValue) {
+        if (getComponentValue(components.Food,entityIndex)?.balance!  < Train_Price_Food * inputValue) {
             toastError("Food is not enough")
             return
         }
-        if (iron < Train_Price_Iron * inputValue) {
+        if (getComponentValue(components.Iron,entityIndex)?.balance!  < Train_Price_Iron * inputValue) {
             toastError("Iron is not enough")
             return
         }

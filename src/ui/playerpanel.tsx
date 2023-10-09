@@ -12,37 +12,41 @@ import { useEffect, useMemo, useRef } from "react";
 import { Player2Player } from "../types";
 import { Player as PlayerSQL } from "../generated/graphql";
 import { Player } from "../dojo/createSystemCalls";
-import { resourceStore } from "../store/resourcestore";
 import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
-import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
+import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { troopStore } from "../store/troopStore";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export default function PlayerPanel() {
     const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
     const { userWarriors, landWarriors } = warriorStore()
-    const { food, gold, iron } = resourceStore()
-    const {troops} = troopStore()
+    const { troops } = troopStore()
     const accountRef = useRef<string>()
 
     const userWarriorsRef = useRef<typeof userWarriors>(new Map())
-    useEffect(()=>{
+    useEffect(() => {
         userWarriorsRef.current = userWarriors
-    },[userWarriors])
+    }, [userWarriors])
 
     const landWarriorsRef = useRef<typeof landWarriors>(new Map())
-    useEffect(()=>{
+    useEffect(() => {
         landWarriorsRef.current = landWarriors
-    },[landWarriors])
+    }, [landWarriors])
 
     const {
         networkLayer: {
             world,
-            components,
+            components: sqlComponent,
             network: { graphSdk, wsClient }
         }
     } = phaserLayer!
+
+    const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     useEffect(() => {
         if (!account) {
@@ -93,34 +97,61 @@ export default function PlayerPanel() {
         const resources = await graphSdk.getResoucesByKey({ map_id: "0x1", key: account?.address })
         console.log("fetchResources", resources);
         const edges = resources.data.entities?.edges
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                var gold = 0
-                var food = 0
-                var iron = 0
-                if (components) {
-                    let has = false
-                    for (let index = 0; index < components.length; index++) {
-                        const node = components[index];
-                        if (node?.__typename == "Gold") {
-                            has = true
-                            gold = node.balance
-                        }
-                        if (node?.__typename == "Food") {
-                            food = node.balance
-                        }
-                        if (node?.__typename == "Iron") {
-                            iron = node.balance
-                        }
-                    }
-                    if (has) {
-                        console.log("fetchResources", gold, food, iron);
-                        resourceStore.setState({ gold: gold, food: food, iron: iron })
-                        return
-                    }
+        handleSQLResult(edges, sqlComponent)
+        // if (edges) {
+        //     for (let index = 0; index < edges.length; index++) {
+        //         const element = edges[index];
+        //         const components = element?.node?.components
+        //         const keys = element?.node?.keys
+        //         if (components && keys) {
+        //             const nkeys = keys.map((key) => BigInt(key!));
+        //             let has = false
+        //             for (let index = 0; index < components.length; index++) {
+        //                 const node = components[index];
+        //                 if (node?.__typename == "Gold") {
+        //                     has = true
+        //                     gold = node.balance
+        //                 }
+        //                 if (node?.__typename == "Food") {
+        //                     food = node.balance
+        //                 }
+        //                 if (node?.__typename == "Iron") {
+        //                     iron = node.balance
+        //                 }
+        //             }
+        //             if (has) {
+        //                 console.log("fetchResources", gold, food, iron);
+        //                 resourceStore.setState({ gold: gold, food: food, iron: iron })
+        //                 return
+        //             }
+        //         }
+        //     }
+        // }
+    }
+
+    const handleSQLResult = (edges: any, contractComponents: any) => {
+        if (!edges) { return }
+
+        for (let index = 0; index < edges.length; index++) {
+            const element = edges[index];
+            const components = element?.node?.components
+            const keys = element?.node?.keys
+            const nkeys = keys.map((key: any) => BigInt(key));
+            for (let j = 0; j < components.length; j++) {
+                const component = components[j];
+                const propertyCount = Object.keys(component).length;
+                if (propertyCount == 1) {
+                    continue
                 }
+                const contractComponent = contractComponents[component.__typename]
+                const componentValues = Object.keys(contractComponent.schema).reduce((acc: ComponentValue, key, _) => {
+                    acc[key] = component[key]
+                    return acc;
+                }, {});
+
+                // console.log("handleSQLResult",component.__typename);
+                setComponent(contractComponent, getEntityIdFromKeys(nkeys), componentValues)
+                // console.log("handleSQLResult finish",component.__typename);
             }
         }
     }
@@ -191,36 +222,36 @@ export default function PlayerPanel() {
 
 
     useEffect(() => {
-        defineSystem(world, [Has(components.Gold)], ({ entity, value }) => {
-            const gold = value[0]?.balance as number
-            resourceStore.setState({ gold: gold })
-        })
-        defineSystem(world, [Has(components.Food)], ({ entity }) => {
-            const r = getComponentValue(components.Food, entity);
-            if (r) {
-                resourceStore.setState({ food: r.balance })
-            }
-        })
-        defineSystem(world, [Has(components.Iron)], ({ entity }) => {
-            const r = getComponentValue(components.Iron, entity);
-            if (r) {
-                resourceStore.setState({ iron: r.balance })
-            }
+        // defineSystem(world, [Has(sqlComponent.Gold)], ({ entity, value }) => {
+        //     const gold = value[0]?.balance as number
+        //     resourceStore.setState({ gold: gold })
+        // })
+        // defineSystem(world, [Has(sqlComponent.Food)], ({ entity }) => {
+        //     const r = getComponentValue(sqlComponent.Food, entity);
+        //     if (r) {
+        //         resourceStore.setState({ food: r.balance })
+        //     }
+        // })
+        // defineSystem(world, [Has(sqlComponent.Iron)], ({ entity }) => {
+        //     const r = getComponentValue(sqlComponent.Iron, entity);
+        //     if (r) {
+        //         resourceStore.setState({ iron: r.balance })
+        //     }
 
-        })
-        defineSystem(world, [Has(components.UserWarrior)], ({ entity }) => {
-            const r = getComponentValue(components.UserWarrior, entity);
+        // })
+        defineSystem(world, [Has(sqlComponent.UserWarrior)], ({ entity }) => {
+            const r = getComponentValue(sqlComponent.UserWarrior, entity);
             console.log("UserWarrior", r);
             if (!r || !accountRef.current) {
                 return
             }
-            console.log("userWarriors size",userWarriorsRef.current.size);
-            
+            console.log("userWarriors size", userWarriorsRef.current.size);
+
             const uw = new Map(userWarriorsRef.current)
             uw.set(accountRef.current, r.balance)
             warriorStore.setState({ userWarriors: uw })
         })
-        defineSystem(world, [Has(components.Warrior)], ({ entity, value }) => {
+        defineSystem(world, [Has(sqlComponent.Warrior)], ({ entity, value }) => {
             console.log("Warrior", entity, value);
             const w = value[0]
             if (w) {
@@ -232,15 +263,16 @@ export default function PlayerPanel() {
     }, [])
 
 
-    const getMyTroopSize= useMemo(()=>{
+    const getMyTroopSize = useMemo(() => {
         var size = 0
-        troops.forEach((value,_)=>{
-            if(value.owner == account?.address && value.startTime!=0){
+        troops.forEach((value, _) => {
+            if (value.owner == account?.address && value.startTime != 0) {
                 size++
             }
         })
         return size
-    },[troops,account])
+    }, [troops, account])
+
 
     return (
         <TopBarWrapper>
@@ -258,21 +290,23 @@ export default function PlayerPanel() {
                 data-tooltip-content="Food"
                 data-tooltip-place="top">
                 <ResourceIcon src={foodIcon} alt="food" />
-                <ResourceValue>{food}</ResourceValue>
+                <ResourceValue>{
+                    food && food.balance
+                }</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"
                 data-tooltip-content="Gold"
                 data-tooltip-place="top" >
                 <ResourceIcon src={goldIcon} alt="gold" />
-                <ResourceValue>{gold}</ResourceValue>
+                <ResourceValue>{gold && gold.balance}</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"
                 data-tooltip-content="Iron"
                 data-tooltip-place="top">
                 <ResourceIcon src={ironIcon} alt="iron" />
-                <ResourceValue>{iron}</ResourceValue>
+                <ResourceValue>{iron && iron.balance}</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"

@@ -8,16 +8,15 @@ import { troopStore } from "../store/troopStore";
 import { getTimestamp, toastError, toastSuccess } from "../utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
-import { resourceStore } from "../store/resourcestore";
 import { warriorStore } from "../store/warriorstore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "@dojoengine/utils";
 
 export default function SendTroopPanel() {
     const { bases } = buildStore()
     const { account, phaserLayer, networkLayer } = store()
     const { sendTroopCtr } = controlStore()
     const { landWarriors } = warriorStore()
-    const { food } = resourceStore()
     const { troops } = troopStore()
     const [inputValue, setInputValue] = useState(1)
 
@@ -73,7 +72,9 @@ export default function SendTroopPanel() {
             return
         }
         const food_need = Troop_Food * calDistance() * inputValue
-        if (food < food_need) {
+
+        const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
+        if (getComponentValue(components.Food,entityIndex)?.balance! < food_need) {
             toastError("Food is not enough")
             return
         }

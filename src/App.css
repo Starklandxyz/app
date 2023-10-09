@@ -38,6 +38,19 @@ button {
   border: 2px solid #00000000;
 }
 
+.startbuildpanel{
+  position: absolute;
+  bottom: 45%;
+  left: 40%;
+  color: white;
+  width: 230px;
+  height: 100px;
+  background-color: #03030379;
+  padding: 10px;
+  border-radius: 15px;
+  padding-top: 1px;
+}
+
 .choosebuildpanel {
   position: absolute;
   bottom: 5%;

@@ -22,3 +22,14 @@ export class BuildInfo{
         this.ironNeed = iron_;
     }
 }
+
+export const getBuildName = (type:BuildType)=>{
+    switch(type){
+        case BuildType.None:return "Land";
+        case BuildType.Base:return "Base";
+        case BuildType.Farmland:return "Farmland";
+        case BuildType.IronMine:return "IronMine";
+        case BuildType.GoldMine:return "GoldMine";
+        case BuildType.Camp:return "Camp";
+    }
+}
