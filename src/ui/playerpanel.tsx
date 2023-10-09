@@ -15,23 +15,20 @@ import { Player } from "../dojo/createSystemCalls";
 import { warriorStore } from "../store/warriorstore";
 import styled from 'styled-components';
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+// import { useComponentValue } from "../../node_modules/@latticexyz/react/src/index";
 import { troopStore } from "../store/troopStore";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+// import { useComponentValue, useEntityQuery } from "@dojoengine/react"
 import { handleSQLResult } from "../utils/handleutils";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import { useComponentValue } from "@dojoengine/react";
 
 export default function PlayerPanel() {
-    const { player: storePlayer, players, eths } = playerStore()
+    // const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
     const { landWarriors } = warriorStore()
 
     const { troops } = troopStore()
     const accountRef = useRef<string>()
-
-    // const userWarriorsRef = useRef<typeof userWarriors>(new Map())
-    // useEffect(() => {
-    //     userWarriorsRef.current = userWarriors
-    // }, [userWarriors])
 
     const landWarriorsRef = useRef<typeof landWarriors>(new Map())
     useEffect(() => {
@@ -50,7 +47,8 @@ export default function PlayerPanel() {
     const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
-    
+
+    const player = useComponentValue(sqlComponent.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     useEffect(() => {
         if (!account) {
@@ -58,17 +56,15 @@ export default function PlayerPanel() {
         }
         console.log("account change ", account?.address);
         accountRef.current = account?.address
-
-        fetchPlayerInfo(account.address)
     }, [account])
 
     useEffect(() => {
-        if (!storePlayer) {
+        if (!account) {
             return
         }
         fetchResources()
         fetchUserWarrior()
-    }, [storePlayer])
+    }, [account])
 
     useEffect(() => {
         fetchPlayersInfo()
@@ -80,22 +76,6 @@ export default function PlayerPanel() {
         console.log("fetchUserWarrior", userWarrior);
         const edges = userWarrior.data.entities?.edges
         handleSQLResult(edges,sqlComponent)
-        // const ws = new Map(userWarriors);
-        // if (edges) {
-        //     for (let index = 0; index < edges.length; index++) {
-        //         const element = edges[index];
-        //         const components = element?.node?.components
-        //         if (components) {
-        //             for (let index = 0; index < components.length; index++) {
-        //                 const node = components[index];
-        //                 if (node?.__typename == "UserWarrior") {
-        //                     ws.set(node.owner, node.balance)
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // warriorStore.setState({ userWarriors: ws })
     }
 
     const fetchResources = async () => {
@@ -109,80 +89,10 @@ export default function PlayerPanel() {
         const playerInfo = await graphSdk.getAllPlayers()
         console.log("fetchPlayersInfo", playerInfo);
         const edges = playerInfo.data.entities?.edges
-        const map = new Map<string, Player>()
-        const eths = new Map<string, bigint>()
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                const keys = element?.node?.keys
-                var player = undefined
-                var eth = 0n
-                if (components && components[0] && components[0].__typename == "Player") {
-                    console.log(components[0]);
-                    const player_ = components[0] as PlayerSQL
-                    player = Player2Player(player_)
-                    map.set(keys?.[0]!, player)
-                }
-                if (components && components[1] && components[1].__typename == "ETH") {
-                    const b: string = components[1].balance;
-                    eth = BigInt(b)
-                    eths.set(keys?.[0]!, eth)
-                }
-            }
-        }
-        playerStore.setState({ eths: eths, players: map })
+        handleSQLResult(edges,sqlComponent)
     }
-
-    const fetchPlayerInfo = async (entity: string) => {
-        const playerInfo = await graphSdk.getPlayerByKey({ key: entity })
-        console.log("fetchPlayerInfo", playerInfo);
-        const edges = playerInfo.data.entities?.edges
-
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                var player = undefined
-                var eth = 0n
-                if (components && components[0] && components[0].__typename == "Player") {
-                    console.log(components[0]);
-                    const player_ = components[0] as PlayerSQL
-                    player = Player2Player(player_)
-                }
-                if (components && components[1] && components[1].__typename == "ETH") {
-                    const b: string = components[1].balance;
-                    eth = BigInt(b)
-                }
-                playerStore.setState({ eth: eth, player: player })
-            }
-        }
-    }
-
-    // const calUserWarrior = useMemo(() => {
-    //     if (!account) {
-    //         return 0
-    //     }
-    //     if (!userWarriors.has(account.address)) {
-    //         return 0
-    //     }
-    //     return userWarriors.get(account.address)
-    // }, [userWarriors])
-
 
     useEffect(() => {
-        // defineSystem(world, [Has(sqlComponent.UserWarrior)], ({ entity }) => {
-        //     const r = getComponentValue(sqlComponent.UserWarrior, entity);
-        //     console.log("UserWarrior", r);
-        //     if (!r || !accountRef.current) {
-        //         return
-        //     }
-        //     console.log("userWarriors size", userWarriorsRef.current.size);
-
-        //     const uw = new Map(userWarriorsRef.current)
-        //     uw.set(accountRef.current, r.balance)
-        //     warriorStore.setState({ userWarriors: uw })
-        // })
         defineSystem(world, [Has(sqlComponent.Warrior)], ({ entity, value }) => {
             console.log("Warrior", entity, value);
             const w = value[0]
@@ -192,7 +102,15 @@ export default function PlayerPanel() {
                 warriorStore.setState({ landWarriors: ls })
             }
         })
+        defineSystem(world, [Has(sqlComponent.Food)], ({ entity, value }) => {
+            console.log("Food change", entity, value);
+        })
     }, [])
+
+    useEffect(()=>{
+        console.log("food",food);
+        
+    },[food])
 
 
     const getMyTroopSize = useMemo(() => {
@@ -205,6 +123,15 @@ export default function PlayerPanel() {
         return size
     }, [troops, account])
 
+    useEffect(()=>{
+        console.log("player change",player);
+    },[player])
+
+    const getPlayerName = useMemo(()=>{
+        console.log("getPlayerName",player);
+        // 0x61736466
+        return hexToString(player?.nick_name)
+    },[player])
 
     return (
         <TopBarWrapper>
@@ -215,7 +142,7 @@ export default function PlayerPanel() {
             <UsernameWrapper data-tooltip-id="my-tooltip"
                 data-tooltip-content="user name"
                 data-tooltip-place="top">
-                {hexToString(storePlayer?.nick_name)}
+                {getPlayerName}
             </UsernameWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"

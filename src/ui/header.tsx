@@ -10,13 +10,13 @@ import PlayerPanel from "./playerpanel";
 import ethicon from "../../public/ethereum.png"
 import starkicon from "../../public/starkneticon.png"
 import { ticStore } from "../store/ticStore";
-import { Player2Player } from "../types";
-import { Player as PlayerSQL } from "../generated/graphql";
-import { Display } from "phaser";
+import { useComponentValue } from "@dojoengine/react";
+import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function Header() {
     const { account, networkLayer } = store();
-    const { player, eth } = playerStore()
+    // const { player, eth } = playerStore()
     const [nickName, setNickName] = useState("")
 
     const {
@@ -29,10 +29,24 @@ export default function Header() {
     } = useDojo();
 
     const {
+        world,
+        components: contractComponents,
         network: { graphSdk },
         systemCalls: { spawn },
     } = networkLayer!
 
+    const player = useComponentValue(contractComponents.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
+    const eth = useComponentValue(contractComponents.ETH, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
+
+    useEffect(()=>{
+        console.log("account change",account,player);
+    },[account,player])
+
+    useEffect(() => {
+        defineSystem(world, [Has(contractComponents.Player)], ({ entity, value }) => {
+            console.log("Player change", entity, value);
+        })
+    }, [])
 
     useEffect(() => {
         // 设置一个每秒执行的任务
@@ -78,8 +92,8 @@ export default function Header() {
             setNickName("")
             toastSuccess("Mint player success.")
             // playerStore.setState({ eth: BigInt(5e17) })
-            const p = Player2Player(events[0] as PlayerSQL)
-            playerStore.setState({ eth: BigInt(5e17), player: p })
+            // const p = Player2Player(events[0] as PlayerSQL)
+            // playerStore.setState({ eth: BigInt(5e17), player: p })
         } else {
             toastError("Mint failed")
         }
@@ -96,7 +110,7 @@ export default function Header() {
     }
 
     const selectAccount = (e: any) => {
-        playerStore.setState({ player: null })
+        // playerStore.setState({ player: null })
         select(e.target.value)
     }
 
@@ -109,9 +123,9 @@ export default function Header() {
 
     useEffect(() => {
         console.log("isDeploying", isDeploying);
-        if (isDeploying) {
-            playerStore.setState({ player: null })
-        }
+        // if (isDeploying) {
+        //     playerStore.setState({ player: null })
+        // }
     }, [isDeploying])
 
     return (
@@ -127,15 +141,15 @@ export default function Header() {
                         data-tooltip-content="ETH balance"
                         data-tooltip-place="top">
                         <ResourceIcon src={ethicon} alt="gold" />
-                        <ResourceValue>{parseFloat(ethers.utils.formatEther(eth)).toFixed(5)}</ResourceValue>
+                        <ResourceValue>{eth &&parseFloat(ethers.utils.formatEther(BigInt(eth.balance))).toFixed(6)}</ResourceValue>
                     </ResourceItemWrapper>
 
                     {
                         (account && !player) &&
-                        <div style={{ display: "flex", flexDirection:"column", alignSelf:"center",marginRight:"6px" }}>
+                        <div style={{ display: "flex", flexDirection: "column", alignSelf: "center", marginRight: "6px" }}>
                             <input value={nickName} onChange={inputChange} style={{ fontWeight: "bold" }} placeholder="Enter your nickname" />
                             <button
-                                style={{  }}
+                                style={{}}
                                 onClick={() => {
                                     startGame();
                                 }}
@@ -145,7 +159,7 @@ export default function Header() {
                         </div>
                     }
                     <div style={{ display: "flex", padding: "6px 0px", gap: "8px" }}>
-                         {
+                        {
                             <select onChange={e => selectAccount(e)} value={account?.address}>
                                 {list().map((account, index) => {
                                     return <option value={account.address} key={index}>{truncateString(account.address, 6, 6)}</option>

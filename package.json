@@ -22,6 +22,7 @@
     "@dojoengine/react": "^0.0.3",
     "@dojoengine/utils": "^0.0.2",
     "@latticexyz/phaserx": "^2.0.0-next.9",
+    "@latticexyz/react": "^2.0.0-next.9",
     "@latticexyz/recs": "^2.0.0-next.9",
     "@latticexyz/utils": "^2.0.0-next.9",
     "@scure/starknet": "^0.3.0",

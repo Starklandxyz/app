@@ -15,7 +15,7 @@ import { buildPriceStore } from "../store/buildpricestore";
 import { Account } from "starknet";
 import { LandType, get_land_type } from "../types/Land";
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, networkLayer, account } = store()

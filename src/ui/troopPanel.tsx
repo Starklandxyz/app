@@ -7,7 +7,7 @@ import { Troop } from "../types/Troop";
 import TroopItem from "./components/TroopItem";
 import { Troop_Speed } from "../contractconfig";
 import { useComponentValue } from "@dojoengine/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function TroopPanel() {
     const { troops } = troopStore()

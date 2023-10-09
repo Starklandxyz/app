@@ -15,8 +15,8 @@ import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
 import { playerStore } from "../store/playerStore";
 import { warriorStore } from "../store/warriorstore";
 import { useComponentValue } from "@dojoengine/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const { players } = playerStore()

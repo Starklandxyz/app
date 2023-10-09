@@ -1,4 +1,4 @@
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 
 export const handleSQLResult = (edges: any, contractComponents: any) => {

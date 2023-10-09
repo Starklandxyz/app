@@ -9,14 +9,14 @@ import { hexToString } from "../utils";
 import { warriorStore } from "../store/warriorstore";
 import { handleSQLResult } from "../utils/handleutils";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
 // import { Land } from "../types/Land";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function MapUI() {
     // const { bases } = buildStore()
     const { account } = store()
     const { landWarriors } = warriorStore()
-    const { player, players } = playerStore()
+    // const { player, players } = playerStore()
     const { camera, phaserLayer } = store()
     const {
         scenes: {
@@ -36,6 +36,7 @@ export default function MapUI() {
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const bases = useEntityQuery([Has(components.Base)],{updateOnValueChange:true})
     const mapLands = useEntityQuery([Has(components.Land)],{updateOnValueChange:true})
+    const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
   
     useEffect(() => {
         console.log("map base change");
@@ -67,7 +68,10 @@ export default function MapUI() {
                         text.setBackgroundColor("rgba(255,0,0,0.6)")
                         text.setText("Me")
                     } else {
-                        text.setText(hexToString(players.get(value.owner)?.nick_name));
+                        const p = getComponentValue(components.Player,getEntityIdFromKeys([BigInt(value.owner)]))
+                        if(p){
+                            text.setText(hexToString(p.nick_name.toString()));
+                        }
                     }
                 }
             })

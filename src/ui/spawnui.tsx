@@ -11,10 +11,10 @@ import { toastError, toastInfo, toastSuccess } from "../utils";
 import { LandType, get_land_type } from "../types/Land";
 import { playerStore } from "../store/playerStore";
 import { useComponentValue } from "@dojoengine/react";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function SpawnUI() {
-    const {player} = playerStore()
+    // const {player} = playerStore()
     const [show, setShow] = useState(false)
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
     const { camera, phaserLayer, account, networkLayer } = store()
@@ -34,6 +34,7 @@ export default function SpawnUI() {
         systemCalls: { build_base },
     } = networkLayer!
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     const baseClick = () => {
         console.log("baseClick",player);

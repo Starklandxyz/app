@@ -8,7 +8,7 @@ import soldierIcon from "../../../public/assets/icons/soldier.png"
 import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
 import { store } from "../../store/store";
 import { Has, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()

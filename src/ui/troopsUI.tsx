@@ -14,7 +14,7 @@ import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
 import sha256 from 'crypto-js/sha256';
 import { BuildType } from "../types/Build";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 const SIZE = 12
 
 export default function TroopsUI() {

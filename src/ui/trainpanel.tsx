@@ -9,8 +9,8 @@ import { Account } from "starknet";
 import { Training } from "../types/Training";
 import { ticStore } from "../store/ticStore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
-import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useComponentValue } from "@dojoengine/react";
+import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
