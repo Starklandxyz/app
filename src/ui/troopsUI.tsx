@@ -1,26 +1,25 @@
 import { store } from "../store/store";
 import { ticStore } from "../store/ticStore";
-import { troopStore } from "../store/troopStore";
 import { useEffect, useState } from "react";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { Assets, MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 // import { tileCoordToPixelCoord,ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { Tileset, TilesetNum, TilesetSoldier, TilesetZone } from "../artTypes/world";
-import { Troop } from "../types/Troop";
+import { Troop, Troop2Troop } from "../types/Troop";
 import { getTimestamp } from "../utils";
-import { controlStore } from "../store/controlStore";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ObjectPool } from "../../node_modules/@latticexyz/phaserx/src/types";
 import sha256 from 'crypto-js/sha256';
 import { BuildType } from "../types/Build";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import { useEntityQuery } from "@dojoengine/react";
 const SIZE = 12
 
 export default function TroopsUI() {
     const { account, phaserLayer } = store()
     const { timenow } = ticStore()
-    const { troops } = troopStore()
+    // const { troops } = troopStore()
     // const { bases } = buildStore()
     // const { lands } = mapStore()
 
@@ -33,18 +32,26 @@ export default function TroopsUI() {
                 },
             },
         },
-        networkLayer:{
+        networkLayer: {
             components
         }
     } = phaserLayer!;
 
+
+    const troops = useEntityQuery([Has(components.Troop)], { updateOnValueChange: true })
+
     useEffect(() => {
         // console.log("time change", timenow,troops);
-        troops.forEach((value, _) => {
-            const base = getComponentValue(components.Base,getEntityIdFromKeys([1n,BigInt(value.owner)]))
+        troops.map(entity => {
+            const t = getComponentValue(components.Troop, entity)
+            if (!t) {
+                return
+            }
+            const value = Troop2Troop(t)
+            const base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(value.owner)]))
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
-            if (value.startTime!=0 && left < 0) {
+            if (value.startTime != 0 && left < 0) {
                 showFlag(value)
                 hideTroopArrow(objectPool, value);
                 return
@@ -89,8 +96,12 @@ export default function TroopsUI() {
         // if (lands.size == 0) {
         //     return
         // }
-        troops.forEach((value, _) => {
-
+        troops.map(entity => {
+            const t = getComponentValue(components.Troop, entity)
+            if (!t) {
+                return
+            }
+            const value = Troop2Troop(t)
             if (value.startTime + value.totalTime <= getTimestamp()) {
                 return
             }
@@ -111,7 +122,7 @@ export default function TroopsUI() {
 
     const isBase = (pos: Coord) => {
         // const land = lands.get(pos.x + "_" + pos.y)
-        const land = getComponentValue(components.Land,getEntityIdFromKeys([1n,BigInt(pos.x),BigInt(pos.y)]))
+        const land = getComponentValue(components.Land, getEntityIdFromKeys([1n, BigInt(pos.x), BigInt(pos.y)]))
         console.log("isBase", pos, land);
         if (land) {
             if (land.building == BuildType.Base) {

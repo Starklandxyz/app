@@ -37,16 +37,6 @@ export default function Header() {
     const player = useComponentValue(contractComponents.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
     const eth = useComponentValue(contractComponents.ETH, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
-    useEffect(()=>{
-        console.log("account change",account,player);
-    },[account,player])
-
-    useEffect(() => {
-        defineSystem(world, [Has(contractComponents.Player)], ({ entity, value }) => {
-            console.log("Player change", entity, value);
-        })
-    }, [])
-
     useEffect(() => {
         // 设置一个每秒执行的任务
         const intervalId = setInterval(() => {

@@ -11,17 +11,17 @@ import farmlandicon from "../../public/assets/icons/farmland.png"
 import { BuildType, getBuildName } from "../types/Build";
 import { useEffect, useMemo, useState } from "react";
 import { BuildInfos } from "../types/BuildInfo";
-import { buildPriceStore } from "../store/buildpricestore";
 import { Account } from "starknet";
 import { LandType, get_land_type } from "../types/Land";
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import { handleSQLResult } from "../utils/handleutils";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, networkLayer, account } = store()
     const { buildLand, startMiningLand } = controlStore()
     // const { food, iron, gold } = resourceStore()
-    const { goldprices, foodprices, ironprices } = buildPriceStore()
+    // const { goldprices, foodprices, ironprices } = buildPriceStore()
     const [selectBuild, setSelect] = useState<BuildType>(BuildType.Farmland)
     // const [showStartMining, setShowStartMining] = useState(false)
 
@@ -61,28 +61,29 @@ export default function ChooseBuildUI() {
         console.log("fetchBuildPrice", prices);
 
         const edges = prices.data.entities?.edges
-        const goldp = new Map(goldprices)
-        const ironp = new Map(ironprices)
-        const foodp = new Map(foodprices)
+        handleSQLResult(edges,components)
+        // const goldp = new Map(goldprices)
+        // const ironp = new Map(ironprices)
+        // const foodp = new Map(foodprices)
 
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                if (components && components[0] && components[0].__typename == "BuildPrice") {
-                    const component = components[0]
-                    const build_type = component.build_type
-                    goldp.set(build_type, component.gold)
-                    foodp.set(build_type, component.food)
-                    ironp.set(build_type, component.iron)
-                }
-            }
-        }
-        buildPriceStore.setState({
-            goldprices: goldp,
-            foodprices: foodp,
-            ironprices: ironp
-        })
+        // if (edges) {
+        //     for (let index = 0; index < edges.length; index++) {
+        //         const element = edges[index];
+        //         const components = element?.node?.components
+        //         if (components && components[0] && components[0].__typename == "BuildPrice") {
+        //             const component = components[0]
+        //             const build_type = component.build_type
+        //             goldp.set(build_type, component.gold)
+        //             foodp.set(build_type, component.food)
+        //             ironp.set(build_type, component.iron)
+        //         }
+        //     }
+        // }
+        // buildPriceStore.setState({
+        //     goldprices: goldp,
+        //     foodprices: foodp,
+        //     ironprices: ironp
+        // })
     }
 
 
@@ -96,15 +97,19 @@ export default function ChooseBuildUI() {
         }
 
         const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
-        if (getComponentValue(components.Gold,entityIndex)?.balance! < goldprices.get(selectBuild)!) {
+        const price =  getComponentValue(components.BuildPrice,getEntityIdFromKeys([1n,BigInt(selectBuild)]))
+        if(!price){
+            return
+        }
+        if (getComponentValue(components.Gold,entityIndex)?.balance! < price.gold) {
             toastError("Gold is not enough")
             return
         }
-        if (getComponentValue(components.Food,entityIndex)?.balance! < foodprices.get(selectBuild)!) {
+        if (getComponentValue(components.Food,entityIndex)?.balance! <price.food) {
             toastError("Food is not enough")
             return
         }
-        if (getComponentValue(components.Iron,entityIndex)?.balance! < ironprices.get(selectBuild)!) {
+        if (getComponentValue(components.Iron,entityIndex)?.balance! < price.iron) {
             toastError("Iron is not enough")
             return
         }

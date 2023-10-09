@@ -20,3 +20,19 @@ export class Troop {
         this.startTime = startTime_;
     }
 }
+
+export function Troop2Troop(t:any){
+    const owner = t.owner
+    const index = t.index
+    const from = {x:t.from_x,y:t.from_y}
+    const to = {x:t.to_x,y:t.to_y}
+    const startTime = t.start_time
+    const balance = t.balance
+    const retreat = t.retreat
+    const troop = new Troop(owner,from,to,startTime)
+    troop.amount = balance
+    troop.retreat = retreat
+    troop.id = owner +"_"+index
+    troop.distance = t.distance
+    return troop
+}

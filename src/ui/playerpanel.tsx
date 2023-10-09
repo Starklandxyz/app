@@ -9,22 +9,13 @@ import landIcon from "../../public/assets/icons/landicon.png"
 import { store } from "../store/store";
 import { useEffect, useMemo, useRef } from "react";
 import styled from 'styled-components';
-import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
-// import { useComponentValue } from "../../node_modules/@latticexyz/react/src/index";
-import { troopStore } from "../store/troopStore";
-// import { useComponentValue, useEntityQuery } from "@dojoengine/react"
+import { ComponentValue, Has, defineSystem, getComponentEntities, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { handleSQLResult } from "../utils/handleutils";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 
 export default function PlayerPanel() {
-    // const { player: storePlayer, players, eths } = playerStore()
     const { account, phaserLayer } = store();
-    // const { landWarriors } = warriorStore()
-
-    const { troops } = troopStore()
-    const accountRef = useRef<string>()
-
     const {
         networkLayer: {
             world,
@@ -40,13 +31,7 @@ export default function PlayerPanel() {
 
     const player = useComponentValue(sqlComponent.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
-    useEffect(() => {
-        if (!account) {
-            return
-        }
-        console.log("account change ", account?.address);
-        accountRef.current = account?.address
-    }, [account])
+    const troops = useEntityQuery([Has(sqlComponent.Troop)],{updateOnValueChange:true})
 
     useEffect(() => {
         if (!account) {
@@ -83,22 +68,23 @@ export default function PlayerPanel() {
     }
 
     const getMyTroopSize = useMemo(() => {
+        // console.log("getMyTroopSize",account,troops);
+        if(!account){
+            return 0 
+        }
         var size = 0
-        troops.forEach((value, _) => {
-            if (value.owner == account?.address && value.startTime != 0) {
+
+        troops.map(entity=>{
+            const troop = getComponentValue(sqlComponent.Troop,entity)
+            // console.log("getMyTroopSize",entity,troop);
+            if(troop?.owner == account.address && troop?.start_time!=0){
                 size++
             }
         })
         return size
-    }, [troops, account])
-
-    useEffect(()=>{
-        console.log("player change",player);
-    },[player])
+    }, [account,troops])
 
     const getPlayerName = useMemo(()=>{
-        console.log("getPlayerName",player);
-        // 0x61736466
         return hexToString(player?.nick_name)
     },[player])
 

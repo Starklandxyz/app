@@ -49,7 +49,7 @@ export default function MapUI() {
             if (value.owner == account?.address) {
                 diff = 6
             }
-            console.log("put base ", xStart);
+            // console.log("put base ", xStart);
 
             putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
             putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");

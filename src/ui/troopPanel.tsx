@@ -1,23 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
-import { troopStore } from "../store/troopStore";
 import { store } from "../store/store";
-import { Troop } from "../types/Troop";
 import TroopItem from "./components/TroopItem";
-import { Troop_Speed } from "../contractconfig";
-import { useComponentValue } from "@dojoengine/react";
+import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import { handleSQLResult } from "../utils/handleutils";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { Troop, Troop2Troop } from "../types/Troop";
 
 export default function TroopPanel() {
-    const { troops } = troopStore()
     const { account, phaserLayer } = store()
-    // const { bases } = buildStore()
     const [showContent, setShowContent] = useState(true);
     const toggleContent = useCallback(() => {
         setShowContent(!showContent);
     }, [showContent]);
-    // const [userTroop, setUserTroop] = useState<Array<Troop>>([])
 
     const {
         networkLayer: {
@@ -26,53 +23,35 @@ export default function TroopPanel() {
         }
     } = phaserLayer!
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+
+    const [myTroops,setMyTroops] = useState<Array<Troop>>([])
+    const troops = useEntityQuery([Has(components.Troop)],{updateOnValueChange:true})
+
     useEffect(() => {
         fetchTroops()
     }, [])
 
     const fetchTroops = async () => {
         const ts = await graphSdk.getAllTroops({ map_id: "0x1" })
-        // console.log("fetchTroops", ts);
         const edges = ts.data.entities?.edges
-        const tt = new Map(troops)
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                if (components) {
-                    for (let index = 0; index < components.length; index++) {
-                        const element = components[index];
-                        if (element?.__typename == "Troop") {
-                            if(element.start_time==0){
-                                continue
-                            }
-                            const t = new Troop(element.owner, { x: element.from_x, y: element.from_y },
-                                { x: element.to_x, y: element.to_y }, element.start_time);
-                            t.amount = element.balance
-                            t.distance = element.distance
-                            t.totalTime = element.distance * Troop_Speed
-                            t.index = element.index
-                            t.id = t.owner + "_" + t.index
-                            t.retreat = element.retreat
-                            // console.log("fetchTroops",t);
-                            tt.set(t.id, t)
-                        }
-                    }
-                }
-            }
-        }
-        troopStore.setState({ troops: tt })
+        handleSQLResult(edges,components)
     }
 
-    const getMyTroopSize= useMemo(()=>{
-        var size = 0
-        troops.forEach((value,_)=>{
-            if(value.owner == account?.address && value.startTime!=0){
-                size++
+    useEffect(()=>{
+        if(!account){
+            return
+        }
+        // var size = 0
+        const array:Array<Troop> = []
+        troops.map(entity=>{
+            const troop = getComponentValue(components.Troop,entity)
+            if(troop?.owner == account.address && troop?.start_time!=0){
+                array.push(Troop2Troop(troop))
+                // size++
             }
         })
-        return size
-    },[troops,account])
+        setMyTroops(array)
+    },[account,troops])
 
     return (<ClickWrapper>
         <Container>
@@ -80,12 +59,12 @@ export default function TroopPanel() {
                 account &&
                 <div style={{ overflow: "auto", width: 220, maxHeight: 420, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                     <div style={{display:"flex"}}>
-                        <p style={{ flex:1, fontSize: 20, color: "pink" }}>Troops - <span style={{ fontSize: "17px", color: "lightblue" }}> {getMyTroopSize}</span></p>
+                        <p style={{ flex:1, fontSize: 20, color: "pink" }}>Troops - <span style={{ fontSize: "17px", color: "lightblue" }}> {myTroops.length}</span></p>
                         <button style={{ height:"22px", alignSelf:"center", justifyContent:"flex-end"}} onClick={toggleContent}>Show/Hide</button>
                     </div>
                     {showContent && (
                         <div>
-                            {[...troops.values()].map(value => (
+                            {[...myTroops.values()].map(value => (
                                 (value.owner == account.address && value.startTime!=0 ) && <TroopItem key={value.id} base={myBase} troop={value} />
                             ))}
                         </div>

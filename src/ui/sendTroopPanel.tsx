@@ -3,27 +3,19 @@ import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { controlStore } from "../store/controlStore";
 import { Troop } from "../types/Troop";
-import { troopStore } from "../store/troopStore";
-import { getTimestamp, toastError, toastSuccess } from "../utils";
+import { calDistanceFromBase, getTimestamp, toastError, toastSuccess } from "../utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function SendTroopPanel() {
     // const { bases } = buildStore()
     const { account, phaserLayer, networkLayer } = store()
     const { sendTroopCtr } = controlStore()
-    const { troops } = troopStore()
     const [inputValue, setInputValue] = useState(1)
-
-    const troopsRef = useRef<Map<string, Troop>>(new Map())
-
-    useEffect(() => {
-        troopsRef.current = troops
-    }, [troops])
 
     const {
         networkLayer: {
@@ -35,6 +27,9 @@ export default function SendTroopPanel() {
     const {
         systemCalls: { sendTroop },
     } = networkLayer!
+
+    const troops = useEntityQuery([Has(components.Troop)],{updateOnValueChange:true})
+
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!account) {
@@ -73,7 +68,7 @@ export default function SendTroopPanel() {
         if(!sendTroopCtr.troop){
             return
         }
-        const food_need = Troop_Food * calDistance(myBase,sendTroopCtr.troop.to) * inputValue
+        const food_need = Troop_Food * calDistanceFromBase(myBase,sendTroopCtr.troop.to) * inputValue
 
         const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
         if (getComponentValue(components.Food,entityIndex)?.balance! < food_need) {
@@ -92,7 +87,7 @@ export default function SendTroopPanel() {
             toastError("Send failed")
             return
         }
-        const troop_id = calTroopID()
+        const troop_id = getMyTroopSize() + 1
         const result = await sendTroop(account, 1, inputValue, troop_id, troop.from.x, troop.from.y, troop.to.x, troop.to.y);
         if (result && result.length > 0) {
             toastSuccess("Troop Success")
@@ -102,79 +97,18 @@ export default function SendTroopPanel() {
         cancel()
     }
 
-    const addTroop = (t: any) => {
-        console.log("addTroop", t);
-        const newTroops = new Map(troopsRef.current)
-        const balance = t.balance as number
-        const from_x = t.from_x as number
-        const from_y = t.from_y as number
-        const index = t.index as number
-        const to_x = t.to_x as number
-        const to_y = t.to_y as number
-        const retreat = t.retreat as boolean
-        const owner = t.owner as string
-        const distance = t.distance as number
-        const start_time = t.start_time as number
-        const from = { x: from_x, y: from_y }
-        const to = { x: to_x, y: to_y }
-        const troop = new Troop(owner, from, to, start_time)
-        const tid = troop.owner + "_" + index
-        troop.amount = balance;
-        troop.retreat = retreat
-        troop.id = tid
-        troop.index = index
-        troop.distance = distance
-        troop.totalTime = distance * Troop_Speed
-        newTroops.set(tid, troop)
-        troopStore.setState({
-            troops: newTroops
-        })
-    }
-
-    useEffect(() => {
-        defineSystem(world, [Has(components.Troop)], ({ value }) => {
-            console.log("Troop change", value);
-            const t = value[0]
-            if (t) {
-                addTroop(t)
-            }
-        })
-    }, [])
-
-    const calDistance = (base:Coord,to:Coord) => {
-        console.log("calDistance");
-        if (!account) {
-            return 0
-        }
-        const dis1 = Math.abs(base.x - to.x) + Math.abs(base.y - to.y)
-        let dis = dis1
-        const dis2 = Math.abs(base.x + 1 - to.x) + Math.abs(base.y - to.y)
-        if (dis > dis2) {
-            dis = dis2
-        }
-        const dis3 = Math.abs(base.x + 1 - to.x) + Math.abs(base.y + 1 - to.y)
-        if (dis > dis3) {
-            dis = dis3
-        }
-        const dis4 = Math.abs(base.x - to.x) + Math.abs(base.y + 1 - to.y)
-        if (dis > dis4) {
-            dis = dis4
-        }
-        return dis
-    }
-
     const getDistance = useMemo(()=>{
         if(!sendTroopCtr.troop){
             return 0
         }
-        return calDistance(myBase,sendTroopCtr.troop.to)
+        return calDistanceFromBase(myBase,sendTroopCtr.troop.to)
     },[myBase,sendTroopCtr])
 
     const calFood = useMemo(() => {
         if(!sendTroopCtr.troop){
             return 0
         }
-        const result = Troop_Food * calDistance(myBase,sendTroopCtr.troop.to) * inputValue
+        const result = Troop_Food * calDistanceFromBase(myBase,sendTroopCtr.troop.to) * inputValue
         return result
     }, [sendTroopCtr, inputValue])
 
@@ -182,7 +116,7 @@ export default function SendTroopPanel() {
         if(!sendTroopCtr.troop){
             return "0s"
         }
-        const result = Troop_Speed * calDistance(myBase,sendTroopCtr.troop.to)
+        const result = Troop_Speed * calDistanceFromBase(myBase,sendTroopCtr.troop.to)
         return result + "s"
     }, [sendTroopCtr, inputValue])
 
@@ -202,29 +136,48 @@ export default function SendTroopPanel() {
         return calWarrior()
     }, [account,myBase])
 
-    const calTroopID = () => {
-        if (!account) {
-            return 1
+    // const calTroopID = () => {
+    //     if (!account) {
+    //         return 1
+    //     }
+    //     let id = 1
+
+    //     troops.forEach((value, key) => {
+    //         const ks = key.split("_")
+    //         // console.log("calTroopID",ks,account.address);
+    //         if (ks[0] == account.address) {
+    //             if (value.startTime == 0) {
+    //                 id = parseInt(ks[1])
+    //                 return
+    //             }
+    //             id++
+    //         }
+    //     })
+    //     console.log("calTroopID", id);
+    //     return id
+    // }
+
+
+    const getMyTroopSize = () => {
+        // console.log("getMyTroopSize",account,troops);
+        if(!account){
+            return 0 
         }
-        let id = 1
-        troops.forEach((value, key) => {
-            const ks = key.split("_")
-            // console.log("calTroopID",ks,account.address);
-            if (ks[0] == account.address) {
-                if (value.startTime == 0) {
-                    id = parseInt(ks[1])
-                    return
-                }
-                id++
+        var size = 0
+
+        troops.map(entity=>{
+            const troop = getComponentValue(components.Troop,entity)
+            // console.log("getMyTroopSize",entity,troop);
+            if(troop?.owner == account.address && troop?.start_time!=0){
+                size++
             }
         })
-        console.log("calTroopID", id);
-        return id
+        return size
     }
 
     const getTroopID = useMemo(() => {
-        return calTroopID()
-    }, [account, troops.keys()])
+        return getMyTroopSize() + 1
+    }, [account, troops]) 
 
     return (
         <ClickWrapper>
