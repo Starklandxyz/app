@@ -27,6 +27,7 @@ export default function SendTroopPanel() {
     const troops = useEntityQuery([Has(components.Troop)],{updateOnValueChange:true})
 
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!account) {
             return 0
@@ -132,34 +133,12 @@ export default function SendTroopPanel() {
         return calWarrior()
     }, [account,myBase])
 
-    // const calTroopID = () => {
-    //     if (!account) {
-    //         return 1
-    //     }
-    //     let id = 1
-
-    //     troops.forEach((value, key) => {
-    //         const ks = key.split("_")
-    //         // console.log("calTroopID",ks,account.address);
-    //         if (ks[0] == account.address) {
-    //             if (value.startTime == 0) {
-    //                 id = parseInt(ks[1])
-    //                 return
-    //             }
-    //             id++
-    //         }
-    //     })
-    //     console.log("calTroopID", id);
-    //     return id
-    // }
-
-
     const getAvailableTroopId = () => {
         // console.log("getMyTroopSize",account,troops);
         if(!account){
-            return 0 
+            return 1 
         }
-        var size = 0
+        var size = 1
 
         troops.map(entity=>{
             const troop = getComponentValue(components.Troop,entity)

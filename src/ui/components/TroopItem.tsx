@@ -17,7 +17,7 @@ export default function TroopItem(params: any) {
     const {
         networkLayer:{
             components:contractComponents,
-            systemCalls: { retreatTroop, troopEnterLand },
+            systemCalls: { retreatTroop, troopEnterLand,goFight },
         }
     } = phaserLayer!
 
@@ -29,8 +29,18 @@ export default function TroopItem(params: any) {
     }
 
     //todo
-    const attackClick = () => {
-        toastSuccess("Attack Success")
+    const attackClick =async () => {
+        // toastSuccess("Attack Success")
+        if(!account){return}
+
+        const result = await goFight(account,1,troop.index)
+        console.log("attackClick",result);
+        if(result && result.length>0){
+            toastSuccess("Attack success")
+        }else{
+            toastError("Attack failed")
+        }
+        
     }
 
     const enterLand = async () => {

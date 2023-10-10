@@ -68,6 +68,22 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const goFight = async (signer: Account, map_id: number, troop_index: number) => {
+    try {
+      const tx = await execute(signer, "go_fight", [map_id, troop_index]);
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
+    return undefined;
+  };
+
   const airdrop = async (signer: Account, map_id: number) => {
     try {
       // console.log("recoverEnergy start");
@@ -238,5 +254,6 @@ export function createSystemCalls(
     buildBuilding,
     build_base,
     trainWarrior,
+    goFight
   };
 }

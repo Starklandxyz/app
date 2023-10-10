@@ -326,5 +326,22 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    Fight: (() => {
+      const name = "Fight";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          owner: RecsType.String,
+          total: RecsType.Number,
+          out: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
   };
 }

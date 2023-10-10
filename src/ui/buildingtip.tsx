@@ -245,7 +245,7 @@ export default function BuildingTip() {
                     {
                         getButtons
                     }
-                    <button onClick={() => buildClick()}>Build</button>
+                    {/* <button onClick={() => buildClick()}>Build</button> */}
                     <button style={{ marginTop: 10 }} onClick={() => controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })}>Cancel</button>
 
                 </div>

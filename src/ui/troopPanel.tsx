@@ -34,6 +34,7 @@ export default function TroopPanel() {
     const fetchTroops = async () => {
         const ts = await graphSdk.getAllTroops({ map_id: "0x1" })
         const edges = ts.data.entities?.edges
+        console.log("fetchTroops",edges);
         handleSQLResult(edges,components)
     }
 

@@ -85,6 +85,7 @@ export default function PlayerPanel() {
     }, [account,troops])
 
     const getPlayerName = useMemo(()=>{
+        console.log("getPlayerName",player?.nick_name);
         return hexToString(player?.nick_name)
     },[player])
 
