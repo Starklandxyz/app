@@ -210,6 +210,8 @@ export default function MapUI() {
     }, [landWarriors])
 
     useEffect(() => {
+        console.log("mapLands",mapLands.length);
+        
         mapLands.map(entity => {
             const land = getComponentValue(components.Land,entity)
             if(!land || land?.building==BuildType.Base){
@@ -224,6 +226,8 @@ export default function MapUI() {
                 case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
                 // case BuildType.Base: tile = TilesetTown.Town00; break;
             }
+            console.log("mapLands tile",buildLand,tile);
+            
             putTileAt(buildLand, tile, "Top");
             if (land.owner == account?.address) {
                 putTileAt(buildLand, TilesetZone.MyZone, "Occupy");

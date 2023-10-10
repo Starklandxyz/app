@@ -31,6 +31,7 @@ export function defineContractComponents(world: World) {
           map_id: RecsType.Number,
           MAX_MAP_X: RecsType.Number,
           MAX_MAP_Y: RecsType.Number,
+          MULTIPLIER: RecsType.Number,
         },
         {
           metadata: {
@@ -89,7 +90,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           owner: RecsType.String,
-          nick_name: RecsType.String,
+          nick_name: RecsType.Number,
           joined_time: RecsType.Number,
         },
         {
@@ -335,6 +336,23 @@ export function defineContractComponents(world: World) {
           owner: RecsType.String,
           total: RecsType.Number,
           out: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    MiningConfig: (() => {
+      const name = "MiningConfig";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          Food_Speed: RecsType.Number,
+          Iron_Speed: RecsType.Number,
+          Gold_Speed: RecsType.Number,
         },
         {
           metadata: {

@@ -366,3 +366,23 @@ query getAllTroops($map_id:String) {
     }
   }
 }
+
+
+query getMiningConfig($map_id:String) {
+  entities(first:1000, keys: [$map_id]) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on MiningConfig {
+            map_id
+            Food_Speed
+            Iron_Speed
+            Gold_Speed
+          }
+        }
+      }
+    }
+  }
+}

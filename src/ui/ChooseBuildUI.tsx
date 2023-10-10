@@ -17,6 +17,7 @@ import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } fr
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
+import { map } from "rxjs";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, account } = store()
@@ -261,6 +262,10 @@ export default function ChooseBuildUI() {
     }
 
     const fetchHasMiner = async (map_id_: number, x_: number, y_: number) => {
+        let m = getComponentValue(components.LandMiner,getEntityIdFromKeys([BigInt(map_id_),BigInt(x_),BigInt(y_)]))
+        if(m){
+            return m.miner_x != 0
+        }
         const map_id ="0x"+ map_id_.toString(16)
         const x ="0x"+ x_.toString(16)
         const y ="0x"+ y_.toString(16)
@@ -268,20 +273,12 @@ export default function ChooseBuildUI() {
         const miner = await graphSdk.getLandMinerByKey({ map_id: map_id, x: x, y: y })
         console.log("fetchHasMiner", miner);
         const edges = miner.data.entities?.edges
-        if (edges && edges.length == 0) {
-            return false
+        handleSQLResult(edges,components)
+        m = getComponentValue(components.LandMiner,getEntityIdFromKeys([BigInt(map_id_),BigInt(x_),BigInt(y_)]))
+        if(m){
+            return m.miner_x != 0
         }
-
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                if (components && components[0] && components[0].__typename == "Player") {
-
-                }
-            }
-        }
-        return true
+        return false
     }
 
     return (

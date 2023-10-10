@@ -106,7 +106,7 @@ export default function PlayerPanel() {
                 data-tooltip-place="top">
                 <ResourceIcon src={foodIcon} alt="food" />
                 <ResourceValue>{
-                    food && food.balance
+                    food && food.balance/1000000
                 }</ResourceValue>
             </ResourceItemWrapper>
 
@@ -114,14 +114,14 @@ export default function PlayerPanel() {
                 data-tooltip-content="Gold"
                 data-tooltip-place="top" >
                 <ResourceIcon src={goldIcon} alt="gold" />
-                <ResourceValue>{gold && gold.balance}</ResourceValue>
+                <ResourceValue>{gold && gold.balance/1000000}</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"
                 data-tooltip-content="Iron"
                 data-tooltip-place="top">
                 <ResourceIcon src={ironIcon} alt="iron" />
-                <ResourceValue>{iron && iron.balance}</ResourceValue>
+                <ResourceValue>{iron && iron.balance/1000000}</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"

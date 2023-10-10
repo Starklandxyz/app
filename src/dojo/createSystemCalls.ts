@@ -3,6 +3,7 @@ import {
   Account,
   shortString,
   GetTransactionReceiptResponse,
+  CallData,
 } from "starknet";
 import { ClientComponents } from "./createClientComponents";
 import { getEvents } from "@dojoengine/utils";
@@ -84,10 +85,51 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const claimMining = async (signer: Account, map_id: number, xs: Array<number>,ys:Array<number>) => {
+    try {
+      
+      const tx = await execute(signer, "claim_mining", CallData.compile([map_id,xs,ys]));
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
+    return undefined;
+  };
+
   const airdrop = async (signer: Account, map_id: number) => {
     try {
       // console.log("recoverEnergy start");
       const tx = await execute(signer, "admin", [map_id]);
+
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      // console.log("roll receipt:", receipt);
+      const events = getEvents(receipt);
+      // console.log(events);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    } finally {
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    }
+    return undefined;
+  };
+
+  const adminAttack = async (signer: Account, map_id: number,x:number,y:number) => {
+    try {
+      // console.log("recoverEnergy start");
+      const tx = await execute(signer, "admin_attack", [map_id,x,y]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -249,10 +291,12 @@ export function createSystemCalls(
     retreatTroop,
     takeWarrior,
     sendTroop,
+    claimMining,
     spawn,
     startMining,
     buildBuilding,
     build_base,
+    adminAttack,
     trainWarrior,
     goFight
   };

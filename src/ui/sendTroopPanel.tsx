@@ -7,7 +7,6 @@ import { calDistanceFromBase, getTimestamp, toastError, toastSuccess } from "../
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
-import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 

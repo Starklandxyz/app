@@ -35,6 +35,7 @@ export default function BuildingTip() {
             },
         },
         networkLayer: {
+            systemCalls: { adminAttack },
             components: contractComponents
         }
     } = phaserLayer!;
@@ -227,6 +228,10 @@ export default function BuildingTip() {
         return <button onClick={() => sendTroopClick()}>Send Troop</button>
     }, [myBase, account, lastCoord])
 
+    const attack = async()=>{
+        const result = await adminAttack(account!,1,lastCoord.x,lastCoord.y)
+    }
+
     return (
         <ClickWrapper>
             {tooltip.show && (
@@ -245,7 +250,8 @@ export default function BuildingTip() {
                     {
                         getButtons
                     }
-                    {/* <button onClick={() => buildClick()}>Build</button> */}
+                    <button onClick={() => buildClick()}>Build</button>
+                    <button onClick={() => attack()}>Attack</button>
                     <button style={{ marginTop: 10 }} onClick={() => controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })}>Cancel</button>
 
                 </div>
