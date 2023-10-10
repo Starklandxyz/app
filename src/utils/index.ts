@@ -1,6 +1,6 @@
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { MAP_WIDTH } from "../phaser/constants";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, ToastPosition, toast } from 'react-toastify';
 import * as scure from "@scure/starknet"
 import {
     Component,
@@ -11,7 +11,7 @@ import {
     Has,
     isComponentUpdate,
     Schema,
-  } from "../../node_modules/@latticexyz/recs/src/index";
+} from "../../node_modules/@latticexyz/recs/src/index";
 import { useEffect, useState } from "react";
 
 export function isValidArray(input: any): input is any[] {
@@ -131,9 +131,9 @@ export function hexToString(hex: string | undefined): string {
     return ''
 }
 
-export function toastError(msg: string) {
+export function toastError(msg: string, position: ToastPosition = "top-right") {
     toast.error(msg, {
-        position: "top-right",
+        position: position,
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -144,9 +144,9 @@ export function toastError(msg: string) {
     });
 }
 
-export function toastWarning(msg: string) {
+export function toastWarning(msg: string, position: ToastPosition = "top-right") {
     toast.warning(msg, {
-        position: "top-right",
+        position: position,
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -157,9 +157,9 @@ export function toastWarning(msg: string) {
     });
 }
 
-export function toastInfo(msg: string) {
+export function toastInfo(msg: string, position: ToastPosition = "top-right") {
     toast.info(msg, {
-        position: "top-right",
+        position: position,
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -170,9 +170,9 @@ export function toastInfo(msg: string) {
     });
 }
 
-export function toastSuccess(msg: string) {
+export function toastSuccess(msg: string, position: ToastPosition = "top-right") {
     toast.success(msg, {
-        position: "top-right",
+        position: position,
         autoClose: 3000,
         hideProgressBar: true,
         closeOnClick: true,
@@ -197,7 +197,7 @@ export const parseTime = (sec: number) => {
     const m = Math.floor((sec - h * 3600) / 60)
     const s = sec - h * 3600 - m * 60
 
-    
+
     var hs = h + ""
     if (h < 10) {
         hs = "0" + h
@@ -218,12 +218,12 @@ export const parseTime = (sec: number) => {
     }
     // console.log("parseTime",sec,h,m,s);
     // console.log("parseTime",hs,ms,ss,result);
-    
+
     return result
 }
 
 
-export const calDistanceFromBase = (base:Coord,to:Coord) => {
+export const calDistanceFromBase = (base: Coord, to: Coord) => {
     // console.log("calDistance");
     const dis1 = Math.abs(base.x - to.x) + Math.abs(base.y - to.y)
     let dis = dis1

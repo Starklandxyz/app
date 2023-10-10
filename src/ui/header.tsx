@@ -53,39 +53,39 @@ export default function Header() {
 
     const startGame = async () => {
         if (isDeploying) {
-            toastError("Waiting for creating wallet...")
+            toastError("Waiting for creating wallet...","top-center")
             return
         }
         if (!account) {
-            toastError("Create burner wallet first.")
+            toastError("Create burner wallet first.","top-center")
             return
         }
         // await spawn(account)
         console.log("startGame name:" + nickName + ",length:" + nickName.length);
 
         if (nickName.length < 2) {
-            toastWarning("Name is too short.")
+            toastWarning("Name is too short.","top-center")
             return
         }
         if (nickName.length > 30) {
-            toastWarning("Name is too long.")
+            toastWarning("Name is too long.","top-center")
             return
         }
         const hex = stringToHex(nickName)
         console.log("startGame name hex", hex, hex.length);
         if (hex.length > 64) {
-            toastWarning("Illegal name.")
+            toastWarning("Illegal name.","top-center")
             return
         }
         const events = await spawn(account, BigInt('0x' + hex));
         if (events && events.length > 0) {
             setNickName("")
-            toastSuccess("Mint player success.")
+            toastSuccess("Mint player success.","top-center")
             // playerStore.setState({ eth: BigInt(5e17) })
             // const p = Player2Player(events[0] as PlayerSQL)
             // playerStore.setState({ eth: BigInt(5e17), player: p })
         } else {
-            toastError("Mint failed")
+            toastError("Mint failed","top-center")
         }
     }
 
@@ -95,7 +95,7 @@ export default function Header() {
     }
 
     const createNew = () => {
-        toastInfo("Create account...")
+        toastInfo("Create account...","top-center")
         create()
     }
 
@@ -107,16 +107,9 @@ export default function Header() {
     useEffect(() => {
         console.log("account change", account?.address);
         if (account) {
-            toastSuccess("Load wallet success")
+            toastSuccess("Load wallet success","top-center")
         }
     }, [account])
-
-    useEffect(() => {
-        console.log("isDeploying", isDeploying);
-        // if (isDeploying) {
-        //     playerStore.setState({ player: null })
-        // }
-    }, [isDeploying])
 
     return (
         <ClickWrapper>
