@@ -92,20 +92,30 @@ export default function UserBuildingPanel() {
                 {
                     showIron&&<IronMinePage/>
                 }
-                <div style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", width: 50, borderRadius: 10 }}>
-                    <div className={showBase ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowBase(true)}>
+                <div style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", width: 50, borderRadius: 10, }}>
+                    <div data-tooltip-id="my-tooltip"
+                                data-tooltip-content="All Buildings"
+                                data-tooltip-place="top"  className={showBase ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowBase(true)}>
                         <img src={baseicon} style={{ transform: "scale(0.6) translate(-10px,-2px)", imageRendering: "pixelated" }} />
                     </div>
-                    <div className={showFarm ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowFarm(true)}>
+                    <div data-tooltip-id="my-tooltip"
+                                data-tooltip-content="All Farmlands"
+                                data-tooltip-place="top" className={showFarm ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowFarm(true)}>
                         <img src={farmlandicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
-                    <div className={showGold ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowGold(true)}>
+                    <div data-tooltip-id="my-tooltip"
+                                data-tooltip-content="All Gold Mines"
+                                data-tooltip-place="top" className={showGold ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowGold(true)}>
                         <img src={goldmineicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
-                    <div className={showIron ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowIron(true)}>
+                    <div data-tooltip-id="my-tooltip"
+                                data-tooltip-content="All Iron Mines"
+                                data-tooltip-place="top" className={showIron ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowIron(true)}>
                         <img src={ironmineicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
-                    <div className={showCamp ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowCamp(true)}>
+                    <div data-tooltip-id="my-tooltip"
+                                data-tooltip-content="All Camps"
+                                data-tooltip-place="top" className={showCamp ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowCamp(true)}>
                         <img src={campicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
                 </div>

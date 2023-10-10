@@ -72,7 +72,7 @@ export default function BasePage() {
         setIronmine(a)
     }
 
-    return (<div style={{ width: 210, height: 320, lineHeight: 0.3, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+    return (<div style={{ width: 210, height: 340, lineHeight: 0.3, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
         <div>
             <p>Base ({base?.x},{base?.y}) +100Gold/H</p>
             <div>
@@ -81,30 +81,33 @@ export default function BasePage() {
             </div>
 
         </div>
-        <div style={{ display: "flex" }}>
-            <p>Farmlands - </p>
-            <p style={{ marginLeft: 5 }}>{farmland.length}</p>
-            <p style={{ marginLeft: 10 }}>+100Food/H</p>
+        <div style={{marginTop:10, border: "1px solid yellow",borderRadius:10,paddingLeft:5 }}>
+            <div style={{ display: "flex" }}>
+                <p>Farmlands - </p>
+                <p style={{ marginLeft: 5 }}>{farmland.length}</p>
+                <p style={{ marginLeft: 10 }}>+100Food/H</p>
+            </div>
+            <div style={{ display: "flex" }}>
+                <p>Camp - </p>
+                <p style={{ marginLeft: 5 }}>{camp.length}</p>
+                <p style={{ marginLeft: 10 }}>+100 Capacity</p>
+            </div>
+            <div style={{ display: "flex" }}>
+                <p>GoldMine - </p>
+                <p style={{ marginLeft: 5 }}>{goldmine.length}</p>
+                <p style={{ marginLeft: 10 }}>+100Gold/H</p>
+            </div>
+            <div style={{ display: "flex" }}>
+                <p>IronMine - </p>
+                <p style={{ marginLeft: 5 }}>{ironMine.length}</p>
+                <p style={{ marginLeft: 10 }}>+100Iron/H</p>
+            </div>
         </div>
-        <div style={{ display: "flex" }}>
-            <p>Camp - </p>
-            <p style={{ marginLeft: 5 }}>{camp.length}</p>
-            <p style={{ marginLeft: 10 }}>+100 Capacity</p>
-        </div>
-        <div style={{ display: "flex" }}>
-            <p>GoldMine - </p>
-            <p style={{ marginLeft: 5 }}>{goldmine.length}</p>
-            <p style={{ marginLeft: 10 }}>+100Gold/H</p>
-        </div>
-        <div style={{ display: "flex" }}>
-            <p>IronMine - </p>
-            <p style={{ marginLeft: 5 }}>{ironMine.length}</p>
-            <p style={{ marginLeft: 10 }}>+100Iron/H</p>
-        </div>
-        <div style={{ paddingLeft: 5,paddingTop:2, border: "1px solid yellow", width: 200, height: 90, borderRadius: 10 }}>
+
+        <div style={{marginTop:10, paddingLeft: 5, paddingTop: 2, border: "1px solid yellow", width: 200, height: 90, borderRadius: 10 }}>
             <div style={{ display: "flex" }}>
                 <p>Claimable</p>
-                <button style={{marginLeft:30,height:26,marginTop:5}}>Claim</button>
+                <button style={{ marginLeft: 30, height: 26, marginTop: 5 }}>Claim</button>
             </div>
             <table style={{ lineHeight: 1, }}>
                 <tr>
@@ -113,10 +116,8 @@ export default function BasePage() {
                 </tr>
                 <tr>
                     <td>Iron : 10</td>
-                    <td>Gold : 10</td>
                 </tr>
             </table>
-
         </div>
     </div>)
 }
