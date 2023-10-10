@@ -94,8 +94,35 @@ export default function BasePage() {
     }
 
     const claimAll = async () => {
-        const land = farmland[0]
-        const result = await claimMining(account!, 1, [land.x], [land.y])
+        // const land = farmland[0]
+        if(!account){
+            toastError("Create account first")
+            return
+        }
+        const xs:Array<number> = []
+        const ys:Array<number> = []
+        const base = getComponentValue(contractComponents.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
+        if(!base){
+            toastError("Create base first")
+            return
+        }
+        xs.push(base.x)
+        ys.push(base.y)
+
+        farmland.map(land=>{
+            xs.push(land.x)
+            ys.push(land.y)
+        })
+        ironMine.map(land=>{
+            xs.push(land.x)
+            ys.push(land.y)
+        })
+        goldmine.map(land=>{
+            xs.push(land.x)
+            ys.push(land.y)
+        })
+
+        const result = await claimMining(account!, 1, xs, ys)
         if (result && result.length > 0) {
             toastSuccess("Claim success")
         } else {
@@ -123,20 +150,37 @@ export default function BasePage() {
             }
             return
         })
-        return total.toFixed(2)
+        return total
     }
 
     const foodClaimable = useMemo(() => {
-        return calClaimable(farmland)
+        return calClaimable(farmland).toFixed(2)
     }, [timenow])
 
 
     const ironClaimable = useMemo(() => {
-        return calClaimable(ironMine)
+        return calClaimable(ironMine).toFixed(2)
     }, [timenow])
 
+    const calBaseClaimable = ()=>{
+        if(!account){
+            return 0 
+        }
+        const base = getComponentValue(contractComponents.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
+        if(!base){
+            return 0
+        }
+        const land = new Land()
+        land.x = base.x
+        land.y = base.y
+        return calClaimable([land])
+    }
+
     const goldClaimable = useMemo(() => {
-        return calClaimable(goldmine)
+        const t1 =  calClaimable(goldmine)
+        const t2 = calBaseClaimable()
+        const t = t1 + t2
+        return t.toFixed(2)
     }, [timenow])
 
     return (<div style={{ width: 210, height: 350, lineHeight: 0.3, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>

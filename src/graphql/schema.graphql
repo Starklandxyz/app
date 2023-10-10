@@ -22,7 +22,7 @@ query getAllPlayers {
   }
 }
 
-query getPlayerByKey($key: String) {
+query getAirdropByKey($key: String) {
   entities(first:1000, keys: [$key]) {
     totalCount
     edges {
@@ -30,15 +30,9 @@ query getPlayerByKey($key: String) {
         keys
         components {
           __typename
-          ... on Player {
+          ... on Airdrop {
             owner
-            nick_name
-            joined_time
-          }
-          __typename
-          ... on ETH {
-            owner
-            balance
+            claimed
           }
         }
       }

@@ -1,4 +1,4 @@
-import { getTimestamp, hexToString, positionToCoorp } from "../utils";
+import { getTimestamp, hexToString, positionToCoorp, toastError, toastSuccess } from "../utils";
 import starklogo from "../../public/starkneticon.png"
 import foodIcon from "../../public/assets/icons/food.png"
 import ironIcon from "../../public/assets/icons/iron.png"
@@ -18,20 +18,35 @@ export default function PlayerPanel() {
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
+            systemCalls: { airdrop },
             world,
             components: sqlComponent,
             network: { graphSdk, wsClient }
         }
     } = phaserLayer!
 
-    const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
-    const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
-    const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
-    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),{balance:0});
+    const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
+    const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
+    const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
+    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
 
     const player = useComponentValue(sqlComponent.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
-    const troops = useEntityQuery([Has(sqlComponent.Troop)],{updateOnValueChange:true})
+    const troops = useEntityQuery([Has(sqlComponent.Troop)], { updateOnValueChange: true })
+
+    const airdropClaimed = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([BigInt(account ? account.address : "")]))
+
+    const claimairdrop = async () => {
+        if (!account) {
+            return
+        }
+        const result = await airdrop(account, 1)
+        if (result && result.length > 0) {
+            toastSuccess("Airdrop success")
+        } else {
+            toastError("Airdrop failed")
+        }
+    }
 
     useEffect(() => {
         if (!account) {
@@ -50,7 +65,7 @@ export default function PlayerPanel() {
         const userWarrior = await graphSdk.getUserWarriorByKey({ map_id: "0x1", key: account?.address })
         console.log("fetchUserWarrior", userWarrior);
         const edges = userWarrior.data.entities?.edges
-        handleSQLResult(edges,sqlComponent)
+        handleSQLResult(edges, sqlComponent)
     }
 
     const fetchResources = async () => {
@@ -64,30 +79,30 @@ export default function PlayerPanel() {
         const playerInfo = await graphSdk.getAllPlayers()
         console.log("fetchPlayersInfo", playerInfo);
         const edges = playerInfo.data.entities?.edges
-        handleSQLResult(edges,sqlComponent)
+        handleSQLResult(edges, sqlComponent)
     }
 
     const getMyTroopSize = useMemo(() => {
         // console.log("getMyTroopSize",account,troops);
-        if(!account){
-            return 0 
+        if (!account) {
+            return 0
         }
         var size = 0
 
-        troops.map(entity=>{
-            const troop = getComponentValue(sqlComponent.Troop,entity)
+        troops.map(entity => {
+            const troop = getComponentValue(sqlComponent.Troop, entity)
             // console.log("getMyTroopSize",entity,troop);
-            if(troop?.owner == account.address && troop?.start_time!=0){
+            if (troop?.owner == account.address && troop?.start_time != 0) {
                 size++
             }
         })
         return size
-    }, [account,troops])
+    }, [account, troops])
 
-    const getPlayerName = useMemo(()=>{
-        console.log("getPlayerName",player?.nick_name);
+    const getPlayerName = useMemo(() => {
+        console.log("getPlayerName", player?.nick_name);
         return hexToString(player?.nick_name)
-    },[player])
+    }, [player])
 
     return (
         <TopBarWrapper>
@@ -106,7 +121,7 @@ export default function PlayerPanel() {
                 data-tooltip-place="top">
                 <ResourceIcon src={foodIcon} alt="food" />
                 <ResourceValue>{
-                    food && food.balance/1000000
+                    food && food.balance / 1000000
                 }</ResourceValue>
             </ResourceItemWrapper>
 
@@ -114,14 +129,14 @@ export default function PlayerPanel() {
                 data-tooltip-content="Gold"
                 data-tooltip-place="top" >
                 <ResourceIcon src={goldIcon} alt="gold" />
-                <ResourceValue>{gold && gold.balance/1000000}</ResourceValue>
+                <ResourceValue>{gold && gold.balance / 1000000}</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"
                 data-tooltip-content="Iron"
                 data-tooltip-place="top">
                 <ResourceIcon src={ironIcon} alt="iron" />
-                <ResourceValue>{iron && iron.balance/1000000}</ResourceValue>
+                <ResourceValue>{iron && iron.balance / 1000000}</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"
@@ -144,6 +159,10 @@ export default function PlayerPanel() {
                 <ResourceIcon src={flagIcon} alt="flag" />
                 <ResourceValue>{getMyTroopSize}/1</ResourceValue>
             </ResourceItemWrapper>
+
+            {
+                airdropClaimed?.claimed && <button style={{}} onClick={(() => claimairdrop())}>Airdrop</button>
+            }
 
         </TopBarWrapper>
     )

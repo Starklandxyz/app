@@ -353,6 +353,22 @@ export function defineContractComponents(world: World) {
           Food_Speed: RecsType.Number,
           Iron_Speed: RecsType.Number,
           Gold_Speed: RecsType.Number,
+          Base_Gold_Speed: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    Airdrop: (() => {
+      const name = "Airdrop";
+      return defineComponent(
+        world,
+        {
+          owner: RecsType.String,
+          claimed: RecsType.Boolean,
         },
         {
           metadata: {

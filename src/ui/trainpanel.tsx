@@ -28,12 +28,6 @@ export default function TrainPanel() {
     } = phaserLayer!
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
-    const claimairdrop = async () => {
-        if (!account) {
-            return
-        }
-        await airdrop(account, 1)
-    }
 
     useEffect(() => {
         if (!player || !account) {
@@ -213,7 +207,6 @@ export default function TrainPanel() {
                             <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => train()}>Start Training</button>
                         </div>
                 }
-                <button style={{ marginTop: 20 }} onClick={(() => claimairdrop())}>Airdrop</button>
             </div>
         </Container>
     </ClickWrapper>)
