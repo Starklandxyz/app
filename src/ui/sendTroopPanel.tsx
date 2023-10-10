@@ -25,6 +25,8 @@ export default function SendTroopPanel() {
 
     const troops = useEntityQuery([Has(components.Troop)],{updateOnValueChange:true})
 
+    const warriors = useEntityQuery([Has(components.Warrior)],{updateOnValueChange:true})
+
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,10 +119,12 @@ export default function SendTroopPanel() {
     }, [sendTroopCtr, inputValue])
 
     const calWarrior = () => {
+        console.log("calWarrior",myBase);
         if(!myBase){
             return 0 
         }
         const w = getComponentValue(components.Warrior,getEntityIdFromKeys([1n,BigInt(myBase.x),BigInt(myBase.y)]))
+        console.log("calWarrior",myBase,w);
         if(w){
             return w.balance
         }else{
@@ -130,7 +134,7 @@ export default function SendTroopPanel() {
 
     const getWarrior = useMemo(() => {
         return calWarrior()
-    }, [account,myBase])
+    }, [account,myBase,warriors])
 
     const getAvailableTroopId = () => {
         // console.log("getMyTroopSize",account,troops);

@@ -105,7 +105,6 @@ export default function TroopsUI() {
     }, [troops])
 
     const isBase = (pos: Coord) => {
-        // const land = lands.get(pos.x + "_" + pos.y)
         const land = getComponentValue(components.Land, getEntityIdFromKeys([1n, BigInt(pos.x), BigInt(pos.y)]))
         console.log("isBase", pos, land);
         if (land) {
@@ -156,12 +155,12 @@ export default function TroopsUI() {
 
         const rr = (start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)
         const length = Math.sqrt(rr) / SIZE
-
+        console.log("createArrowLine",length);
         for (let index = 0; index < Math.ceil(length); index++) {
             const sid = "arrow_" + troop.id + "_" + index
             const arrowObj = pool.get(sid, "Sprite")
             // console.log("createArrowLine",sid,arrowObj);
-            // arrowObj.spawn()
+            arrowObj.spawn()
             arrowObj.setComponent({
                 id: "position",
                 once: (sprite) => {
@@ -194,7 +193,7 @@ export default function TroopsUI() {
     const createArmey = (pool: ObjectPool, id: number | string, pos: Coord, leftTime: number, flip = false) => {
         const playerObj = pool.get("armey_" + id, "Sprite")
         // console.log("createArmey", pos, leftTime);
-        // playerObj.spawn()
+        playerObj.spawn()
         playerObj.setComponent({
             id: "position",
             once: (sprite: any) => {
@@ -207,11 +206,11 @@ export default function TroopsUI() {
                 sprite.rotation = 0
                 sprite.z = 10
                 sprite.depth = 12
-                // console.log("createArmey", sprite.active == true, sprite.flipX, sprite.rotation, sprite.angle);
+                console.log("createArmey", sprite);
             }
         })
         const nameObj = pool.get("armey_name_" + id, "Text")
-        // nameObj.spawn()
+        nameObj.spawn()
         nameObj.setComponent({
             id: 'position',
             once: (text: any) => {

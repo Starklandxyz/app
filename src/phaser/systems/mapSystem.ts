@@ -69,31 +69,4 @@ export function mapSystem(layer: PhaserLayer) {
             }
         }
     }
-
-    //add a test Enermy Base
-    // {
-    //     const xStart = size / 2;
-    //     const yStart = size / 2;
-    //     const diff = 13
-    //     putTileAt({ x: xStart + diff, y: yStart }, TilesetTown.Town10, "Top");
-    //     putTileAt({ x: xStart + diff + 1, y: yStart }, TilesetTown.Town11, "Top");
-    //     putTileAt({ x: xStart + diff, y: yStart + 1 }, TilesetTown.Town12, "Top");
-    //     putTileAt({ x: xStart + diff + 1, y: yStart + 1 }, TilesetTown.Town13, "Top");
-
-    //     putTileAt({ x: xStart + diff, y: yStart + 1 }, TilesetSoldier.Soldier1, "Top2");
-    //     putTileAt({ x: xStart + diff, y: 1 + yStart }, TilesetNum.Num1 + 8, "Top3");
-
-
-    //     putTileAt({ x: xStart + diff, y: 1 + yStart + 2 }, TilesetBuilding.Farmland, "Top");
-    //     putTileAt({ x: xStart + diff, y: 1 + yStart + 2 }, TilesetZone.EnermyZone, "Occupy");
-    //     putTileAt({ x: xStart + diff, y: yStart + 1 + 2 }, TilesetSoldier.Soldier1, "Top2");
-    //     putTileAt({ x: xStart + diff, y: 1 + yStart + 2 }, TilesetNum.Num1 + 8, "Top3");
-
-    //     putTileAt({ x: xStart + diff - 5, y: 1 + yStart + 2 }, TilesetZone.EnermyZone, "Occupy");
-
-    //     putTileAt({ x: xStart + diff - 5, y: 1 + yStart }, TilesetBuilding.GoldMine, "Top");
-    //     putTileAt({ x: xStart + diff - 5, y: 1 + yStart }, TilesetZone.EnermyZone, "Occupy");
-    //     putTileAt({ x: xStart + diff - 5, y: yStart + 1 }, TilesetSoldier.Soldier1, "Top2");
-    //     putTileAt({ x: xStart + diff - 5, y: 1 + yStart }, TilesetNum.Num1 + 8, "Top3");
-    // }
 }

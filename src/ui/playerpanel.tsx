@@ -170,7 +170,7 @@ export default function PlayerPanel() {
                 data-tooltip-content="Land"
                 data-tooltip-place="top">
                 <ResourceIcon src={landIcon} alt="land" />
-                <ResourceValue>1/10</ResourceValue>
+                <ResourceValue>0/10</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"

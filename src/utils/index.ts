@@ -224,7 +224,7 @@ export const parseTime = (sec: number) => {
 
 
 export const calDistanceFromBase = (base:Coord,to:Coord) => {
-    console.log("calDistance");
+    // console.log("calDistance");
     const dis1 = Math.abs(base.x - to.x) + Math.abs(base.y - to.y)
     let dis = dis1
     const dis2 = Math.abs(base.x + 1 - to.x) + Math.abs(base.y - to.y)

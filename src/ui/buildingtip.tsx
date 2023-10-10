@@ -165,6 +165,9 @@ export default function BuildingTip() {
         if (sendTroop.show) {
             return
         }
+        if(tipButtonShow.show){
+            return
+        }
         if (!mouseDown) {
             var x = ex
             if (ex > innerWidth - 100) {
@@ -175,9 +178,7 @@ export default function BuildingTip() {
                 y = ey - 180
             }
             console.log("click", lastCoord);
-            // controlStore.setState({ clickedLand: { x: lastCoord.x, y: lastCoord.y } })
             controlStore.setState({ tipButtonShow: { show: true, x: x, y: y }, clickedLand: { x: lastCoord.x, y: lastCoord.y } })
-            // setShowButtons({ show: true, x: x, y: y })
         }
     }, [mouseDown])
 
@@ -227,10 +228,6 @@ export default function BuildingTip() {
         }
         return <button onClick={() => sendTroopClick()}>Send Troop</button>
     }, [myBase, account, lastCoord])
-
-    const attack = async()=>{
-        const result = await adminAttack(account!,1,lastCoord.x,lastCoord.y)
-    }
 
     return (
         <ClickWrapper>

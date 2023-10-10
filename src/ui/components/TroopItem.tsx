@@ -139,12 +139,13 @@ export default function TroopItem(params: any) {
     const enterButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
         const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
-        // const land = lands.get(troop.to.x + "_" + troop.to.y)
+
         let isMy = false
         if (land && land.owner == account?.address) {
             isMy = true
         }
-
+        // console.log("enterbutton",end,land);
+        
         if (isMy && end) {
             return <span onClick={() => { enterLand() }}>驻</span>
         }

@@ -11,10 +11,7 @@ import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function MapUI() {
-    // const { bases } = buildStore()
     const { account } = store()
-    // const { landWarriors } = warriorStore()
-    // const { player, players } = playerStore()
     const { camera, phaserLayer } = store()
     const {
         scenes: {
@@ -49,7 +46,7 @@ export default function MapUI() {
             if (value.owner == account?.address) {
                 diff = 6
             }
-            // console.log("put base ", xStart);
+            console.log("put bases ", value,account,diff);
 
             putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
             putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");
@@ -107,75 +104,13 @@ export default function MapUI() {
         console.log("fetchAllLands", lands);
         const edges = lands.data.entities?.edges
         handleSQLResult(edges,components)
-        // const ls = new Map(mapLands)
-        // const landW = new Map(landWarriors);
-        // if (edges) {
-        //     for (let index = 0; index < edges.length; index++) {
-        //         const element = edges[index];
-        //         if (element) {
-        //             const node = element.node
-        //             const componenets = node?.components
-        //             if (componenets) {
-        //                 for (let index = 0; index < componenets.length; index++) {
-        //                     const componenet = componenets[index];
-        //                     if (componenet) {
-        //                         if (componenet.__typename == "Land") {
-        //                             // const component = componenets[0] as Land
-        //                             const l = Land2Land(componenet)
-        //                             ls.set(l.x + "_" + l.y, l)
-        //                         }
-        //                         if (componenet.__typename == "Warrior") {
-        //                             landW.set(componenet.x + "_" + componenet.y, componenet.balance)
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // mapStore.setState({ lands: ls })
-        // warriorStore.setState({ landWarriors: landW })
     }
 
-    // const fetchPlayerBase = async () => {
-    //     const base = await graphSdk.getBaseByKey({ key: account?.address!, map_id: "0x1" })
-    //     console.log("fetchPlayerBase", account?.address, base);
-    //     const edges = base.data.entities?.edges;
-    //     if (edges && edges.length > 0) {
-    //         const pos = edges[0]?.node?.components
-    //         if (pos && pos.length > 0 && pos[0]) {
-    //             const p = pos[0] as Base
-    //             const x = p.x;
-    //             const y = p.y;
-    //             const newBases = new Map(bases);
-    //             newBases.set(account?.address!, { x, y })
-    //             buildStore.setState({ bases: newBases })
-    //             const pixelPosition = tileCoordToPixelCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT);
-    //             camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
-    //         }
-    //     }
-    // }
     const fetchAllBase = async (map_id: string) => {
         const base = await graphSdk.getAllBase({ map_id: map_id })
         console.log("fetchAllBase", account?.address, base);
         const edges = base.data.entities?.edges;
         handleSQLResult(edges,components)
-        // const newBases = new Map(bases);
-        // if (edges && edges.length > 0) {
-        //     for (let index = 0; index < edges.length; index++) {
-        //         const edge = edges[index];
-        //         if (edge) {
-        //             const c = edge.node?.components
-        //             if (c && c[0] && c[0].__typename == "Base") {
-        //                 const b = c[0] as Base
-        //                 const coord = { x: b.x, y: b.y }
-        //                 newBases.set(b.owner, coord)
-        //             }
-        //         }
-        //     }
-        // }
-        // console.log("fetchAllBase");
-        // buildStore.setState({ bases: newBases })
     }
 
     useEffect(() => {

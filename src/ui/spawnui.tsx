@@ -19,7 +19,7 @@ export default function SpawnUI() {
     const { camera, phaserLayer, account } = store()
     const [lastCoord, setLastCoord] = useState<Coord>({ x: 0, y: 0 })
     const {
-        networkLayer:{
+        networkLayer: {
             components,
             systemCalls: { build_base },
         },
@@ -36,9 +36,9 @@ export default function SpawnUI() {
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     const baseClick = () => {
-        console.log("baseClick",player);
-        
-        if(!player){
+        console.log("baseClick", player);
+
+        if (!player) {
             toastError("Mint your player first.")
             return
         }
@@ -72,7 +72,7 @@ export default function SpawnUI() {
                 }
             }
         }
-        console.log("clickLand",lastCoord);
+        console.log("clickLand", lastCoord);
         setShow(false)
         const result = await build_base(account, 1, lastCoord.x, lastCoord.y)
         if (result && result.length > 0) {
@@ -113,10 +113,13 @@ export default function SpawnUI() {
 
         const xStart = coord.x
         const yStart = coord.y
-        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00, "Top3");
-        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01, "Top3");
-        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02, "Top3");
-        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03, "Top3");
+        const diff = 6
+        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00+diff, "Top3");
+        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01+diff, "Top3");
+        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02+diff, "Top3");
+        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03+diff, "Top3");
+
+
         setLastCoord(coord)
 
     }, [ex, ey])
@@ -131,7 +134,7 @@ export default function SpawnUI() {
         }
 
         return <button onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</button>
-    }, [account, myBase, show,player])
+    }, [account, myBase, show, player])
 
     return (
         <ClickWrapper>
