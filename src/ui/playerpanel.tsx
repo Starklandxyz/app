@@ -40,6 +40,11 @@ export default function PlayerPanel() {
         if (!account) {
             return
         }
+        const base = getComponentValue(sqlComponent.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
+        if(!base){
+            toastError("Build a base first")
+            return
+        }
         const result = await airdrop(account, 1)
         if (result && result.length > 0) {
             toastSuccess("Airdrop success")
