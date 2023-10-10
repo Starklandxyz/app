@@ -52,6 +52,7 @@ export default function PlayerPanel() {
         if (!account) {
             return
         }
+        fetchAirdrop()
         fetchResources()
         fetchUserWarrior()
     }, [account])
@@ -60,6 +61,12 @@ export default function PlayerPanel() {
         fetchPlayersInfo()
     }, [])
 
+    const fetchAirdrop = async () => {
+        const resources = await graphSdk.getAirdropByKey({key: account?.address })
+        console.log("fetchAirdrop", resources);
+        const edges = resources.data.entities?.edges
+        handleSQLResult(edges, sqlComponent)
+    }
 
     const fetchUserWarrior = async () => {
         const userWarrior = await graphSdk.getUserWarriorByKey({ map_id: "0x1", key: account?.address })
@@ -103,6 +110,21 @@ export default function PlayerPanel() {
         console.log("getPlayerName", player?.nick_name);
         return hexToString(player?.nick_name)
     }, [player])
+
+    useEffect(()=>{
+        console.log("airdropClaimed",airdropClaimed);
+    },[airdropClaimed])
+
+    const hasAirdrop = useMemo(()=>{
+        if(!account){
+            return false
+        }
+        if(airdropClaimed){
+            return false
+        }else{
+            return true
+        }
+    },[airdropClaimed,account])
 
     return (
         <TopBarWrapper>
@@ -161,7 +183,7 @@ export default function PlayerPanel() {
             </ResourceItemWrapper>
 
             {
-                airdropClaimed?.claimed && <button style={{}} onClick={(() => claimairdrop())}>Airdrop</button>
+                !airdropClaimed && <button style={{}} onClick={(() => claimairdrop())}>Airdrop</button>
             }
 
         </TopBarWrapper>

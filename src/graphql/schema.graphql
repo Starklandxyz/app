@@ -374,6 +374,7 @@ query getMiningConfig($map_id:String) {
             Food_Speed
             Iron_Speed
             Gold_Speed
+            Base_Gold_Speed
           }
         }
       }
