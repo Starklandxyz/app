@@ -7,39 +7,38 @@ import { Land } from "../types/Land";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { Has, HasValue, getComponentValue, getComponentValueStrict } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import upicon from "../../public/assets/icons/upicon.png"
+import downicon from "../../public/assets/icons/downicon.png"
+import baseicon from "../../public/assets/icons/Castle.png"
+import farmlandicon from "../../public/assets/icons/farmland.png"
+import ironmineicon from "../../public/assets/icons/ironmine.png"
+import goldmineicon from "../../public/assets/icons/goldmine.png"
+import campicon from "../../public/assets/icons/camp.png"
+import BasePage from "./buildings/basepage";
+import FarmlandPage from "./buildings/farmlandpage";
+import CampPage from "./buildings/camppage";
+import GoldMinePage from "./buildings/goldminepage";
+import IronMinePage from "./buildings/ironminepage";
 
 export default function UserBuildingPanel() {
-    // const { lands } = mapStore()
-    const { account, phaserLayer } = store()
-
+    const [showBase, setShowBase] = useState(true)
     const [showFarm, setShowFarm] = useState(false)
     const [showCamp, setShowCamp] = useState(false)
     const [showGold, setShowGold] = useState(false)
     const [showIron, setShowIron] = useState(false)
 
-    const {
-        scenes: {
-            Main: {
-                maps: {
-                    Main: { putTileAt },
-                },
-            },
-        },
-        networkLayer: {
-            components: contractComponents
+    useEffect(() => {
+        if (showBase) {
+            setShowFarm(false)
+            setShowCamp(false)
+            setShowIron(false)
+            setShowGold(false)
         }
-    } = phaserLayer!;
-
-    // const [base, setBase] = useState<Land>()
-    const base = useComponentValue(contractComponents.Base, getEntityIdFromKeys([1n,account ? BigInt(account.address) : 0n]))
-
-    const [farmland, setFarmland] = useState<Array<Land>>([])
-    const [ironMine, setIronmine] = useState<Array<Land>>([])
-    const [goldmine, setGoldmine] = useState<Array<Land>>([])
-    const [camp, setcamp] = useState<Array<Land>>([])
+    }, [showBase])
 
     useEffect(() => {
         if (showFarm) {
+            setShowBase(false)
             setShowCamp(false)
             setShowIron(false)
             setShowGold(false)
@@ -48,6 +47,7 @@ export default function UserBuildingPanel() {
 
     useEffect(() => {
         if (showCamp) {
+            setShowBase(false)
             setShowFarm(false)
             setShowIron(false)
             setShowGold(false)
@@ -56,6 +56,7 @@ export default function UserBuildingPanel() {
 
     useEffect(() => {
         if (showGold) {
+            setShowBase(false)
             setShowCamp(false)
             setShowIron(false)
             setShowFarm(false)
@@ -64,6 +65,7 @@ export default function UserBuildingPanel() {
 
     useEffect(() => {
         if (showIron) {
+            setShowBase(false)
             setShowCamp(false)
             setShowFarm(false)
             setShowGold(false)
@@ -71,153 +73,41 @@ export default function UserBuildingPanel() {
     }, [showIron])
 
 
-    const landEntities = useEntityQuery([Has(contractComponents.Land)], { updateOnValueChange: true })
-
-    useEffect(() => {
-        if (!account) {
-            return
-        }
-        landEntities.map(entity => {
-            const value = getComponentValue(contractComponents.Land, entity)
-            if (value && value.owner == account.address) {
-                const land = new Land()
-                land.build = value.building
-                land.level = value.level
-                land.map_id = value.map_id
-                land.owner = value.owner
-                land.x = value.x
-                land.y = value.y
-                switch (value.building) {
-                    // case BuildType.Base: setBase(land); break;
-                    case BuildType.Farmland: addFarmland(land); break;
-                    case BuildType.GoldMine: addGold(land); break;
-                    case BuildType.IronMine: addIron(land); break;
-                    case BuildType.Camp: addCamp(land); break;
-                }
-            }
-        })
-    }, [landEntities, account])
-
-    const addFarmland = async (land: Land) => {
-        const a = [...farmland]
-        a.push(land)
-        setFarmland(a)
-    }
-    const addCamp = async (land: Land) => {
-        const a = [...camp]
-        a.push(land)
-        setcamp(a)
-    }
-    const addGold = async (land: Land) => {
-        const a = [...goldmine]
-        a.push(land)
-        setGoldmine(a)
-    }
-    const addIron = async (land: Land) => {
-        const a = [...ironMine]
-        a.push(land)
-        setIronmine(a)
-    }
 
     return (
         <ClickWrapper>
             <Container>
-                <div style={{ width: 290, height: 320, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-
-                    <table style={{ marginTop: 10 }}>
-                        <tr>
-                            <td>Base ({base?.x},{base?.y})</td>
-                            <td>LV{base?.level}</td>
-                            <td>+100Gold/H</td>
-                            <td><button>Upgrade</button></td>
-                        </tr>
-                    </table>
-
-                    <div style={{ display: "flex" }}>
-                        <p>Farmlands - </p>
-                        <p style={{ marginLeft: 5 }}>{farmland.length}</p>
-                        <p style={{ marginLeft: 10 }}>+100Food/H</p>
-                        <button style={{ height: 24, marginLeft: 10, marginTop: 12 }} onClick={() => setShowFarm(pre => !pre)} >+/-</button>
+                {
+                    showBase&&<BasePage />
+                } 
+                {
+                    showFarm&&<FarmlandPage/>
+                }
+                {
+                    showCamp&&<CampPage/>
+                }
+                {
+                    showGold&&<GoldMinePage/>
+                }
+                {
+                    showIron&&<IronMinePage/>
+                }
+                <div style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", width: 50, borderRadius: 10 }}>
+                    <div className={showBase ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowBase(true)}>
+                        <img src={baseicon} style={{ transform: "scale(0.6) translate(-10px,-2px)", imageRendering: "pixelated" }} />
                     </div>
-                    {
-                        showFarm &&
-                        <table cellSpacing={1} style={{ marginTop: 10 }}>
-                            {
-                                farmland.map((value, _) => (
-                                    <tr>
-                                        <td>({value?.x},{value?.y})</td>
-                                        <td>LV{value?.level}</td>
-                                        <td>+100Gold/H</td>
-                                        <td><button>Upgrade</button></td>
-                                    </tr>
-                                ))
-                            }
-                        </table>
-                    }
-
-                    <div style={{ display: "flex" }}>
-                        <p>Camp - </p>
-                        <p style={{ marginLeft: 5 }}>{camp.length}</p>
-                        <p style={{ marginLeft: 10 }}>+100 Capacity</p>
-                        <button style={{ height: 24, marginLeft: 10, marginTop: 12 }} onClick={() => setShowCamp(pre => !pre)}>+/-</button>
+                    <div className={showFarm ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowFarm(true)}>
+                        <img src={farmlandicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
-                    {
-                        showCamp &&
-                        <table cellSpacing={1} style={{ marginTop: 10 }}>
-                            {
-                                camp.map((value, _) => (
-                                    <tr>
-                                        <td>({value?.x},{value?.y})</td>
-                                        <td>LV{value?.level}</td>
-                                        <td>+10 Capacity</td>
-                                        <td><button>Upgrade</button></td>
-                                    </tr>
-                                ))
-                            }
-                        </table>
-                    }
-                    <div style={{ display: "flex" }}>
-                        <p>GoldMine - </p>
-                        <p style={{ marginLeft: 5 }}>{goldmine.length}</p>
-                        <p style={{ marginLeft: 10 }}>+100Gold/H</p>
-                        <button onClick={() => setShowGold(pre => !pre)} style={{ height: 24, marginLeft: 10, marginTop: 12 }}>+/-</button>
+                    <div className={showGold ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowGold(true)}>
+                        <img src={goldmineicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
-                    {
-                        showGold &&
-                        <table cellSpacing={1} style={{ marginTop: 10 }}>
-                            {
-                                goldmine.map((value, _) => (
-                                    <tr>
-                                        <td>({value?.x},{value?.y})</td>
-                                        <td>LV{value?.level}</td>
-                                        <td>+100Gold/H</td>
-                                        <td><button>Upgrade</button></td>
-                                    </tr>
-                                ))
-                            }
-                        </table>
-                    }
-                    <div style={{ display: "flex" }}>
-                        <p>IronMine - </p>
-                        <p style={{ marginLeft: 5 }}>{ironMine.length}</p>
-                        <p style={{ marginLeft: 10 }}>+100Iron/H</p>
-                        <button onClick={() => setShowIron(pre => !pre)} style={{ height: 24, marginLeft: 10, marginTop: 12 }}>+/-</button>
+                    <div className={showIron ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowIron(true)}>
+                        <img src={ironmineicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
-                    {
-                        showIron &&
-                        <table cellSpacing={1} style={{ marginTop: 10 }}>
-                            {
-                                ironMine.map((value, _) => (
-                                    <tr>
-                                        <td>({value?.x},{value?.y})</td>
-                                        <td>LV{value?.level}</td>
-                                        <td>+100Iron/H</td>
-                                        <td><button>Upgrade</button></td>
-                                    </tr>
-                                ))
-                            }
-                        </table>
-                    }
+                    <div className={showCamp ? "build_icon build_icon_select" : "build_icon"} onClick={()=>setShowCamp(true)}>
+                        <img src={campicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
+                    </div>
                 </div>
             </Container>
         </ClickWrapper>
@@ -226,8 +116,9 @@ export default function UserBuildingPanel() {
 
 
 const Container = styled.div`
+    display:flex;
     position: absolute;
-    top: 10%;
-    left: 2%;
+    bottom: 10%;
+    right: 1%;
     color:white;
 `;

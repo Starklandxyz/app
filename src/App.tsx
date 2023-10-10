@@ -11,14 +11,14 @@ import { Tooltip } from 'react-tooltip'
 
 function App() {
   const networkLayer = useNetworkLayer();
-  useEffect(() => {
-    if (!networkLayer) return;
+  // useEffect(() => {
+  //   if (!networkLayer) return;
 
-    console.log("Setting network layer");
+  //   console.log("Setting network layer");
 
-    store.setState({ networkLayer });
+  //   store.setState({ networkLayer });
 
-  }, [networkLayer]);
+  // }, [networkLayer]);
 
 
   return (

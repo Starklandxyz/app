@@ -14,8 +14,7 @@ import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } fr
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function Header() {
-    const { account, networkLayer } = store();
-    // const { player, eth } = playerStore()
+    const { account,phaserLayer } = store();
     const [nickName, setNickName] = useState("")
 
     const {
@@ -28,11 +27,13 @@ export default function Header() {
     } = useDojo();
 
     const {
-        world,
-        components: contractComponents,
-        network: { graphSdk },
-        systemCalls: { spawn },
-    } = networkLayer!
+        networkLayer:{
+            world,
+            components: contractComponents,
+            network: { graphSdk },
+            systemCalls: { spawn },
+        }
+    } = phaserLayer!
 
     const player = useComponentValue(contractComponents.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
     const eth = useComponentValue(contractComponents.ETH, getEntityIdFromKeys([BigInt(account ? account.address : "")]));

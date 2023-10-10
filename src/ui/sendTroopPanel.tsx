@@ -12,8 +12,7 @@ import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 
 export default function SendTroopPanel() {
-    // const { bases } = buildStore()
-    const { account, phaserLayer, networkLayer } = store()
+    const { account, phaserLayer } = store()
     const { sendTroopCtr } = controlStore()
     const [inputValue, setInputValue] = useState(1)
 
@@ -21,12 +20,9 @@ export default function SendTroopPanel() {
         networkLayer: {
             world,
             components,
+            systemCalls: { sendTroop },
         }
     } = phaserLayer!
-
-    const {
-        systemCalls: { sendTroop },
-    } = networkLayer!
 
     const troops = useEntityQuery([Has(components.Troop)],{updateOnValueChange:true})
 

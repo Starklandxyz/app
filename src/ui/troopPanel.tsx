@@ -75,7 +75,7 @@ export default function TroopPanel() {
 
 const Container = styled.div`
     position: absolute;
-    top: 20%;
-    right: 2%;
+    top: 15%;
+    right: 1%;
     color:white;
 `;

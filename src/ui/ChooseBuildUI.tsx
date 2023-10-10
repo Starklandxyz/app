@@ -19,7 +19,7 @@ import { handleSQLResult } from "../utils/handleutils";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 
 export default function ChooseBuildUI() {
-    const { phaserLayer, networkLayer, account } = store()
+    const { phaserLayer, account } = store()
     const { buildLand, clickedLand } = controlStore()
     const [selectBuild, setSelect] = useState<BuildType>(BuildType.Farmland)
     const [selectMined, setSelectMined] = useState(false)
@@ -31,6 +31,7 @@ export default function ChooseBuildUI() {
     }, [clickedLand])
 
     const {
+        networkLayer,
         scenes: {
             Main: {
                 maps: {

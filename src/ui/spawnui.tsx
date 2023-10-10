@@ -16,9 +16,13 @@ export default function SpawnUI() {
     // const {player} = playerStore()
     const [show, setShow] = useState(false)
     const { x: ex, y: ey, down: mouseDown } = mouseStore()
-    const { camera, phaserLayer, account, networkLayer } = store()
+    const { camera, phaserLayer, account } = store()
     const [lastCoord, setLastCoord] = useState<Coord>({ x: 0, y: 0 })
     const {
+        networkLayer:{
+            components,
+            systemCalls: { build_base },
+        },
         scenes: {
             Main: {
                 maps: {
@@ -28,10 +32,6 @@ export default function SpawnUI() {
         }
     } = phaserLayer!;
 
-    const {
-        components,
-        systemCalls: { build_base },
-    } = networkLayer!
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 

@@ -12,12 +12,14 @@ import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
-    const { account, networkLayer } = store()
+    const { account,phaserLayer } = store()
 
     const {
-        components:contractComponents,
-        systemCalls: { retreatTroop, troopEnterLand },
-    } = networkLayer!
+        networkLayer:{
+            components:contractComponents,
+            systemCalls: { retreatTroop, troopEnterLand },
+        }
+    } = phaserLayer!
 
     const troop: Troop = params.troop
     const base: Coord = params.base

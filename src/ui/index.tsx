@@ -19,12 +19,11 @@ import UserBuildingPanel from "./userBuildingPanel";
 export default function UI() {
     const layers = store((state) => {
         return {
-            networkLayer: state.networkLayer,
             phaserLayer: state.phaserLayer,
         };
     });
 
-    if (!layers.networkLayer || !layers.phaserLayer) return <></>;
+    if (!layers.phaserLayer) return <></>;
 
     return (
         <Wrapper>

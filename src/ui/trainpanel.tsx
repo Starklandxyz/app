@@ -14,16 +14,14 @@ import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
     const { timenow } = ticStore()
-    const { account, networkLayer, phaserLayer } = store()
+    const { account, phaserLayer } = store()
 
     const [training, setTraining] = useState<Training>(new Training())
 
     const {
-        systemCalls: { trainWarrior, airdrop, takeWarrior },
-    } = networkLayer!
-    const {
         world,
         networkLayer: {
+            systemCalls: { trainWarrior, airdrop, takeWarrior },
             components,
             network: { graphSdk }
         }
