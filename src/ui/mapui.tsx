@@ -127,8 +127,8 @@ export default function MapUI() {
             const coord = { x: warrior.x, y: warrior.y }
             const balance = warrior.balance
             if (balance == 0) {
-                putTileAt(coord, TilesetSoldier.Soldier1, "Soldier");
-                putTileAt(coord, TilesetNum.Num0, "Num");
+                putTileAt(coord, Tileset.Empty, "Soldier");
+                putTileAt(coord, Tileset.Empty, "Num");
             }
             else if (balance < 10) {
                 putTileAt(coord, TilesetSoldier.Soldier1, "Soldier");

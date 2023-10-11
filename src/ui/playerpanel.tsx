@@ -13,6 +13,7 @@ import { ComponentValue, Has, defineSystem, getComponentEntities, getComponentVa
 import { handleSQLResult } from "../utils/handleutils";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { BuildType } from "../types/Build";
 
 export default function PlayerPanel() {
     const { account, phaserLayer } = store();
@@ -33,6 +34,8 @@ export default function PlayerPanel() {
     const player = useComponentValue(sqlComponent.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     const troops = useEntityQuery([Has(sqlComponent.Troop)], { updateOnValueChange: true })
+
+    const landEntities = useEntityQuery([Has(sqlComponent.Land)], { updateOnValueChange: true })
 
     const airdropClaimed = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([BigInt(account ? account.address : "")]))
 
@@ -65,6 +68,22 @@ export default function PlayerPanel() {
     useEffect(() => {
         fetchPlayersInfo()
     }, [])
+
+
+    const getTotalLands =  useMemo(() => {
+        if (!account) {
+            return 0
+        }
+        let size = 0
+        landEntities.map(entity => {
+            const value = getComponentValue(sqlComponent.Land, entity)
+            // console.log("landEntities", value);
+            if (value && value.owner == account.address && value.building!=BuildType.Base) {
+                size++
+            }
+        })
+        return size
+    }, [landEntities, account])
 
     const fetchAirdrop = async () => {
         const resources = await graphSdk.getAirdropByKey({key: account?.address })
@@ -170,7 +189,7 @@ export default function PlayerPanel() {
                 data-tooltip-content="Land"
                 data-tooltip-place="top">
                 <ResourceIcon src={landIcon} alt="land" />
-                <ResourceValue>0/10</ResourceValue>
+                <ResourceValue>{getTotalLands}/10</ResourceValue>
             </ResourceItemWrapper>
 
             <ResourceItemWrapper data-tooltip-id="my-tooltip"
