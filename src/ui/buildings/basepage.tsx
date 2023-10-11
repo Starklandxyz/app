@@ -25,8 +25,9 @@ export default function BasePage() {
 
     // const [base, setBase] = useState<Land>()
     const base = useComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, account ? BigInt(account.address) : 0n]))
+    const miningConfig = useComponentValue(contractComponents.MiningConfig, getEntityIdFromKeys([1n]))
 
-
+    const [baseland, setBaseland] = useState<Array<Land>>([])
     const [farmland, setFarmland] = useState<Array<Land>>([])
     const [ironMine, setIronmine] = useState<Array<Land>>([])
     const [goldmine, setGoldmine] = useState<Array<Land>>([])
@@ -62,7 +63,7 @@ export default function BasePage() {
                 land.x = value.x
                 land.y = value.y
                 switch (value.building) {
-                    // case BuildType.Base: setBase(land); break;
+                    case BuildType.Base: addBaseLand(land); break;
                     case BuildType.Farmland: addFarmland(land); break;
                     case BuildType.GoldMine: addGold(land); break;
                     case BuildType.IronMine: addIron(land); break;
@@ -71,6 +72,12 @@ export default function BasePage() {
             }
         })
     }, [landEntities, account])
+
+    const addBaseLand = (land:Land)=>{
+        const a = [...baseland]
+        a.push(land)
+        setBaseland(a)
+    }
 
     const addFarmland = async (land: Land) => {
         const a = [...farmland]
@@ -130,11 +137,11 @@ export default function BasePage() {
         }
     }
 
-    const calClaimable = (lands:Land[])=>{
-        const config = getComponentValue(contractComponents.MiningConfig, getEntityIdFromKeys([1n]))
-        if (!config) {
-            return 0
-        }
+    const calClaimable = (lands:Land[],speed:number)=>{
+        // const config = getComponentValue(contractComponents.MiningConfig, getEntityIdFromKeys([1n]))
+        // if (!miningConfig) {
+        //     return 0
+        // }
         let total = 0
         lands.map(land => {
             const mining = getComponentValue(contractComponents.LandMining, getEntityIdFromKeys([1n, BigInt(land.x), BigInt(land.y)]))
@@ -143,7 +150,7 @@ export default function BasePage() {
                     return
                 } else {
                     const total_time = timenow - mining.start_time
-                    const t = total_time * config.Food_Speed / 1_000_000
+                    const t = total_time * speed / 1_000_000
                     // console.log("foodClaimable", total);
                     total += t
                 }
@@ -154,15 +161,24 @@ export default function BasePage() {
     }
 
     const foodClaimable = useMemo(() => {
-        return calClaimable(farmland).toFixed(2)
+        if (!miningConfig) {
+            return 0
+        }
+        return calClaimable(farmland,miningConfig.Food_Speed).toFixed(2)
     }, [timenow])
 
 
     const ironClaimable = useMemo(() => {
-        return calClaimable(ironMine).toFixed(2)
+        if (!miningConfig) {
+            return 0
+        }
+        return calClaimable(ironMine,miningConfig.Iron_Speed).toFixed(2)
     }, [timenow])
 
     const calBaseClaimable = ()=>{
+        if (!miningConfig) {
+            return 0
+        }
         if(!account){
             return 0 
         }
@@ -173,22 +189,70 @@ export default function BasePage() {
         const land = new Land()
         land.x = base.x
         land.y = base.y
-        return calClaimable([land])
+        return calClaimable([land],miningConfig.Base_Gold_Speed)
     }
 
     const goldClaimable = useMemo(() => {
-        const t1 =  calClaimable(goldmine)
+        if (!miningConfig) {
+            return 0
+        }
+        const t1 =  calClaimable(goldmine,miningConfig.Gold_Speed)
         const t2 = calBaseClaimable()
         const t = t1 + t2
         return t.toFixed(2)
     }, [timenow])
 
+    const getBaseLevel = useMemo(()=>{
+        if(!base){
+            return 1
+        }
+        let level = 1
+        baseland.map(land=>{
+            if(land.x == base.x && land.y==base.y){
+                level = land.level
+            }
+        })
+        return level
+    },[base,baseland])
+
+    const getFarmlandPerHour = useMemo(()=>{
+        if(!miningConfig){
+            return
+        }
+        const total = 3600 * miningConfig.Food_Speed * farmland.length / 1_000_000
+        return total
+    },[miningConfig,farmland])
+
+    const getGoldMinePerHour = useMemo(()=>{
+        if(!miningConfig){
+            return
+        }
+        const total = 3600 * miningConfig.Gold_Speed * goldmine.length / 1_000_000
+        return total
+    },[miningConfig,goldmine])
+
+    const getIronMinePerHour = useMemo(()=>{
+        if(!miningConfig){
+            return
+        }
+        const total = 3600 * miningConfig.Iron_Speed * ironMine.length / 1_000_000
+        return total
+    },[miningConfig,ironMine])
+
+    const getBaseGoldPerHour = useMemo(()=>{
+        if(!miningConfig){
+            return
+        }
+        const total = 3600 * miningConfig.Base_Gold_Speed  / 1_000_000
+        return total
+    },[miningConfig,base])
+
     return (<div style={{ width: 210, height: 350, lineHeight: 0.3, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
         <div>
-            <p>Base ({base?.x},{base?.y}) +100Gold/H</p>
+            <p>Base ({base?.x},{base?.y}) +{getBaseGoldPerHour}Gold/H</p>
             <div>
-                LV {base ? base.level : "1"}
-                <button>Upgrade</button>
+                LV {getBaseLevel}
+                <button style={{marginLeft:100}}>Upgrade</button>
             </div>
 
         </div>
@@ -196,7 +260,7 @@ export default function BasePage() {
             <div style={{ display: "flex" }}>
                 <p>Farmlands - </p>
                 <p style={{ marginLeft: 5 }}>{farmland.length}</p>
-                <p style={{ marginLeft: 10 }}>+100Food/H</p>
+                <p style={{ marginLeft: 10 }}>+{getFarmlandPerHour}Food/H</p>
             </div>
             <div style={{ display: "flex" }}>
                 <p>Camp - </p>
@@ -206,12 +270,12 @@ export default function BasePage() {
             <div style={{ display: "flex" }}>
                 <p>GoldMine - </p>
                 <p style={{ marginLeft: 5 }}>{goldmine.length}</p>
-                <p style={{ marginLeft: 10 }}>+100Gold/H</p>
+                <p style={{ marginLeft: 10 }}>+{getGoldMinePerHour}Gold/H</p>
             </div>
             <div style={{ display: "flex" }}>
                 <p>IronMine - </p>
                 <p style={{ marginLeft: 5 }}>{ironMine.length}</p>
-                <p style={{ marginLeft: 10 }}>+100Iron/H</p>
+                <p style={{ marginLeft: 10 }}>+{getIronMinePerHour}Iron/H</p>
             </div>
         </div>
 
