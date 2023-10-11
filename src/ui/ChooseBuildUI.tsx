@@ -32,7 +32,7 @@ export default function ChooseBuildUI() {
     }, [clickedLand])
 
     const {
-        networkLayer:{
+        networkLayer: {
             components,
             network: { graphSdk },
             systemCalls: { buildBuilding, startMining },
@@ -47,7 +47,7 @@ export default function ChooseBuildUI() {
     } = phaserLayer!;
 
     // const buildPrice = useComponentValue(components.BuildPrice,getEntityIdFromKeys([1n]))
-    const miningConfig = useComponentValue(components.MiningConfig,getEntityIdFromKeys([1n]))
+    const miningConfig = useComponentValue(components.MiningConfig, getEntityIdFromKeys([1n]))
 
     useEffect(() => {
         if (buildLand) {
@@ -127,6 +127,8 @@ export default function ChooseBuildUI() {
                     const x = buildLand.x + i
                     const y = buildLand.y + j
                     const has = await fetchHasMiner(1, x, y)
+                    console.log("buildConfirm has", has);
+
                     if (has) {
                         toastError("There is no available mine around")
                         return
@@ -192,7 +194,7 @@ export default function ChooseBuildUI() {
         const miner_x = buildLand.x
         const miner_y = buildLand.y
         setSelectMined(false)
-        controlStore.setState({buildLand:undefined,showTipButtons:undefined})
+        controlStore.setState({ buildLand: undefined, showTipButtons: undefined })
 
         for (let i = -1; i < 2; i++) {
             for (let j = -1; j < 2; j++) {
@@ -226,27 +228,27 @@ export default function ChooseBuildUI() {
 
     const getBuildInfo = useMemo(() => {
         const buildinfo = BuildInfos.get(selectBuild)
-        const buildPrice = getComponentValue(components.BuildPrice,getEntityIdFromKeys([1n,BigInt(selectBuild)]))
+        const buildPrice = getComponentValue(components.BuildPrice, getEntityIdFromKeys([1n, BigInt(selectBuild)]))
         // const miningConfig = getComponentValue(components.MiningConfig,getEntityIdFromKeys([1n]))
 
-        console.log("getBuildInfo",buildPrice,miningConfig);
-        
+        console.log("getBuildInfo", buildPrice, miningConfig);
+
         let output = "Output : "
-        if(miningConfig){
-            if(selectBuild == BuildType.Farmland){
-                output += "+"+miningConfig.Food_Speed * 3600/1_000_000 + " Food/Hour"
+        if (miningConfig) {
+            if (selectBuild == BuildType.Farmland) {
+                output += "+" + miningConfig.Food_Speed * 3600 / 1_000_000 + " Food/Hour"
             }
-            if(selectBuild == BuildType.GoldMine){
-                output += "+"+miningConfig.Gold_Speed * 3600/1_000_000 + " Gold/Hour"
+            if (selectBuild == BuildType.GoldMine) {
+                output += "+" + miningConfig.Gold_Speed * 3600 / 1_000_000 + " Gold/Hour"
             }
-            
-            if(selectBuild == BuildType.IronMine){
-                output += "+"+miningConfig.Iron_Speed * 3600/1_000_000 + " Iron/Hour"
+
+            if (selectBuild == BuildType.IronMine) {
+                output += "+" + miningConfig.Iron_Speed * 3600 / 1_000_000 + " Iron/Hour"
             }
-            if(selectBuild == BuildType.Camp){
+            if (selectBuild == BuildType.Camp) {
                 output += "+10 Soldier Capatity"
             }
-        }else{
+        } else {
             output = "Output : 100 Food/Hour"
         }
 
@@ -255,13 +257,13 @@ export default function ChooseBuildUI() {
                 <div style={{ marginLeft: 10, height: 40, marginTop: 10, overflowWrap: "break-word", whiteSpace: 'normal' }}>{buildinfo?.desc}</div>
                 <p style={{ marginLeft: 10, marginTop: 10 }}>{output}</p>
                 <div style={{ display: "flex" }}>
-                    <div className="buildneedbox buildneedenough">{buildPrice?buildPrice.food/1_000_000:0} Food</div>
-                    <div className="buildneedbox buildneedenough">{buildPrice?buildPrice.gold/1_000_000:0} Gold</div>
-                    <div className="buildneedbox buildnotenough">{buildPrice?buildPrice.iron/1_000_000:0} Iron</div>
+                    <div className="buildneedbox buildneedenough">{buildPrice ? buildPrice.food / 1_000_000 : 0} Food</div>
+                    <div className="buildneedbox buildneedenough">{buildPrice ? buildPrice.gold / 1_000_000 : 0} Gold</div>
+                    <div className="buildneedbox buildnotenough">{buildPrice ? buildPrice.iron / 1_000_000 : 0} Iron</div>
                 </div>
             </div>
         )
-    }, [selectBuild,miningConfig])
+    }, [selectBuild, miningConfig])
 
 
     const claimToMine = async (account: Account, map_id: number, miner_x: number, miner_y: number, mined_x: number, mined_y: number) => {
@@ -274,20 +276,26 @@ export default function ChooseBuildUI() {
     }
 
     const fetchHasMiner = async (map_id_: number, x_: number, y_: number) => {
-        let m = getComponentValue(components.LandMiner,getEntityIdFromKeys([BigInt(map_id_),BigInt(x_),BigInt(y_)]))
-        if(m){
+        let t = get_land_type(map_id_, x_, y_)
+        if (t != LandType.Gold && t != LandType.Iron) {
+            return false
+        }
+        let m = getComponentValue(components.LandMiner, getEntityIdFromKeys([BigInt(map_id_), BigInt(x_), BigInt(y_)]))
+        console.log("fetchHasMiner 1", m);
+        if (m) {
             return m.miner_x != 0
         }
-        const map_id ="0x"+ map_id_.toString(16)
-        const x ="0x"+ x_.toString(16)
-        const y ="0x"+ y_.toString(16)
-        console.log("fetchHasMiner", x, y,map_id);
+        const map_id = "0x" + map_id_.toString(16)
+        const x = "0x" + x_.toString(16)
+        const y = "0x" + y_.toString(16)
+        console.log("fetchHasMiner", x, y, map_id);
         const miner = await graphSdk.getLandMinerByKey({ map_id: map_id, x: x, y: y })
         console.log("fetchHasMiner", miner);
         const edges = miner.data.entities?.edges
-        handleSQLResult(edges,components)
-        m = getComponentValue(components.LandMiner,getEntityIdFromKeys([BigInt(map_id_),BigInt(x_),BigInt(y_)]))
-        if(m){
+        handleSQLResult(edges, components)
+        m = getComponentValue(components.LandMiner, getEntityIdFromKeys([BigInt(map_id_), BigInt(x_), BigInt(y_)]))
+        console.log("fetchHasMiner", m);
+        if (m) {
             return m.miner_x != 0
         }
         return false
