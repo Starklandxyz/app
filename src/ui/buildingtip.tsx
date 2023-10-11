@@ -100,8 +100,16 @@ export default function BuildingTip() {
                 const w = getComponentValue(contractComponents.LandMiner, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
                 land_owner = "Miner : None"
                 if(w){
-                    // const w = getComponentValue(contractComponents.LandMiner, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+                    const l = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(w.miner_x), BigInt(w.miner_y)]))
                     land_owner = "Miner : " + w.miner_x +","+w.miner_y
+                    if(l){
+                        const o = l.owner
+                        const p = getComponentValue(contractComponents.Player,getEntityIdFromKeys([BigInt(o)]))
+                        if(p){
+                            
+                            land_owner = "Miner : " + hexToString(p.nick_name)
+                        }
+                    }
                 }
             }
             const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y)
