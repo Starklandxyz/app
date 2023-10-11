@@ -30,11 +30,13 @@ const mainMap = defineMapConfig({
             TempOccupy: { tilesets: ["Default"] },
             Occupy: { tilesets: ["Default"] },
 
-            Top: { tilesets: ["Default"] },
-            Top2: { tilesets: ["Default"] },
-            Top3: { tilesets: ["Default"] },
+            // Top: { tilesets: ["Default"] },
+            // Top3: { tilesets: ["Default"] },
+
+            Build: { tilesets: ["Default"]},
             Select: { tilesets: ["Default"]},
             Flag: { tilesets: ["Default"] },
+            Soldier: { tilesets: ["Default"] },
             Num: { tilesets: ["Default"] },
         },
         defaultLayer: "Background",

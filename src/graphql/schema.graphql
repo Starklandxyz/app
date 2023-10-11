@@ -80,6 +80,31 @@ query getUserWarriorByKey($key: String,$map_id:String) {
   }
 }
 
+
+query getWarriorConfig($map_id:String) {
+  entities(first:1000, keys: [$map_id]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on WarriorConfig {
+            map_id
+            Train_Food
+            Train_Gold
+            Train_Iron
+            Train_Time
+            Troop_Food
+            Troop_Gold
+            Troop_Speed
+          }
+        }
+      }
+    }
+  }
+}
+
 query getWarriorByLocation($map_id:String,$x:String,$y:String) {
   entities(first:1000, keys: [$map_id,$x,$y]) {
     totalCount

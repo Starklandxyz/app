@@ -104,20 +104,20 @@ export default function SpawnUI() {
         {
             const xStart = lastCoord.x
             const yStart = lastCoord.y
-            putTileAt({ x: xStart, y: yStart }, Tileset.Empty, "Top3");
-            putTileAt({ x: xStart + 1, y: yStart }, Tileset.Empty, "Top3");
-            putTileAt({ x: xStart, y: yStart + 1 }, Tileset.Empty, "Top3");
-            putTileAt({ x: xStart + 1, y: yStart + 1 }, Tileset.Empty, "Top3");
+            putTileAt({ x: xStart, y: yStart }, Tileset.Empty, "Build");
+            putTileAt({ x: xStart + 1, y: yStart }, Tileset.Empty, "Build");
+            putTileAt({ x: xStart, y: yStart + 1 }, Tileset.Empty, "Build");
+            putTileAt({ x: xStart + 1, y: yStart + 1 }, Tileset.Empty, "Build");
         }
 
 
         const xStart = coord.x
         const yStart = coord.y
         const diff = 6
-        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00+diff, "Top3");
-        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01+diff, "Top3");
-        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02+diff, "Top3");
-        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03+diff, "Top3");
+        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00+diff, "Build");
+        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01+diff, "Build");
+        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02+diff, "Build");
+        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03+diff, "Build");
 
 
         setLastCoord(coord)

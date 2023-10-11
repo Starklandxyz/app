@@ -3,20 +3,20 @@ import { ClickWrapper } from "./clickWrapper";
 import { useEffect, useMemo, useState } from "react";
 import { getTimestamp, parseTime, toastError, toastSuccess } from "../utils";
 import { store } from "../store/store";
-import { Train_Price_Food, Train_Price_Gold, Train_Price_Iron, Train_Time } from "../contractconfig";
 import { Account } from "starknet";
-import { Training } from "../types/Training";
 import { ticStore } from "../store/ticStore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 import { useComponentValue } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import { handleSQLResult } from "../utils/handleutils";
+import { Warrior } from "../types/Warrior";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
     const { timenow } = ticStore()
     const { account, phaserLayer } = store()
 
-    const [training, setTraining] = useState<Training>(new Training())
+    // const [training, setTraining] = useState<Training>(new Training())
 
     const {
         world,
@@ -29,6 +29,10 @@ export default function TrainPanel() {
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
+    const training = useComponentValue(components.Training,getEntityIdFromKeys([1n,BigInt(account ? account.address : "")]))
+
+    const warriorConfig = useComponentValue(components.WarriorConfig,getEntityIdFromKeys([1n]),new Warrior())
+
     useEffect(() => {
         if (!player || !account) {
             return
@@ -36,28 +40,26 @@ export default function TrainPanel() {
         fetchTrainingInfo(account)
     }, [player, account])
 
+    useEffect(()=>{
+        fetchTrainingConfig()
+    },[])
+
+    const fetchTrainingConfig = async()=>{
+        const t = await graphSdk.getWarriorConfig({ map_id: "0x1"})
+        console.log("fetchTrainingConfig", t);
+        const edges = t.data.entities?.edges
+        handleSQLResult(edges,components)
+    }
+    useEffect(()=>{
+        console.log("warriorConfig",warriorConfig);
+        
+    },[warriorConfig])
+
     const fetchTrainingInfo = async (account: Account) => {
-        const training = await graphSdk.getTrainingByKey({ map_id: "0x1", key: account.address })
-        console.log("fetchTrainingInfo", training);
-        const edges = training.data.entities?.edges
-        if (edges) {
-            for (let index = 0; index < edges.length; index++) {
-                const element = edges[index];
-                const components = element?.node?.components
-                if (components) {
-                    for (let index = 0; index < components.length; index++) {
-                        const element = components[index];
-                        if (element?.__typename == "Training") {
-                            const t = new Training()
-                            t.out = element.out;
-                            t.startTime = element.start_time;
-                            t.total = element.total
-                            setTraining(t)
-                        }
-                    }
-                }
-            }
-        }
+        const t = await graphSdk.getTrainingByKey({ map_id: "0x1", key: account.address })
+        console.log("fetchTrainingInfo", t);
+        const edges = t.data.entities?.edges
+        handleSQLResult(edges,components)
     }
 
     const claim = async () => {
@@ -87,15 +89,15 @@ export default function TrainPanel() {
         }
 
         const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
-        if (getComponentValue(components.Gold,entityIndex)?.balance!  < Train_Price_Gold * inputValue) {
+        if (getComponentValue(components.Gold,entityIndex)?.balance!  < warriorConfig.Train_Gold * inputValue) {
             toastError("Gold is not enough")
             return
         }
-        if (getComponentValue(components.Food,entityIndex)?.balance!  < Train_Price_Food * inputValue) {
+        if (getComponentValue(components.Food,entityIndex)?.balance!  < warriorConfig.Train_Food * inputValue) {
             toastError("Food is not enough")
             return
         }
-        if (getComponentValue(components.Iron,entityIndex)?.balance!  < Train_Price_Iron * inputValue) {
+        if (getComponentValue(components.Iron,entityIndex)?.balance!  < warriorConfig.Train_Iron * inputValue) {
             toastError("Iron is not enough")
             return
         }
@@ -122,18 +124,19 @@ export default function TrainPanel() {
     }
 
     const calTotalTime = useMemo(() => {
-        const total = Train_Time * inputValue
+        const total = warriorConfig.Train_Time * inputValue
         return parseTime(total)
-    }, [inputValue])
+    }, [inputValue,warriorConfig])
 
     const calConsume = useMemo(() => {
-        var result = (inputValue * Train_Price_Food) + " Food, " + (inputValue * Train_Price_Gold) + " Gold"
+        var result = (inputValue * warriorConfig.Train_Food)/1_000_000 + " Food, " + (inputValue * warriorConfig.Train_Gold)/1_000_000 + " Gold"
         return result
-    }, [inputValue])
+    }, [inputValue,warriorConfig])
 
-    const calClaimable = (train: Training) => {
-        const usedtime = getTimestamp() - train.startTime
-        var total = Math.floor(usedtime / Train_Time)
+    const calClaimable = (train: any) => {
+
+        const usedtime = getTimestamp() - train.start_time
+        var total = Math.floor(usedtime / warriorConfig.Train_Time)
         if (total > train.total) {
             total = train.total
         }
@@ -148,47 +151,33 @@ export default function TrainPanel() {
 
     const getTrainTime = useMemo(() => {
         // console.log("base change",bases.get(account?.address!));
-        const usedtime = timenow - training.startTime
-        if (usedtime >= training.total * Train_Time) {
+        if(!training){
+            return 0
+        }
+        const usedtime = timenow - training.start_time
+        if (usedtime >= training.total * warriorConfig.Train_Time) {
             return "Finish"
         }
-        const m = Math.floor((usedtime) % Train_Time)
-        return m + "/" + Train_Time + "s"
-    }, [timenow])
+        const m = Math.floor((usedtime) % warriorConfig.Train_Time)
+        return m + "/" + warriorConfig.Train_Time + "s"
+    }, [timenow,warriorConfig])
 
     const claimable = useMemo(() => {
+        if(!training){
+            return 0
+        }
         return calClaimable(training)
-    }, [training, timenow])
-
-
-    useEffect(() => {
-        defineSystem(world, [Has(components.Training)], ({ entity }) => {
-            const training = getComponentValue(components.Training, entity);
-            if (!training) {
-                return
-            }
-            console.log("Training changed", training);
-            const t = new Training()
-            t.out = training.out
-            t.startTime = training.start_time
-            t.total = training.total
-            setTraining(_ => t)
-        })
-    }, [])
-    
-    // useEffect(()=>{
-
-    // },[bases.keys()])
+    }, [training, timenow,warriorConfig])
 
     return (<ClickWrapper>
         <Container>
             <div style={{ width: 240, height: 190, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                 <p>Train Warrior</p>
                 {
-                    (training.total != 0 && training.total != training.out) ?
+                    (training?.total != 0 && training?.total != training?.out) ?
                         <div>
                             <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
-                                <p>Claimed : {training.out}/{training.total}</p>
+                                <p>Claimed : {training?.out}/{training?.total}</p>
                                 <p>Next : {getTrainTime}</p>
                                 <p>Claimable : {claimable}</p>
                             </div>

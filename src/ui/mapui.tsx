@@ -49,10 +49,10 @@ export default function MapUI() {
             }
             console.log("put bases ", value,account,diff);
 
-            putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
-            putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");
-            putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Top");
-            putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Top");
+            putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Build");
+            putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Build");
+            putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Build");
+            putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Build");
 
             const nameObj = objectPool.get("townname_" + value.owner, "Text")
             const pixelPosition = tileCoordToPixelCoord({ x: xStart, y: yStart }, TILE_WIDTH, TILE_HEIGHT)
@@ -87,10 +87,10 @@ export default function MapUI() {
         const xStart = myBase.x
         const yStart = myBase.y
         var diff = 6
-        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Top");
-        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Top");
-        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Top");
-        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Top");
+        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Build");
+        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Build");
+        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Build");
+        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Build");
         const pixelPosition = tileCoordToPixelCoord({ x: myBase.x, y: myBase.y }, TILE_WIDTH, TILE_HEIGHT);
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }, [player,myBase])
@@ -127,18 +127,18 @@ export default function MapUI() {
             const coord = { x: warrior.x, y: warrior.y }
             const balance = warrior.balance
             if (balance == 0) {
-                putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
+                putTileAt(coord, TilesetSoldier.Soldier1, "Soldier");
                 putTileAt(coord, TilesetNum.Num0, "Num");
             }
             else if (balance < 10) {
-                putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
+                putTileAt(coord, TilesetSoldier.Soldier1, "Soldier");
                 putTileAt(coord, TilesetNum.Num1 + balance - 1, "Num");
             } else if (balance < 100) {
-                putTileAt(coord, TilesetSoldier.Soldier10, "Top2");
+                putTileAt(coord, TilesetSoldier.Soldier10, "Soldier");
                 const b = Math.floor(balance / 10)
                 putTileAt(coord, TilesetNum.Num1 + b - 1, "Num");
             } else if (balance < 1000) {
-                putTileAt(coord, TilesetSoldier.Soldier100, "Top2");
+                putTileAt(coord, TilesetSoldier.Soldier100, "Soldier");
                 const b = Math.floor(balance / 100)
                 putTileAt(coord, TilesetNum.Num1 + b - 1, "Num");
             }
@@ -153,7 +153,7 @@ export default function MapUI() {
             if(!land || land?.building==BuildType.Base){
                 return
             }
-            var tile = 1
+            var tile = 0
             const buildLand = { x: land.x, y: land.y }
             switch (land?.building) {
                 case BuildType.Camp: tile = TilesetBuilding.Camp; break;
@@ -163,10 +163,12 @@ export default function MapUI() {
                 // case BuildType.Base: tile = TilesetTown.Town00; break;
             }
             console.log("mapLands tile",land,tile);
-            
-            // putTileAt(buildLand, tile, "Top");
+            if(tile!=0){
+                putTileAt(buildLand, tile, "Build");
+            }
 
             if (land.owner == account?.address) {
+                console.log("my Occupy",land);
                 putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
             } else {
                 putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");

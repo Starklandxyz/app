@@ -50,7 +50,7 @@ export default function ChooseBuildUI() {
 
     useEffect(() => {
         if (buildLand) {
-            putTileAt(buildLand, TilesetBuilding.Building, "Top3");
+            putTileAt(buildLand, TilesetBuilding.Building, "Build");
         }
     }, [buildLand])
 
@@ -145,18 +145,18 @@ export default function ChooseBuildUI() {
             } else {
                 showSelectArea(buildLand.x, buildLand.y)
             }
-            putTileAt(buildLand, Tileset.Empty, "Top3");
+            // putTileAt(buildLand, Tileset.Empty, "Build");
             controlStore.setState({ buildLand: undefined })
 
-            var tile = TilesetBuilding.Farmland
-            switch (selectBuild) {
-                case BuildType.Camp: tile = TilesetBuilding.Camp; break;
-                case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
-                case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
-                case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
-            }
-            putTileAt(buildLand, tile, "Top");
-            putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
+            // var tile = TilesetBuilding.Farmland
+            // switch (selectBuild) {
+            //     case BuildType.Camp: tile = TilesetBuilding.Camp; break;
+            //     case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
+            //     case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
+            //     case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
+            // }
+            // putTileAt(buildLand, tile, "Top");
+            // putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
         } else {
             toastError("Build failed")
         }
@@ -232,7 +232,7 @@ export default function ChooseBuildUI() {
     }
 
     const cancel = () => {
-        putTileAt(buildLand!, Tileset.Empty, "Top3");
+        putTileAt(buildLand!, Tileset.Empty, "Build");
         controlStore.setState({ buildLand: undefined })
     }
 
