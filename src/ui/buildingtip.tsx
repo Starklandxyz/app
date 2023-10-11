@@ -215,10 +215,16 @@ export default function BuildingTip() {
                 return <></>
             }
             if (land.owner == account.address) {
-                return <>
+                if(land.building==BuildType.None){
+                    return <>
                     <button onClick={() => sendTroopClick()}>Send Troop</button>
                     <button onClick={() => buildClick()}>Build</button>
                 </>
+                }else{
+                    return <>
+                    <button onClick={() => sendTroopClick()}>Send Troop</button>
+                </>
+                }
             }
         } else {
             const type = get_land_type(1, lastCoord.x, lastCoord.y)

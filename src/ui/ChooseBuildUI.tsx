@@ -17,7 +17,7 @@ import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } fr
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
-import { map } from "rxjs";
+import { useComponentValue } from "@dojoengine/react";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, account } = store()
@@ -32,7 +32,11 @@ export default function ChooseBuildUI() {
     }, [clickedLand])
 
     const {
-        networkLayer,
+        networkLayer:{
+            components,
+            network: { graphSdk },
+            systemCalls: { buildBuilding, startMining },
+        },
         scenes: {
             Main: {
                 maps: {
@@ -42,11 +46,8 @@ export default function ChooseBuildUI() {
         }
     } = phaserLayer!;
 
-    const {
-        components,
-        network: { graphSdk },
-        systemCalls: { buildBuilding, startMining },
-    } = networkLayer!
+    // const buildPrice = useComponentValue(components.BuildPrice,getEntityIdFromKeys([1n]))
+    const miningConfig = useComponentValue(components.MiningConfig,getEntityIdFromKeys([1n]))
 
     useEffect(() => {
         if (buildLand) {
@@ -66,11 +67,9 @@ export default function ChooseBuildUI() {
     const fetchBuildPrice = async () => {
         const prices = await graphSdk.getBuildPrice({ map_id: "0x1" })
         console.log("fetchBuildPrice", prices);
-
         const edges = prices.data.entities?.edges
         handleSQLResult(edges, components)
     }
-
 
 
     const buildConfirm = async () => {
@@ -145,18 +144,7 @@ export default function ChooseBuildUI() {
             } else {
                 showSelectArea(buildLand.x, buildLand.y)
             }
-            // putTileAt(buildLand, Tileset.Empty, "Build");
             controlStore.setState({ buildLand: undefined })
-
-            // var tile = TilesetBuilding.Farmland
-            // switch (selectBuild) {
-            //     case BuildType.Camp: tile = TilesetBuilding.Camp; break;
-            //     case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
-            //     case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
-            //     case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
-            // }
-            // putTileAt(buildLand, tile, "Top");
-            // putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
         } else {
             toastError("Build failed")
         }
@@ -238,18 +226,42 @@ export default function ChooseBuildUI() {
 
     const getBuildInfo = useMemo(() => {
         const buildinfo = BuildInfos.get(selectBuild)
+        const buildPrice = getComponentValue(components.BuildPrice,getEntityIdFromKeys([1n,BigInt(selectBuild)]))
+        // const miningConfig = getComponentValue(components.MiningConfig,getEntityIdFromKeys([1n]))
+
+        console.log("getBuildInfo",buildPrice,miningConfig);
+        
+        let output = "Output : "
+        if(miningConfig){
+            if(selectBuild == BuildType.Farmland){
+                output += "+"+miningConfig.Food_Speed * 3600/1_000_000 + " Food/Hour"
+            }
+            if(selectBuild == BuildType.GoldMine){
+                output += "+"+miningConfig.Gold_Speed * 3600/1_000_000 + " Gold/Hour"
+            }
+            
+            if(selectBuild == BuildType.IronMine){
+                output += "+"+miningConfig.Iron_Speed * 3600/1_000_000 + " Iron/Hour"
+            }
+            if(selectBuild == BuildType.Camp){
+                output += "+10 Soldier Capatity"
+            }
+        }else{
+            output = "Output : 100 Food/Hour"
+        }
+
         return (
             <div className="buildinfo">
                 <div style={{ marginLeft: 10, height: 40, marginTop: 10, overflowWrap: "break-word", whiteSpace: 'normal' }}>{buildinfo?.desc}</div>
-                <p style={{ marginLeft: 10, marginTop: 10 }}>Output : {buildinfo?.output}</p>
+                <p style={{ marginLeft: 10, marginTop: 10 }}>{output}</p>
                 <div style={{ display: "flex" }}>
-                    <div className="buildneedbox buildneedenough">{buildinfo?.foodNeed} Food</div>
-                    <div className="buildneedbox buildneedenough">{buildinfo?.goldNeed} Gold</div>
-                    <div className="buildneedbox buildnotenough">{buildinfo?.ironNeed} Iron</div>
+                    <div className="buildneedbox buildneedenough">{buildPrice?buildPrice.food/1_000_000:0} Food</div>
+                    <div className="buildneedbox buildneedenough">{buildPrice?buildPrice.gold/1_000_000:0} Gold</div>
+                    <div className="buildneedbox buildnotenough">{buildPrice?buildPrice.iron/1_000_000:0} Iron</div>
                 </div>
             </div>
         )
-    }, [selectBuild])
+    }, [selectBuild,miningConfig])
 
 
     const claimToMine = async (account: Account, map_id: number, miner_x: number, miner_y: number, mined_x: number, mined_y: number) => {

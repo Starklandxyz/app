@@ -2,7 +2,7 @@ import { Tileset, TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, Ti
 import { PhaserLayer } from "..";
 import { MAP_HEIGHT, MAP_WIDTH } from "../constants";
 import { store } from "../../store/store";
-import { LandType, get_land_type } from "../../types/Land";
+import { LandType, get_land_barbarians, get_land_type } from "../../types/Land";
 
 export function mapSystem(layer: PhaserLayer) {
     const {
@@ -37,6 +37,7 @@ export function mapSystem(layer: PhaserLayer) {
                 putTileAt(coord, Tileset.Water, "Foreground");
             }
             if (landType == LandType.None) {
+                const warrior = get_land_barbarians(1,x,y)
                 // //add grass
                 const r = Math.random()
                 if (r < 0.3) {
