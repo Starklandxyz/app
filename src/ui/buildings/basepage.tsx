@@ -8,9 +8,11 @@ import { BuildType } from "../../types/Build";
 import { toastError, toastSuccess } from "../../utils";
 import { ticStore } from "../../store/ticStore";
 import { handleSQLResult } from "../../utils/handleutils";
+import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../../node_modules/@latticexyz/phaserx/src/index";
+import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 
 export default function BasePage() {
-    const { account, phaserLayer } = store()
+    const { account, phaserLayer,camera } = store()
     const { timenow } = ticStore()
 
     const {
@@ -51,11 +53,11 @@ export default function BasePage() {
         if (!account) {
             return
         }
-        const fs:Array<Land> = []
-        const bs:Array<Land> = []
-        const camps:Array<Land> = []
-        const golds:Array<Land> = []
-        const irons:Array<Land> = []
+        const fs: Array<Land> = []
+        const bs: Array<Land> = []
+        const camps: Array<Land> = []
+        const golds: Array<Land> = []
+        const irons: Array<Land> = []
 
         landEntities.map(entity => {
             const value = getComponentValue(contractComponents.Land, entity)
@@ -86,29 +88,29 @@ export default function BasePage() {
 
     const claimAll = async () => {
         // const land = farmland[0]
-        if(!account){
+        if (!account) {
             toastError("Create account first")
             return
         }
-        const xs:Array<number> = []
-        const ys:Array<number> = []
-        const base = getComponentValue(contractComponents.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
-        if(!base){
+        const xs: Array<number> = []
+        const ys: Array<number> = []
+        const base = getComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+        if (!base) {
             toastError("Create base first")
             return
         }
         xs.push(base.x)
         ys.push(base.y)
 
-        farmland.map(land=>{
+        farmland.map(land => {
             xs.push(land.x)
             ys.push(land.y)
         })
-        ironMine.map(land=>{
+        ironMine.map(land => {
             xs.push(land.x)
             ys.push(land.y)
         })
-        goldmine.map(land=>{
+        goldmine.map(land => {
             xs.push(land.x)
             ys.push(land.y)
         })
@@ -121,7 +123,7 @@ export default function BasePage() {
         }
     }
 
-    const calClaimable = (lands:Land[],speed:number)=>{
+    const calClaimable = (lands: Land[], speed: number) => {
         // const config = getComponentValue(contractComponents.MiningConfig, getEntityIdFromKeys([1n]))
         // if (!miningConfig) {
         //     return 0
@@ -148,7 +150,7 @@ export default function BasePage() {
         if (!miningConfig) {
             return 0
         }
-        return calClaimable(farmland,miningConfig.Food_Speed).toFixed(2)
+        return calClaimable(farmland, miningConfig.Food_Speed).toFixed(2)
     }, [timenow])
 
 
@@ -156,87 +158,92 @@ export default function BasePage() {
         if (!miningConfig) {
             return 0
         }
-        return calClaimable(ironMine,miningConfig.Iron_Speed).toFixed(2)
+        return calClaimable(ironMine, miningConfig.Iron_Speed).toFixed(2)
     }, [timenow])
 
-    const calBaseClaimable = ()=>{
+    const calBaseClaimable = () => {
         if (!miningConfig) {
             return 0
         }
-        if(!account){
-            return 0 
+        if (!account) {
+            return 0
         }
-        const base = getComponentValue(contractComponents.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
-        if(!base){
+        const base = getComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+        if (!base) {
             return 0
         }
         const land = new Land()
         land.x = base.x
         land.y = base.y
-        return calClaimable([land],miningConfig.Base_Gold_Speed)
+        return calClaimable([land], miningConfig.Base_Gold_Speed)
     }
 
     const goldClaimable = useMemo(() => {
         if (!miningConfig) {
             return 0
         }
-        const t1 =  calClaimable(goldmine,miningConfig.Gold_Speed)
+        const t1 = calClaimable(goldmine, miningConfig.Gold_Speed)
         const t2 = calBaseClaimable()
         const t = t1 + t2
         return t.toFixed(2)
     }, [timenow])
 
-    const getBaseLevel = useMemo(()=>{
-        if(!base){
+    const getBaseLevel = useMemo(() => {
+        if (!base) {
             return 1
         }
         let level = 1
-        baseland.map(land=>{
-            if(land.x == base.x && land.y==base.y){
+        baseland.map(land => {
+            if (land.x == base.x && land.y == base.y) {
                 level = land.level
             }
         })
         return level
-    },[base,baseland])
+    }, [base, baseland])
 
-    const getFarmlandPerHour = useMemo(()=>{
-        if(!miningConfig){
+    const getFarmlandPerHour = useMemo(() => {
+        if (!miningConfig) {
             return
         }
         const total = 3600 * miningConfig.Food_Speed * farmland.length / 1_000_000
         return total
-    },[miningConfig,farmland])
+    }, [miningConfig, farmland])
 
-    const getGoldMinePerHour = useMemo(()=>{
-        if(!miningConfig){
+    const getGoldMinePerHour = useMemo(() => {
+        if (!miningConfig) {
             return
         }
         const total = 3600 * miningConfig.Gold_Speed * goldmine.length / 1_000_000
         return total
-    },[miningConfig,goldmine])
+    }, [miningConfig, goldmine])
 
-    const getIronMinePerHour = useMemo(()=>{
-        if(!miningConfig){
+    const getIronMinePerHour = useMemo(() => {
+        if (!miningConfig) {
             return
         }
         const total = 3600 * miningConfig.Iron_Speed * ironMine.length / 1_000_000
         return total
-    },[miningConfig,ironMine])
+    }, [miningConfig, ironMine])
 
-    const getBaseGoldPerHour = useMemo(()=>{
-        if(!miningConfig){
+    const getBaseGoldPerHour = useMemo(() => {
+        if (!miningConfig) {
             return
         }
-        const total = 3600 * miningConfig.Base_Gold_Speed  / 1_000_000
+        const total = 3600 * miningConfig.Base_Gold_Speed / 1_000_000
         return total
-    },[miningConfig,base])
+    }, [miningConfig, base])
+
+    const zoomto = (land: Land) => {
+        const pixelPosition = tileCoordToPixelCoord({ x:land.x, y:land.y }, TILE_WIDTH, TILE_HEIGHT);
+        camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
+    }
 
     return (<div style={{ width: 210, height: 350, lineHeight: 0.3, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
         <div>
-            <p>Base ({base?.x},{base?.y}) +{getBaseGoldPerHour}Gold/H</p>
+            {base && <p style={{ cursor: "pointer" }} onClick={() => zoomto(base)}>Base ({base?.x},{base?.y}) +{getBaseGoldPerHour}Gold/H</p>}
             <div>
                 LV {getBaseLevel}
-                <button style={{marginLeft:100}}>Upgrade</button>
+                <button style={{ marginLeft: 100 }}>Upgrade</button>
             </div>
 
         </div>

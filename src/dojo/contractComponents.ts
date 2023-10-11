@@ -367,8 +367,29 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
+          map_id: RecsType.Number,
           owner: RecsType.String,
+          index: RecsType.Number,
           claimed: RecsType.Boolean,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    AirdropConfig: (() => {
+      const name = "AirdropConfig";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          index: RecsType.Number,
+          reward_warrior: RecsType.Number,
+          reward_food: RecsType.Number,
+          reward_gold: RecsType.Number,
+          reward_iron: RecsType.Number,
         },
         {
           metadata: {

@@ -22,8 +22,8 @@ query getAllPlayers {
   }
 }
 
-query getAirdropByKey($key: String) {
-  entities(first:1000, keys: [$key]) {
+query getAirdropByKey($map_id:String, $key: String) {
+  entities(first:1000, keys: [$map_id,$key,"%s"]) {
     totalCount
     edges {
       node {
@@ -31,7 +31,9 @@ query getAirdropByKey($key: String) {
         components {
           __typename
           ... on Airdrop {
+            map_id
             owner
+            index
             claimed
           }
         }
@@ -98,6 +100,28 @@ query getWarriorConfig($map_id:String) {
             Troop_Food
             Troop_Gold
             Troop_Speed
+          }
+        }
+      }
+    }
+  }
+}
+
+query getAirdropConfig($map_id:String) {
+  entities(first:1000, keys: [$map_id,"%s"]) {
+    totalCount
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on AirdropConfig {
+            map_id
+            index
+            reward_warrior
+            reward_food
+            reward_gold
+            reward_iron
           }
         }
       }

@@ -102,10 +102,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const airdrop = async (signer: Account, map_id: number) => {
+  const airdrop = async (signer: Account, map_id: number,index:number,x:number=0,y:number=0) => {
     try {
       // console.log("recoverEnergy start");
-      const tx = await execute(signer, "airdrop", [map_id]);
+      const tx = await execute(signer, "airdrop", [map_id,index,x,y]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,

@@ -14,6 +14,7 @@ import { handleSQLResult } from "../utils/handleutils";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { BuildType } from "../types/Build";
+import { controlStore } from "../store/controlStore";
 
 export default function PlayerPanel() {
     const { account, phaserLayer } = store();
@@ -39,22 +40,8 @@ export default function PlayerPanel() {
 
     const airdropClaimed = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([BigInt(account ? account.address : "")]))
 
-    const claimairdrop = async () => {
-        if (!account) {
-            return
-        }
-        const base = getComponentValue(sqlComponent.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
-        if(!base){
-            toastError("Build a base first")
-            return
-        }
-        const result = await airdrop(account, 1)
-        if (result && result.length > 0) {
-            toastSuccess("Airdrop success")
-        } else {
-            toastError("Airdrop failed")
-        }
-    }
+    const {showTask} = controlStore()
+
 
     useEffect(() => {
         if (!account) {
@@ -206,9 +193,10 @@ export default function PlayerPanel() {
                 <ResourceValue>{getMyTroopSize}/1</ResourceValue>
             </ResourceItemWrapper>
 
-            {
+            <button style={{}} onClick={(() => controlStore.setState({showTask:true}))}>Task & Airdrop</button>
+            {/* {
                 !airdropClaimed && <button style={{}} onClick={(() => claimairdrop())}>Airdrop</button>
-            }
+            } */}
 
         </TopBarWrapper>
     )
