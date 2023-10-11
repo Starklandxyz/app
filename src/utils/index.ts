@@ -230,3 +230,22 @@ export const calDistanceFromBase = (base: Coord, to: Coord) => {
     }
     return dis
 }
+
+
+export const calDistanceToBase = (base: Coord, from: Coord) => {
+    const dis1 = Math.abs(base.x - from.x) + Math.abs(base.y - from.y)
+    let dis = dis1
+    const dis2 = Math.abs(base.x + 1 - from.x) + Math.abs(base.y - from.y)
+    if (dis > dis2) {
+        dis = dis2
+    }
+    const dis3 = Math.abs(base.x + 1 - from.x) + Math.abs(base.y + 1 - from.y)
+    if (dis > dis3) {
+        dis = dis3
+    }
+    const dis4 = Math.abs(base.x - from.x) + Math.abs(base.y + 1 - from.y)
+    if (dis > dis4) {
+        dis = dis4
+    }
+    return dis
+}

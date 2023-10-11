@@ -3,7 +3,7 @@ import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { controlStore } from "../store/controlStore";
 import { Troop } from "../types/Troop";
-import { calDistanceFromBase, getTimestamp, toastError, toastSuccess } from "../utils";
+import { calDistanceFromBase, calDistanceToBase, getTimestamp, toastError, toastSuccess } from "../utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Food, Troop_Speed } from "../contractconfig";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
@@ -23,9 +23,9 @@ export default function SendTroopPanel() {
         }
     } = phaserLayer!
 
-    const troops = useEntityQuery([Has(components.Troop)],{updateOnValueChange:true})
+    const troops = useEntityQuery([Has(components.Troop)], { updateOnValueChange: true })
 
-    const warriors = useEntityQuery([Has(components.Warrior)],{updateOnValueChange:true})
+    const warriors = useEntityQuery([Has(components.Warrior)], { updateOnValueChange: true })
 
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
@@ -63,13 +63,13 @@ export default function SendTroopPanel() {
         if (!account) {
             return
         }
-        if(!sendTroopCtr.troop){
+        if (!sendTroopCtr.troop) {
             return
         }
-        const food_need = Troop_Food * calDistanceFromBase(myBase,sendTroopCtr.troop.to) * inputValue
+        const food_need = Troop_Food * calDistanceFromBase(myBase, sendTroopCtr.troop.to) * inputValue
 
-        const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
-        if (getComponentValue(components.Food,entityIndex)?.balance! < food_need) {
+        const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
+        if (getComponentValue(components.Food, entityIndex)?.balance! < food_need) {
             toastError("Food is not enough")
             return
         }
@@ -95,64 +95,82 @@ export default function SendTroopPanel() {
         cancel()
     }
 
-    const getDistance = useMemo(()=>{
-        if(!sendTroopCtr.troop){
+    const calDistance = ()=>{
+        if (!sendTroopCtr.troop) {
             return 0
         }
-        if(!myBase){
+        if (!myBase) {
             return 0
         }
-        return calDistanceFromBase(myBase,sendTroopCtr.troop.to)
-    },[myBase,sendTroopCtr])
+        const from = sendTroopCtr.troop.from
+        const to = sendTroopCtr.troop.to
+        //从base出发
+        if (from.x == myBase.x && from.y == myBase.y) {
+            return calDistanceFromBase(myBase, to)
+        }
+        //回base
+        if (to.x == myBase.x && to.y == myBase.y) {
+            return calDistanceToBase(myBase, from)
+        }
+        return 0
+    }
+
+    const getDistance = useMemo(() => {
+        return calDistance()
+    }, [myBase, sendTroopCtr])
 
     const calFood = useMemo(() => {
-        if(!sendTroopCtr.troop){
+        if (!sendTroopCtr.troop) {
             return 0
         }
-        const result = Troop_Food * calDistanceFromBase(myBase,sendTroopCtr.troop.to) * inputValue
+        const result = Troop_Food * calDistance() * inputValue
         return result
     }, [sendTroopCtr, inputValue])
 
     const calTime = useMemo(() => {
-        if(!sendTroopCtr.troop){
+        if (!sendTroopCtr.troop) {
             return "0s"
         }
-        const result = Troop_Speed * calDistanceFromBase(myBase,sendTroopCtr.troop.to)
+        const result = Troop_Speed * calDistance()
         return result + "s"
     }, [sendTroopCtr, inputValue])
 
     const calWarrior = () => {
-        console.log("calWarrior",myBase);
-        if(!myBase){
-            return 0 
+        console.log("calWarrior", myBase);
+        if (!myBase) {
+            return 0
         }
-        const w = getComponentValue(components.Warrior,getEntityIdFromKeys([1n,BigInt(myBase.x),BigInt(myBase.y)]))
-        console.log("calWarrior",myBase,w);
-        if(w){
+        if(!sendTroopCtr || !sendTroopCtr.troop){
+            return 0
+        }
+        const from = sendTroopCtr.troop.from
+        const w = getComponentValue(components.Warrior, getEntityIdFromKeys([1n, BigInt(from.x), BigInt(from.y)]))
+        console.log("calWarrior", myBase, w);
+        if (w) {
             return w.balance
-        }else{
-            return 0 
+        } else {
+            return 0
         }
     }
 
     const getWarrior = useMemo(() => {
         return calWarrior()
-    }, [account,myBase,warriors])
+    }, [account, myBase, warriors,sendTroopCtr])
 
     const getAvailableTroopId = () => {
         // console.log("getMyTroopSize",account,troops);
-        if(!account){
-            return 1 
+        if (!account) {
+            return 1
         }
         var size = 1
 
-        troops.map(entity=>{
-            const troop = getComponentValue(components.Troop,entity)
+        troops.map(entity => {
+            const troop = getComponentValue(components.Troop, entity)
             // console.log("getMyTroopSize",entity,troop);
-            if(troop?.owner == account.address){
-                if(troop?.start_time!=0){
+            if (troop?.owner == account.address) {
+                if (troop?.start_time != 0) {
                     size++
-                }else{
+                } else {
                     return troop.index
                 }
             }
@@ -162,7 +180,7 @@ export default function SendTroopPanel() {
 
     const getTroopID = useMemo(() => {
         return getAvailableTroopId()
-    }, [account, troops]) 
+    }, [account, troops])
 
     return (
         <ClickWrapper>

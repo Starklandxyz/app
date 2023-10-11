@@ -9,6 +9,7 @@ import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
 import { store } from "../../store/store";
 import { Has, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../../dojo/parseEvent";
+import { BuildType } from "../../types/Build";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
@@ -155,22 +156,24 @@ export default function TroopItem(params: any) {
 
     const retreatButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
-        const re = troop.retreat
         const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
-        // const land = lands.get(troop.to.x + "_" + troop.to.y)
-        let isMy = false
-        if (land && land.owner == account?.address) {
-            isMy = true
+        let toBase = false
+        if(land && land.building == BuildType.Base){
+            toBase = true
         }
-        if (re) {
-            if (end) {
+
+        if (troop.retreat) {
+            if (end || toBase) {
                 return <></>
             } else {
                 return <p style={{ marginLeft: 10 }}>撤...</p>
             }
         } else {
-            return <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span>
+            if(!toBase){
+                return <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span>
+            }
         }
+        return <></>
     }, [troop, timenow])
 
     return (

@@ -79,7 +79,7 @@ export default function BuildingTip() {
                 const p = getComponentValue(contractComponents.Player, getEntityIdFromKeys([BigInt(land.owner)]))
                 const name = p?.nick_name;
                 if (name) {
-                    land_owner ="Owner : "+ hexToString(name)
+                    land_owner = "Owner : " + hexToString(name)
                 }
             }
             land_level = "Level : " + land.level
@@ -96,17 +96,17 @@ export default function BuildingTip() {
                 case LandType.Iron: land_name = "Iron"; break;
                 case LandType.Water: land_name = "Water"; break;
             }
-            if(land_type==LandType.Gold||land_type==LandType.Iron){
+            if (land_type == LandType.Gold || land_type == LandType.Iron) {
                 const w = getComponentValue(contractComponents.LandMiner, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
                 land_owner = "Miner : None"
-                if(w){
+                if (w) {
                     const l = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(w.miner_x), BigInt(w.miner_y)]))
-                    land_owner = "Miner : " + w.miner_x +","+w.miner_y
-                    if(l){
+                    land_owner = "Miner : " + w.miner_x + "," + w.miner_y
+                    if (l) {
                         const o = l.owner
-                        const p = getComponentValue(contractComponents.Player,getEntityIdFromKeys([BigInt(o)]))
-                        if(p){
-                            
+                        const p = getComponentValue(contractComponents.Player, getEntityIdFromKeys([BigInt(o)]))
+                        if (p) {
+
                             land_owner = "Miner : " + hexToString(p.nick_name)
                         }
                     }
@@ -115,7 +115,7 @@ export default function BuildingTip() {
             const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y)
             land_warrior = "Warrior : " + land_baba.toString()
 
-            land_level = "Level : " + get_land_level(1,lastCoord.x,lastCoord.y)
+            land_level = "Level : " + get_land_level(1, lastCoord.x, lastCoord.y)
             if (land_type != LandType.None) {
                 land_warrior = ""
                 land_level = ""
@@ -174,7 +174,7 @@ export default function BuildingTip() {
         if (sendTroop.show) {
             return
         }
-        if(tipButtonShow.show){
+        if (tipButtonShow.show) {
             return
         }
         if (!mouseDown) {
@@ -204,6 +204,14 @@ export default function BuildingTip() {
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
 
+    const retreat = () => {
+        if (!account) {
+            return
+        }
+        const troop = new Troop(account.address, lastCoord, myBase, getTimestamp())
+        controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
+    }
+
     const buildClick = () => {
         controlStore.setState({ buildLand: lastCoord, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
@@ -224,15 +232,22 @@ export default function BuildingTip() {
                 return <></>
             }
             if (land.owner == account.address) {
-                if(land.building==BuildType.None){
+                const w = getComponentValue(contractComponents.Warrior, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+                let hasW = false
+                if (w && w.balance > 0) {
+                    hasW = true
+                }
+                if (land.building == BuildType.None) {
                     return <>
-                    <button onClick={() => sendTroopClick()}>Send Troop</button>
-                    <button onClick={() => buildClick()}>Build</button>
-                </>
-                }else{
+                        <button onClick={() => sendTroopClick()}>Send Troop</button>
+                        <button onClick={() => buildClick()}>Build</button>
+                        {hasW && <button onClick={() => retreat()}>Retreat Warrior</button>}
+                    </>
+                } else {
                     return <>
-                    <button onClick={() => sendTroopClick()}>Send Troop</button>
-                </>
+                        <button onClick={() => sendTroopClick()}>Send Troop</button>
+                        {hasW && <button onClick={() => retreat()}>Retreat Warrior</button>}
+                    </>
                 }
             }
         } else {
