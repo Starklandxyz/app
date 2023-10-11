@@ -47,7 +47,7 @@ export default function MapUI() {
             if (value.owner == account?.address) {
                 diff = 6
             }
-            console.log("put bases ", value,account,diff);
+            // console.log("put bases ", value,account,diff);
 
             putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00 + diff, "Build");
             putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Build");
@@ -122,7 +122,7 @@ export default function MapUI() {
             }
             // console.log("landWarriors", key, balance);
             // const keys = key.split("_")
-            console.log("landWarriors",warrior);
+            // console.log("landWarriors",warrior);
             
             const coord = { x: warrior.x, y: warrior.y }
             const balance = warrior.balance
@@ -162,13 +162,13 @@ export default function MapUI() {
                 case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
                 // case BuildType.Base: tile = TilesetTown.Town00; break;
             }
-            console.log("mapLands tile",land,tile);
+            // console.log("mapLands tile",land,tile);
             if(tile!=0){
                 putTileAt(buildLand, tile, "Build");
             }
 
             if (land.owner == account?.address) {
-                console.log("my Occupy",land);
+                // console.log("my Occupy",land);
                 putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
             } else {
                 putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");

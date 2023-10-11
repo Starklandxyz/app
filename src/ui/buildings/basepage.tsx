@@ -51,6 +51,12 @@ export default function BasePage() {
         if (!account) {
             return
         }
+        const fs:Array<Land> = []
+        const bs:Array<Land> = []
+        const camps:Array<Land> = []
+        const golds:Array<Land> = []
+        const irons:Array<Land> = []
+
         landEntities.map(entity => {
             const value = getComponentValue(contractComponents.Land, entity)
             // console.log("landEntities", value);
@@ -63,42 +69,20 @@ export default function BasePage() {
                 land.x = value.x
                 land.y = value.y
                 switch (value.building) {
-                    case BuildType.Base: addBaseLand(land); break;
-                    case BuildType.Farmland: addFarmland(land); break;
-                    case BuildType.GoldMine: addGold(land); break;
-                    case BuildType.IronMine: addIron(land); break;
-                    case BuildType.Camp: addCamp(land); break;
+                    case BuildType.Base: bs.push(land); break;
+                    case BuildType.Farmland: fs.push(land); break;
+                    case BuildType.GoldMine: golds.push(land); break;
+                    case BuildType.IronMine: irons.push(land); break;
+                    case BuildType.Camp: camps.push(land); break;
                 }
             }
         })
+        setBaseland(bs)
+        setFarmland(fs)
+        setIronmine(irons)
+        setGoldmine(golds)
+        setcamp(camps)
     }, [landEntities, account])
-
-    const addBaseLand = (land:Land)=>{
-        const a = [...baseland]
-        a.push(land)
-        setBaseland(a)
-    }
-
-    const addFarmland = async (land: Land) => {
-        const a = [...farmland]
-        a.push(land)
-        setFarmland(a)
-    }
-    const addCamp = async (land: Land) => {
-        const a = [...camp]
-        a.push(land)
-        setcamp(a)
-    }
-    const addGold = async (land: Land) => {
-        const a = [...goldmine]
-        a.push(land)
-        setGoldmine(a)
-    }
-    const addIron = async (land: Land) => {
-        const a = [...ironMine]
-        a.push(land)
-        setIronmine(a)
-    }
 
     const claimAll = async () => {
         // const land = farmland[0]
