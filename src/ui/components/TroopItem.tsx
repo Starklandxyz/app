@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Troop } from "../../types/Troop";
 import { ClickWrapper } from "../clickWrapper";
 import { getTimestamp, toastError, toastSuccess } from "../../utils";
@@ -13,12 +13,12 @@ import { BuildType } from "../../types/Build";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
-    const { account,phaserLayer } = store()
-
+    const { account, phaserLayer } = store()
+    const [lastOwner,setLastOwner] = useState<string|undefined>()
     const {
-        networkLayer:{
-            components:contractComponents,
-            systemCalls: { retreatTroop, troopEnterLand,goFight },
+        networkLayer: {
+            components: contractComponents,
+            systemCalls: { retreatTroop, troopEnterLand, goFight },
         }
     } = phaserLayer!
 
@@ -29,19 +29,33 @@ export default function TroopItem(params: any) {
 
     }
 
-    //todo
-    const attackClick =async () => {
-        // toastSuccess("Attack Success")
-        if(!account){return}
+    const attackClick = async () => {
+        if (!account) { return }
 
-        const result = await goFight(account,1,troop.index)
-        console.log("attackClick",result);
-        if(result && result.length>0){
-            toastSuccess("Attack success")
-        }else{
+        const attackLand = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        if(attackLand){
+            setLastOwner(attackLand.owner)
+        }
+
+        const result = await goFight(account, 1, troop.index)
+        console.log("attackClick", result);
+
+        if (result && result.length > 0) {
+            // toastSuccess("Attack success")
+            const newLand = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+            let win = false
+            if(newLand && newLand.owner != lastOwner){
+                win = true
+            }
+            if(win){
+                toastSuccess("You Win!")
+            }else{
+                toastError("You Loss!")
+            }
+        } else {
             toastError("Attack failed")
         }
-        
+
     }
 
     const enterLand = async () => {
@@ -57,7 +71,7 @@ export default function TroopItem(params: any) {
     }
 
     const retreat = async () => {
-        console.log("retreat",troop);
+        console.log("retreat", troop);
         if (!account) {
             return
         }
@@ -112,19 +126,19 @@ export default function TroopItem(params: any) {
             return `(${troop.to.x},${troop.to.y})`
         }
         // console.log("getTo",troop,base);
-        
+
         if (base.x == troop.to.x && base.y == troop.to.y) {
             return "Base"
         } else {
             return `(${troop.to.x},${troop.to.y})`
         }
-    }, [troop,account,base])
+    }, [troop, account, base])
 
     const attackButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
         const retreat = troop.retreat
 
-        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
 
         // const land = lands.get(troop.to.x + "_" + troop.to.y)
         let isMy = false
@@ -139,14 +153,14 @@ export default function TroopItem(params: any) {
 
     const enterButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
-        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
 
         let isMy = false
         if (land && land.owner == account?.address) {
             isMy = true
         }
         // console.log("enterbutton",end,land);
-        
+
         if (isMy && end) {
             return <span onClick={() => { enterLand() }}>驻</span>
         }
@@ -156,9 +170,9 @@ export default function TroopItem(params: any) {
 
     const retreatButton = useMemo(() => {
         const end = (troop.totalTime - (timenow - troop.startTime)) <= 0
-        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
         let toBase = false
-        if(land && land.building == BuildType.Base){
+        if (land && land.building == BuildType.Base) {
             toBase = true
         }
 
@@ -169,7 +183,7 @@ export default function TroopItem(params: any) {
                 return <p style={{ marginLeft: 10 }}>撤...</p>
             }
         } else {
-            if(!toBase){
+            if (!toBase) {
                 return <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span>
             }
         }

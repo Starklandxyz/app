@@ -186,6 +186,14 @@ export default function SendTroopPanel() {
         return size
     }
 
+    const max = ()=>{
+        setInputValue(calWarrior())
+    }
+
+    const maxButton = useMemo(()=>{
+        return <span onClick={()=>max()} style={{marginLeft:20,cursor:"pointer"}}>max</span>
+    },[account, troops,sendTroopCtr])
+
     const getTroopID = useMemo(() => {
         return getAvailableTroopId()
     }, [account, troops,sendTroopCtr])
@@ -219,6 +227,7 @@ export default function SendTroopPanel() {
                                 </td>
                                 <td>
                                     <input onChange={inputChange} type="number" style={{ width: 50 }} value={inputValue} /> / {getWarrior}
+                                    {maxButton}
                                 </td>
                             </tr>
                         </table>
