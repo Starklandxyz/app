@@ -11,7 +11,7 @@ import { ClickWrapper } from "./clickWrapper";
 import { Troop } from "../types/Troop";
 import { controlStore } from "../store/controlStore";
 import { BuildType } from "../types/Build";
-import { LandType, get_land_barbarians, get_land_type } from "../types/Land";
+import { LandType, get_land_barbarians, get_land_level, get_land_type } from "../types/Land";
 import { useComponentValue } from "@dojoengine/react";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
@@ -114,7 +114,8 @@ export default function BuildingTip() {
             }
             const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y)
             land_warrior = "Warrior : " + land_baba.toString()
-            land_level = "Level : " + (1n + land_baba / 10n)
+
+            land_level = "Level : " + get_land_level(1,lastCoord.x,lastCoord.y)
             if (land_type != LandType.None) {
                 land_warrior = ""
                 land_level = ""

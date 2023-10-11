@@ -18,6 +18,15 @@ export enum Tileset {
     Tree5 = 14,
 }
 
+export enum TilesetLevel{
+    Level1 = 0,
+    Level2 = 321,
+    Level3 = 322,
+    Level3_1 = 323,
+    Level4 = 324,
+    Level5 = 325,
+}
+
 export enum TilesetTown {
     Town00 = 40,
     Town01 = 41,

@@ -1,4 +1,4 @@
-import { Tileset, TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetTown, TilesetZone } from "../../artTypes/world";
+import { Tileset, TilesetBuilding, TilesetLevel, TilesetNum, TilesetSelect, TilesetSoldier, TilesetTown, TilesetZone } from "../../artTypes/world";
 import { PhaserLayer } from "..";
 import { MAP_HEIGHT, MAP_WIDTH } from "../constants";
 import { store } from "../../store/store";
@@ -20,7 +20,7 @@ export function mapSystem(layer: PhaserLayer) {
     store.setState({ camera: camera })
     // playerStore.setState({ PlayerComponent: components.Player })
 
-    const pRock = 0.015
+    // const pRock = 0.015
 
     for (let y = 1; y <= size; y++) {
         for (let x = 1; x <= size; x++) {
@@ -37,7 +37,6 @@ export function mapSystem(layer: PhaserLayer) {
                 putTileAt(coord, Tileset.Water, "Foreground");
             }
             if (landType == LandType.None) {
-                const warrior = get_land_barbarians(1,x,y)
                 // //add grass
                 const r = Math.random()
                 if (r < 0.3) {
@@ -45,27 +44,24 @@ export function mapSystem(layer: PhaserLayer) {
                 } else {
                     putTileAt(coord, Tileset.Grass2, "Background");
                 }
-
+                const warrior = get_land_barbarians(1, x, y)
                 //add rock
-                const r2 = Math.random();
-                if (r2 < pRock) {
-                    putTileAt(coord, Tileset.Rock1, "Foreground");
-                } else if (r2 < pRock * 2) {
-                    putTileAt(coord, Tileset.Rock2, "Foreground");
-                } else if (r2 < pRock * 3) {
-                    putTileAt(coord, Tileset.Rock3, "Foreground");
-                } else if (r2 < pRock * 4) {
-                    putTileAt(coord, Tileset.Rock4, "Foreground");
-                } else if (r2 < pRock * 5) {
-                    putTileAt(coord, Tileset.Tree1, "Foreground");
-                } else if (r2 < pRock * 6) {
-                    putTileAt(coord, Tileset.Tree2, "Foreground");
-                } else if (r2 < pRock * 7) {
-                    putTileAt(coord, Tileset.Tree3, "Foreground");
-                } else if (r2 < pRock * 8) {
-                    putTileAt(coord, Tileset.Tree4, "Foreground");
-                } else if (r2 < pRock * 9) {
-                    putTileAt(coord, Tileset.Tree5, "Foreground");
+                // const r2 = Math.random();
+                if (warrior <= 20) {
+                    putTileAt(coord, TilesetLevel.Level1, "Foreground");
+                } else if (warrior <= 50) {
+                    putTileAt(coord, TilesetLevel.Level2, "Foreground");
+                } else if (warrior <= 100) {
+                    const r = Math.random()
+                    if(r<0.5){
+                        putTileAt(coord, TilesetLevel.Level3, "Foreground");
+                    }else{
+                        putTileAt(coord, TilesetLevel.Level3_1, "Foreground");
+                    }
+                } else if (warrior <= 200) {
+                    putTileAt(coord, TilesetLevel.Level4, "Foreground");
+                } else if (warrior <= 400) {
+                    putTileAt(coord, TilesetLevel.Level5, "Foreground");
                 }
             }
         }
