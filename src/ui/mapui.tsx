@@ -34,6 +34,7 @@ export default function MapUI() {
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     const landWarriors = useEntityQuery([Has(components.Warrior)],{updateOnValueChange:true})
+    
   
     useEffect(() => {
         console.log("map base change");
@@ -127,19 +128,19 @@ export default function MapUI() {
             const balance = warrior.balance
             if (balance == 0) {
                 putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
-                putTileAt(coord, TilesetNum.Num0, "Top3");
+                putTileAt(coord, TilesetNum.Num0, "Num");
             }
             else if (balance < 10) {
                 putTileAt(coord, TilesetSoldier.Soldier1, "Top2");
-                putTileAt(coord, TilesetNum.Num1 + balance - 1, "Top3");
+                putTileAt(coord, TilesetNum.Num1 + balance - 1, "Num");
             } else if (balance < 100) {
                 putTileAt(coord, TilesetSoldier.Soldier10, "Top2");
                 const b = Math.floor(balance / 10)
-                putTileAt(coord, TilesetNum.Num1 + b - 1, "Top3");
+                putTileAt(coord, TilesetNum.Num1 + b - 1, "Num");
             } else if (balance < 1000) {
                 putTileAt(coord, TilesetSoldier.Soldier100, "Top2");
                 const b = Math.floor(balance / 100)
-                putTileAt(coord, TilesetNum.Num1 + b - 1, "Top3");
+                putTileAt(coord, TilesetNum.Num1 + b - 1, "Num");
             }
         })
     }, [landWarriors])
@@ -161,16 +162,17 @@ export default function MapUI() {
                 case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
                 // case BuildType.Base: tile = TilesetTown.Town00; break;
             }
-            console.log("mapLands tile",buildLand,tile);
+            console.log("mapLands tile",land,tile);
             
-            putTileAt(buildLand, tile, "Top");
+            // putTileAt(buildLand, tile, "Top");
+
             if (land.owner == account?.address) {
                 putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
             } else {
                 putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");
             }
         })
-    }, [mapLands])
+    }, [mapLands,account])
 
     return (
         <>

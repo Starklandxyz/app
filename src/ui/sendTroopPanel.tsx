@@ -99,6 +99,9 @@ export default function SendTroopPanel() {
         if(!sendTroopCtr.troop){
             return 0
         }
+        if(!myBase){
+            return 0
+        }
         return calDistanceFromBase(myBase,sendTroopCtr.troop.to)
     },[myBase,sendTroopCtr])
 

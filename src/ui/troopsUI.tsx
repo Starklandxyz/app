@@ -78,7 +78,7 @@ export default function TroopsUI() {
                 flip = true
             }
             // console.log("createArmey", value);
-            createArmey(objectPool, value.id, pos, left, flip)
+            
             if (value.owner == account?.address) {
                 if (value.retreat) {
                     hideFlag(value.from)
@@ -86,6 +86,8 @@ export default function TroopsUI() {
             }
             if (value.startTime == 0) {
                 hideFlag(value.to)
+            }else{
+                createArmey(objectPool, value.id, pos, left, flip)
             }
         })
     }, [timenow])
@@ -206,7 +208,7 @@ export default function TroopsUI() {
                 sprite.rotation = 0
                 sprite.z = 10
                 sprite.depth = 12
-                console.log("createArmey", sprite);
+                // console.log("createArmey", sprite);
             }
         })
         const nameObj = pool.get("armey_name_" + id, "Text")

@@ -35,6 +35,7 @@ const mainMap = defineMapConfig({
             Top3: { tilesets: ["Default"] },
             Select: { tilesets: ["Default"]},
             Flag: { tilesets: ["Default"] },
+            Num: { tilesets: ["Default"] },
         },
         defaultLayer: "Background",
     },

@@ -377,5 +377,25 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    UpgradeCost: (() => {
+      const name = "UpgradeCost";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          x: RecsType.Number,
+          y: RecsType.Number,
+          start_time: RecsType.Number,
+          end_time: RecsType.Number,
+          target_level: RecsType.Number,
+          claimed: RecsType.Boolean,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
   };
 }
