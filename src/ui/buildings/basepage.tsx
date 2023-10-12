@@ -273,7 +273,7 @@ export default function BasePage() {
 
   const zoomto = (land: Land) => {
     const pixelPosition = tileCoordToPixelCoord(
-      { x: land.x+1, y: land.y+1 },
+      { x: land.x + 1, y: land.y + 1 },
       TILE_WIDTH,
       TILE_HEIGHT
     );
@@ -284,7 +284,7 @@ export default function BasePage() {
     <div
       style={{
         width: 240,
-        height: 350,
+        height: 400,
         lineHeight: 0.3,
         backgroundColor: "rgba(0, 0, 0, 0.5)",
         padding: 10,
@@ -292,17 +292,27 @@ export default function BasePage() {
         paddingTop: 1,
       }}
     >
-      <div>
+      <div
+        style={{
+          border: "1px solid yellow",
+          borderRadius: 10,
+          padding: "12px 6px",
+          marginTop: "12px",
+        }}
+      >
         {base && (
-          <span style={{ cursor: "pointer" }} onClick={() => zoomto(base)}>
-            Base ({base?.x},{base?.y}) +{getBaseGoldPerHour}Gold/H
-          </span>
+          <ResourceItem>
+            <span className="name" onClick={() => zoomto(base)}>
+              Base {base?.x},{base?.y}{" "}
+            </span>
+            <span className="speed">{getBaseGoldPerHour} Gold/H</span>
+          </ResourceItem>
         )}
-        <div>
-          <h3 style={{float:"left", fontWeight:"bold"}}>LV {getBaseLevel}</h3>
-          <NesButton style={{ float: "right", minHeight: 30 }}>
-            Upgrade
-          </NesButton>
+        <div style={{ display: "flex", marginTop: "8px", paddingLeft:"6px" }}>
+          <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
+            LV {getBaseLevel}
+          </span>
+          <NesButton style={{ minHeight: 30 }}>Upgrade</NesButton>
         </div>
       </div>
       <div
@@ -310,7 +320,7 @@ export default function BasePage() {
           border: "1px solid yellow",
           borderRadius: 10,
           padding: "12px 6px",
-          marginTop: "42px",
+          marginTop: "12px",
         }}
       >
         <ResourceItem>
@@ -348,17 +358,15 @@ export default function BasePage() {
           borderRadius: 10,
           padding: "12px 6px",
           marginTop: "16px",
-          display:"flex",
-          flexDirection:"column",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <div style={{ display: "flex" }}>
-          <span style={{ alignSelf: "center",flex:1 }}>
-            Claimable
-          </span>
+          <span style={{ alignSelf: "center", flex: 1 }}>Claimable</span>
           <NesButton
             onClick={() => claimAll()}
-            style={{ marginRight: 4, height: 26, justifyContent:"flex-end" }}
+            style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }}
           >
             Claim All
           </NesButton>
