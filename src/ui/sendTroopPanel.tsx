@@ -172,7 +172,8 @@ export default function SendTroopPanel() {
         }
         var size = 1
 
-        troops.map(entity => {
+        for (let index = 0; index < troops.length; index++) {
+            const entity = troops[index];
             const troop = getComponentValue(components.Troop, entity)
             // console.log("getMyTroopSize",entity,troop);
             if (troop?.owner == account.address) {
@@ -180,9 +181,11 @@ export default function SendTroopPanel() {
                     size++
                 } else {
                     size = troop.index
+                    break
                 }
             }
-        })
+            
+        }
         return size
     }
 
