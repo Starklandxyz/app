@@ -322,7 +322,7 @@ export default function BasePage() {
           <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
             LV {getBaseLevel}
           </span>
-          <NesButton style={{ minHeight: 30 }}>Upgrade</NesButton>
+          <NesButton style={{ minHeight: 30 }} onClick={()=>updateBase()}>Upgrade</NesButton>
 
         </div>
       </div>

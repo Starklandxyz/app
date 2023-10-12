@@ -126,6 +126,30 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const upgradeBuild = async (signer: Account, map_id: number,x:number=0,y:number=0) => {
+    try {
+      // console.log("recoverEnergy start");
+      const tx = await execute(signer, "upgrade_building", [map_id,x,y]);
+
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      // console.log("roll receipt:", receipt);
+      const events = getEvents(receipt);
+      // console.log(events);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    } finally {
+      // Position.removeOverride(positionId);
+      // Moves.removeOverride(movesId);
+    }
+    return undefined;
+  };
+
   const adminAttack = async (signer: Account, map_id: number,x:number,y:number) => {
     try {
       // console.log("recoverEnergy start");
@@ -289,6 +313,7 @@ export function createSystemCalls(
     airdrop,
     troopEnterLand,
     retreatTroop,
+    upgradeBuild,
     takeWarrior,
     sendTroop,
     claimMining,
