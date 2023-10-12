@@ -48,7 +48,7 @@ export default function UI() {
             <SendTroopPanel />
             <UserBuildingPanel/>
             <AirdropPanel/>
-            <UpgradePanel/>
+            {/* <UpgradePanel/> */}
         </Wrapper>
     );
 };
