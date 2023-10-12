@@ -8,7 +8,8 @@ import { store } from '../store/store';
 import { getBuildName } from '../types/Build';
 import { getEntityIdFromKeys } from '../dojo/parseEvent';
 import NesButton from "../ui/components/NesButton";
-import { toastError } from '../utils';
+import { toastError, toastSuccess } from '../utils';
+import { Upgrate_Time } from '../contractconfig';
 
 export default function UpgradePanel() {
     const { account, phaserLayer, camera } = store();
@@ -55,20 +56,20 @@ export default function UpgradePanel() {
             <div className="buildneedbox buildneedenough">{buildPrice ? pow * buildPrice.iron / 1_000_000 : 0} Iron</div>
         </div>
 
-    }, [buildPrice])
+    }, [buildPrice,land,updateLand])
 
     const updateTime = useMemo(() => {
         if (!land) {
             return 0
         }
-        const pow = Math.pow(2, land.level - 1)
-        return "Update Time : " + pow + "h"
+        const pow = Math.pow(2, land.level - 1) * Upgrate_Time
+        return "Update Time : " + pow + "s"
     }, [land])
 
     const update = async () => {
         const result = await upgradeBuild(account!, 1, updateLand?.x, updateLand?.y)
         if (result && result.length > 0) {
-            toastError("Start Upgrade...")
+            toastSuccess("Start Upgrade...")
             updateStore.setState({updateLand:undefined})
         } else {
             toastError("Upgrade failed")

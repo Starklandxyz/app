@@ -19,6 +19,7 @@ import FarmlandPage from "./farmlandpage";
 import CampPage from "./camppage";
 import GoldMinePage from "./goldminepage";
 import IronMinePage from "./ironminepage";
+import { handleSQLResult } from "../../utils/handleutils";
 
 export default function UserBuildingPanel() {
     const [showBase, setShowBase] = useState(true)
@@ -27,6 +28,17 @@ export default function UserBuildingPanel() {
     const [showGold, setShowGold] = useState(false)
     const [showIron, setShowIron] = useState(false)
 
+    const { account, phaserLayer } = store()
+
+    // const [training, setTraining] = useState<Training>(new Training())
+
+    const {
+        world,
+        networkLayer: {
+            components,
+            network: { graphSdk }
+        }
+    } = phaserLayer!
     useEffect(() => {
         if (showBase) {
             setShowFarm(false)
@@ -73,6 +85,16 @@ export default function UserBuildingPanel() {
     }, [showIron])
 
 
+    useEffect(() => {
+        fetchBuildPrice()
+    }, [])
+
+    const fetchBuildPrice = async () => {
+        const prices = await graphSdk.getBuildPrice({ map_id: "0x1" })
+        console.log("fetchBuildPrice", prices);
+        const edges = prices.data.entities?.edges
+        handleSQLResult(edges, components)
+    }
 
     return (
         <ClickWrapper>

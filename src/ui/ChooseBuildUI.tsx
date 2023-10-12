@@ -60,18 +60,6 @@ export default function ChooseBuildUI() {
         setSelect(type)
     }
 
-    useEffect(() => {
-        fetchBuildPrice()
-    }, [])
-
-    const fetchBuildPrice = async () => {
-        const prices = await graphSdk.getBuildPrice({ map_id: "0x1" })
-        console.log("fetchBuildPrice", prices);
-        const edges = prices.data.entities?.edges
-        handleSQLResult(edges, components)
-    }
-
-
     const buildConfirm = async () => {
         if (!buildLand) {
             return

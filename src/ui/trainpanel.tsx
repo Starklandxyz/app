@@ -22,7 +22,7 @@ export default function TrainPanel() {
     const {
         world,
         networkLayer: {
-            systemCalls: { trainWarrior, airdrop, takeWarrior },
+            systemCalls: { trainWarrior, admin, takeWarrior },
             components,
             network: { graphSdk }
         }
@@ -30,9 +30,9 @@ export default function TrainPanel() {
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
-    const training = useComponentValue(components.Training,getEntityIdFromKeys([1n,BigInt(account ? account.address : "")]))
+    const training = useComponentValue(components.Training, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]))
 
-    const warriorConfig = useComponentValue(components.WarriorConfig,getEntityIdFromKeys([1n]),new Warrior())
+    const warriorConfig = useComponentValue(components.WarriorConfig, getEntityIdFromKeys([1n]), new Warrior())
 
     useEffect(() => {
         if (!player || !account) {
@@ -41,26 +41,22 @@ export default function TrainPanel() {
         fetchTrainingInfo(account)
     }, [player, account])
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchTrainingConfig()
-    },[])
+    }, [])
 
-    const fetchTrainingConfig = async()=>{
-        const t = await graphSdk.getWarriorConfig({ map_id: "0x1"})
+    const fetchTrainingConfig = async () => {
+        const t = await graphSdk.getWarriorConfig({ map_id: "0x1" })
         console.log("fetchTrainingConfig", t);
         const edges = t.data.entities?.edges
-        handleSQLResult(edges,components)
+        handleSQLResult(edges, components)
     }
-    useEffect(()=>{
-        console.log("warriorConfig",warriorConfig);
-        
-    },[warriorConfig])
 
     const fetchTrainingInfo = async (account: Account) => {
         const t = await graphSdk.getTrainingByKey({ map_id: "0x1", key: account.address })
         console.log("fetchTrainingInfo", t);
         const edges = t.data.entities?.edges
-        handleSQLResult(edges,components)
+        handleSQLResult(edges, components)
     }
 
     const claim = async () => {
@@ -89,16 +85,16 @@ export default function TrainPanel() {
             return
         }
 
-        const entityIndex = getEntityIdFromKeys([1n,BigInt(account.address)])
-        if (getComponentValue(components.Gold,entityIndex)?.balance!  < warriorConfig.Train_Gold * inputValue) {
+        const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
+        if (getComponentValue(components.Gold, entityIndex)?.balance! < warriorConfig.Train_Gold * inputValue) {
             toastError("Gold is not enough")
             return
         }
-        if (getComponentValue(components.Food,entityIndex)?.balance!  < warriorConfig.Train_Food * inputValue) {
+        if (getComponentValue(components.Food, entityIndex)?.balance! < warriorConfig.Train_Food * inputValue) {
             toastError("Food is not enough")
             return
         }
-        if (getComponentValue(components.Iron,entityIndex)?.balance!  < warriorConfig.Train_Iron * inputValue) {
+        if (getComponentValue(components.Iron, entityIndex)?.balance! < warriorConfig.Train_Iron * inputValue) {
             toastError("Iron is not enough")
             return
         }
@@ -127,12 +123,12 @@ export default function TrainPanel() {
     const calTotalTime = useMemo(() => {
         const total = warriorConfig.Train_Time * inputValue
         return parseTime(total)
-    }, [inputValue,warriorConfig])
+    }, [inputValue, warriorConfig])
 
     const calConsume = useMemo(() => {
-        var result = (inputValue * warriorConfig.Train_Food)/1_000_000 + " Food, " + (inputValue * warriorConfig.Train_Gold)/1_000_000 + " Gold"
+        var result = (inputValue * warriorConfig.Train_Food) / 1_000_000 + " Food, " + (inputValue * warriorConfig.Train_Gold) / 1_000_000 + " Gold"
         return result
-    }, [inputValue,warriorConfig])
+    }, [inputValue, warriorConfig])
 
     const calClaimable = (train: any) => {
 
@@ -152,7 +148,7 @@ export default function TrainPanel() {
 
     const getTrainTime = useMemo(() => {
         // console.log("base change",bases.get(account?.address!));
-        if(!training){
+        if (!training) {
             return 0
         }
         const usedtime = timenow - training.start_time
@@ -161,14 +157,23 @@ export default function TrainPanel() {
         }
         const m = Math.floor((usedtime) % warriorConfig.Train_Time)
         return m + "/" + warriorConfig.Train_Time + "s"
-    }, [timenow,warriorConfig])
+    }, [timenow, warriorConfig])
 
     const claimable = useMemo(() => {
-        if(!training){
+        if (!training) {
             return 0
         }
         return calClaimable(training)
-    }, [training, timenow,warriorConfig])
+    }, [training, timenow, warriorConfig])
+
+    const adminclick = async () => {
+        const result = await admin(account!, 1);
+        if (result && result.length > 0) {
+            toastSuccess("Success")
+        } else {
+            toastError("Fail")
+        }
+    }
 
     return (<ClickWrapper>
         <Container>
@@ -198,6 +203,7 @@ export default function TrainPanel() {
                         </div>
                 }
             </div>
+            <button onClick={() => adminclick()}>Admin</button>
         </Container>
     </ClickWrapper>)
 }
