@@ -107,12 +107,19 @@ export default function ChooseBuildUI() {
                     const land_type = get_land_type(1, x, y)
                     if (selectBuild == BuildType.GoldMine) {
                         if (land_type == LandType.Gold) {
-                            hasMine = true
+                            const has = await fetchHasMiner(1, x, y)
+                            if(!has){
+                                hasMine = true
+                            }
+                            
                         }
                     }
                     if (selectBuild == BuildType.IronMine) {
                         if (land_type == LandType.Iron) {
-                            hasMine = true
+                            const has = await fetchHasMiner(1, x, y)
+                            if(!has){
+                                hasMine = true
+                            }
                         }
                     }
                 }
@@ -122,19 +129,21 @@ export default function ChooseBuildUI() {
                 return
             }
 
-            for (let i = -1; i < 2; i++) {
-                for (let j = -1; j < 2; j++) {
-                    const x = buildLand.x + i
-                    const y = buildLand.y + j
-                    const has = await fetchHasMiner(1, x, y)
-                    console.log("buildConfirm has", has);
+            // for (let i = -1; i < 2; i++) {
+            //     for (let j = -1; j < 2; j++) {
+            //         const x = buildLand.x + i
+            //         const y = buildLand.y + j
+            //         // const land_type = get_land_type(1, x, y)
 
-                    if (has) {
-                        toastError("There is no available mine around")
-                        return
-                    }
-                }
-            }
+            //         const has = await fetchHasMiner(1, x, y)
+            //         console.log("buildConfirm has", has);
+
+            //         if (has) {
+            //             toastError("There is no available mine around")
+            //             return
+            //         }
+            //     }
+            // }
         }
 
 
@@ -143,7 +152,9 @@ export default function ChooseBuildUI() {
             toastSuccess("Build Success")
             if (selectBuild == BuildType.Farmland) {
                 claimToMine(account, 1, buildLand.x, buildLand.y, buildLand.x, buildLand.y)
-            } else {
+            } else if(selectBuild == BuildType.Camp){
+                
+            }else{
                 showSelectArea(buildLand.x, buildLand.y)
             }
             controlStore.setState({ buildLand: undefined })

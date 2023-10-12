@@ -10,8 +10,8 @@ import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
 
-export default function Task1() {
-    const airdropIndex = 1
+export default function Task3() {
+    const airdropIndex = 3
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
@@ -20,9 +20,9 @@ export default function Task1() {
         }
     } = phaserLayer!
 
-    const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 1n]))
+    const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 2n]))
 
-    const myBase = useComponentValue(sqlComponent.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    // const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     const airdropConfig = useComponentValue(sqlComponent.AirdropConfig, getEntityIdFromKeys([1n, BigInt(airdropIndex)]))
 
@@ -39,19 +39,23 @@ export default function Task1() {
     }
 
     //have a base
-    const task1Button = useMemo(() => {
+    const taskButton = useMemo(() => {
         if (!account) {
             return <div>Not Satisfied</div>
         }
-        if (myBase) {
-            if (userairdrop) {
+        const troop1 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),1n],))
+        
+        if (troop1) {
+            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 3n]))
+            if (airdrop) {
                 return <div>Claimed</div>
             } else {
-                return <img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }} />
+                return <img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }}/>
             }
         }
         return <div>Not Satisfied</div>
-    }, [myBase,userairdrop])
+    }, [userairdrop])
+
 
     const getRewardDiv = useMemo(() => {
         console.log("getRewardDiv",airdropConfig);
@@ -75,11 +79,13 @@ export default function Task1() {
             }</>
 
     }, [airdropConfig])
+
+
     return (
         <tr>
-            <td>1. Build a Base</td>
-            {getRewardDiv}
-            <td>{task1Button}</td>
+            <td>3. Have 1 Troop</td>
+                {getRewardDiv}
+            <td>{taskButton}</td>
         </tr>
     )
 }

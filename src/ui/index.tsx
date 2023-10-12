@@ -16,6 +16,7 @@ import ListenEvent from "./listenevent";
 import SendTroopPanel from "./sendTroopPanel";
 import UserBuildingPanel from "./userBuildingPanel";
 import AirdropPanel from "./airdrop/airdropPanel";
+import UpgradePanel from "./upgradePanel";
 
 export default function UI() {
     const layers = store((state) => {
@@ -47,6 +48,7 @@ export default function UI() {
             <SendTroopPanel />
             <UserBuildingPanel/>
             <AirdropPanel/>
+            {/* <UpgradePanel/> */}
         </Wrapper>
     );
 };

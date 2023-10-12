@@ -20,6 +20,12 @@ import closeicon from "../../../public/assets//icons/closeicon.png"
 import gifticon from "../../../public/assets//icons/gifticon.png"
 import Task1 from './task1';
 import Task2 from './task2';
+import Task3 from './task3';
+import Task4 from './task4';
+import Task5 from './task5';
+import Task6 from './task6';
+import Task7 from './task7';
+import Task8 from './task8';
 
 export default function AirdropPanel() {
     const { account, phaserLayer } = store();
@@ -40,7 +46,7 @@ export default function AirdropPanel() {
 
     const getAirdropConfig = async () => {
         const result = await graphSdk.getAirdropConfig({ map_id: "0x1" });
-        console.log("fetchAirdrop", result);
+        console.log("getAirdropConfig", result);
         const edges = result.data.entities?.edges
         handleSQLResult(edges, sqlComponent)
     }
@@ -91,48 +97,6 @@ export default function AirdropPanel() {
         }
     }
 
-    //have 20 warrior
-    const task2Button = useMemo(() => {
-        if (!account) {
-            return <div>Not Satisfied</div>
-        }
-        const userWarrior = getComponentValue(sqlComponent.UserWarrior,getEntityIdFromKeys([1n,BigInt(account.address)]))
-        if (userWarrior) {
-            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 2n]))
-            if (airdrop) {
-                return <div>Claimed</div>
-            } else {
-                if(userWarrior.balance>=20){
-                    return <img src={gifticon} onClick={() => claimairdrop(2)} style={{ color: "green" }}/>
-                }
-                
-            }
-        }
-        return <div>Not Satisfied</div>
-    }, [showTask])
-
-     //have 1 troop
-     const task3Button = useMemo(() => {
-        if (!account) {
-            return <div>Not Satisfied</div>
-        }
-        const troop1 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),1n],))
-        const troop2 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),2n],))
-        const troop3 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),3n],))
-        
-        if (userWarrior) {
-            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 3n]))
-            if (airdrop) {
-                return <div>Claimed</div>
-            } else {
-                if(userWarrior.balance>=20){
-                    return <img src={gifticon} onClick={() => claimairdrop(3)} style={{ color: "green" }}/>
-                }
-            }
-        }
-        return <div>Not Satisfied</div>
-    }, [showTask])
-
     return (
         <ClickWrapper>
             {
@@ -153,66 +117,12 @@ export default function AirdropPanel() {
                             <table cellPadding={13}>
                                 <Task1/>
                                 <Task2/>
-                                <tr>
-                                    <td>3. Have 1 Troop</td>
-                                    <td>
-                                        <img src={soldierIcon} />x10
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x200
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x200
-                                    </td>
-                                    <td>{task3Button}</td>
-                                </tr>
-                                <tr>
-                                    <td>4. Occupied a Land</td>
-                                    <td>
-                                        <img src={soldierIcon} />x20
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x200
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x200
-                                    </td>
-                                    <td><button>Claim</button></td>
-                                </tr>
-                                <tr>
-                                    <td>5. Build a Farmland</td>
-                                    <td>
-                                        {/* <img src={soldierIcon} />x0 */}
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x400
-                                        {/* <img style={{ marginLeft: 5 }} src={ironIcon} />x000 */}
-                                    </td>
-                                    <td><button>Claim</button></td>
-                                </tr>
-                                <tr>
-                                    <td>6. Build a GoldMine</td>
-                                    <td>
-                                        {/* <img src={soldierIcon} />x10 */}
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x400
-                                        {/* <img style={{ marginLeft: 5 }} src={ironIcon} />x500 */}
-                                    </td>
-                                    <td><button>Claim</button></td>
-                                </tr>
-                                <tr>
-                                    <td>7. Build a IronMine</td>
-                                    <td>
-                                        {/* <img src={soldierIcon} />x0 */}
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        {/* <img style={{ marginLeft: 5 }} src={goldIcon} />x500 */}
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x400
-                                    </td>
-                                    <td><button>Claim</button></td>
-                                </tr>
-                                <tr>
-                                    <td>8. Build a Camp</td>
-                                    <td>
-                                        <img src={soldierIcon} />x20
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x1000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x100
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x100
-                                    </td>
-                                    <td><button>Claim</button></td>
-                                </tr>
+                                <Task3/>
+                                <Task4/>
+                                <Task5/>
+                                <Task6/>
+                               <Task7/>
+                               <Task8/>
                             </table>
                         </div>
 

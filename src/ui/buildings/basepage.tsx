@@ -273,7 +273,7 @@ export default function BasePage() {
 
   const zoomto = (land: Land) => {
     const pixelPosition = tileCoordToPixelCoord(
-      { x: land.x, y: land.y },
+      { x: land.x+1, y: land.y+1 },
       TILE_WIDTH,
       TILE_HEIGHT
     );

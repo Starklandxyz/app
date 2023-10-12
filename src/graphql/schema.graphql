@@ -23,7 +23,7 @@ query getAllPlayers {
 }
 
 query getAirdropByKey($map_id:String, $key: String) {
-  entities(first:1000, keys: [$map_id,$key,"%s"]) {
+  entities(first:1000, keys: [$map_id,$key,"%"]) {
     totalCount
     edges {
       node {
@@ -108,7 +108,7 @@ query getWarriorConfig($map_id:String) {
 }
 
 query getAirdropConfig($map_id:String) {
-  entities(first:1000, keys: [$map_id,"%s"]) {
+  entities(first:1000, keys: [$map_id,"%"]) {
     totalCount
     edges {
       node {

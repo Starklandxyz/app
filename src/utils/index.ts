@@ -120,7 +120,7 @@ export function hexToString(hex: string | undefined): string {
     return ''
 }
 
-export function toastError(msg: string, position: ToastPosition = "top-right") {
+export function toastError(msg: string, position: ToastPosition = "top-center") {
     toast.error(msg, {
         position: position,
         autoClose: 3000,
@@ -133,7 +133,7 @@ export function toastError(msg: string, position: ToastPosition = "top-right") {
     });
 }
 
-export function toastWarning(msg: string, position: ToastPosition = "top-right") {
+export function toastWarning(msg: string, position: ToastPosition = "top-center") {
     toast.warning(msg, {
         position: position,
         autoClose: 3000,
@@ -146,7 +146,7 @@ export function toastWarning(msg: string, position: ToastPosition = "top-right")
     });
 }
 
-export function toastInfo(msg: string, position: ToastPosition = "top-right") {
+export function toastInfo(msg: string, position: ToastPosition = "top-center") {
     toast.info(msg, {
         position: position,
         autoClose: 3000,
@@ -159,7 +159,7 @@ export function toastInfo(msg: string, position: ToastPosition = "top-right") {
     });
 }
 
-export function toastSuccess(msg: string, position: ToastPosition = "top-right") {
+export function toastSuccess(msg: string, position: ToastPosition = "top-center") {
     toast.success(msg, {
         position: position,
         autoClose: 3000,

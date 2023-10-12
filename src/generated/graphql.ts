@@ -2176,7 +2176,7 @@ export const GetAllPlayersDocument = gql`
     `;
 export const GetAirdropByKeyDocument = gql`
     query getAirdropByKey($map_id: String, $key: String) {
-  entities(first: 1000, keys: [$map_id, $key, "%s"]) {
+  entities(first: 1000, keys: [$map_id, $key, "%"]) {
     totalCount
     edges {
       node {
@@ -2263,7 +2263,7 @@ export const GetWarriorConfigDocument = gql`
     `;
 export const GetAirdropConfigDocument = gql`
     query getAirdropConfig($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%s"]) {
+  entities(first: 1000, keys: [$map_id, "%"]) {
     totalCount
     edges {
       node {

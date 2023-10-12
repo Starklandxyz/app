@@ -11,6 +11,7 @@ import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
 
 export default function Task2() {
+    const airdropIndex = 2
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
@@ -21,13 +22,15 @@ export default function Task2() {
 
     const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 2n]))
 
-    const myBase = useComponentValue(sqlComponent.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+
+    const airdropConfig = useComponentValue(sqlComponent.AirdropConfig, getEntityIdFromKeys([1n, BigInt(airdropIndex)]))
 
     const claimairdrop = async () => {
         if (!account) {
             return
         }
-        const result = await airdrop(account, 1, 2)
+        const result = await airdrop(account, 1, airdropIndex)
         if (result && result.length > 0) {
             toastSuccess("Airdrop success")
         } else {
@@ -40,24 +43,45 @@ export default function Task2() {
         if (!account) {
             return <div>Not Satisfied</div>
         }
-        if (myBase) {
+        if (userWarrior) {
             if (userairdrop) {
                 return <div>Claimed</div>
             } else {
+                if(userWarrior.balance>=20)
                 return <img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }} />
             }
         }
         return <div>Not Satisfied</div>
-    }, [myBase,userairdrop])
+    }, [userWarrior,userairdrop])
+
+
+    const getRewardDiv = useMemo(() => {
+        console.log("getRewardDiv",airdropConfig);
+        return <>
+            {
+                airdropConfig ?
+                    <td>
+                        {
+                            airdropConfig.reward_warrior == 0 ? <></> : <><img src={soldierIcon} />x{airdropConfig.reward_warrior}</>
+                        }
+                        {
+                            airdropConfig.reward_food == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={foodIcon} />x{airdropConfig.reward_food/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_gold == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={goldIcon} />x{airdropConfig.reward_gold/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_iron == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={ironIcon} />x{airdropConfig.reward_iron/1_000_000}</>
+                        }
+                    </td> : <td></td>
+            }</>
+
+    }, [airdropConfig])
 
     return (
         <tr>
         <td>2. Have 20 Warriors</td>
-        <td>
-            <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-            <img style={{ marginLeft: 5 }} src={goldIcon} />x500
-            <img style={{ marginLeft: 5 }} src={ironIcon} />x500
-        </td>
+        {getRewardDiv}
         <td>{taskButton}</td>
     </tr>
     )
