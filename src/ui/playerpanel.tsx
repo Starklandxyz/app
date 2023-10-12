@@ -1,207 +1,267 @@
-import { getTimestamp, hexToString, positionToCoorp, toastError, toastSuccess } from "../utils";
-import starklogo from "../../public/starkneticon.png"
-import foodIcon from "../../public/assets/icons/food.png"
-import ironIcon from "../../public/assets/icons/iron.png"
-import goldIcon from "../../public/assets/icons/gold.png"
-import soldierIcon from "../../public/assets/icons/soldier.png"
-import flagIcon from "../../public/assets/icons/flag.png"
-import landIcon from "../../public/assets/icons/landicon.png"
+import {
+  getTimestamp,
+  hexToString,
+  positionToCoorp,
+  toastError,
+  toastSuccess,
+} from "../utils";
+import starklogo from "../../public/starkneticon.png";
+import foodIcon from "../../public/assets/icons/food.png";
+import ironIcon from "../../public/assets/icons/iron.png";
+import goldIcon from "../../public/assets/icons/gold.png";
+import soldierIcon from "../../public/assets/icons/soldier.png";
+import flagIcon from "../../public/assets/icons/flag.png";
+import landIcon from "../../public/assets/icons/landicon.png";
 import { store } from "../store/store";
 import { useEffect, useMemo, useRef } from "react";
-import styled from 'styled-components';
-import { ComponentValue, Has, defineSystem, getComponentEntities, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+import styled from "styled-components";
+import {
+  ComponentValue,
+  Has,
+  defineSystem,
+  getComponentEntities,
+  getComponentValue,
+  setComponent,
+} from "../../node_modules/@latticexyz/recs/src/index";
 import { handleSQLResult } from "../utils/handleutils";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { BuildType } from "../types/Build";
 import { controlStore } from "../store/controlStore";
+import NESButton from "./components/NesButton";
 
 export default function PlayerPanel() {
-    const { account, phaserLayer } = store();
-    const {
-        networkLayer: {
-            systemCalls: { airdrop },
-            world,
-            components: sqlComponent,
-            network: { graphSdk, wsClient }
-        }
-    } = phaserLayer!
+  const { account, phaserLayer } = store();
+  const {
+    networkLayer: {
+      systemCalls: { airdrop },
+      world,
+      components: sqlComponent,
+      network: { graphSdk, wsClient },
+    },
+  } = phaserLayer!;
 
-    const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
-    const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
-    const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
-    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
+  const food = useComponentValue(
+    sqlComponent.Food,
+    getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
+    { balance: 0 }
+  );
+  const gold = useComponentValue(
+    sqlComponent.Gold,
+    getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
+    { balance: 0 }
+  );
+  const iron = useComponentValue(
+    sqlComponent.Iron,
+    getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
+    { balance: 0 }
+  );
+  const userWarrior = useComponentValue(
+    sqlComponent.UserWarrior,
+    getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
+    { balance: 0 }
+  );
 
-    const player = useComponentValue(sqlComponent.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
+  const player = useComponentValue(
+    sqlComponent.Player,
+    getEntityIdFromKeys([BigInt(account ? account.address : "")])
+  );
 
-    const troops = useEntityQuery([Has(sqlComponent.Troop)], { updateOnValueChange: true })
+  const troops = useEntityQuery([Has(sqlComponent.Troop)], {
+    updateOnValueChange: true,
+  });
 
-    const landEntities = useEntityQuery([Has(sqlComponent.Land)], { updateOnValueChange: true })
+  const landEntities = useEntityQuery([Has(sqlComponent.Land)], {
+    updateOnValueChange: true,
+  });
 
-    const airdropClaimed = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([BigInt(account ? account.address : "")]))
+  const airdropClaimed = useComponentValue(
+    sqlComponent.Airdrop,
+    getEntityIdFromKeys([BigInt(account ? account.address : "")])
+  );
 
-    const {showTask} = controlStore()
+  const { showTask } = controlStore();
 
-
-    useEffect(() => {
-        if (!account) {
-            return
-        }
-        fetchAirdrop()
-        fetchResources()
-        fetchUserWarrior()
-    }, [account])
-
-    useEffect(() => {
-        fetchPlayersInfo()
-    }, [])
-
-
-    const getTotalLands =  useMemo(() => {
-        if (!account) {
-            return 0
-        }
-        let size = 0
-        landEntities.map(entity => {
-            const value = getComponentValue(sqlComponent.Land, entity)
-            // console.log("landEntities", value);
-            if (value && value.owner == account.address && value.building!=BuildType.Base) {
-                size++
-            }
-        })
-        return size
-    }, [landEntities, account])
-
-    const fetchAirdrop = async () => {
-        const resources = await graphSdk.getAirdropByKey({key: account?.address })
-        console.log("fetchAirdrop", resources);
-        const edges = resources.data.entities?.edges
-        handleSQLResult(edges, sqlComponent)
+  useEffect(() => {
+    if (!account) {
+      return;
     }
+    fetchAirdrop();
+    fetchResources();
+    fetchUserWarrior();
+  }, [account]);
 
-    const fetchUserWarrior = async () => {
-        const userWarrior = await graphSdk.getUserWarriorByKey({ map_id: "0x1", key: account?.address })
-        console.log("fetchUserWarrior", userWarrior);
-        const edges = userWarrior.data.entities?.edges
-        handleSQLResult(edges, sqlComponent)
+  useEffect(() => {
+    fetchPlayersInfo();
+  }, []);
+
+  const getTotalLands = useMemo(() => {
+    if (!account) {
+      return 0;
     }
+    let size = 0;
+    landEntities.map((entity) => {
+      const value = getComponentValue(sqlComponent.Land, entity);
+      // console.log("landEntities", value);
+      if (
+        value &&
+        value.owner == account.address &&
+        value.building != BuildType.Base
+      ) {
+        size++;
+      }
+    });
+    return size;
+  }, [landEntities, account]);
 
-    const fetchResources = async () => {
-        const resources = await graphSdk.getResoucesByKey({ map_id: "0x1", key: account?.address })
-        console.log("fetchResources", resources);
-        const edges = resources.data.entities?.edges
-        handleSQLResult(edges, sqlComponent)
+  const fetchAirdrop = async () => {
+    const resources = await graphSdk.getAirdropByKey({ key: account?.address });
+    console.log("fetchAirdrop", resources);
+    const edges = resources.data.entities?.edges;
+    handleSQLResult(edges, sqlComponent);
+  };
+
+  const fetchUserWarrior = async () => {
+    const userWarrior = await graphSdk.getUserWarriorByKey({
+      map_id: "0x1",
+      key: account?.address,
+    });
+    console.log("fetchUserWarrior", userWarrior);
+    const edges = userWarrior.data.entities?.edges;
+    handleSQLResult(edges, sqlComponent);
+  };
+
+  const fetchResources = async () => {
+    const resources = await graphSdk.getResoucesByKey({
+      map_id: "0x1",
+      key: account?.address,
+    });
+    console.log("fetchResources", resources);
+    const edges = resources.data.entities?.edges;
+    handleSQLResult(edges, sqlComponent);
+  };
+
+  const fetchPlayersInfo = async () => {
+    const playerInfo = await graphSdk.getAllPlayers();
+    console.log("fetchPlayersInfo", playerInfo);
+    const edges = playerInfo.data.entities?.edges;
+    handleSQLResult(edges, sqlComponent);
+  };
+
+  const getMyTroopSize = useMemo(() => {
+    // console.log("getMyTroopSize",account,troops);
+    if (!account) {
+      return 0;
     }
+    var size = 0;
 
-    const fetchPlayersInfo = async () => {
-        const playerInfo = await graphSdk.getAllPlayers()
-        console.log("fetchPlayersInfo", playerInfo);
-        const edges = playerInfo.data.entities?.edges
-        handleSQLResult(edges, sqlComponent)
+    troops.map((entity) => {
+      const troop = getComponentValue(sqlComponent.Troop, entity);
+      // console.log("getMyTroopSize",entity,troop);
+      if (troop?.owner == account.address && troop?.start_time != 0) {
+        size++;
+      }
+    });
+    return size;
+  }, [account, troops]);
+
+  const getPlayerName = useMemo(() => {
+    console.log("getPlayerName", player?.nick_name);
+    return hexToString(player?.nick_name);
+  }, [player]);
+
+  useEffect(() => {
+    console.log("airdropClaimed", airdropClaimed);
+  }, [airdropClaimed]);
+
+  const hasAirdrop = useMemo(() => {
+    if (!account) {
+      return false;
     }
+    if (airdropClaimed) {
+      return false;
+    } else {
+      return true;
+    }
+  }, [airdropClaimed, account]);
 
-    const getMyTroopSize = useMemo(() => {
-        // console.log("getMyTroopSize",account,troops);
-        if (!account) {
-            return 0
-        }
-        var size = 0
+  return (
+    <TopBarWrapper>
+      <LogoImage src={starklogo}></LogoImage>
+      <UsernameWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="user name"
+        data-tooltip-place="top"
+      >
+        {getPlayerName}
+      </UsernameWrapper>
 
-        troops.map(entity => {
-            const troop = getComponentValue(sqlComponent.Troop, entity)
-            // console.log("getMyTroopSize",entity,troop);
-            if (troop?.owner == account.address && troop?.start_time != 0) {
-                size++
-            }
-        })
-        return size
-    }, [account, troops])
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Food"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={foodIcon} alt="food" />
+        <ResourceValue>{food && food.balance / 1000000}</ResourceValue>
+      </ResourceItemWrapper>
 
-    const getPlayerName = useMemo(() => {
-        console.log("getPlayerName", player?.nick_name);
-        return hexToString(player?.nick_name)
-    }, [player])
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Gold"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={goldIcon} alt="gold" />
+        <ResourceValue>{gold && gold.balance / 1000000}</ResourceValue>
+      </ResourceItemWrapper>
 
-    useEffect(()=>{
-        console.log("airdropClaimed",airdropClaimed);
-    },[airdropClaimed])
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Iron"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={ironIcon} alt="iron" />
+        <ResourceValue>{iron && iron.balance / 1000000}</ResourceValue>
+      </ResourceItemWrapper>
 
-    const hasAirdrop = useMemo(()=>{
-        if(!account){
-            return false
-        }
-        if(airdropClaimed){
-            return false
-        }else{
-            return true
-        }
-    },[airdropClaimed,account])
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Land"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={landIcon} alt="land" />
+        <ResourceValue>{getTotalLands}/10</ResourceValue>
+      </ResourceItemWrapper>
 
-    return (
-        <TopBarWrapper>
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Soldiers"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={soldierIcon} alt="soldier" />
+        <ResourceValue>{userWarrior && userWarrior.balance}/20</ResourceValue>
+      </ResourceItemWrapper>
 
-            <LogoImage src={starklogo}>
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Troops"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={flagIcon} alt="flag" />
+        <ResourceValue>{getMyTroopSize}/1</ResourceValue>
+      </ResourceItemWrapper>
 
-            </LogoImage>
-            <UsernameWrapper data-tooltip-id="my-tooltip"
-                data-tooltip-content="user name"
-                data-tooltip-place="top">
-                {getPlayerName}
-            </UsernameWrapper>
-
-            <ResourceItemWrapper data-tooltip-id="my-tooltip"
-                data-tooltip-content="Food"
-                data-tooltip-place="top">
-                <ResourceIcon src={foodIcon} alt="food" />
-                <ResourceValue>{
-                    food && food.balance / 1000000
-                }</ResourceValue>
-            </ResourceItemWrapper>
-
-            <ResourceItemWrapper data-tooltip-id="my-tooltip"
-                data-tooltip-content="Gold"
-                data-tooltip-place="top" >
-                <ResourceIcon src={goldIcon} alt="gold" />
-                <ResourceValue>{gold && gold.balance / 1000000}</ResourceValue>
-            </ResourceItemWrapper>
-
-            <ResourceItemWrapper data-tooltip-id="my-tooltip"
-                data-tooltip-content="Iron"
-                data-tooltip-place="top">
-                <ResourceIcon src={ironIcon} alt="iron" />
-                <ResourceValue>{iron && iron.balance / 1000000}</ResourceValue>
-            </ResourceItemWrapper>
-
-            <ResourceItemWrapper data-tooltip-id="my-tooltip"
-                data-tooltip-content="Land"
-                data-tooltip-place="top">
-                <ResourceIcon src={landIcon} alt="land" />
-                <ResourceValue>{getTotalLands}/10</ResourceValue>
-            </ResourceItemWrapper>
-
-            <ResourceItemWrapper data-tooltip-id="my-tooltip"
-                data-tooltip-content="Soldiers"
-                data-tooltip-place="top">
-                <ResourceIcon src={soldierIcon} alt="soldier" />
-                <ResourceValue>{userWarrior && userWarrior.balance}/20</ResourceValue>
-            </ResourceItemWrapper>
-
-            <ResourceItemWrapper data-tooltip-id="my-tooltip"
-                data-tooltip-content="Troops"
-                data-tooltip-place="top">
-                <ResourceIcon src={flagIcon} alt="flag" />
-                <ResourceValue>{getMyTroopSize}/1</ResourceValue>
-            </ResourceItemWrapper>
-
-            <button style={{}} onClick={(() => controlStore.setState({showTask:true}))}>Task & Airdrop</button>
-            {/* {
+      <NESButton
+        style={{}}
+        onClick={() => controlStore.setState({ showTask: true })}
+      >
+        Task & Airdrop
+      </NESButton>
+      {/* {
                 !airdropClaimed && <button style={{}} onClick={(() => claimairdrop())}>Airdrop</button>
             } */}
-
-        </TopBarWrapper>
-    )
+    </TopBarWrapper>
+  );
 }
-
 
 // 定义顶部横条容器
 const TopBarWrapper = styled.div`
@@ -210,7 +270,6 @@ const TopBarWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   align-self: center;
-
 `;
 
 const LogoImage = styled.img`
@@ -218,7 +277,6 @@ const LogoImage = styled.img`
   height: 25px;
   margin-left: 2px;
 `;
-
 
 const UsernameWrapper = styled.div`
   margin-left: 4px;

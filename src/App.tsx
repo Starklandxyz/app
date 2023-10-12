@@ -1,4 +1,3 @@
-import './App.css';
 import { useEffect } from 'react';
 import { useNetworkLayer } from './hooks/useNetworkLayer';
 import { PhaserLayer } from './phaser/phaserLayer';
@@ -7,6 +6,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UI from './ui';
 import 'react-tooltip/dist/react-tooltip.css'
+import 'nes.css.14x/css/nes.min.css'
+import './App.css';
 import { Tooltip } from 'react-tooltip'
 
 function App() {

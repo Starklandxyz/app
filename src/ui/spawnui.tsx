@@ -11,6 +11,7 @@ import { toastError, toastInfo, toastSuccess } from "../utils";
 import { LandType, get_land_type } from "../types/Land";
 import { useComponentValue } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import NesButton from "./components/NesButton";
 
 export default function SpawnUI() {
     // const {player} = playerStore()
@@ -133,7 +134,7 @@ export default function SpawnUI() {
             return <></>
         }
 
-        return <button onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</button>
+        return <NesButton onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</NesButton>
     }, [account, myBase, show, player])
 
     return (

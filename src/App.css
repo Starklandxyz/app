@@ -114,3 +114,17 @@ button, select, input {
 .build_icon_select{
   background-color: rgba(100, 0, 250, 1);
 }
+
+/* Nes css style */
+.nes-btn {
+  padding: 4px 6px;
+}
+
+.nes-select {
+  font-size: 12px;
+}
+
+/* Custom */
+.small_fontsize {
+  font-size: 8px;
+}

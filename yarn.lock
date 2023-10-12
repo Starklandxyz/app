@@ -4636,6 +4636,11 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmmirror.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
+nes.css.14x@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmmirror.com/nes.css.14x/-/nes.css.14x-1.0.1.tgz#618ac7859ce75aaea2bf6fed93ca5cbc8407e08d"
+  integrity sha512-Wv76vKefAOOCLshcXItNQN2KETYn9GfiSlaCmjg709SnXZNIUgX38HBrUZK5Xn6be/5mEVfwi+E9My9/ZfyX2Q==
+
 no-case@^3.0.4:
   version "3.0.4"
   resolved "https://registry.npmmirror.com/no-case/-/no-case-3.0.4.tgz#d361fd5c9800f558551a8369fc0dcd4662b6124d"
