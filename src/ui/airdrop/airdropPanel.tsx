@@ -26,6 +26,7 @@ import Task5 from './task5';
 import Task6 from './task6';
 import Task7 from './task7';
 import Task8 from './task8';
+import { AUTO } from 'phaser';
 
 export default function AirdropPanel() {
     const { account, phaserLayer } = store();
@@ -106,10 +107,10 @@ export default function AirdropPanel() {
                         <div style={{ marginLeft: 210, fontSize: 20, marginTop: 10 }}>Task & Airdrop</div>
                         <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => { controlStore.setState({ showTask: false }) }} />
 
-                        <table style={{ paddingLeft: 18, paddingTop: 20 }}>
+                        <table style={{ paddingLeft: 18, marginTop: 20 }}>
                             <tr style={{ color: "pink", fontSize: 18 }}>
-                                <td width={180}>Task</td>
-                                <td width={100}>Reward</td>
+                                <td style={{textAlign:'center', width:"30%%"}}>Task</td>
+                                <td style={{textAlign:'center', width:"100%"}}>Reward</td>
                                 <td></td>
                             </tr>
                         </table>
