@@ -104,12 +104,14 @@ export function stringToHex(str: string): string {
 }
 
 export function hexToString(hex: string | undefined): string {
+    console.log(`hex: ${hex}`);
+    
     if (!hex) {
         return ''
     }
     try {
         let str = '';
-        for (let i = 0; i < hex.length; i += 2) {
+        for (let i = 2; i < hex.length; i += 2) {
             str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
         }
         const result = decodeURI(str);
