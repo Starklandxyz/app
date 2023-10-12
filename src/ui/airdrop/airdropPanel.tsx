@@ -46,7 +46,7 @@ export default function AirdropPanel() {
 
     const getAirdropConfig = async () => {
         const result = await graphSdk.getAirdropConfig({ map_id: "0x1" });
-        console.log("fetchAirdrop", result);
+        console.log("getAirdropConfig", result);
         const edges = result.data.entities?.edges
         handleSQLResult(edges, sqlComponent)
     }

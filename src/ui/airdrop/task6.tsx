@@ -23,13 +23,15 @@ export default function Task6() {
     } = phaserLayer!
 
     const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 2n]))
-    const mapLands = useEntityQuery([Has(sqlComponent.Land)],{updateOnValueChange:true})
+    const mapLands = useEntityQuery([Has(sqlComponent.Land)], { updateOnValueChange: true })
 
-    const claimairdrop = async (x:number,y:number) => {
+    const airdropConfig = useComponentValue(sqlComponent.AirdropConfig, getEntityIdFromKeys([1n, BigInt(airdropIndex)]))
+
+    const claimairdrop = async (x: number, y: number) => {
         if (!account) {
             return
         }
-        const result = await airdrop(account, 1, airdropIndex,x,y)
+        const result = await airdrop(account, 1, airdropIndex, x, y)
         if (result && result.length > 0) {
             toastSuccess("Airdrop success")
         } else {
@@ -47,8 +49,8 @@ export default function Task6() {
         let y = 0
         for (let index = 0; index < mapLands.length; index++) {
             const entity = mapLands[index];
-            const land = getComponentValue(sqlComponent.Land,entity)
-            if(land && land.owner == account.address && land.building == BuildType.GoldMine){
+            const land = getComponentValue(sqlComponent.Land, entity)
+            if (land && land.owner == account.address && land.building == BuildType.GoldMine) {
                 has = true
                 x = land.x
                 y = land.y
@@ -61,22 +63,40 @@ export default function Task6() {
             if (airdrop) {
                 return <div>Claimed</div>
             } else {
-                return <img src={gifticon} onClick={() => claimairdrop(x,y)} style={{ color: "green", cursor: "pointer" }} />
+                return <img src={gifticon} onClick={() => claimairdrop(x, y)} style={{ color: "green", cursor: "pointer" }} />
             }
         }
         return <div>Not Satisfied</div>
-    }, [userairdrop,mapLands])
+    }, [userairdrop, mapLands])
+
+    const getRewardDiv = useMemo(() => {
+        console.log("getRewardDiv",airdropConfig);
+        return <>
+            {
+                airdropConfig ?
+                    <td>
+                        {
+                            airdropConfig.reward_warrior == 0 ? <></> : <><img src={soldierIcon} />x{airdropConfig.reward_warrior}</>
+                        }
+                        {
+                            airdropConfig.reward_food == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={foodIcon} />x{airdropConfig.reward_food/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_gold == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={goldIcon} />x{airdropConfig.reward_gold/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_iron == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={ironIcon} />x{airdropConfig.reward_iron/1_000_000}</>
+                        }
+                    </td> : <td></td>
+            }</>
+
+    }, [airdropConfig])
 
     return (
         <tr>
-        <td>6. Build a GoldMine</td>
-        <td>
-            {/* <img src={soldierIcon} />x10 */}
-            <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-            <img style={{ marginLeft: 5 }} src={goldIcon} />x400
-            {/* <img style={{ marginLeft: 5 }} src={ironIcon} />x500 */}
-        </td>
-        <td>{taskButton}</td>
-    </tr>
+            <td>6. Build a GoldMine</td>
+            {getRewardDiv}
+            <td>{taskButton}</td>
+        </tr>
     )
 }

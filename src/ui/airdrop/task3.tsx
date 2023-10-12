@@ -11,6 +11,7 @@ import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
 
 export default function Task3() {
+    const airdropIndex = 3
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
@@ -23,11 +24,13 @@ export default function Task3() {
 
     // const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
+    const airdropConfig = useComponentValue(sqlComponent.AirdropConfig, getEntityIdFromKeys([1n, BigInt(airdropIndex)]))
+
     const claimairdrop = async () => {
         if (!account) {
             return
         }
-        const result = await airdrop(account, 1, 3)
+        const result = await airdrop(account, 1, airdropIndex)
         if (result && result.length > 0) {
             toastSuccess("Airdrop success")
         } else {
@@ -53,15 +56,35 @@ export default function Task3() {
         return <div>Not Satisfied</div>
     }, [userairdrop])
 
+
+    const getRewardDiv = useMemo(() => {
+        console.log("getRewardDiv",airdropConfig);
+        return <>
+            {
+                airdropConfig ?
+                    <td>
+                        {
+                            airdropConfig.reward_warrior == 0 ? <></> : <><img src={soldierIcon} />x{airdropConfig.reward_warrior}</>
+                        }
+                        {
+                            airdropConfig.reward_food == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={foodIcon} />x{airdropConfig.reward_food/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_gold == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={goldIcon} />x{airdropConfig.reward_gold/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_iron == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={ironIcon} />x{airdropConfig.reward_iron/1_000_000}</>
+                        }
+                    </td> : <td></td>
+            }</>
+
+    }, [airdropConfig])
+
+
     return (
         <tr>
             <td>3. Have 1 Troop</td>
-            <td>
-                <img src={soldierIcon} />x10
-                <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                <img style={{ marginLeft: 5 }} src={goldIcon} />x200
-                <img style={{ marginLeft: 5 }} src={ironIcon} />x200
-            </td>
+                {getRewardDiv}
             <td>{taskButton}</td>
         </tr>
     )

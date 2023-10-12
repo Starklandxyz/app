@@ -2263,7 +2263,7 @@ export const GetWarriorConfigDocument = gql`
     `;
 export const GetAirdropConfigDocument = gql`
     query getAirdropConfig($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%s"]) {
+  entities(first: 1000, keys: [$map_id, "%"]) {
     totalCount
     edges {
       node {

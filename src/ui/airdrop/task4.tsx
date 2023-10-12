@@ -25,6 +25,8 @@ export default function Task4() {
     const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 2n]))
     const mapLands = useEntityQuery([Has(sqlComponent.Land)],{updateOnValueChange:true})
 
+    const airdropConfig = useComponentValue(sqlComponent.AirdropConfig, getEntityIdFromKeys([1n, BigInt(airdropIndex)]))
+
     const claimairdrop = async (x:number,y:number) => {
         if (!account) {
             return
@@ -67,15 +69,33 @@ export default function Task4() {
         return <div>Not Satisfied</div>
     }, [userairdrop,mapLands])
 
+    const getRewardDiv = useMemo(() => {
+        console.log("getRewardDiv",airdropConfig);
+        return <>
+            {
+                airdropConfig ?
+                    <td>
+                        {
+                            airdropConfig.reward_warrior == 0 ? <></> : <><img src={soldierIcon} />x{airdropConfig.reward_warrior}</>
+                        }
+                        {
+                            airdropConfig.reward_food == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={foodIcon} />x{airdropConfig.reward_food/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_gold == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={goldIcon} />x{airdropConfig.reward_gold/1_000_000}</>
+                        }
+                        {
+                            airdropConfig.reward_iron == 0 ? <></> : <><img style={{ marginLeft: 5 }} src={ironIcon} />x{airdropConfig.reward_iron/1_000_000}</>
+                        }
+                    </td> : <td></td>
+            }</>
+
+    }, [airdropConfig])
+
     return (
         <tr>
             <td>4. Occupied a Land</td>
-            <td>
-                <img src={soldierIcon} />x20
-                <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                <img style={{ marginLeft: 5 }} src={goldIcon} />x200
-                <img style={{ marginLeft: 5 }} src={ironIcon} />x200
-            </td>
+            {getRewardDiv}
             <td>{taskButton}</td>
         </tr>
     )
