@@ -249,22 +249,22 @@ export default function BasePage() {
         </div>
         <div style={{ marginTop: 10, border: "1px solid yellow", borderRadius: 10, paddingLeft: 5 }}>
             <div style={{ display: "flex" }}>
-                <p>Farmlands - </p>
+                <p>Farmlands-</p>
                 <p style={{ marginLeft: 5 }}>{farmland.length}</p>
                 <p style={{ marginLeft: 10 }}>+{getFarmlandPerHour}Food/H</p>
             </div>
             <div style={{ display: "flex" }}>
-                <p>Camp - </p>
+                <p>Camp-</p>
                 <p style={{ marginLeft: 5 }}>{camp.length}</p>
                 <p style={{ marginLeft: 10 }}>+100 Capacity</p>
             </div>
             <div style={{ display: "flex" }}>
-                <p>GoldMine - </p>
+                <p>GoldMine-</p>
                 <p style={{ marginLeft: 5 }}>{goldmine.length}</p>
                 <p style={{ marginLeft: 10 }}>+{getGoldMinePerHour}Gold/H</p>
             </div>
             <div style={{ display: "flex" }}>
-                <p>IronMine - </p>
+                <p>IronMine-</p>
                 <p style={{ marginLeft: 5 }}>{ironMine.length}</p>
                 <p style={{ marginLeft: 10 }}>+{getIronMinePerHour}Iron/H</p>
             </div>
