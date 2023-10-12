@@ -14,7 +14,7 @@ import MapUI from "./mapui";
 import TrainPanel from "./trainpanel";
 import ListenEvent from "./listenevent";
 import SendTroopPanel from "./sendTroopPanel";
-import UserBuildingPanel from "./userBuildingPanel";
+import UserBuildingPanel from "./buildings/userBuildingPanel";
 import AirdropPanel from "./airdrop/airdropPanel";
 import UpgradePanel from "./upgradePanel";
 
@@ -48,7 +48,7 @@ export default function UI() {
             <SendTroopPanel />
             <UserBuildingPanel/>
             <AirdropPanel/>
-            {/* <UpgradePanel/> */}
+            <UpgradePanel/>
         </Wrapper>
     );
 };

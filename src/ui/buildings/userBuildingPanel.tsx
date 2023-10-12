@@ -1,24 +1,24 @@
-import { ClickWrapper } from "./clickWrapper";
+import { ClickWrapper } from "../clickWrapper";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { store } from "../store/store";
-import { BuildType } from "../types/Build";
-import { Land } from "../types/Land";
+import { store } from "../../store/store";
+import { BuildType } from "../../types/Build";
+import { Land } from "../../types/Land";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
-import { Has, HasValue, getComponentValue, getComponentValueStrict } from "../../node_modules/@latticexyz/recs/src/index";
-import { getEntityIdFromKeys } from "../dojo/parseEvent";
-import upicon from "../../public/assets/icons/upicon.png"
-import downicon from "../../public/assets/icons/downicon.png"
-import baseicon from "../../public/assets/icons/Castle.png"
-import farmlandicon from "../../public/assets/icons/farmland.png"
-import ironmineicon from "../../public/assets/icons/ironmine.png"
-import goldmineicon from "../../public/assets/icons/goldmine.png"
-import campicon from "../../public/assets/icons/camp.png"
-import BasePage from "./buildings/basepage";
-import FarmlandPage from "./buildings/farmlandpage";
-import CampPage from "./buildings/camppage";
-import GoldMinePage from "./buildings/goldminepage";
-import IronMinePage from "./buildings/ironminepage";
+import { Has, HasValue, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
+import { getEntityIdFromKeys } from "../../dojo/parseEvent";
+import upicon from "../../../public/assets/icons/upicon.png"
+import downicon from "../../../public/assets/icons/downicon.png"
+import baseicon from "../../../public/assets/icons/Castle.png"
+import farmlandicon from "../../../public/assets/icons/farmland.png"
+import ironmineicon from "../../../public/assets/icons/ironmine.png"
+import goldmineicon from "../../../public/assets/icons/goldmine.png"
+import campicon from "../../../public/assets/icons/camp.png"
+import BasePage from "./basepage";
+import FarmlandPage from "./farmlandpage";
+import CampPage from "./camppage";
+import GoldMinePage from "./goldminepage";
+import IronMinePage from "./ironminepage";
 
 export default function UserBuildingPanel() {
     const [showBase, setShowBase] = useState(true)

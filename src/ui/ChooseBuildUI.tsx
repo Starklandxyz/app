@@ -270,7 +270,7 @@ export default function ChooseBuildUI() {
                 <div style={{ display: "flex" }}>
                     <div className="buildneedbox buildneedenough">{buildPrice ? buildPrice.food / 1_000_000 : 0} Food</div>
                     <div className="buildneedbox buildneedenough">{buildPrice ? buildPrice.gold / 1_000_000 : 0} Gold</div>
-                    <div className="buildneedbox buildnotenough">{buildPrice ? buildPrice.iron / 1_000_000 : 0} Iron</div>
+                    <div className="buildneedbox buildneedenough">{buildPrice ? buildPrice.iron / 1_000_000 : 0} Iron</div>
                 </div>
             </div>
         )
