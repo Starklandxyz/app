@@ -10,7 +10,7 @@ import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
 
-export default function Task2() {
+export default function Task3() {
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
@@ -21,13 +21,13 @@ export default function Task2() {
 
     const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 2n]))
 
-    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    // const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     const claimairdrop = async () => {
         if (!account) {
             return
         }
-        const result = await airdrop(account, 1, 2)
+        const result = await airdrop(account, 1, 3)
         if (result && result.length > 0) {
             toastSuccess("Airdrop success")
         } else {
@@ -40,26 +40,29 @@ export default function Task2() {
         if (!account) {
             return <div>Not Satisfied</div>
         }
-        if (userWarrior) {
-            if (userairdrop) {
+        const troop1 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),1n],))
+        
+        if (troop1) {
+            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 3n]))
+            if (airdrop) {
                 return <div>Claimed</div>
             } else {
-                if(userWarrior.balance>=20)
-                return <img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }} />
+                return <img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }}/>
             }
         }
         return <div>Not Satisfied</div>
-    }, [userWarrior,userairdrop])
+    }, [userairdrop])
 
     return (
         <tr>
-        <td>2. Have 20 Warriors</td>
-        <td>
-            <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-            <img style={{ marginLeft: 5 }} src={goldIcon} />x500
-            <img style={{ marginLeft: 5 }} src={ironIcon} />x500
-        </td>
-        <td>{taskButton}</td>
-    </tr>
+            <td>3. Have 1 Troop</td>
+            <td>
+                <img src={soldierIcon} />x10
+                <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
+                <img style={{ marginLeft: 5 }} src={goldIcon} />x200
+                <img style={{ marginLeft: 5 }} src={ironIcon} />x200
+            </td>
+            <td>{taskButton}</td>
+        </tr>
     )
 }

@@ -20,6 +20,7 @@ import closeicon from "../../../public/assets//icons/closeicon.png"
 import gifticon from "../../../public/assets//icons/gifticon.png"
 import Task1 from './task1';
 import Task2 from './task2';
+import Task3 from './task3';
 
 export default function AirdropPanel() {
     const { account, phaserLayer } = store();
@@ -91,48 +92,6 @@ export default function AirdropPanel() {
         }
     }
 
-    //have 20 warrior
-    const task2Button = useMemo(() => {
-        if (!account) {
-            return <div>Not Satisfied</div>
-        }
-        const userWarrior = getComponentValue(sqlComponent.UserWarrior,getEntityIdFromKeys([1n,BigInt(account.address)]))
-        if (userWarrior) {
-            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 2n]))
-            if (airdrop) {
-                return <div>Claimed</div>
-            } else {
-                if(userWarrior.balance>=20){
-                    return <img src={gifticon} onClick={() => claimairdrop(2)} style={{ color: "green" }}/>
-                }
-                
-            }
-        }
-        return <div>Not Satisfied</div>
-    }, [showTask])
-
-     //have 1 troop
-     const task3Button = useMemo(() => {
-        if (!account) {
-            return <div>Not Satisfied</div>
-        }
-        const troop1 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),1n],))
-        const troop2 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),2n],))
-        const troop3 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),3n],))
-        
-        if (userWarrior) {
-            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 3n]))
-            if (airdrop) {
-                return <div>Claimed</div>
-            } else {
-                if(userWarrior.balance>=20){
-                    return <img src={gifticon} onClick={() => claimairdrop(3)} style={{ color: "green" }}/>
-                }
-            }
-        }
-        return <div>Not Satisfied</div>
-    }, [showTask])
-
     return (
         <ClickWrapper>
             {
@@ -153,16 +112,7 @@ export default function AirdropPanel() {
                             <table cellPadding={13}>
                                 <Task1/>
                                 <Task2/>
-                                <tr>
-                                    <td>3. Have 1 Troop</td>
-                                    <td>
-                                        <img src={soldierIcon} />x10
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x200
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x200
-                                    </td>
-                                    <td>{task3Button}</td>
-                                </tr>
+                                <Task3/>
                                 <tr>
                                     <td>4. Occupied a Land</td>
                                     <td>
@@ -171,7 +121,7 @@ export default function AirdropPanel() {
                                         <img style={{ marginLeft: 5 }} src={goldIcon} />x200
                                         <img style={{ marginLeft: 5 }} src={ironIcon} />x200
                                     </td>
-                                    <td><button>Claim</button></td>
+                                    <td><button>Not Satisfied</button></td>
                                 </tr>
                                 <tr>
                                     <td>5. Build a Farmland</td>
@@ -181,7 +131,7 @@ export default function AirdropPanel() {
                                         <img style={{ marginLeft: 5 }} src={goldIcon} />x400
                                         {/* <img style={{ marginLeft: 5 }} src={ironIcon} />x000 */}
                                     </td>
-                                    <td><button>Claim</button></td>
+                                    <td><button>Not Satisfied</button></td>
                                 </tr>
                                 <tr>
                                     <td>6. Build a GoldMine</td>
@@ -191,7 +141,7 @@ export default function AirdropPanel() {
                                         <img style={{ marginLeft: 5 }} src={goldIcon} />x400
                                         {/* <img style={{ marginLeft: 5 }} src={ironIcon} />x500 */}
                                     </td>
-                                    <td><button>Claim</button></td>
+                                    <td><button>Not Satisfied</button></td>
                                 </tr>
                                 <tr>
                                     <td>7. Build a IronMine</td>
@@ -201,7 +151,7 @@ export default function AirdropPanel() {
                                         {/* <img style={{ marginLeft: 5 }} src={goldIcon} />x500 */}
                                         <img style={{ marginLeft: 5 }} src={ironIcon} />x400
                                     </td>
-                                    <td><button>Claim</button></td>
+                                    <td><button>Not Satisfied</button></td>
                                 </tr>
                                 <tr>
                                     <td>8. Build a Camp</td>
@@ -211,7 +161,7 @@ export default function AirdropPanel() {
                                         <img style={{ marginLeft: 5 }} src={goldIcon} />x100
                                         <img style={{ marginLeft: 5 }} src={ironIcon} />x100
                                     </td>
-                                    <td><button>Claim</button></td>
+                                    <td><button>Not Satisfied</button></td>
                                 </tr>
                             </table>
                         </div>
