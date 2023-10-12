@@ -14,7 +14,7 @@ import farmlandicon from "../../../public/assets/icons/farmland.png"
 import ironmineicon from "../../../public/assets/icons/ironmine.png"
 import goldmineicon from "../../../public/assets/icons/goldmine.png"
 import campicon from "../../../public/assets/icons/camp.png"
-import BasePage from "./basepage";
+import BasePage from "./homebuildingpage";
 import FarmlandPage from "./farmlandpage";
 import CampPage from "./camppage";
 import GoldMinePage from "./goldminepage";

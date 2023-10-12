@@ -267,6 +267,16 @@ query getAllLands($map_id:String) {
             y,
             balance
           }
+          __typename
+          ... on UpgradeCost {
+            map_id,
+            x,
+            y,
+            start_time
+            end_time
+            target_level
+            claimed
+          }
         }
       }
     }

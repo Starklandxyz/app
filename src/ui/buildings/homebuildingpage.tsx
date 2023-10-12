@@ -29,7 +29,7 @@ export default function BasePage() {
 
   const {
     networkLayer: {
-      systemCalls: { claimMining },
+      systemCalls: { claimMining,upgradeComplete },
       components: contractComponents,
       network: { graphSdk },
     },
@@ -44,6 +44,7 @@ export default function BasePage() {
     contractComponents.MiningConfig,
     getEntityIdFromKeys([1n])
   );
+  const update_base = useComponentValue(contractComponents.UpgradeCost,getEntityIdFromKeys([1n,BigInt(base?base.x:0),BigInt(base?base.y:0)]))
 
   const [baseland, setBaseland] = useState<Array<Land>>([]);
   const [farmland, setFarmland] = useState<Array<Land>>([]);
@@ -281,6 +282,15 @@ export default function BasePage() {
     camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
   };
 
+  const finishUpgrade = async ()=>{
+    const result = await upgradeComplete(account!,1,base.x,base.y)
+    if(result && result.length>0){
+      toastSuccess("Upgrade success")
+    }else{
+      toastError("Upgrade fail")
+    }
+  }
+
   const updateBase = ()=>{
     if(!base){
       toastError("Build a base first")
@@ -288,6 +298,22 @@ export default function BasePage() {
     }
     updateStore.setState({updateLand:{x:base.x,y:base.y}})
   }
+
+  const updateButton = useMemo(()=>{
+    // const update_cost = getComponentValue()
+    if(update_base && !update_base.claimed){
+        if(timenow>update_base.end_time){
+          return <><NesButton style={{ minHeight: 30 }} onClick={()=>finishUpgrade()}>Confirm Upgrade</NesButton></>
+        }else{
+          const total = update_base.end_time - update_base.start_time
+          const used = timenow - update_base.start_time
+         return <>{used}s/{total}s Updating...</>
+        }
+       
+    }
+    return <NesButton style={{ minHeight: 30 }} onClick={()=>updateBase()}>Upgrade</NesButton>
+
+  },[timenow,update_base])
 
   return (
     <div
@@ -322,8 +348,7 @@ export default function BasePage() {
           <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
             LV {getBaseLevel}
           </span>
-          <NesButton style={{ minHeight: 30 }} onClick={()=>updateBase()}>Upgrade</NesButton>
-
+          {updateButton}
         </div>
       </div>
       <div
