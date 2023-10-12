@@ -3,6 +3,11 @@ import { Land as LandSQL, Player as PlayerSQL } from "../generated/graphql";
 import { BuildType } from "./Build";
 import { Land } from "./Land";
 
+export class Coord{
+    public x = 0
+    public y = 0
+}
+
 export class Building {
     public position: number = 0
     public type: number = 1

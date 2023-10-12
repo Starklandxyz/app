@@ -143,7 +143,9 @@ export default function ChooseBuildUI() {
             toastSuccess("Build Success")
             if (selectBuild == BuildType.Farmland) {
                 claimToMine(account, 1, buildLand.x, buildLand.y, buildLand.x, buildLand.y)
-            } else {
+            } else if(selectBuild == BuildType.Camp){
+                
+            }else{
                 showSelectArea(buildLand.x, buildLand.y)
             }
             controlStore.setState({ buildLand: undefined })

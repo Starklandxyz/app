@@ -21,6 +21,11 @@ import gifticon from "../../../public/assets//icons/gifticon.png"
 import Task1 from './task1';
 import Task2 from './task2';
 import Task3 from './task3';
+import Task4 from './task4';
+import Task5 from './task5';
+import Task6 from './task6';
+import Task7 from './task7';
+import Task8 from './task8';
 
 export default function AirdropPanel() {
     const { account, phaserLayer } = store();
@@ -113,56 +118,11 @@ export default function AirdropPanel() {
                                 <Task1/>
                                 <Task2/>
                                 <Task3/>
-                                <tr>
-                                    <td>4. Occupied a Land</td>
-                                    <td>
-                                        <img src={soldierIcon} />x20
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x200
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x200
-                                    </td>
-                                    <td><button>Not Satisfied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>5. Build a Farmland</td>
-                                    <td>
-                                        {/* <img src={soldierIcon} />x0 */}
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x400
-                                        {/* <img style={{ marginLeft: 5 }} src={ironIcon} />x000 */}
-                                    </td>
-                                    <td><button>Not Satisfied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>6. Build a GoldMine</td>
-                                    <td>
-                                        {/* <img src={soldierIcon} />x10 */}
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x400
-                                        {/* <img style={{ marginLeft: 5 }} src={ironIcon} />x500 */}
-                                    </td>
-                                    <td><button>Not Satisfied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>7. Build a IronMine</td>
-                                    <td>
-                                        {/* <img src={soldierIcon} />x0 */}
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x2000
-                                        {/* <img style={{ marginLeft: 5 }} src={goldIcon} />x500 */}
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x400
-                                    </td>
-                                    <td><button>Not Satisfied</button></td>
-                                </tr>
-                                <tr>
-                                    <td>8. Build a Camp</td>
-                                    <td>
-                                        <img src={soldierIcon} />x20
-                                        <img style={{ marginLeft: 5 }} src={foodIcon} />x1000
-                                        <img style={{ marginLeft: 5 }} src={goldIcon} />x100
-                                        <img style={{ marginLeft: 5 }} src={ironIcon} />x100
-                                    </td>
-                                    <td><button>Not Satisfied</button></td>
-                                </tr>
+                                <Task4/>
+                                <Task5/>
+                                <Task6/>
+                               <Task7/>
+                               <Task8/>
                             </table>
                         </div>
 
