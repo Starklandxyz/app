@@ -21,6 +21,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 import NesButton from "../components/NesButton";
 import styled from "styled-components";
 import { Direction } from "../../generated/graphql";
+import { updateStore } from "../../store/updateStore";
 
 export default function BasePage() {
   const { account, phaserLayer, camera } = store();
@@ -280,6 +281,14 @@ export default function BasePage() {
     camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
   };
 
+  const updateBase = ()=>{
+    if(!base){
+      toastError("Build a base first")
+      return
+    }
+    updateStore.setState({updateLand:{x:base.x,y:base.y}})
+  }
+
   return (
     <div
       style={{
@@ -308,11 +317,13 @@ export default function BasePage() {
             <span className="speed">{getBaseGoldPerHour} Gold/H</span>
           </ResourceItem>
         )}
+
         <div style={{ display: "flex", marginTop: "8px", paddingLeft:"6px" }}>
           <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
             LV {getBaseLevel}
           </span>
           <NesButton style={{ minHeight: 30 }}>Upgrade</NesButton>
+
         </div>
       </div>
       <div
