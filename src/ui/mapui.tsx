@@ -91,7 +91,7 @@ export default function MapUI() {
         putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01 + diff, "Build");
         putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Build");
         putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Build");
-        const pixelPosition = tileCoordToPixelCoord({ x: myBase.x, y: myBase.y }, TILE_WIDTH, TILE_HEIGHT);
+        const pixelPosition = tileCoordToPixelCoord({ x: myBase.x+1, y: myBase.y+1 }, TILE_WIDTH, TILE_HEIGHT);
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }, [player,myBase])
 

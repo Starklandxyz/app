@@ -234,7 +234,7 @@ export default function BasePage() {
     }, [miningConfig, base])
 
     const zoomto = (land: Land) => {
-        const pixelPosition = tileCoordToPixelCoord({ x:land.x, y:land.y }, TILE_WIDTH, TILE_HEIGHT);
+        const pixelPosition = tileCoordToPixelCoord({ x:land.x+1, y:land.y+1 }, TILE_WIDTH, TILE_HEIGHT);
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }
 

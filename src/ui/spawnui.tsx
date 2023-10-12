@@ -39,7 +39,7 @@ export default function SpawnUI() {
         console.log("baseClick", player);
 
         if (!player) {
-            toastError("Mint your player first.")
+            toastError("Mint your player first.","top-center")
             return
         }
         setShow(pre => !pre)
