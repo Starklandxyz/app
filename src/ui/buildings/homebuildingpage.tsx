@@ -309,10 +309,8 @@ export default function BasePage() {
           const used = timenow - update_base.start_time
          return <>{used}s/{total}s Updating...</>
         }
-       
     }
     return <NesButton style={{ minHeight: 30 }} onClick={()=>updateBase()}>Upgrade</NesButton>
-
   },[timenow,update_base])
 
   return (
@@ -414,11 +412,11 @@ export default function BasePage() {
             <span className="speed">{foodClaimable}</span>
           </ResourceItem>
           <ResourceItem>
-            <span className="name">Food:</span>
+            <span className="name">Gold:</span>
             <span className="speed">{goldClaimable}</span>
           </ResourceItem>
           <ResourceItem>
-            <span className="name">Food:</span>
+            <span className="name">Iron:</span>
             <span className="speed">{ironClaimable}</span>
           </ResourceItem>
         </div>
