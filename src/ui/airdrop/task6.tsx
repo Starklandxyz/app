@@ -63,7 +63,8 @@ export default function Task6() {
             if (airdrop) {
                 return <div>Claimed</div>
             } else {
-                return <img src={gifticon} onClick={() => claimairdrop(x, y)} style={{ color: "green", cursor: "pointer" }} />
+                // return <img src={gifticon} onClick={() => claimairdrop(x, y)} style={{ color: "green", cursor: "pointer" }} />
+                return <div style={{color:"yellow"}}><img src={gifticon} onClick={() => claimairdrop(x,y)} style={{ color: "green",cursor:"pointer" }} />Claim</div>
             }
         }
         return <div>Not Satisfied</div>

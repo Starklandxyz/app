@@ -48,7 +48,7 @@ export default function Task2() {
                 return <div>Claimed</div>
             } else {
                 if(userWarrior.balance>=20)
-                return <img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }} />
+                return <div style={{color:"yellow"}}><img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }} />Claim</div>
             }
         }
         return <div>Not Satisfied</div>
