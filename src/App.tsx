@@ -9,6 +9,7 @@ import 'react-tooltip/dist/react-tooltip.css'
 // import 'nes.css.14x/css/nes.min.css'
 import './App.css';
 import { Tooltip } from 'react-tooltip'
+import Loading from './ui/Loading';
 
 function App() {
   const networkLayer = useNetworkLayer();
@@ -25,6 +26,7 @@ function App() {
   return (
     <div>
       <PhaserLayer networkLayer={networkLayer} />
+      <Loading/>
       <UI />
       <ToastContainer />
       <Tooltip id="my-tooltip" />

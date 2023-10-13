@@ -17,6 +17,7 @@ import SendTroopPanel from "./sendTroopPanel";
 import UserBuildingPanel from "./buildings/userBuildingPanel";
 import AirdropPanel from "./airdrop/airdropPanel";
 import UpgradePanel from "./upgradePanel";
+import Loading from "./Loading";
 
 export default function UI() {
     const layers = store((state) => {
