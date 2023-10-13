@@ -345,7 +345,7 @@ export function createSystemCalls(
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-
+      console.log("spawn",receipt);
       let events = getEvents(receipt);
       setComponentsFromEvents(contractComponents, events);
       return events;

@@ -95,6 +95,7 @@ export default function Header() {
       return;
     }
     const events = await spawn(account, BigInt("0x" + hex));
+    console.log("startGame",events);
     if (events && events.length > 0) {
       setNickName("");
       toastSuccess("Mint player success.", "top-center");
