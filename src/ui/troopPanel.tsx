@@ -69,8 +69,8 @@ export default function TroopPanel() {
           <div
             style={{
               overflow: "auto",
-              width: 220,
-              maxHeight: 420,
+              width: 210,
+              maxHeight: 350,
               lineHeight: 1,
               backgroundColor: "rgba(0, 0, 0, 0.5)",
               padding: 10,
@@ -118,7 +118,7 @@ export default function TroopPanel() {
 const Container = styled.div`
   position: absolute;
   top: 100px;
-  right: 1%;
+  left: 1%;
   color: white;
 
   @media (max-width: 768px) {

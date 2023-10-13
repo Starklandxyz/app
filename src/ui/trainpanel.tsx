@@ -177,12 +177,12 @@ export default function TrainPanel() {
 
     return (<ClickWrapper>
         <Container>
-            <div style={{ width: 240, height: 190, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+            <div style={{ width: 220, height: 190, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                 <p>Train Warrior</p>
                 {
                     (training?.total != 0 && training?.total != training?.out) ?
                         <div>
-                            <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
+                            <div style={{ fontSize: 14, border: "1px solid white", width: 210, height: 100, borderRadius: 15, padding: 5 }}>
                                 <p>Claimed : {training?.out}/{training?.total}</p>
                                 <p>Next : {getTrainTime}</p>
                                 <p>Claimable : {claimable}</p>
@@ -191,7 +191,7 @@ export default function TrainPanel() {
                         </div>
                         :
                         <div>
-                            <div style={{ fontSize: 14, border: "1px solid white", width: 220, height: 100, borderRadius: 15, padding: 5 }}>
+                            <div style={{ fontSize: 14, border: "1px solid white", width: 210, height: 100, borderRadius: 15, padding: 5 }}>
                                 <p>Consume : {calConsume}</p>
                                 <p>Time : {calTotalTime}</p>
                                 <div style={{ display: "flex" }}>
@@ -210,7 +210,7 @@ export default function TrainPanel() {
 
 const Container = styled.div`
     position: absolute;
-    bottom: 15%;
-    left: 2%;
+    bottom: 5%;
+    left: 1%;
     color:white;
 `;

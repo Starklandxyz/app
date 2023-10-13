@@ -10,6 +10,7 @@ import { getEntityIdFromKeys } from '../dojo/parseEvent';
 import NesButton from "../ui/components/NesButton";
 import { toastError, toastSuccess } from '../utils';
 import { Upgrate_Time } from '../contractconfig';
+import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 
 export default function UpgradePanel() {
     const { account, phaserLayer, camera } = store();
@@ -56,7 +57,7 @@ export default function UpgradePanel() {
             <div className="buildneedbox buildneedenough">{buildPrice ? pow * buildPrice.iron / 1_000_000 : 0} Iron</div>
         </div>
 
-    }, [buildPrice,land,updateLand])
+    }, [buildPrice, land, updateLand])
 
     const updateTime = useMemo(() => {
         if (!land) {
@@ -67,10 +68,29 @@ export default function UpgradePanel() {
     }, [land])
 
     const update = async () => {
+        if (!buildPrice || !account) {
+            return
+        }
+        const pow = Math.pow(2, land.level)
+        // const food =  pow * buildPrice.food
+        const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
+        if (getComponentValue(contractComponents.Gold, entityIndex)?.balance! < pow * buildPrice.gold) {
+            toastError("Gold is not enough")
+            return
+        }
+        if (getComponentValue(contractComponents.Food, entityIndex)?.balance! < pow * buildPrice.food) {
+            toastError("Food is not enough")
+            return
+        }
+        if (getComponentValue(contractComponents.Iron, entityIndex)?.balance! < pow * buildPrice.iron) {
+            toastError("Iron is not enough")
+            return
+        }
+
         const result = await upgradeBuild(account!, 1, updateLand?.x, updateLand?.y)
         if (result && result.length > 0) {
             toastSuccess("Start Upgrade...")
-            updateStore.setState({updateLand:undefined})
+            updateStore.setState({ updateLand: undefined })
         } else {
             toastError("Upgrade failed")
         }

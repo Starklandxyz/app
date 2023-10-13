@@ -335,7 +335,7 @@ export default function BasePage() {
       >
         {base && (
           <ResourceItem>
-            <span className="name" onClick={() => zoomto(base)}>
+            <span className="name" onClick={() => zoomto(base)} style={{cursor:"pointer"}}>
               Base {base?.x},{base?.y}{" "}
             </span>
             <span className="speed">{getBaseGoldPerHour} Gold/H</span>
