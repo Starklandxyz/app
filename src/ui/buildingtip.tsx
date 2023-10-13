@@ -239,14 +239,14 @@ export default function BuildingTip() {
                 }
                 if (land.building == BuildType.None) {
                     return <>
-                        <button onClick={() => sendTroopClick()}>Send Troop</button>
-                        <button onClick={() => buildClick()}>Build</button>
-                        {hasW && <button onClick={() => retreat()}>Retreat Warrior</button>}
+                        <button style={{zIndex:10}} onClick={() => sendTroopClick()}>Send Troop</button>
+                        <button style={{zIndex:10}} onClick={() => buildClick()}>Build</button>
+                        {hasW && <button style={{zIndex:10}} onClick={() => retreat()}>Retreat Warrior</button>}
                     </>
                 } else {
                     return <>
-                        <button onClick={() => sendTroopClick()}>Send Troop</button>
-                        {hasW && <button onClick={() => retreat()}>Retreat Warrior</button>}
+                        <button style={{zIndex:10}} onClick={() => sendTroopClick()}>Send Troop</button>
+                        {hasW && <button style={{zIndex:10}} onClick={() => retreat()}>Retreat Warrior</button>}
                     </>
                 }
             }
@@ -256,7 +256,7 @@ export default function BuildingTip() {
                 return <></>
             }
         }
-        return <button onClick={() => sendTroopClick()}>Send Troop</button>
+        return <button style={{zIndex:10}} onClick={() => sendTroopClick()}>Send Troop</button>
     }, [myBase, account, lastCoord])
 
     return (
@@ -279,7 +279,7 @@ export default function BuildingTip() {
                     }
                     {/* <button onClick={() => buildClick()}>Build</button> */}
                     {/* <button onClick={() => attack()}>Attack</button> */}
-                    <button style={{ marginTop: 10 }} onClick={() => controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })}>Cancel</button>
+                    <button style={{ marginTop: 10 ,zIndex:10}} onClick={() => controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })}>Cancel</button>
 
                 </div>
             }

@@ -208,7 +208,7 @@ export default function ChooseBuildUI() {
         setSelectMined(true)
         controlStore.setState({
             showTipButtons: <>
-                <button onClick={() => chooseArea()}>Choose</button>
+                <button style={{zIndex:10}} onClick={() => chooseArea()}>Choose</button>
             </>
         })
         for (let i = -1; i < 2; i++) {

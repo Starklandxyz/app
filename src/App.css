@@ -32,6 +32,7 @@
   position: absolute;
   background-color: #03030379;
   color: white;
+  z-index: 2;
   padding: 10px 14px;
   border-radius: 10px;
   pointer-events: none;

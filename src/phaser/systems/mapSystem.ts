@@ -37,16 +37,7 @@ export function mapSystem(layer: PhaserLayer) {
                 putTileAt(coord, Tileset.Water, "Foreground");
             }
             if (landType == LandType.None) {
-                // //add grass
-                const r = Math.random()
-                if (r < 0.3) {
-                    putTileAt(coord, Tileset.Grass, "Background");
-                } else {
-                    putTileAt(coord, Tileset.Grass2, "Background");
-                }
                 const warrior = get_land_barbarians(1, x, y)
-                //add rock
-                // const r2 = Math.random();
                 if (warrior <= 20) {
                     putTileAt(coord, TilesetLevel.Level1, "Foreground");
                 } else if (warrior <= 50) {

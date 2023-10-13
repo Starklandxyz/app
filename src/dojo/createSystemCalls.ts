@@ -309,7 +309,7 @@ export function createSystemCalls(
       retryInterval: 100,
     });
 
-    // console.log(receipt);
+    console.log(receipt);
 
     const events = getEvents(receipt);
     // console.log(events);
