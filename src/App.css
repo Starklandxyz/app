@@ -1,3 +1,21 @@
+:root {
+  /* --main-bg-color: brown;
+  --outline-width: 2px;
+  --shadow-width: 2px;
+
+  --button-background: #92CD41;
+  --sec-button-background: #76c442;
+  --shadow-color: #4AA52E;
+
+  --alt-button-background: #F7D51D;
+  --alt-sec-button-background: #F2C409;
+  --alt-shadow-color: #E59400;
+
+  --reset-button-background: #E76E55;
+  --reset-sec-button-background: #CE372B;
+  --reset-shadow-color: #8C2022; */
+}
+
 .scrollable-list {
   max-height: 200px;
   /* 你可以根据需要调整这个值 */
@@ -21,11 +39,6 @@
   white-space: nowrap;
 }
 
-button {
-  cursor: pointer;
-  font-family: inherit;
-}
-
 .selectbox {
   cursor: pointer;
   width: 100px;
@@ -38,7 +51,7 @@ button {
   border: 2px solid #00000000;
 }
 
-.startbuildpanel{
+.startbuildpanel {
   position: absolute;
   bottom: 45%;
   left: 40%;
@@ -96,32 +109,208 @@ button {
   src: url("../public/assets/fonts/fusion.woff2") format("truetype");
 }
 
-html, body, div,button, select, input {
+html,
+body,
+div,
+button,
+select,
+input {
   font-family: "fusion-pixel-12px-proportional-zh_hans", sans-serif;
 }
 
-.build_icon{
+.build_icon {
   cursor: pointer;
   width: 50px;
   height: 50px;
-  padding-bottom:10px; 
+  padding-bottom: 10px;
 }
 
-.build_icon_select{
+.build_icon_select {
   background-color: rgba(100, 0, 250, 1);
 }
 
 /* Nes css style */
-.nes-btn {
+/* .nes-btn {
   padding: 4px 6px;
-}
+} */
 
 .nes-select {
   align-self: center;
-  /* font-size: 12px; */
 }
 
-/* Custom */
-.small_fontsize {
-  font-size: 10px;
+/* TOOD: use SCSS */
+
+/* 
+$outline-width: 2px;
+$shadow-width: 2px;
+
+$button-background: #006bb3;
+$sec-button-background: #76c442;
+$shadow-color:  #6f9fef;
+
+$alt-button-background: #F7D51D;
+$alt-sec-button-background: #F2C409;
+$alt-shadow-color:  #E59400;
+
+$reset-button-background: #E76E55;
+$reset-sec-button-background: #CE372B;
+$reset-shadow-color:  #8C2022;
+
+.nes-btn {
+    background: $button-background;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-size: 12px;
+    padding: 3px 5px;
+    text-decoration: none; 
+    color: white;
+    box-shadow: inset (-$shadow-width) (-$shadow-width) 0px 0px $shadow-color;
+
+    &:hover,
+    &:focus {
+        background: $sec-button-background;
+        box-shadow: inset (-$shadow-width*1.5) (-$shadow-width*1.5) 0px 0px $shadow-color;
+    }
+
+    &:active {
+        box-shadow: inset $shadow-width $shadow-width 0px 0px $shadow-color;
+    }
+
+    &:before,
+    &:after {
+    content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: content-box;
+    }
+
+    &:before {
+        top: -$outline-width;
+        left: 0;
+        border-top: $outline-width black solid;
+        border-bottom: $outline-width black solid;
+    }
+
+    &:after {
+        left: -$outline-width;
+        top: 0;
+        border-left: $outline-width black solid;
+        border-right: $outline-width black solid;
+    }
+
+    &--reset {
+        background: $reset-button-background;
+        box-shadow: inset (-$shadow-width) (-$shadow-width) 0px 0px $reset-shadow-color;
+
+        &:hover,
+        &:focus {
+            background: $reset-sec-button-background;
+            box-shadow: inset (-$shadow-width*1.5) (-$shadow-width*1.5) 0px 0px $reset-shadow-color;
+        }
+
+        &:active {
+            box-shadow: inset $shadow-width $shadow-width 0px 0px $reset-shadow-color;
+        }
+
+    }
+
+    &--proceed {
+        background: $alt-button-background;
+        box-shadow: inset (-$shadow-width) (-$shadow-width) 0px 0px $alt-shadow-color;
+
+        &:hover,
+        &:focus {
+            background: $alt-sec-button-background;
+            box-shadow: inset (-$shadow-width*1.5) (-$shadow-width*1.5) 0px 0px $alt-shadow-color;
+        }
+
+        &:active {
+            box-shadow: inset $shadow-width $shadow-width 0px 0px $alt-shadow-color;
+        }
+
+    }
+} */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  background: #006bb3;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  font-size: 12px;
+  padding: 3px 5px;
+  text-decoration: none;
+  color: white;
+  box-shadow: inset -2px -2px 0px 0px #09096e;
 }
+
+button:hover,
+button:focus {
+  background: #76c442;
+  box-shadow: inset -3px -3px 0px 0px #09096e;
+}
+
+button:active {
+  box-shadow: inset 2px 2px 0px 0px #09096e;
+}
+
+button:before,
+button:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+}
+
+button:before {
+  top: -2px;
+  left: 0;
+  border-top: 2px black solid;
+  border-bottom: 2px black solid;
+}
+
+button:after {
+  left: -2px;
+  top: 0;
+  border-left: 2px black solid;
+  border-right: 2px black solid;
+}
+
+.nes-btn--reset {
+  background: #e76e55;
+  box-shadow: inset -2px -2px 0px 0px #8c2022;
+}
+
+.nes-btn--reset:hover,
+.nes-btn--reset:focus {
+  background: #ce372b;
+  box-shadow: inset -3px -3px 0px 0px #8c2022;
+}
+
+.nes-btn--reset:active {
+  box-shadow: inset 2px 2px 0px 0px #8c2022;
+}
+
+.nes-btn--proceed {
+  background: #f7d51d;
+  box-shadow: inset -2px -2px 0px 0px #e59400;
+}
+
+.nes-btn--proceed:hover,
+.nes-btn--proceed:focus {
+  background: #f2c409;
+  box-shadow: inset -3px -3px 0px 0px #e59400;
+}
+
+.nes-btn--proceed:active {
+  box-shadow: inset 2px 2px 0px 0px #e59400;
+}
+
+
+/* Custom */
+/* .small_fontsize {
+  font-size: 10px;
+} */
