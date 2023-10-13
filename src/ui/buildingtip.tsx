@@ -200,6 +200,10 @@ export default function BuildingTip() {
         if (!myBase) {
             return
         }
+        // { show: false, x: 0, y: 0, content: null }
+        // tipStore.setState({tooltip:{show:true,x:100,y:100,content:tooltip.content}})
+        
+        settooltip({show:true,x:window.screen.width*0.27,y:window.screen.height*0.45,content:tooltip.content})
         const troop = new Troop(account.address, myBase, lastCoord, getTimestamp())
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
@@ -215,6 +219,22 @@ export default function BuildingTip() {
     const buildClick = () => {
         controlStore.setState({ buildLand: lastCoord, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
+
+    const getAttackButtons = useMemo(()=>{
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+        let hasAttack = false
+        if(land){
+            if(land.owner != account?.address){
+                hasAttack = true
+            }
+        }else{
+            hasAttack = true
+        }
+        if(hasAttack){
+            // const troop = getComponentValue()
+        }
+        return <></>
+    },[myBase, account, lastCoord])
 
     const getButtons = useMemo(() => {
         if (!account) {
@@ -274,6 +294,9 @@ export default function BuildingTip() {
             {
                 tipButtonShow.show &&
                 <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${tipButtonShow.x - 10}px`, top: `${tipButtonShow.y + 20}px` }}>
+                    {
+                        getAttackButtons
+                    }
                     {
                         getButtons
                     }
