@@ -96,12 +96,8 @@ button {
   src: url("../public/assets/fonts/fusion.woff2") format("truetype");
 }
 
-html, body, div {
+html, body, div,button, select, input {
   font-family: "fusion-pixel-12px-proportional-zh_hans", sans-serif;
-}
-
-button, select, input {
-  font-family: inherit;
 }
 
 .build_icon{
@@ -121,7 +117,8 @@ button, select, input {
 }
 
 .nes-select {
-  font-size: 12px;
+  align-self: center;
+  /* font-size: 12px; */
 }
 
 /* Custom */

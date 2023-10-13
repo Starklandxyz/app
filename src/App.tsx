@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UI from './ui';
 import 'react-tooltip/dist/react-tooltip.css'
-import 'nes.css.14x/css/nes.min.css'
+// import 'nes.css.14x/css/nes.min.css'
 import './App.css';
 import { Tooltip } from 'react-tooltip'
 
