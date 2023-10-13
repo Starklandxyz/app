@@ -126,7 +126,7 @@ export default function TrainPanel() {
     }, [inputValue, warriorConfig])
 
     const calConsume = useMemo(() => {
-        var result = (inputValue * warriorConfig.Train_Food) / 1_000_000 + " Food, " + (inputValue * warriorConfig.Train_Gold) / 1_000_000 + " Gold"
+        var result = (inputValue * warriorConfig.Train_Food) / 1_000_000 + " Food , " + (inputValue * warriorConfig.Train_Gold) / 1_000_000 + " Gold"
         return result
     }, [inputValue, warriorConfig])
 

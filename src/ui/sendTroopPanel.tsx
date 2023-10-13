@@ -124,15 +124,18 @@ export default function SendTroopPanel() {
         return calDistance()
     }, [myBase, sendTroopCtr])
 
-    const calFood = useMemo(() => {
+    const calConsume = useMemo(() => {
         if (!sendTroopCtr.troop) {
             return 0
         }
 
-        const food_config = getComponentValue(components.WarriorConfig,getEntityIdFromKeys([1n]))
-        const result = food_config?.Troop_Food! * calDistance() * inputValue
+        const config = getComponentValue(components.WarriorConfig,getEntityIdFromKeys([1n]))
+        console.log("calConsume",config);
+        
+        const food = config?.Troop_Food! * calDistance() * inputValue / 1_000_000
+        const iron = config?.Troop_Iron! * calDistance() * inputValue / 1_000_000
         // const result = Troop_Food * calDistance() * inputValue
-        return result/1_000_000
+        return food +" Food, "+iron+" Iron"
     }, [sendTroopCtr, inputValue])
 
     const calTime = useMemo(() => {
@@ -222,7 +225,7 @@ export default function SendTroopPanel() {
                             </tr>
                             <tr>
                                 <td>Time : {calTime}</td>
-                                <td>Consume : {calFood} Food</td>
+                                <td>Consume : {calConsume}</td>
                             </tr>
                             <tr>
                                 <td>

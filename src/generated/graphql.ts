@@ -1877,6 +1877,7 @@ export type WarriorConfig = {
   Train_Time?: Maybe<Scalars['u64']['output']>;
   Troop_Food?: Maybe<Scalars['u64']['output']>;
   Troop_Gold?: Maybe<Scalars['u64']['output']>;
+  Troop_Iron?: Maybe<Scalars['u64']['output']>;
   Troop_Speed?: Maybe<Scalars['u64']['output']>;
   entity?: Maybe<Entity>;
   map_id?: Maybe<Scalars['u64']['output']>;
@@ -1907,6 +1908,7 @@ export enum WarriorConfigOrderOrderField {
   TrainTime = 'TRAIN_TIME',
   TroopFood = 'TROOP_FOOD',
   TroopGold = 'TROOP_GOLD',
+  TroopIron = 'TROOP_IRON',
   TroopSpeed = 'TROOP_SPEED'
 }
 
@@ -1947,6 +1949,12 @@ export type WarriorConfigWhereInput = {
   Troop_GoldLT?: InputMaybe<Scalars['Int']['input']>;
   Troop_GoldLTE?: InputMaybe<Scalars['Int']['input']>;
   Troop_GoldNEQ?: InputMaybe<Scalars['Int']['input']>;
+  Troop_Iron?: InputMaybe<Scalars['Int']['input']>;
+  Troop_IronGT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_IronGTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_IronLT?: InputMaybe<Scalars['Int']['input']>;
+  Troop_IronLTE?: InputMaybe<Scalars['Int']['input']>;
+  Troop_IronNEQ?: InputMaybe<Scalars['Int']['input']>;
   Troop_Speed?: InputMaybe<Scalars['Int']['input']>;
   Troop_SpeedGT?: InputMaybe<Scalars['Int']['input']>;
   Troop_SpeedGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -2046,7 +2054,7 @@ export type GetWarriorConfigQueryVariables = Exact<{
 }>;
 
 
-export type GetWarriorConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig', map_id?: any | null, Train_Food?: any | null, Train_Gold?: any | null, Train_Iron?: any | null, Train_Time?: any | null, Troop_Food?: any | null, Troop_Gold?: any | null, Troop_Speed?: any | null } | null> | null } | null } | null> | null } | null };
+export type GetWarriorConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig', map_id?: any | null, Train_Food?: any | null, Train_Gold?: any | null, Train_Iron?: any | null, Train_Time?: any | null, Troop_Food?: any | null, Troop_Iron?: any | null, Troop_Gold?: any | null, Troop_Speed?: any | null } | null> | null } | null } | null> | null } | null };
 
 export type GetAirdropConfigQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -2252,6 +2260,7 @@ export const GetWarriorConfigDocument = gql`
             Train_Iron
             Train_Time
             Troop_Food
+            Troop_Iron
             Troop_Gold
             Troop_Speed
           }

@@ -52,6 +52,7 @@ export function defineContractComponents(world: World) {
           Train_Time: RecsType.Number,
           Troop_Food: RecsType.Number,
           Troop_Gold: RecsType.Number,
+          Troop_Iron: RecsType.Number,
           Troop_Speed: RecsType.Number,
         },
         {
