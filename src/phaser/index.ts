@@ -2,6 +2,7 @@ import { createPhaserEngine } from "../../node_modules/@latticexyz/phaserx/src/i
 import { NetworkLayer } from '../dojo/createNetworkLayer';
 import { registerSystems } from './systems/registerSystems';
 import { namespaceWorld } from '../../node_modules/@latticexyz/recs/src/index';
+import { MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "./constants";
 
 export type PhaserLayer = Awaited<ReturnType<typeof createPhaserLayer>>;
 type PhaserEngineConfig = Parameters<typeof createPhaserEngine>[0];
@@ -15,7 +16,7 @@ export const createPhaserLayer = async (networkLayer: NetworkLayer, phaserConfig
     const { camera } = scenes.Main;
 
     // setBounds(x: number, y: number, width: number, height: number, centerOn?: boolean): this;
-    camera.phaserCamera.setBounds(-1800, -3600, 3600, 7200);
+    camera.phaserCamera.setBounds(-30, -30, MAP_WIDTH * TILE_WIDTH + 100, MAP_HEIGHT * TILE_HEIGHT + 100);
     camera.phaserCamera.centerOn(0, 0);
 
     const components = {};
