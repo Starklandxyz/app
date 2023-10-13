@@ -70,6 +70,7 @@ export function createSystemCalls(
   };
 
   const goFight = async (signer: Account, map_id: number, troop_index: number) => {
+    console.error("goFight info",map_id,troop_index);
     try {
       const tx = await execute(signer, "go_fight", [map_id, troop_index]);
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
@@ -303,7 +304,6 @@ export function createSystemCalls(
     tox:number,
     toy:number
   ) => {
-    console.error("sendTroop info",troop_id,fromx,fromy,tox,toy);
     const tx = await execute(signer, "send_troop", [map_id,amount,troop_id,fromx,fromy,tox,toy]);
     // console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
