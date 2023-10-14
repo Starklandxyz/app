@@ -113,7 +113,6 @@ export default function TrainPanel() {
             }
         });
 
-
         const result = await trainWarrior(account, 1, inputValue, camps_x, camps_y)
         if (result && result.length > 0) {
             toastSuccess("Start training...")

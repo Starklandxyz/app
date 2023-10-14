@@ -29,7 +29,7 @@ export default function BasePage() {
 
   const {
     networkLayer: {
-      systemCalls: { claimMining,upgradeComplete },
+      systemCalls: { claimMining, upgradeComplete },
       components: contractComponents,
       network: { graphSdk },
     },
@@ -44,7 +44,7 @@ export default function BasePage() {
     contractComponents.MiningConfig,
     getEntityIdFromKeys([1n])
   );
-  const update_base = useComponentValue(contractComponents.UpgradeCost,getEntityIdFromKeys([1n,BigInt(base?base.x:0),BigInt(base?base.y:0)]))
+  const update_base = useComponentValue(contractComponents.UpgradeCost, getEntityIdFromKeys([1n, BigInt(base ? base.x : 0), BigInt(base ? base.y : 0)]))
 
   const [baseland, setBaseland] = useState<Array<Land>>([]);
   const [farmland, setFarmland] = useState<Array<Land>>([]);
@@ -282,36 +282,45 @@ export default function BasePage() {
     camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
   };
 
-  const finishUpgrade = async ()=>{
-    const result = await upgradeComplete(account!,1,base.x,base.y)
-    if(result && result.length>0){
+  const finishUpgrade = async () => {
+    const result = await upgradeComplete(account!, 1, base.x, base.y)
+    if (result && result.length > 0) {
       toastSuccess("Upgrade success")
-    }else{
+    } else {
       toastError("Upgrade fail")
     }
   }
 
-  const updateBase = ()=>{
-    if(!base){
+  const updateBase = () => {
+    if (!base) {
       toastError("Build a base first")
       return
     }
-    updateStore.setState({updateLand:{x:base.x,y:base.y}})
+    updateStore.setState({ updateLand: { x: base.x, y: base.y } })
   }
 
-  const updateButton = useMemo(()=>{
+  const updateButton = useMemo(() => {
     // const update_cost = getComponentValue()
-    if(update_base && !update_base.claimed){
-        if(timenow>update_base.end_time){
-          return <><NesButton style={{ minHeight: 30 }} onClick={()=>finishUpgrade()}>Confirm Upgrade</NesButton></>
-        }else{
-          const total = update_base.end_time - update_base.start_time
-          const used = timenow - update_base.start_time
-         return <>{used}s/{total}s Updating...</>
-        }
+    if (update_base && !update_base.claimed) {
+      if (timenow > update_base.end_time) {
+        return <><NesButton style={{ minHeight: 30 }} onClick={() => finishUpgrade()}>Confirm Upgrade</NesButton></>
+      } else {
+        const total = update_base.end_time - update_base.start_time
+        const used = timenow - update_base.start_time
+        return <>{used}s/{total}s Updating...</>
+      }
     }
-    return <NesButton style={{ minHeight: 30 }} onClick={()=>updateBase()}>Upgrade</NesButton>
-  },[timenow,update_base])
+    return <NesButton style={{ minHeight: 30 }} onClick={() => updateBase()}>Upgrade</NesButton>
+  }, [timenow, update_base])
+
+  const campCapacity = useMemo(() => {
+    let total = 0
+    for (let index = 0; index < camp.length; index++) {
+      const element = camp[index];
+      total += element.level * 30
+    }
+    return total
+  }, [camp])
 
   return (
     <div
@@ -325,7 +334,7 @@ export default function BasePage() {
         paddingTop: 1,
       }}
     >
-      
+
       <div
         style={{
           border: "1px solid yellow",
@@ -336,14 +345,14 @@ export default function BasePage() {
       >
         {base && (
           <ResourceItem>
-            <span className="name" onClick={() => zoomto(base)} style={{cursor:"pointer"}}>
+            <span className="name" onClick={() => zoomto(base)} style={{ cursor: "pointer" }}>
               Base {base?.x},{base?.y}{" "}
             </span>
             <span className="speed">{getBaseGoldPerHour} Gold/H</span>
           </ResourceItem>
         )}
 
-        <div style={{ display: "flex", marginTop: "8px", paddingLeft:"6px" }}>
+        <div style={{ display: "flex", marginTop: "8px", paddingLeft: "6px" }}>
           <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
             LV {getBaseLevel}
           </span>
@@ -361,7 +370,7 @@ export default function BasePage() {
         <ResourceItem>
           <span className="name"> Camp - </span>
           <span className="level">{camp.length}</span>
-          <span className="speed">+100 Capacity</span>
+          <span className="speed">+{campCapacity} Capacity</span>
         </ResourceItem>
 
         <ResourceItem>
