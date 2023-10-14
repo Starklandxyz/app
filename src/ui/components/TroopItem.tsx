@@ -10,10 +10,12 @@ import { store } from "../../store/store";
 import { Has, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import { BuildType } from "../../types/Build";
+import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../../node_modules/@latticexyz/phaserx/src/index";
+import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
-    const { account, phaserLayer } = store()
+    const { account, phaserLayer,camera} = store()
     // const [lastOwner,setLastOwner] = useState<string|undefined>()
     const {
         networkLayer: {
@@ -113,25 +115,25 @@ export default function TroopItem(params: any) {
 
     const getFrom = useMemo(() => {
         if (!base) {
-            return `(${troop.from.x},${troop.from.y})`
+            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
         }
         if (base.x == troop.from.x && base.y == troop.from.y) {
-            return "Base"
+            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.from)}>Base</span>
         } else {
-            return `(${troop.from.x},${troop.from.y})`
+            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
         }
     }, [troop])
 
     const getTo = useMemo(() => {
         if (!base) {
-            return `(${troop.to.x},${troop.to.y})`
+            // return `(${troop.to.x},${troop.to.y})`
+            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
         }
-        // console.log("getTo",troop,base);
-
         if (base.x == troop.to.x && base.y == troop.to.y) {
-            return "Base"
+            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.to)}>Base</span>
         } else {
-            return `(${troop.to.x},${troop.to.y})`
+            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
+            // return `(${troop.to.x},${troop.to.y})`
         }
     }, [troop, account, base])
 
@@ -191,14 +193,20 @@ export default function TroopItem(params: any) {
         return <></>
     }, [troop, timenow])
 
+    const goto = (coord:Coord)=>{
+        console.log("goto");
+        const pixelPosition = tileCoordToPixelCoord(coord, TILE_WIDTH, TILE_HEIGHT);
+        camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
+    }
+
     return (
-        <ClickWrapper style={{ cursor: "pointer", marginBottom: 20 }}>
+        <ClickWrapper style={{marginBottom: 20 }}>
             <div style={{ display: "flex" }}>
-                <div style={{ display: "flex", flex: 1 }}>
+                <div style={{ display: "flex", flex: 1,cursor: "pointer",  }} onClick={()=>goto(troop.to)}>
                     <img src={flag} width={25} />
                     <div style={{ marginTop: 4, marginLeft: 3 }}>Troop{troop.index}</div>
                 </div>
-                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <div style={{ display: "flex", justifyContent: "flex-end" }} >
                     <img style={{ marginLeft: 20 }} height={25} src={soldierIcon} />
                     <div style={{ marginTop: 4, marginLeft: 3 }}>x{troop.amount}</div>
                 </div>
@@ -206,9 +214,9 @@ export default function TroopItem(params: any) {
 
             <div style={{ display: "flex", alignItems: "center" }} onClick={() => clickTroop()}>
                 <div style={{ display: "flex", flex: 1 }}>
-                    <span>{getFrom}</span>
+                    {getFrom}
                     <span> {" => "} </span>
-                    <span>{getTo}</span>
+                    {getTo}
                 </div>
 
                 <div style={{ color: "coral", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
