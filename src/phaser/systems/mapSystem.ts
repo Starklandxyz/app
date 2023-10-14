@@ -53,6 +53,8 @@ export function mapSystem(layer: PhaserLayer) {
                     putTileAt(coord, TilesetLevel.Level4, "Foreground");
                 } else if (warrior <= 400) {
                     putTileAt(coord, TilesetLevel.Level5, "Foreground");
+                }else{
+                    putTileAt(coord, TilesetLevel.Level6, "Foreground");
                 }
             }
             const progress = (x * y) / (size * size) * 100

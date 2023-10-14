@@ -25,6 +25,7 @@ export enum TilesetLevel{
     Level3_1 = 323,
     Level4 = 324,
     Level5 = 325,
+    Level6 = 326
 }
 
 export enum TilesetTown {

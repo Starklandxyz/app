@@ -6,11 +6,12 @@ import { store } from "../store/store";
 import { Account } from "starknet";
 import { ticStore } from "../store/ticStore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
 import { Warrior } from "../types/Warrior";
 import NesButton from "./components/NesButton";
+import { BuildType } from "../types/Build";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
@@ -27,6 +28,9 @@ export default function TrainPanel() {
             network: { graphSdk }
         }
     } = phaserLayer!
+    const landEntities = useEntityQuery([Has(components.Land)], {
+        updateOnValueChange: true,
+    });
     const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
@@ -99,7 +103,18 @@ export default function TrainPanel() {
             return
         }
 
-        const result = await trainWarrior(account, 1, inputValue)
+        const camps_x:Array<number> = []
+        const camps_y:Array<number> = []
+        landEntities.map((entity) => {
+            const value = getComponentValue(components.Land, entity);
+            if (value && value.owner == account.address && value.building == BuildType.Camp) {
+                camps_x.push(value.x)
+                camps_y.push(value.y)
+            }
+        });
+
+
+        const result = await trainWarrior(account, 1, inputValue, camps_x, camps_y)
         if (result && result.length > 0) {
             toastSuccess("Start training...")
         } else {

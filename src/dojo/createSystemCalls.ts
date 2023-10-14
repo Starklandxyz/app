@@ -35,9 +35,9 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const startMining = async (signer: Account, map_id: number, miner_x: number, miner_y: number,mined_x:number,mined_y:number) => {
+  const startMining = async (signer: Account, map_id: number, miner_x: number, miner_y: number, mined_x: number, mined_y: number) => {
     try {
-      const tx = await execute(signer, "start_mining", [map_id, miner_x,miner_y,mined_x,mined_y]);
+      const tx = await execute(signer, "start_mining", [map_id, miner_x, miner_y, mined_x, mined_y]);
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
@@ -52,9 +52,9 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const buildBuilding = async (signer: Account, map_id: number, x: number, y: number,build_type:number) => {
+  const buildBuilding = async (signer: Account, map_id: number, x: number, y: number, build_type: number) => {
     try {
-      const tx = await execute(signer, "build_building", [map_id, x, y,build_type]);
+      const tx = await execute(signer, "build_building", [map_id, x, y, build_type]);
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
@@ -70,7 +70,7 @@ export function createSystemCalls(
   };
 
   const goFight = async (signer: Account, map_id: number, troop_index: number) => {
-    console.error("goFight info",map_id,troop_index);
+    console.error("goFight info", map_id, troop_index);
     try {
       const tx = await execute(signer, "go_fight", [map_id, troop_index]);
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
@@ -86,10 +86,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const claimMining = async (signer: Account, map_id: number, xs: Array<number>,ys:Array<number>) => {
+  const claimMining = async (signer: Account, map_id: number, xs: Array<number>, ys: Array<number>) => {
     try {
-      
-      const tx = await execute(signer, "claim_mining", CallData.compile([map_id,xs,ys]));
+
+      const tx = await execute(signer, "claim_mining", CallData.compile([map_id, xs, ys]));
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
@@ -103,10 +103,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const airdrop = async (signer: Account, map_id: number,index:number,x:number=0,y:number=0) => {
+  const airdrop = async (signer: Account, map_id: number, index: number, x: number = 0, y: number = 0) => {
     try {
       // console.log("recoverEnergy start");
-      const tx = await execute(signer, "airdrop", [map_id,index,x,y]);
+      const tx = await execute(signer, "airdrop", [map_id, index, x, y]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -127,10 +127,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const upgradeBuild = async (signer: Account, map_id: number,x:number=0,y:number=0) => {
+  const upgradeBuild = async (signer: Account, map_id: number, x: number = 0, y: number = 0) => {
     try {
       // console.log("recoverEnergy start");
-      const tx = await execute(signer, "upgrade_building", [map_id,x,y]);
+      const tx = await execute(signer, "upgrade_building", [map_id, x, y]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -151,10 +151,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const upgradeComplete = async (signer: Account, map_id: number,x:number=0,y:number=0) => {
+  const upgradeComplete = async (signer: Account, map_id: number, x: number = 0, y: number = 0) => {
     try {
       // console.log("recoverEnergy start");
-      const tx = await execute(signer, "upgrade_compleate", [map_id,x,y]);
+      const tx = await execute(signer, "upgrade_compleate", [map_id, x, y]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -200,10 +200,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const adminAttack = async (signer: Account, map_id: number,x:number,y:number) => {
+  const adminAttack = async (signer: Account, map_id: number, x: number, y: number) => {
     try {
       // console.log("recoverEnergy start");
-      const tx = await execute(signer, "admin_attack", [map_id,x,y]);
+      const tx = await execute(signer, "admin_attack", [map_id, x, y]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -224,10 +224,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const retreatTroop = async (signer: Account, map_id: number,index:number) => {
+  const retreatTroop = async (signer: Account, map_id: number, index: number) => {
     try {
       // console.log("recoverEnergy start");
-      const tx = await execute(signer, "retreat_troop", [map_id,index]);
+      const tx = await execute(signer, "retreat_troop", [map_id, index]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -248,10 +248,10 @@ export function createSystemCalls(
     return undefined;
   };
 
-  const troopEnterLand = async (signer: Account, map_id: number,index:number) => {
+  const troopEnterLand = async (signer: Account, map_id: number, index: number) => {
     try {
       // console.log("troopEnterLand start");
-      const tx = await execute(signer, "enter_land", [map_id,index]);
+      const tx = await execute(signer, "enter_land", [map_id, index]);
 
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
@@ -297,14 +297,14 @@ export function createSystemCalls(
   const sendTroop = async (
     signer: Account,
     map_id: number,
-    amount:number,
-    troop_id:number,
-    fromx:number,
-    fromy:number,
-    tox:number,
-    toy:number
+    amount: number,
+    troop_id: number,
+    fromx: number,
+    fromy: number,
+    tox: number,
+    toy: number
   ) => {
-    const tx = await execute(signer, "send_troop", [map_id,amount,troop_id,fromx,fromy,tox,toy]);
+    const tx = await execute(signer, "send_troop", [map_id, amount, troop_id, fromx, fromy, tox, toy]);
     // console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
       retryInterval: 100,
@@ -321,9 +321,9 @@ export function createSystemCalls(
   const trainWarrior = async (
     signer: Account,
     map_id: number,
-    amount: number
+    amount: number, xs: Array<number>, ys: Array<number>
   ) => {
-    const tx = await execute(signer, "train_warrior", [map_id, amount]);
+    const tx = await execute(signer, "train_warrior", CallData.compile([map_id,amount, xs, ys]));
     // console.log(tx);
     const receipt = await signer.waitForTransaction(tx.transaction_hash, {
       retryInterval: 100,
@@ -346,7 +346,7 @@ export function createSystemCalls(
       const receipt = await signer.waitForTransaction(tx.transaction_hash, {
         retryInterval: 100,
       });
-      console.log("spawn",receipt);
+      console.log("spawn", receipt);
       let events = getEvents(receipt);
       setComponentsFromEvents(contractComponents, events);
       return events;

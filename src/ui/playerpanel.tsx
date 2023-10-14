@@ -13,7 +13,7 @@ import soldierIcon from "../../public/assets/icons/soldier.png";
 import flagIcon from "../../public/assets/icons/flag.png";
 import landIcon from "../../public/assets/icons/landicon.png";
 import { store } from "../store/store";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import {
   ComponentValue,
@@ -29,6 +29,8 @@ import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { BuildType } from "../types/Build";
 import { controlStore } from "../store/controlStore";
 import NESButton from "./components/NesButton";
+import { Coord } from "../types";
+import { Land } from "../generated/graphql";
 
 export default function PlayerPanel() {
   const { account, phaserLayer } = store();
@@ -40,6 +42,8 @@ export default function PlayerPanel() {
       network: { graphSdk, wsClient },
     },
   } = phaserLayer!;
+
+  const [userCamps,setUserCamps] = useState<Array<Land>>([])
 
   const food = useComponentValue(
     sqlComponent.Food,
@@ -80,8 +84,6 @@ export default function PlayerPanel() {
     getEntityIdFromKeys([BigInt(account ? account.address : "")])
   );
 
-  const { showTask } = controlStore();
-
   useEffect(() => {
     if (!account) {
       return;
@@ -100,6 +102,7 @@ export default function PlayerPanel() {
       return 0;
     }
     let size = 0;
+    const camps:Array<Land> = []
     landEntities.map((entity) => {
       const value = getComponentValue(sqlComponent.Land, entity);
       // console.log("landEntities", value);
@@ -110,7 +113,12 @@ export default function PlayerPanel() {
       ) {
         size++;
       }
+      // console.log("landEntities",value);
+      if(value && value.owner==account.address && value.building == BuildType.Camp){
+        camps.push(value)
+      }
     });
+    setUserCamps(camps)
     return size;
   }, [landEntities, account]);
 
@@ -185,6 +193,35 @@ export default function PlayerPanel() {
     }
   }, [airdropClaimed, account]);
 
+  const maxLand = useMemo(()=>{
+    if(!account){
+      return 10
+    }
+    const base = getComponentValue(sqlComponent.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
+    if(!base){
+      return 10
+    }
+    const land = getComponentValue(sqlComponent.Land,getEntityIdFromKeys([1n,BigInt(base.x),BigInt(base.y)]))
+    if(!land){
+      return 10
+    }
+    const max = 10 + 5*(land?.level-1)
+    return max
+  },[account])
+
+  const maxWarrior = useMemo(()=>{
+    console.log("maxWarrior",account,userCamps);
+    if(!account){
+      return 60
+    }
+    let total = 60
+    for (let index = 0; index < userCamps.length; index++) {
+      const camp = userCamps[index];
+      total += camp.level * 30
+    }
+    return total
+  },[account,userCamps,landEntities])
+
   return (
     <TopBarWrapper>
       <LogoImage src={starklogo}></LogoImage>
@@ -225,20 +262,20 @@ export default function PlayerPanel() {
 
       <ResourceItemWrapper
         data-tooltip-id="my-tooltip"
-        data-tooltip-content="Land"
+        data-tooltip-content="Land Amount / Max Land"
         data-tooltip-place="top"
       >
         <ResourceIcon src={landIcon} alt="land" />
-        <ResourceValue>{getTotalLands}/10</ResourceValue>
+        <ResourceValue>{getTotalLands}/{maxLand}</ResourceValue>
       </ResourceItemWrapper>
 
       <ResourceItemWrapper
         data-tooltip-id="my-tooltip"
-        data-tooltip-content="Soldiers"
+        data-tooltip-content="Soldiers | Capacity"
         data-tooltip-place="top"
       >
         <ResourceIcon src={soldierIcon} alt="soldier" />
-        <ResourceValue>{userWarrior && userWarrior.balance}/20</ResourceValue>
+        <ResourceValue>{userWarrior && userWarrior.balance}/{maxWarrior}</ResourceValue>
       </ResourceItemWrapper>
 
       <ResourceItemWrapper
@@ -247,7 +284,7 @@ export default function PlayerPanel() {
         data-tooltip-place="top"
       >
         <ResourceIcon src={flagIcon} alt="flag" />
-        <ResourceValue>{getMyTroopSize}/1</ResourceValue>
+        <ResourceValue>{getMyTroopSize}</ResourceValue>
       </ResourceItemWrapper>
 
       <NESButton

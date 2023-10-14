@@ -91,7 +91,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           owner: RecsType.String,
-          nick_name: RecsType.String,
+          nick_name: RecsType.Number,
           joined_time: RecsType.Number,
         },
         {
@@ -411,6 +411,22 @@ export function defineContractComponents(world: World) {
           end_time: RecsType.Number,
           target_level: RecsType.Number,
           claimed: RecsType.Boolean,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    LandOwner: (() => {
+      const name = "LandOwner";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          owner: RecsType.String,
+          total: RecsType.Number,
         },
         {
           metadata: {
