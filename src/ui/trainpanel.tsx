@@ -103,15 +103,24 @@ export default function TrainPanel() {
             return
         }
 
-        const camps_x:Array<number> = []
-        const camps_y:Array<number> = []
+        const camps_x: Array<number> = []
+        const camps_y: Array<number> = []
+        let max = 60
         landEntities.map((entity) => {
             const value = getComponentValue(components.Land, entity);
             if (value && value.owner == account.address && value.building == BuildType.Camp) {
                 camps_x.push(value.x)
                 camps_y.push(value.y)
+                max += 30 * value.level
             }
         });
+        const userW = getComponentValue(components.UserWarrior, getEntityIdFromKeys([1n, BigInt(account.address)]))
+        if (userW) {
+            if (userW.balance + inputValue > max) {
+                toastError("Exceed max warrior")
+                return
+            }
+        }
 
         const result = await trainWarrior(account, 1, inputValue, camps_x, camps_y)
         if (result && result.length > 0) {
