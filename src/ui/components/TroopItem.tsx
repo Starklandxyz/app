@@ -14,7 +14,7 @@ import { BuildType } from "../../types/Build";
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
     const { account, phaserLayer } = store()
-    const [lastOwner,setLastOwner] = useState<string|undefined>()
+    // const [lastOwner,setLastOwner] = useState<string|undefined>()
     const {
         networkLayer: {
             components: contractComponents,
@@ -32,9 +32,10 @@ export default function TroopItem(params: any) {
     const attackClick = async () => {
         if (!account) { return }
 
-        const attackLand = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
-        if(attackLand){
-            setLastOwner(attackLand.owner)
+        const attackLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
+        let lastOwner = ""
+        if (attackLand) {
+            lastOwner = (attackLand.owner)
         }
 
         const result = await goFight(account, 1, troop.index)
@@ -42,14 +43,14 @@ export default function TroopItem(params: any) {
 
         if (result && result.length > 0) {
             // toastSuccess("Attack success")
-            const newLand = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+            const newLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
             let win = false
-            if(newLand && newLand.owner != lastOwner){
+            if (newLand && newLand.owner != lastOwner) {
                 win = true
             }
-            if(win){
+            if (win) {
                 toastSuccess("You Win!")
-            }else{
+            } else {
                 toastError("You Loss!")
             }
         } else {
