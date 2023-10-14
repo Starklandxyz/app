@@ -18,7 +18,7 @@ export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0, position: "" })
 
-    const { coord: lastCoord, down: mouseDown,coords } = mouseStore()
+    const { coord: lastCoord, down: mouseDown, coords } = mouseStore()
     // const [coord, setCoord] = useState<Coord>({ x: 0, y: 0 })
 
     const { sendTroopCtr: sendTroop, buildLand, showTipButtons, tipButtonShow } = controlStore()
@@ -52,7 +52,11 @@ export default function BuildingTip() {
         var land_owner = "Owner : No Owner"
         var land_desc = ""
         var land_level = ""
-        var land_warrior = "Warrior : 0"
+        const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y).toString()
+        // console.log("land_baba",land_baba);
+        
+        var land_warrior = <></>
+
         if (land) {
             switch (land.building) {
                 case BuildType.None: break;
@@ -72,7 +76,10 @@ export default function BuildingTip() {
             land_level = "Level : " + land.level
             const w = getComponentValue(contractComponents.Warrior, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
             if (w) {
-                land_warrior = "Warrior : " + w.balance
+                // land_warrior = "Warrior : " + w.balance
+                land_warrior = <>
+                    Warrior : {land_baba} + <span style={{color:"yellow"}}>{w.balance}</span>
+                </>
             }
         } else {
             const land_type = get_land_type(1, lastCoord.x, lastCoord.y)
@@ -99,12 +106,15 @@ export default function BuildingTip() {
                     }
                 }
             }
-            const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y)
-            land_warrior = "Warrior : " + land_baba.toString()
+
+            // land_warrior = "Warrior : " + land_baba.toString()
+            land_warrior = <>
+                    Warrior : {land_baba}
+                </>
 
             land_level = "Level : " + get_land_level(1, lastCoord.x, lastCoord.y)
             if (land_type != LandType.None) {
-                land_warrior = ""
+                land_warrior = <></>
                 land_level = ""
             }
         }
@@ -156,11 +166,11 @@ export default function BuildingTip() {
 
         const q = coords.clone()
         let c = q.dequeue()
-        while(c){
+        while (c) {
             putTileAt(c, Tileset.Empty, "Select");
             c = q.dequeue()
         }
-        
+
         putTileAt(lastCoord, TilesetSelect.Color3, "Select");
         // setCoord({ x: lastCoord.x, y: lastCoord.y })
     }, [lastCoord])
@@ -212,7 +222,7 @@ export default function BuildingTip() {
         }
 
         console.error("sendTroopClick", tooltip);
-        settooltip({ show: true, x: window.screen.width * 0.27, y: window.screen.height * 0.45, content: tooltip.content,position:""})
+        settooltip({ show: true, x: window.screen.width * 0.27, y: window.screen.height * 0.45, content: tooltip.content, position: "" })
         const troop = new Troop(account.address, myBase, lastCoord, getTimestamp())
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
