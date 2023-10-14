@@ -50,10 +50,10 @@ export const get_land_barbarians = (map_id: number, x: number, y: number) => {
         result = r2 % 50n + 51n
     } else if (r1 <= 95) {
         result = r2 % 100n + 101n
-    } else if(r1<=99){
+    } else if(r1<=100){
         result = r2 % 200n + 201n
-    } else{
-        result = r2 % 100000n + 100000n
+    // } else{
+        // result = r2 % 100000n + 100000n
     }
     return result
 }
