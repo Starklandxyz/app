@@ -3,7 +3,7 @@ import { ClickWrapper } from "./clickWrapper";
 import { useEffect, useMemo, useState } from "react";
 import { mouseStore } from "../store/mouseStore";
 import { store } from "../store/store";
-import { pixelCoordToTileCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
+import { pixelCoordToTileCoord,tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { Tileset, TilesetTown } from "../artTypes/world";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
@@ -12,11 +12,12 @@ import { LandType, get_land_type } from "../types/Land";
 import { useComponentValue } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import NesButton from "./components/NesButton";
+// import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 
 export default function SpawnUI() {
     // const {player} = playerStore()
     const [show, setShow] = useState(false)
-    const { x: ex, y: ey, down: mouseDown } = mouseStore()
+    const {coord, down: mouseDown } = mouseStore()
     const { camera, phaserLayer, account } = store()
     const [lastCoord, setLastCoord] = useState<Coord>({ x: 0, y: 0 })
     const {
@@ -95,9 +96,9 @@ export default function SpawnUI() {
             return
         }
 
-        const x = (ex + camera.phaserCamera.worldView.x * 2) / 2;
-        const y = (ey + camera.phaserCamera.worldView.y * 2) / 2;
-        const coord = pixelCoordToTileCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT)
+        // const x = (ex + camera.phaserCamera.worldView.x * 2) / 2;
+        // const y = (ey + camera.phaserCamera.worldView.y * 2) / 2;
+        // const coord = pixelCoordToTileCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT)
 
         if (lastCoord.x == coord.x && lastCoord.y == coord.y) {
             return
@@ -110,7 +111,10 @@ export default function SpawnUI() {
             putTileAt({ x: xStart, y: yStart + 1 }, Tileset.Empty, "Build");
             putTileAt({ x: xStart + 1, y: yStart + 1 }, Tileset.Empty, "Build");
         }
-
+        // const c = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
+        // console.log("lastCoord", lastCoord, c);
+        // const xStart = c.x * 2 - camera.phaserCamera.worldView.x * 2
+        // const yStart = c.y * 2 - camera.phaserCamera.worldView.y * 2
 
         const xStart = coord.x
         const yStart = coord.y
@@ -123,7 +127,7 @@ export default function SpawnUI() {
 
         setLastCoord(coord)
 
-    }, [ex, ey])
+    }, [coord])
 
     const showButton = useMemo(() => {
         if (!account) {

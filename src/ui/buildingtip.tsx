@@ -4,8 +4,7 @@ import { mouseStore } from "../store/mouseStore";
 import { useEffect, useMemo, useState } from "react";
 import { store } from "../store/store";
 import { buildingCoorpToPosition, getTimestamp, hexToString, toastSuccess } from "../utils";
-import { tipStore } from "../store/tipStore";
-import { TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetZone } from "../artTypes/world";
+import { Tileset, TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetZone } from "../artTypes/world";
 import { Coord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ClickWrapper } from "./clickWrapper";
 import { Troop } from "../types/Troop";
@@ -17,12 +16,10 @@ import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValue
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
-    const { tooltip: ptooltip } = tipStore();
-    const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0 })
-    // const [showButtons, setShowButtons] = useState({ show: false, x: 0, y: 0 })
+    const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0, position: "" })
 
-    const { x: ex, y: ey, down: mouseDown } = mouseStore()
-    const [lastCoord, setCoord] = useState<Coord>({ x: 0, y: 0 })
+    const { coord: lastCoord, down: mouseDown,coords } = mouseStore()
+    // const [coord, setCoord] = useState<Coord>({ x: 0, y: 0 })
 
     const { sendTroopCtr: sendTroop, buildLand, showTipButtons, tipButtonShow } = controlStore()
 
@@ -40,7 +37,6 @@ export default function BuildingTip() {
         }
     } = phaserLayer!;
 
-
     const myBase = useComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     useEffect(() => {
@@ -51,15 +47,6 @@ export default function BuildingTip() {
     }, [])
 
     useEffect(() => {
-        putTileAt(lastCoord, TilesetSelect.Color3, "Select");
-        var x = ex + 150
-        if (ex > innerWidth - 250) {
-            x = ex - 150
-        }
-        var y = ey - 40
-        if (ey > innerHeight - 200) {
-            y = ey - 100
-        }
         const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
         var land_name = "Land"
         var land_owner = "Owner : No Owner"
@@ -122,46 +109,61 @@ export default function BuildingTip() {
             }
         }
 
-        settooltip({
-            show: true, x: x, y: y, content: <div>
-                <div style={{ marginTop: 5 }}>{land_name}</div>
-                <div style={{ marginTop: 5 }}>({lastCoord.x},{lastCoord.y})</div>
-                <div style={{ marginTop: 5 }}>{land_owner}</div>
-                <div style={{ marginTop: 5 }}>{land_desc}</div>
-                <div style={{ marginTop: 5 }}>{land_level}</div>
-                <div style={{ marginTop: 5 }}>{land_warrior}</div>
-            </div>
-        })
+        const xx = lastCoord.x
+        const yy = lastCoord.y
+        const xxx = xx.toString()
+        const yyy = yy.toString()
+        var p = `(${xxx},${yyy})`
+        const c = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
+        // console.log("lastCoord", lastCoord, c);
+        if (camera) {
+            const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
+            const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
+            var x = ex + 180
+            if (ex > innerWidth - 250) {
+                x = ex - 120
+            }
+            var y = ey - 40
+            if (ey > innerHeight - 200) {
+                y = ey - 100
+            }
+            setTip({
+                show: true, x: x, y: y,
+                position: p,
+                content:
+                    <div>
+                        <div style={{ marginTop: 5 }}>{land_name}</div>
+                        <div style={{ marginTop: 5 }}>{p}</div>
+                        <div style={{ marginTop: 5 }}>{land_owner}</div>
+                        <div style={{ marginTop: 5 }}>{land_desc}</div>
+                        <div style={{ marginTop: 5 }}>{land_level}</div>
+                        <div style={{ marginTop: 5 }}>{land_warrior}</div>
+                    </div>
+            })
+        }
+
+
     }, [lastCoord])
 
+    const setTip = (tip: any) => {
+        // console.log("setTip", tip);
+        settooltip(tip)
+    }
+
+
     useEffect(() => {
-        if (!camera) {
-            return
+        // console.log("putTileAt", coord, lastCoord);
+
+        const q = coords.clone()
+        let c = q.dequeue()
+        while(c){
+            putTileAt(c, Tileset.Empty, "Select");
+            c = q.dequeue()
         }
-
-        if (tipButtonShow.show) {
-            return
-        }
-
-        if (sendTroop.show) {
-            return
-        }
-
-        if (buildLand) {
-            return
-        }
-
-        const x = (ex + camera.phaserCamera.worldView.x * 2) / 2;
-        const y = (ey + camera.phaserCamera.worldView.y * 2) / 2;
-
-        const coord = pixelCoordToTileCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT)
-        if (coord.x == lastCoord.x && coord.y == lastCoord.y) {
-
-        } else {
-            putTileAt(lastCoord, TilesetSelect.Color0, "Select");
-            setCoord(coord)
-        }
-    }, [ex, ey])
+        
+        putTileAt(lastCoord, TilesetSelect.Color3, "Select");
+        // setCoord({ x: lastCoord.x, y: lastCoord.y })
+    }, [lastCoord])
 
     useEffect(() => {
         console.log("mouseDown", mouseDown);
@@ -178,32 +180,39 @@ export default function BuildingTip() {
             return
         }
         if (!mouseDown) {
-            var x = ex
-            if (ex > innerWidth - 100) {
-                x = ex - 100
+            const c = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
+            console.log("click lastCoord", lastCoord, c);
+
+            if (camera) {
+                const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
+                const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
+                var x = ex
+                var y = ey + 50
+                if (ey > innerHeight - 200) {
+                    y = ey - 100
+                }
+                console.log("click", lastCoord, x, y);
+                controlStore.setState({ tipButtonShow: { show: true, x: x, y: y }, clickedLand: { x: lastCoord.x, y: lastCoord.y } })
             }
-            var y = ey
-            if (ey > innerHeight - 200) {
-                y = ey - 180
-            }
-            console.log("click", lastCoord);
-            controlStore.setState({ tipButtonShow: { show: true, x: x, y: y }, clickedLand: { x: lastCoord.x, y: lastCoord.y } })
         }
-    }, [mouseDown])
+    }, [mouseDown, account])
+
+    useEffect(() => {
+        console.log("building tip account", account);
+
+    }, [account])
 
     const sendTroopClick = () => {
         console.log("sendTroopClick");
         if (!account) {
             return
         }
-        // const base = bases.get(account.address)
         if (!myBase) {
             return
         }
-        // { show: false, x: 0, y: 0, content: null }
-        // tipStore.setState({tooltip:{show:true,x:100,y:100,content:tooltip.content}})
-        
-        settooltip({show:true,x:window.screen.width*0.27,y:window.screen.height*0.45,content:tooltip.content})
+
+        console.error("sendTroopClick", tooltip);
+        settooltip({ show: true, x: window.screen.width * 0.27, y: window.screen.height * 0.45, content: tooltip.content,position:""})
         const troop = new Troop(account.address, myBase, lastCoord, getTimestamp())
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
@@ -220,27 +229,27 @@ export default function BuildingTip() {
         controlStore.setState({ buildLand: lastCoord, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
 
-    const getAttackButtons = useMemo(()=>{
+    const getAttackButtons = useMemo(() => {
         const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
         let hasAttack = false
-        if(land){
-            if(land.owner != account?.address){
+        if (land) {
+            if (land.owner != account?.address) {
                 hasAttack = true
             }
-        }else{
+        } else {
             hasAttack = true
         }
-        if(hasAttack){
+        if (hasAttack) {
             // const troop = getComponentValue()
         }
         return <></>
-    },[myBase, account, lastCoord])
+    }, [myBase, account, lastCoord])
 
     const getButtons = useMemo(() => {
         if (!account) {
             return <></>
         }
-        if (tipButtonShow.show) {
+        if (!tipButtonShow.show) {
             return
         }
         if (showTipButtons) {
@@ -259,14 +268,14 @@ export default function BuildingTip() {
                 }
                 if (land.building == BuildType.None) {
                     return <>
-                        <button style={{zIndex:10}} onClick={() => sendTroopClick()}>Send Troop</button>
-                        <button style={{zIndex:10}} onClick={() => buildClick()}>Build</button>
-                        {hasW && <button style={{zIndex:10}} onClick={() => retreat()}>Retreat Warrior</button>}
+                        <button style={{ zIndex: 10 }} onClick={() => sendTroopClick()}>Send Troop</button>
+                        <button style={{ zIndex: 10 }} onClick={() => buildClick()}>Build</button>
+                        {hasW && <button style={{ zIndex: 10 }} onClick={() => retreat()}>Retreat Warrior</button>}
                     </>
                 } else {
                     return <>
-                        <button style={{zIndex:10}} onClick={() => sendTroopClick()}>Send Troop</button>
-                        {hasW && <button style={{zIndex:10}} onClick={() => retreat()}>Retreat Warrior</button>}
+                        <button style={{ zIndex: 10 }} onClick={() => sendTroopClick()}>Send Troop</button>
+                        {hasW && <button style={{ zIndex: 10 }} onClick={() => retreat()}>Retreat Warrior</button>}
                     </>
                 }
             }
@@ -276,8 +285,8 @@ export default function BuildingTip() {
                 return <></>
             }
         }
-        return <button style={{zIndex:10}} onClick={() => sendTroopClick()}>Send Troop</button>
-    }, [myBase, account, lastCoord])
+        return <button style={{ zIndex: 10 }} onClick={() => sendTroopClick()}>Send Troop</button>
+    }, [myBase, account, lastCoord, tipButtonShow])
 
     return (
         <ClickWrapper>
@@ -286,9 +295,7 @@ export default function BuildingTip() {
                     className="tooltip"
                     style={{ left: `${tooltip.x}px`, top: `${tooltip.y}px` }}
                 >
-                    {
-                        tooltip.content
-                    }
+                    {tooltip.content}
                 </div>
             )}
             {
@@ -302,21 +309,12 @@ export default function BuildingTip() {
                     }
                     {/* <button onClick={() => buildClick()}>Build</button> */}
                     {/* <button onClick={() => attack()}>Attack</button> */}
-                    <button style={{ marginTop: 10 ,zIndex:10}} onClick={() => controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })}>Cancel</button>
+                    <button style={{ marginTop: 10, zIndex: 10 }} onClick={() => controlStore.setState({ tipButtonShow: { show: false, x: 0, y: 0 } })}>Cancel</button>
 
                 </div>
             }
 
-            {ptooltip.show && (
-                <div
-                    className="tooltip"
-                    style={{ left: `${ptooltip.x}px`, top: `${ptooltip.y}px` }}
-                >
-                    {
-                        ptooltip.content
-                    }
-                </div>
-            )}
+
         </ClickWrapper>
     )
 }

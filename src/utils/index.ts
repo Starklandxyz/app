@@ -104,7 +104,7 @@ export function stringToHex(str: string): string {
 }
 
 export function hexToString(hex: string | undefined): string {
-    console.log(`hex: ${hex}`);
+    // console.log(`hex: ${hex}`);
     
     if (!hex) {
         return ''
