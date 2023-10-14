@@ -198,37 +198,6 @@ export default function TroopItem(params: any) {
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }
 
-
-
-    useEffect(() => {
-        if (!account) {
-            return
-        }
-        // console.log("troop item click",lastCoord,troop.to);
-        
-        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
-        let hasAttack = false
-        if (land) {
-            if (land.owner != account?.address) {
-                hasAttack = true
-            }
-        } else {
-            hasAttack = true
-        }
-        if (hasAttack) {
-            if (troop && !troop.retreat) {
-                if (troop.to.x == lastCoord.x && troop.to.y == lastCoord.y) {
-                    if (troop.startTime + troop.distance * Troop_Speed < getTimestamp()) {
-                        controlStore.setState({addTipButton:<button>Attack</button>})
-                        return
-                    }
-                }
-            }
-        }
-        controlStore.setState({addTipButton:undefined})
-    }, [account, troop, lastCoord])
-
-
     return (
         <ClickWrapper style={{ marginBottom: 20 }}>
             <div style={{ display: "flex" }}>
