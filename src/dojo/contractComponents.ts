@@ -91,7 +91,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           owner: RecsType.String,
-          nick_name: RecsType.Number,
+          nick_name: RecsType.String,
           joined_time: RecsType.Number,
         },
         {

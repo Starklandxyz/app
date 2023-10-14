@@ -14,6 +14,7 @@ import { LandType, get_land_barbarians, get_land_level, get_land_type } from "..
 import { useComponentValue } from "@dojoengine/react";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import { Troop_Speed } from "../contractconfig";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0, position: "" })
@@ -21,7 +22,7 @@ export default function BuildingTip() {
     const { coord: lastCoord, down: mouseDown, coords } = mouseStore()
     // const [coord, setCoord] = useState<Coord>({ x: 0, y: 0 })
 
-    const { sendTroopCtr: sendTroop, buildLand, showTipButtons, tipButtonShow } = controlStore()
+    const { sendTroopCtr: sendTroop, buildLand,addTipButton, showTipButtons, tipButtonShow } = controlStore()
 
     const {
         scenes: {
@@ -54,7 +55,7 @@ export default function BuildingTip() {
         var land_level = ""
         const land_baba = get_land_barbarians(1, lastCoord.x, lastCoord.y).toString()
         // console.log("land_baba",land_baba);
-        
+
         var land_warrior = <></>
 
         if (land) {
@@ -78,7 +79,7 @@ export default function BuildingTip() {
             if (w) {
                 // land_warrior = "Warrior : " + w.balance
                 land_warrior = <>
-                    Warrior : {land_baba} + <span style={{color:"yellow"}}>{w.balance}</span>
+                    Warrior : {land_baba} + <span style={{ color: "yellow" }}>{w.balance}</span>
                 </>
             }
         } else {
@@ -109,8 +110,8 @@ export default function BuildingTip() {
 
             // land_warrior = "Warrior : " + land_baba.toString()
             land_warrior = <>
-                    Warrior : {land_baba}
-                </>
+                Warrior : {land_baba}
+            </>
 
             land_level = "Level : " + get_land_level(1, lastCoord.x, lastCoord.y)
             if (land_type != LandType.None) {
@@ -137,7 +138,7 @@ export default function BuildingTip() {
             if (ey > innerHeight - 200) {
                 y = ey - 100
             }
-            if (ey < 160){
+            if (ey < 160) {
                 y = ey + 120
             }
             setTip({
@@ -242,22 +243,7 @@ export default function BuildingTip() {
         controlStore.setState({ buildLand: lastCoord, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
 
-    const getAttackButtons = useMemo(() => {
-        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
-        let hasAttack = false
-        if (land) {
-            if (land.owner != account?.address) {
-                hasAttack = true
-            }
-        } else {
-            hasAttack = true
-        }
-        if (hasAttack) {
-            // const troop = getComponentValue()
-        }
-        return <></>
-    }, [myBase, account, lastCoord])
-
+    
     const getButtons = useMemo(() => {
         if (!account) {
             return <></>
@@ -315,7 +301,7 @@ export default function BuildingTip() {
                 tipButtonShow.show &&
                 <div style={{ display: "flex", flexDirection: "column", position: "absolute", left: `${tipButtonShow.x - 10}px`, top: `${tipButtonShow.y + 20}px` }}>
                     {
-                        getAttackButtons
+                        addTipButton
                     }
                     {
                         getButtons

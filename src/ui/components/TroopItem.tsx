@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Troop } from "../../types/Troop";
 import { ClickWrapper } from "../clickWrapper";
 import { getTimestamp, toastError, toastSuccess } from "../../utils";
@@ -12,10 +12,14 @@ import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import { BuildType } from "../../types/Build";
 import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
+import { mouseStore } from "../../store/mouseStore";
+import { Troop_Speed } from "../../contractconfig";
+import { controlStore } from "../../store/controlStore";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
-    const { account, phaserLayer,camera} = store()
+    const { account, phaserLayer, camera } = store()
+    const { coord: lastCoord } = mouseStore()
     // const [lastOwner,setLastOwner] = useState<string|undefined>()
     const {
         networkLayer: {
@@ -26,10 +30,6 @@ export default function TroopItem(params: any) {
 
     const troop: Troop = params.troop
     const base: Coord = params.base
-
-    const clickTroop = () => {
-
-    }
 
     const attackClick = async () => {
         if (!account) { return }
@@ -44,7 +44,6 @@ export default function TroopItem(params: any) {
         console.log("attackClick", result);
 
         if (result && result.length > 0) {
-            // toastSuccess("Attack success")
             const newLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
             let win = false
             if (newLand && newLand.owner != lastOwner) {
@@ -115,24 +114,24 @@ export default function TroopItem(params: any) {
 
     const getFrom = useMemo(() => {
         if (!base) {
-            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
+            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
         }
         if (base.x == troop.from.x && base.y == troop.from.y) {
-            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.from)}>Base</span>
+            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>Base</span>
         } else {
-            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
+            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
         }
     }, [troop])
 
     const getTo = useMemo(() => {
         if (!base) {
             // return `(${troop.to.x},${troop.to.y})`
-            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
+            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
         }
         if (base.x == troop.to.x && base.y == troop.to.y) {
-            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.to)}>Base</span>
+            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>Base</span>
         } else {
-            return <span style={{cursor:"pointer"}} onClick={()=>goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
+            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
             // return `(${troop.to.x},${troop.to.y})`
         }
     }, [troop, account, base])
@@ -165,7 +164,7 @@ export default function TroopItem(params: any) {
         // console.log("enterbutton",end,land);
 
         if (isMy && end) {
-            return <span onClick={() => { enterLand() }}>驻</span>
+            return <span style={{marginLeft:10}} onClick={() => { enterLand() }}>驻</span>
         }
 
         return <></>
@@ -193,16 +192,47 @@ export default function TroopItem(params: any) {
         return <></>
     }, [troop, timenow])
 
-    const goto = (coord:Coord)=>{
+    const goto = (coord: Coord) => {
         console.log("goto");
         const pixelPosition = tileCoordToPixelCoord(coord, TILE_WIDTH, TILE_HEIGHT);
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }
 
+
+
+    useEffect(() => {
+        if (!account) {
+            return
+        }
+        // console.log("troop item click",lastCoord,troop.to);
+        
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+        let hasAttack = false
+        if (land) {
+            if (land.owner != account?.address) {
+                hasAttack = true
+            }
+        } else {
+            hasAttack = true
+        }
+        if (hasAttack) {
+            if (troop && !troop.retreat) {
+                if (troop.to.x == lastCoord.x && troop.to.y == lastCoord.y) {
+                    if (troop.startTime + troop.distance * Troop_Speed < getTimestamp()) {
+                        controlStore.setState({addTipButton:<button>Attack</button>})
+                        return
+                    }
+                }
+            }
+        }
+        controlStore.setState({addTipButton:undefined})
+    }, [account, troop, lastCoord])
+
+
     return (
-        <ClickWrapper style={{marginBottom: 20 }}>
+        <ClickWrapper style={{ marginBottom: 20 }}>
             <div style={{ display: "flex" }}>
-                <div style={{ display: "flex", flex: 1,cursor: "pointer",  }} onClick={()=>goto(troop.to)}>
+                <div style={{ display: "flex", flex: 1, cursor: "pointer", }} onClick={() => goto(troop.to)}>
                     <img src={flag} width={25} />
                     <div style={{ marginTop: 4, marginLeft: 3 }}>Troop{troop.index}</div>
                 </div>
@@ -212,7 +242,7 @@ export default function TroopItem(params: any) {
                 </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center" }} onClick={() => clickTroop()}>
+            <div style={{ display: "flex", alignItems: "center" }}>
                 <div style={{ display: "flex", flex: 1 }}>
                     {getFrom}
                     <span> {" => "} </span>

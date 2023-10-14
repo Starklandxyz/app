@@ -18,7 +18,9 @@ export type ControlStore = {
     //用来给其他地方定义点击地块会弹出的button
     showTipButtons: ReactNode | undefined,
 
-    showTask:boolean,
+    addTipButton: ReactNode | undefined,
+
+    showTask: boolean,
 };
 
 export const controlStore = create<ControlStore>(() => ({
@@ -27,5 +29,6 @@ export const controlStore = create<ControlStore>(() => ({
     clickedLand: undefined,
     showTipButtons: undefined,
     tipButtonShow: { show: false, x: 0, y: 0 },
-    showTask:false
+    addTipButton: undefined,
+    showTask: false
 }));
