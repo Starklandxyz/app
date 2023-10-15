@@ -194,6 +194,8 @@ export default function PlayerPanel() {
   }, [airdropClaimed, account]);
 
   const maxLand = useMemo(()=>{
+    console.log("maxland",account);
+    
     if(!account){
       return 10
     }
@@ -206,8 +208,9 @@ export default function PlayerPanel() {
       return 10
     }
     const max = 10 + 5*(land?.level-1)
+
     return max
-  },[account])
+  },[account,landEntities])
 
   const maxWarrior = useMemo(()=>{
     console.log("maxWarrior",account,userCamps);
