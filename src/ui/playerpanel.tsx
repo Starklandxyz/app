@@ -43,7 +43,7 @@ export default function PlayerPanel() {
     },
   } = phaserLayer!;
 
-  const [userCamps,setUserCamps] = useState<Array<Land>>([])
+  const [userCamps, setUserCamps] = useState<Array<Land>>([])
 
   const food = useComponentValue(
     sqlComponent.Food,
@@ -71,6 +71,8 @@ export default function PlayerPanel() {
     getEntityIdFromKeys([BigInt(account ? account.address : "")])
   );
 
+  // const players = useEntityQuery([Has(sqlComponent.Player)], { updateOnValueChange: true })
+
   const troops = useEntityQuery([Has(sqlComponent.Troop)], {
     updateOnValueChange: true,
   });
@@ -83,6 +85,26 @@ export default function PlayerPanel() {
     sqlComponent.Airdrop,
     getEntityIdFromKeys([BigInt(account ? account.address : "")])
   );
+
+  // useEffect(() => {
+  //   // "0x6e744c30f007502cb9dfbc0a70668531e7eec4e0fe785041879b5123231ae92"
+  //   for (let index = 0; index < players.length; index++) {
+  //     const element = players[index];
+  //     const p = getComponentValue(sqlComponent.Player, element)
+  //     // console.log("Player:", p, hexToString(p?.nick_name));
+  //   }
+  //   for (let index = 0; index < troops.length; index++) {
+  //     const element = troops[index];
+  //     const t = getComponentValue(sqlComponent.Troop, element)
+  //     // console.log("Troop",t);
+      
+  //     let address = account?.address
+  //     address = "0x6e744c30f007502cb9dfbc0a70668531e7eec4e0fe785041879b5123231ae92"
+  //     if (t && t.owner == address) {
+  //       console.log("Troops:", t);
+  //     }
+  //   }
+  // }, [players, troops])
 
   useEffect(() => {
     if (!account) {
@@ -102,7 +124,7 @@ export default function PlayerPanel() {
       return 0;
     }
     let size = 0;
-    const camps:Array<Land> = []
+    const camps: Array<Land> = []
     landEntities.map((entity) => {
       const value = getComponentValue(sqlComponent.Land, entity);
       // console.log("landEntities", value);
@@ -114,7 +136,7 @@ export default function PlayerPanel() {
         size++;
       }
       // console.log("landEntities",value);
-      if(value && value.owner==account.address && value.building == BuildType.Camp){
+      if (value && value.owner == account.address && value.building == BuildType.Camp) {
         camps.push(value)
       }
     });
@@ -123,7 +145,7 @@ export default function PlayerPanel() {
   }, [landEntities, account]);
 
   const fetchAirdrop = async () => {
-    const resources = await graphSdk.getAirdropByKey({ key: account?.address });
+    const resources = await graphSdk.getAirdropByKey({map_id:"0x1", key: account?.address });
     console.log("fetchAirdrop", resources);
     const edges = resources.data.entities?.edges;
     handleSQLResult(edges, sqlComponent);
@@ -193,28 +215,28 @@ export default function PlayerPanel() {
     }
   }, [airdropClaimed, account]);
 
-  const maxLand = useMemo(()=>{
-    console.log("maxland",account);
-    
-    if(!account){
+  const maxLand = useMemo(() => {
+    console.log("maxland", account);
+
+    if (!account) {
       return 10
     }
-    const base = getComponentValue(sqlComponent.Base,getEntityIdFromKeys([1n,BigInt(account.address)]))
-    if(!base){
+    const base = getComponentValue(sqlComponent.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+    if (!base) {
       return 10
     }
-    const land = getComponentValue(sqlComponent.Land,getEntityIdFromKeys([1n,BigInt(base.x),BigInt(base.y)]))
-    if(!land){
+    const land = getComponentValue(sqlComponent.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
+    if (!land) {
       return 10
     }
-    const max = 10 + 5*(land?.level-1)
+    const max = 10 + 5 * (land?.level - 1)
 
     return max
-  },[account,landEntities])
+  }, [account, landEntities])
 
-  const maxWarrior = useMemo(()=>{
-    console.log("maxWarrior",account,userCamps);
-    if(!account){
+  const maxWarrior = useMemo(() => {
+    console.log("maxWarrior", account, userCamps);
+    if (!account) {
       return 60
     }
     let total = 60
@@ -223,7 +245,7 @@ export default function PlayerPanel() {
       total += camp.level * 30
     }
     return total
-  },[account,userCamps,landEntities])
+  }, [account, userCamps, landEntities])
 
   return (
     <TopBarWrapper>

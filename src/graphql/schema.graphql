@@ -378,6 +378,7 @@ query getTroopsByKey($map_id:String,$key: String) {
         components {
           __typename
           ... on Troop {
+            map_id
             owner
             index
             balance
