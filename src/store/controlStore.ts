@@ -21,6 +21,8 @@ export type ControlStore = {
     addTipButton: ReactNode | undefined,
 
     showTask: boolean,
+
+    showLuckyPack:boolean,
 };
 
 export const controlStore = create<ControlStore>(() => ({
@@ -30,5 +32,6 @@ export const controlStore = create<ControlStore>(() => ({
     showTipButtons: undefined,
     tipButtonShow: { show: false, x: 0, y: 0 },
     addTipButton: undefined,
-    showTask: false
+    showTask: false,
+    showLuckyPack:false
 }));

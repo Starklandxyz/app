@@ -103,6 +103,23 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const openPacks = async (signer: Account, map_id: number, amount: number) => {
+    console.error("openPacks info", map_id, amount);
+    try {
+      const tx = await execute(signer, "open_pack", [map_id, amount]);
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
+    return undefined;
+  };
+
   const claimMining = async (signer: Account, map_id: number, xs: Array<number>, ys: Array<number>) => {
     try {
 
@@ -379,6 +396,7 @@ export function createSystemCalls(
   return {
     airdrop,
     troopEnterLand,
+    openPacks,
     retreatTroop,
     upgradeBuild,
     takeWarrior,

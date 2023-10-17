@@ -60,6 +60,11 @@ export default function PlayerPanel() {
     getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
     { balance: 0 }
   );
+  const points = useComponentValue(
+    sqlComponent.RewardPoint,
+    getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
+    { balance: 0 }
+  );
   const userWarrior = useComponentValue(
     sqlComponent.UserWarrior,
     getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
@@ -250,14 +255,18 @@ export default function PlayerPanel() {
   }, [account, userCamps, landEntities])
 
   const getRank = useMemo(()=>{
-      return <RankDiv onClick={()=>gotoBoard()}>
-        <div style={{fontSize:15, borderRadius:5,backgroundColor:"red",width:80,color:"white",paddingLeft:5}}>Rank #1</div>
-        <div style={{color:"white",fontSize:13,marginLeft:15,marginTop:4}}>10000 Points</div>
+      return <RankDiv>
+        <div onClick={()=>gotoBoard()} style={{fontSize:15, borderRadius:5,backgroundColor:"red",width:80,color:"white",paddingLeft:5}}>Rank #1</div>
+        <div onClick={()=>gotoPacks()} style={{color:"white",fontSize:14,marginLeft:15,marginTop:4}}>{points?points.balance:0} Points</div>
       </RankDiv>
-  },[])
+  },[points])
 
   const gotoBoard = ()=>{
 
+  }
+
+  const gotoPacks = ()=>{
+    controlStore.setState({showLuckyPack:true})
   }
 
   return (
@@ -354,7 +363,7 @@ const LogoImage = styled.img`
 `;
 
 const RankDiv = styled.div`
-  width:230px;
+  width:240px;
   height:26px;
   padding:5px;
   margin-left: 10px;

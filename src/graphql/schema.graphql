@@ -82,6 +82,12 @@ query getUserWarriorByKey($key: String,$map_id:String) {
             owner
             balance
           }
+          __typename
+          ... on RewardPoint {
+            map_id
+            owner
+            balance
+          }
         }
       }
     }

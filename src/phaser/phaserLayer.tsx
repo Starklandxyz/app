@@ -18,7 +18,7 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
     const { camera } = store()
     const { down } = mouseStore()
     const [lastEvent, setEvent] = useState<any>()
-    const { coord: lastCoord, coords } = mouseStore()
+    const { coord: lastCoord, coords,frozen } = mouseStore()
     const { sendTroopCtr: sendTroop, buildLand, showTipButtons, tipButtonShow } = controlStore()
 
     const handleMouseMove = (e: any) => {
@@ -35,6 +35,9 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
         }
 
         if (buildLand) {
+            return
+        }
+        if(frozen){
             return
         }
         const ex = e.clientX
