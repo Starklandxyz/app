@@ -86,6 +86,23 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const attackMonster = async (signer: Account, map_id: number, troop_index: number) => {
+    console.error("attackMonster info", map_id, troop_index);
+    try {
+      const tx = await execute(signer, "attack_monster", [map_id, troop_index]);
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
+    return undefined;
+  };
+
   const claimMining = async (signer: Account, map_id: number, xs: Array<number>, ys: Array<number>) => {
     try {
 
@@ -369,6 +386,7 @@ export function createSystemCalls(
     claimMining,
     upgradeComplete,
     spawn,
+    attackMonster,
     startMining,
     buildBuilding,
     build_base,

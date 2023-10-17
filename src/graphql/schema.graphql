@@ -76,6 +76,12 @@ query getUserWarriorByKey($key: String,$map_id:String) {
             owner
             balance
           }
+          __typename
+          ... on LuckyPack {
+            map_id
+            owner
+            balance
+          }
         }
       }
     }

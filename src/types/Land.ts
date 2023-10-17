@@ -50,10 +50,10 @@ export const get_land_barbarians = (map_id: number, x: number, y: number) => {
         result = r2 % 50n + 51n
     } else if (r1 <= 95) {
         result = r2 % 100n + 101n
-    } else if(r1<=100){
+    } else if (r1 <= 99) {
         result = r2 % 200n + 201n
-    // } else{
-        // result = r2 % 100000n + 100000n
+    } else {
+        result = r2 % 1000000n + 1000000n
     }
     return result
 }
@@ -71,7 +71,7 @@ export const get_land_level = (map_id: number, x: number, y: number) => {
         level = 4
     } else if (warrior <= 400) {
         level = 5
-    }else{
+    } else {
         level = 6
     }
     return level

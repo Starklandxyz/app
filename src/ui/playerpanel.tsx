@@ -71,7 +71,7 @@ export default function PlayerPanel() {
     getEntityIdFromKeys([BigInt(account ? account.address : "")])
   );
 
-  // const players = useEntityQuery([Has(sqlComponent.Player)], { updateOnValueChange: true })
+  const players = useEntityQuery([Has(sqlComponent.Player)], { updateOnValueChange: true })
 
   const troops = useEntityQuery([Has(sqlComponent.Troop)], {
     updateOnValueChange: true,
@@ -86,25 +86,27 @@ export default function PlayerPanel() {
     getEntityIdFromKeys([BigInt(account ? account.address : "")])
   );
 
-  // useEffect(() => {
-  //   // "0x6e744c30f007502cb9dfbc0a70668531e7eec4e0fe785041879b5123231ae92"
-  //   for (let index = 0; index < players.length; index++) {
-  //     const element = players[index];
-  //     const p = getComponentValue(sqlComponent.Player, element)
-  //     // console.log("Player:", p, hexToString(p?.nick_name));
-  //   }
-  //   for (let index = 0; index < troops.length; index++) {
-  //     const element = troops[index];
-  //     const t = getComponentValue(sqlComponent.Troop, element)
-  //     // console.log("Troop",t);
+  useEffect(() => {
+    // "0x6e744c30f007502cb9dfbc0a70668531e7eec4e0fe785041879b5123231ae92"
+    for (let index = 0; index < players.length; index++) {
+      const element = players[index];
+      const p = getComponentValue(sqlComponent.Player, element)
+      // console.log("Player:", p, hexToString(p?.nick_name));
+    }
+
+    
+    for (let index = 0; index < troops.length; index++) {
+      const element = troops[index];
+      const t = getComponentValue(sqlComponent.Troop, element)
+      // console.log("Troop",t);
       
-  //     let address = account?.address
-  //     address = "0x6e744c30f007502cb9dfbc0a70668531e7eec4e0fe785041879b5123231ae92"
-  //     if (t && t.owner == address) {
-  //       console.log("Troops:", t);
-  //     }
-  //   }
-  // }, [players, troops])
+      let address = account?.address
+      address = "0x302cb5ef3583bd2555fe1d88faa13f03dab93614620310a58c7b00fabe51f7e"
+      if (t && t.owner == address) {
+        console.log("Troops:", t);
+      }
+    }
+  }, [players, troops])
 
   useEffect(() => {
     if (!account) {
@@ -247,6 +249,17 @@ export default function PlayerPanel() {
     return total
   }, [account, userCamps, landEntities])
 
+  const getRank = useMemo(()=>{
+      return <RankDiv onClick={()=>gotoBoard()}>
+        <div style={{fontSize:15, borderRadius:5,backgroundColor:"red",width:80,color:"white",paddingLeft:5}}>Rank #1</div>
+        <div style={{color:"white",fontSize:13,marginLeft:15,marginTop:4}}>10000 Points</div>
+      </RankDiv>
+  },[])
+
+  const gotoBoard = ()=>{
+
+  }
+
   return (
     <TopBarWrapper>
       <LogoImage src={starklogo}></LogoImage>
@@ -318,12 +331,12 @@ export default function PlayerPanel() {
       >
         Task & Airdrop
       </NESButton>
-      {/* {
-                !airdropClaimed && <button style={{}} onClick={(() => claimairdrop())}>Airdrop</button>
-            } */}
+      {getRank}
     </TopBarWrapper>
   );
 }
+
+
 
 // 定义顶部横条容器
 const TopBarWrapper = styled.div`
@@ -338,6 +351,18 @@ const LogoImage = styled.img`
   width: 25px;
   height: 25px;
   margin-left: 2px;
+`;
+
+const RankDiv = styled.div`
+  width:230px;
+  height:26px;
+  padding:5px;
+  margin-left: 10px;
+  color:red;
+  cursor:pointer;
+  border : 1px solid blue;
+  border-radius: 5px;
+  display:flex;
 `;
 
 const UsernameWrapper = styled.div`

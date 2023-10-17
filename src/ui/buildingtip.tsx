@@ -114,6 +114,10 @@ export default function BuildingTip() {
             </>
 
             land_level = "Level : " + get_land_level(1, lastCoord.x, lastCoord.y)
+            if(get_land_level(1, lastCoord.x, lastCoord.y)==6){
+                land_name = "Monster Den"
+                land_owner = "Owner : Diabolo"
+            }
             if (land_type != LandType.None) {
                 land_warrior = <></>
                 land_level = ""
@@ -155,8 +159,6 @@ export default function BuildingTip() {
                     </div>
             })
         }
-
-
     }, [lastCoord])
 
     const setTip = (tip: any) => {

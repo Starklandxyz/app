@@ -91,7 +91,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           owner: RecsType.String,
-          nick_name: RecsType.String,
+          nick_name: RecsType.Number,
           joined_time: RecsType.Number,
         },
         {
@@ -427,6 +427,38 @@ export function defineContractComponents(world: World) {
           map_id: RecsType.Number,
           owner: RecsType.String,
           total: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    LuckyPack: (() => {
+      const name = "LuckyPack";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          owner: RecsType.String,
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    RewardPoint: (() => {
+      const name = "RewardPoint";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          owner: RecsType.String,
+          balance: RecsType.Number,
         },
         {
           metadata: {

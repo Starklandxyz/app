@@ -15,6 +15,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 import { mouseStore } from "../../store/mouseStore";
 import { Troop_Speed } from "../../contractconfig";
 import { controlStore } from "../../store/controlStore";
+import { get_land_level } from "../../types/Land";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
@@ -24,15 +25,45 @@ export default function TroopItem(params: any) {
     const {
         networkLayer: {
             components: contractComponents,
-            systemCalls: { retreatTroop, troopEnterLand, goFight },
+            systemCalls: { retreatTroop, troopEnterLand, goFight, attackMonster },
         }
     } = phaserLayer!
 
     const troop: Troop = params.troop
     const base: Coord = params.base
 
+    const attackMon = async () => {
+        if (!account) { return }
+
+        const pack = getComponentValue(contractComponents.LuckyPack, getEntityIdFromKeys([1n, BigInt(account.address)]))
+        let oldPack = pack ? pack.balance : 0
+        
+        const result = await attackMonster(account, 1, troop.index)
+        console.log("attackClick", result);
+
+        if (result && result.length > 0) {
+            const newpack = getComponentValue(contractComponents.LuckyPack, getEntityIdFromKeys([1n, BigInt(account.address)]))
+            let newPack = newpack ? newpack.balance : 0
+            console.log("attackMon", oldPack, newPack);
+
+            if (newPack > oldPack) {
+                toastSuccess("Success! Got " + (newPack - oldPack) + " Lucky Pack!")
+            } else {
+                toastSuccess("Unlucky. You got 0 pack.")
+            }
+        } else {
+            toastError("Attack failed")
+        }
+    }
+
     const attackClick = async () => {
         if (!account) { return }
+
+        const level = get_land_level(1, troop.to.x, troop.to.y)
+        if (level == 6) {
+            attackMon()
+            return
+        }
 
         const attackLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
         let lastOwner = ""
@@ -164,7 +195,7 @@ export default function TroopItem(params: any) {
         // console.log("enterbutton",end,land);
 
         if (isMy && end) {
-            return <span style={{marginLeft:10}} onClick={() => { enterLand() }}>驻</span>
+            return <span style={{ marginLeft: 10 }} onClick={() => { enterLand() }}>驻</span>
         }
 
         return <></>
