@@ -310,6 +310,17 @@ button:after {
   box-shadow: inset 2px 2px 0px 0px #e59400;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.grid-item {
+  border: 1px solid black;
+  padding: 10px;
+}
+
 
 /* Custom */
 /* .small_fontsize {
