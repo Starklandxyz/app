@@ -16,20 +16,6 @@ export default function BottomIcons() {
         networkLayer
     } = phaserLayer!;
 
-    // const center = () => {
-    //     if (!account) {
-    //         toastError("Create burner wallet first.")
-    //         return
-    //     }
-    //     const base = bases.get(account.address)
-    //     if (!base) {
-    //         return
-    //     }
-    //     // const { x, y } = positionToCoorp(player_.position)
-    //     const pixelPosition = tileCoordToPixelCoord(base, TILE_WIDTH, TILE_HEIGHT);
-    //     camera.centerOn(pixelPosition?.x!, pixelPosition?.y!);
-    // }
-
     const gotoTwitter = () => {
         window.open("https://twitter.com/starklandxyz/")
     }
@@ -41,9 +27,6 @@ export default function BottomIcons() {
     return (
         <ClickWrapper style={{ display: "flex", flexDirection: "column" }}>
             <Container>
-                {
-                    // (account && bases.has(account.address)) && <button onClick={() => center()}>Zoom to Base</button>
-                }
                 <div>
                     <img style={{ cursor: "pointer", marginTop: 15, marginRight: 10 }} width={25} src={twitter} onClick={() => gotoTwitter()} />
                     <img style={{ cursor: "pointer", marginTop: 15 }} width={25} src={telegram} onClick={() => gotoTelegram()} />

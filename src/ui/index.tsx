@@ -19,6 +19,7 @@ import AirdropPanel from "./airdrop/airdropPanel";
 import UpgradePanel from "./upgradePanel";
 import Loading from "./Loading";
 import LuckypackPanel from "./luckypackPanel";
+import BottomPanels from "./bottompanels";
 
 export default function UI() {
     const layers = store((state) => {
@@ -52,6 +53,7 @@ export default function UI() {
             <AirdropPanel/>
             <UpgradePanel/>
             <LuckypackPanel/>
+            <BottomPanels/>
         </Wrapper>
     );
 };

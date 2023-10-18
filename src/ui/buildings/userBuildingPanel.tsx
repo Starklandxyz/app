@@ -164,7 +164,7 @@ export default function UserBuildingPanel() {
 const Container = styled.div`
     display:flex;
     position: absolute;
-    bottom: 15%;
+    top: 15%;
     right: 1%;
     color:white;
 `;

@@ -23,6 +23,8 @@ export type ControlStore = {
     showTask: boolean,
 
     showLuckyPack:boolean,
+
+    showBoard:boolean,
 };
 
 export const controlStore = create<ControlStore>(() => ({
@@ -33,5 +35,6 @@ export const controlStore = create<ControlStore>(() => ({
     tipButtonShow: { show: false, x: 0, y: 0 },
     addTipButton: undefined,
     showTask: false,
-    showLuckyPack:false
+    showLuckyPack:false,
+    showBoard:false
 }));
