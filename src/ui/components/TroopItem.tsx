@@ -81,7 +81,7 @@ export default function TroopItem(params: any) {
         const totalLand = getComponentValue(contractComponents.LandOwner, getEntityIdFromKeys([1n, BigInt(account.address)]))
         const t = totalLand ? totalLand.total : 0
         if (t >= maxLand()) {
-            toastError("Exceed max land")
+            toastError("Exceed max land. Upgrade Base.")
             return
         }
 

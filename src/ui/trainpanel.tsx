@@ -117,7 +117,7 @@ export default function TrainPanel() {
         const userW = getComponentValue(components.UserWarrior, getEntityIdFromKeys([1n, BigInt(account.address)]))
         if (userW) {
             if (userW.balance + inputValue > max) {
-                toastError("Exceed max warrior")
+                toastError("Exceed max warrior. Build Camp.")
                 return
             }
         }
