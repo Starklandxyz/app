@@ -25,6 +25,8 @@ export type ControlStore = {
     showLuckyPack:boolean,
 
     showBoard:boolean,
+
+    fightResult : {show:boolean,status:"win"|"lose"|"loading"|undefined}
 };
 
 export const controlStore = create<ControlStore>(() => ({
@@ -36,5 +38,6 @@ export const controlStore = create<ControlStore>(() => ({
     addTipButton: undefined,
     showTask: false,
     showLuckyPack:false,
-    showBoard:false
+    showBoard:false,
+    fightResult:{show:false,status:"loading"}
 }));

@@ -12,16 +12,12 @@ import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import { BuildType } from "../../types/Build";
 import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
-import { mouseStore } from "../../store/mouseStore";
-import { Troop_Speed } from "../../contractconfig";
 import { controlStore } from "../../store/controlStore";
 import { get_land_level } from "../../types/Land";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
     const { account, phaserLayer, camera } = store()
-    const { coord: lastCoord } = mouseStore()
-    // const [lastOwner,setLastOwner] = useState<string|undefined>()
     const {
         networkLayer: {
             components: contractComponents,
@@ -37,7 +33,7 @@ export default function TroopItem(params: any) {
 
         const pack = getComponentValue(contractComponents.LuckyPack, getEntityIdFromKeys([1n, BigInt(account.address)]))
         let oldPack = pack ? pack.balance : 0
-        
+
         const result = await attackMonster(account, 1, troop.index)
         console.log("attackClick", result);
 
@@ -64,15 +60,12 @@ export default function TroopItem(params: any) {
             attackMon()
             return
         }
-
+        controlStore.setState({ fightResult: { show: true, status: "loading" } })
         const attackLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
-        let lastOwner = ""
-        if (attackLand) {
-            lastOwner = (attackLand.owner)
-        }
+        let lastOwner = attackLand ? attackLand.owner : ""
 
         const result = await goFight(account, 1, troop.index)
-        console.log("attackClick", result);
+        // console.log("attackClick", result);
 
         if (result && result.length > 0) {
             const newLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
@@ -80,10 +73,14 @@ export default function TroopItem(params: any) {
             if (newLand && newLand.owner != lastOwner) {
                 win = true
             }
+            console.log("attackClick",attackLand,newLand);
+            
             if (win) {
                 toastSuccess("You Win!")
+                controlStore.setState({ fightResult: { show: true, status: "win" } })
             } else {
-                toastError("You Loss!")
+                toastError("You Lose!")
+                controlStore.setState({ fightResult: { show: true, status: "lose" } })
             }
         } else {
             toastError("Attack failed")

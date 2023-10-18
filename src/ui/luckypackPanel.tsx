@@ -21,7 +21,7 @@ import packopenicon from "../../public/assets/icons/packopen.png"
 
 export default function LuckypackPanel() {
     const [inputvalue, setinput] = useState(1)
-    const [openInfo,setOpenInfo] = useState("")
+    const [openInfo, setOpenInfo] = useState("")
     const { showLuckyPack } = controlStore();
     const { account, phaserLayer } = store();
     const {
@@ -90,7 +90,8 @@ export default function LuckypackPanel() {
         }
     }
 
-    const max = ()=>{
+    const max = () => {
+        if (!account) { return }
         const packs = getComponentValue(sqlComponent.LuckyPack, getEntityIdFromKeys([1n, BigInt(account.address)]))
         let packAmount = packs ? packs.balance : 0
         setinput(packAmount)
@@ -116,11 +117,11 @@ export default function LuckypackPanel() {
                         <p>Total : {getBalance}</p>
                         <div style={{ backgroundColor: "", width: 510, height: 240 }}>
                             <img src={packicon} style={{ marginLeft: 250, marginTop: 100, transform: "scale(5) translate(0px,0px)", imageRendering: "pixelated", backgroundColor: "" }} />
-                            <div style={{textAlign:"center", marginTop:50,width:510}}>{openInfo}</div>
+                            <div style={{ textAlign: "center", marginTop: 50, width: 510 }}>{openInfo}</div>
                         </div>
 
-                        <input style={{ width: 40, marginLeft: 200,marginRight:5 }} type="number" value={inputvalue} onChange={inputChange} />
-                        <span style={{fontSize:13,cursor:"pointer"}} onClick={()=>max()}>max</span>
+                        <input style={{ width: 40, marginLeft: 200, marginRight: 5 }} type="number" value={inputvalue} onChange={inputChange} />
+                        <span style={{ fontSize: 13, cursor: "pointer" }} onClick={() => max()}>max</span>
                         <button style={{ marginLeft: 10 }} onClick={() => openPack()}>Open Packs</button>
                         <button style={{ marginLeft: 50 }} onClick={() => transferPack()}>Transfer Packs</button>
                     </div>

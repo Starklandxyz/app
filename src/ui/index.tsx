@@ -20,6 +20,7 @@ import UpgradePanel from "./upgradePanel";
 import Loading from "./Loading";
 import LuckypackPanel from "./luckypackPanel";
 import BottomPanels from "./bottompanels";
+import FightResultPanel from "./fightResultPanel";
 
 export default function UI() {
     const layers = store((state) => {
@@ -54,6 +55,7 @@ export default function UI() {
             <UpgradePanel/>
             <LuckypackPanel/>
             <BottomPanels/>
+            <FightResultPanel/>
         </Wrapper>
     );
 };
