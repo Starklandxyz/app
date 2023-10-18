@@ -19,14 +19,6 @@ export type ControlStore = {
     showTipButtons: ReactNode | undefined,
 
     addTipButton: ReactNode | undefined,
-
-    showTask: boolean,
-
-    showLuckyPack:boolean,
-
-    showBoard:boolean,
-
-    fightResult : {show:boolean,status:"win"|"lose"|"loading"|undefined}
 };
 
 export const controlStore = create<ControlStore>(() => ({
@@ -36,8 +28,4 @@ export const controlStore = create<ControlStore>(() => ({
     showTipButtons: undefined,
     tipButtonShow: { show: false, x: 0, y: 0 },
     addTipButton: undefined,
-    showTask: false,
-    showLuckyPack:false,
-    showBoard:false,
-    fightResult:{show:false,status:"loading"}
 }));

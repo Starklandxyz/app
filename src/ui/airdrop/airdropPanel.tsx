@@ -27,6 +27,7 @@ import Task6 from './task6';
 import Task7 from './task7';
 import Task8 from './task8';
 import { AUTO } from 'phaser';
+import { panelStore } from '../../store/panelStore';
 
 export default function AirdropPanel() {
     const { account, phaserLayer } = store();
@@ -66,7 +67,7 @@ export default function AirdropPanel() {
         handleSQLResult(edges, sqlComponent)
     }
 
-    const { showTask } = controlStore();
+    const { showTask } = panelStore();
 
     const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
     const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
@@ -105,7 +106,7 @@ export default function AirdropPanel() {
                 <Container>
                     <div style={{ width: 640, height: 410, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.7)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                         <div style={{ marginLeft: 210, fontSize: 20, marginTop: 10 }}>Task & Airdrop</div>
-                        <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => { controlStore.setState({ showTask: false }) }} />
+                        <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => { panelStore.setState({ showTask: false }) }} />
 
                         <table style={{ paddingLeft: 18, marginTop: 20 }}>
                             <tr style={{ color: "pink", fontSize: 18 }}>

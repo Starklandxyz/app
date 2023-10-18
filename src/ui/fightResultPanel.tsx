@@ -19,11 +19,12 @@ import {
 import fightwinicon from "../../public/assets/icons/fightwin.png"
 import fightfailicon from "../../public/assets/icons/fightfail.png"
 import fightingicon from "../../public/assets/icons/fighting.png"
+import { panelStore } from "../store/panelStore";
 
 export default function FightResultPanel() {
     const [inputvalue, setinput] = useState(1)
     const [openInfo, setOpenInfo] = useState("")
-    const { fightResult } = controlStore();
+    const { fightResult } = panelStore();
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
@@ -36,8 +37,17 @@ export default function FightResultPanel() {
     const packBalance = useComponentValue(sqlComponent.LuckyPack, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]))
 
     const closeit = ()=>{
-        controlStore.setState({fightResult:{show:false,status:undefined}})
+        panelStore.setState({fightResult:{show:false,status:undefined}})
     }
+
+
+    useEffect(()=>{
+        if (fightResult.show) {
+            mouseStore.setState({ coord: { x: 0, y: 0 }, frozen: true })
+        } else {
+            mouseStore.setState({ frozen: false })
+        }
+    },[fightResult])
 
     return (<ClickWrapper>
         <Container>
@@ -45,7 +55,7 @@ export default function FightResultPanel() {
                 fightResult.show &&
                 <>
                     {
-                        fightResult.status == "win" && <div style={{ width: 420, height: 300, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.6)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                        fightResult.status == "win" && <div style={{ width: 420, height: 300, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                             <p style={{ fontSize: 19, width: 420, textAlign: "center" }}>War Result</p>
 
                             <div style={{ width: 420, height: 250 }}>

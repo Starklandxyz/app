@@ -14,6 +14,7 @@ import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../../node_modu
 import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 import { controlStore } from "../../store/controlStore";
 import { get_land_level } from "../../types/Land";
+import { panelStore } from "../../store/panelStore";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
@@ -31,6 +32,7 @@ export default function TroopItem(params: any) {
     const attackMon = async () => {
         if (!account) { return }
 
+        panelStore.setState({ monsterResult: { show: true, status: "loading", pack: 0 } })
         const pack = getComponentValue(contractComponents.LuckyPack, getEntityIdFromKeys([1n, BigInt(account.address)]))
         let oldPack = pack ? pack.balance : 0
 
@@ -43,11 +45,14 @@ export default function TroopItem(params: any) {
             console.log("attackMon", oldPack, newPack);
 
             if (newPack > oldPack) {
+                panelStore.setState({ monsterResult: { show: true, status: "win", pack: newPack - oldPack } })
                 toastSuccess("Success! Got " + (newPack - oldPack) + " Lucky Pack!")
             } else {
+                panelStore.setState({ monsterResult: { show: true, status: "fail", pack: 0 } })
                 toastSuccess("Unlucky. You got 0 pack.")
             }
         } else {
+            panelStore.setState({ monsterResult: { show: false, status: "loading", pack: 0 } })
             toastError("Attack failed")
         }
     }
@@ -60,7 +65,7 @@ export default function TroopItem(params: any) {
             attackMon()
             return
         }
-        controlStore.setState({ fightResult: { show: true, status: "loading" } })
+        panelStore.setState({ fightResult: { show: true, status: "loading" } })
         const attackLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
         let lastOwner = attackLand ? attackLand.owner : ""
 
@@ -73,16 +78,17 @@ export default function TroopItem(params: any) {
             if (newLand && newLand.owner != lastOwner) {
                 win = true
             }
-            console.log("attackClick",attackLand,newLand);
-            
+            console.log("attackClick", attackLand, newLand);
+
             if (win) {
                 toastSuccess("You Win!")
-                controlStore.setState({ fightResult: { show: true, status: "win" } })
+                panelStore.setState({ fightResult: { show: true, status: "win" } })
             } else {
                 toastError("You Lose!")
-                controlStore.setState({ fightResult: { show: true, status: "lose" } })
+                panelStore.setState({ fightResult: { show: true, status: "lose" } })
             }
         } else {
+            panelStore.setState({ fightResult: { show: false, status: "win" } })
             toastError("Attack failed")
         }
 

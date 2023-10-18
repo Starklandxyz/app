@@ -31,6 +31,7 @@ import { controlStore } from "../store/controlStore";
 import NESButton from "./components/NesButton";
 import { Coord } from "../types";
 import { Land } from "../generated/graphql";
+import { panelStore } from "../store/panelStore";
 
 export default function PlayerPanel() {
   const { account, phaserLayer } = store();
@@ -266,7 +267,7 @@ export default function PlayerPanel() {
   }
 
   const gotoPacks = ()=>{
-    controlStore.setState({showLuckyPack:true})
+    panelStore.setState({showLuckyPack:true})
   }
 
   return (
@@ -336,7 +337,7 @@ export default function PlayerPanel() {
 
       <NESButton
         style={{}}
-        onClick={() => controlStore.setState({ showTask: true })}
+        onClick={() => panelStore.setState({ showTask: true })}
       >
         Task & Airdrop
       </NESButton>

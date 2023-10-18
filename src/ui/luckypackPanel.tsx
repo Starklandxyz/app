@@ -18,11 +18,12 @@ import {
 } from "../../node_modules/@latticexyz/recs/src/index";
 import packicon from "../../public/assets/icons/pack1.png"
 import packopenicon from "../../public/assets/icons/packopen.png"
+import { panelStore } from "../store/panelStore";
 
 export default function LuckypackPanel() {
     const [inputvalue, setinput] = useState(1)
     const [openInfo, setOpenInfo] = useState("")
-    const { showLuckyPack } = controlStore();
+    const { showLuckyPack } = panelStore();
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
@@ -112,7 +113,7 @@ export default function LuckypackPanel() {
             showLuckyPack && <ClickWrapper>
                 <Container>
                     <div style={{ width: 520, height: 390, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-                        <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => { controlStore.setState({ showLuckyPack: false }) }} />
+                        <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => { panelStore.setState({ showLuckyPack: false }) }} />
                         <p style={{ fontSize: 20, marginLeft: 200 }}>Lucky Packs</p>
                         <p>Total : {getBalance}</p>
                         <div style={{ backgroundColor: "", width: 510, height: 240 }}>
