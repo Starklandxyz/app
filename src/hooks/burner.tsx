@@ -89,7 +89,19 @@ export const useBurner = () => {
           // set first account to active account if it was deployed.
           setAccount(activeAccount);
         }
-        catch {
+        catch (ex: any) {
+          if(ex.message.indexOf('Transaction hash not found') > 0) {
+            // app chain restart, try to redeploy this account with private key
+            try {
+              console.log(`redeploy account ${activeAccount.address}`);
+              await reDeployAccount(activeAccount.address);
+              await setAccount(activeAccount);
+              return;
+            }catch {
+
+            }
+          }
+          // TODO: redeploy
           setAccount(undefined);
 
           // set to false
@@ -231,6 +243,15 @@ export const useBurner = () => {
     }
   }
 
+  const getPlayerName = (name: string, player: string) => {
+    let storage = Storage.get("burners") || {};
+    if (storage[player]) {
+      return storage[player].name;
+    }
+
+    return "";
+  }
+
   const removeAccount = (address: string) => {
     let burnner = Storage.get("burners") || {};
     delete burnner["address"];
@@ -245,6 +266,7 @@ export const useBurner = () => {
     isDeploying,
     reDeployAccount,
     setPlayerName,
+    getPlayerName,
     isAccountDeployed,
     removeAccount,
   };
