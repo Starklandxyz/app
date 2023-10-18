@@ -57,6 +57,19 @@ export default function TroopItem(params: any) {
         }
     }
 
+    const maxLand = () => {
+        const base = getComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, BigInt(account?.address!)]))
+        if (!base) {
+            return 10
+        }
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
+        if (!land) {
+            return 10
+        }
+        const max = 10 + 5 * (land?.level - 1)
+        return max
+    }
+
     const attackClick = async () => {
         if (!account) { return }
 
@@ -65,6 +78,13 @@ export default function TroopItem(params: any) {
             attackMon()
             return
         }
+        const totalLand = getComponentValue(contractComponents.LandOwner, getEntityIdFromKeys([1n, BigInt(account.address)]))
+        const t = totalLand ? totalLand.total : 0
+        if (t >= maxLand()) {
+            toastError("Exceed max land")
+            return
+        }
+
         panelStore.setState({ fightResult: { show: true, status: "loading" } })
         const attackLand = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
         let lastOwner = attackLand ? attackLand.owner : ""
