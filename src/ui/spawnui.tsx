@@ -44,7 +44,7 @@ export default function SpawnUI() {
             toastError("Mint your player first.","top-center")
             return
         }
-        setShow(pre => !pre)
+        setShow(true)
     }
 
     useEffect(() => {
@@ -80,9 +80,6 @@ export default function SpawnUI() {
         if (result && result.length > 0) {
             setShow(false)
             toastSuccess("Build Base Success!")
-            // const newBases = new Map(bases)
-            // newBases.set(account?.address!, lastCoord)
-            // buildStore.setState({ bases: newBases })
         } else {
             toastError("Can't build here")
         }
@@ -96,9 +93,6 @@ export default function SpawnUI() {
             return
         }
 
-        // const x = (ex + camera.phaserCamera.worldView.x * 2) / 2;
-        // const y = (ey + camera.phaserCamera.worldView.y * 2) / 2;
-        // const coord = pixelCoordToTileCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT)
 
         if (lastCoord.x == coord.x && lastCoord.y == coord.y) {
             return
@@ -111,10 +105,6 @@ export default function SpawnUI() {
             putTileAt({ x: xStart, y: yStart + 1 }, Tileset.Empty, "Build");
             putTileAt({ x: xStart + 1, y: yStart + 1 }, Tileset.Empty, "Build");
         }
-        // const c = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
-        // console.log("lastCoord", lastCoord, c);
-        // const xStart = c.x * 2 - camera.phaserCamera.worldView.x * 2
-        // const yStart = c.y * 2 - camera.phaserCamera.worldView.y * 2
 
         const xStart = coord.x
         const yStart = coord.y
@@ -133,12 +123,11 @@ export default function SpawnUI() {
         if (!account) {
             return <></>
         }
-        // console.log("showButton",account?.address,bases,bases.has(account.address));
         if (myBase) {
             return <></>
         }
 
-        return <NesButton onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Cancel"}</NesButton>
+        return <button disabled={show} onClick={() => baseClick()} style={{ width: 200, height: 40 }}>{!show ? "Build Base" : "Building..."}</button>
     }, [account, myBase, show, player])
 
     return (
