@@ -57,6 +57,9 @@ export default function BuildingTip() {
         // console.log("land_baba",land_baba);
 
         var land_warrior = <></>
+        if(lastCoord.x==52&&lastCoord.y==52){
+            console.log("island");
+        }
 
         if (land) {
             switch (land.building) {
@@ -114,7 +117,7 @@ export default function BuildingTip() {
             </>
 
             land_level = "Level : " + get_land_level(1, lastCoord.x, lastCoord.y)
-            if(get_land_level(1, lastCoord.x, lastCoord.y)==6){
+            if(get_land_level(1, lastCoord.x, lastCoord.y)==6 && land_type==LandType.None){
                 land_name = "Monster Den"
                 land_owner = "Owner : Diabolo"
             }
