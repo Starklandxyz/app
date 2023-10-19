@@ -69,17 +69,25 @@ export default function SendTroopPanel() {
             return
         }
 
-        const food_config = getComponentValue(components.WarriorConfig,getEntityIdFromKeys([1n]))
-        const food_need = food_config?.Troop_Food! * calDistance() * inputValue
+        const warrior_config = getComponentValue(components.WarriorConfig, getEntityIdFromKeys([1n]))
+        const food_need = warrior_config?.Troop_Food! * calDistance() * inputValue
 
-        
         const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
         const balance = getComponentValue(components.Food, entityIndex)?.balance!
-        console.log("confirm",food_need,balance);
-        if ( balance< food_need) {
+        // console.log("confirm",food_need,balance);
+        if (balance < food_need) {
             toastError("Food is not enough")
             return
         }
+
+        const iron_need = warrior_config?.Troop_Iron! * calDistance() * inputValue
+        const ironbalance = getComponentValue(components.Iron, entityIndex)?.balance!
+        // console.log("confirm",food_need,balance);
+        if (ironbalance < iron_need) {
+            toastError("Iron is not enough")
+            return
+        }
+
         const w = calWarrior()
         console.log("confirm", w, inputValue);
 
@@ -102,7 +110,7 @@ export default function SendTroopPanel() {
         cancel()
     }
 
-    const calDistance = ()=>{
+    const calDistance = () => {
         if (!sendTroopCtr.troop) {
             return 0
         }
@@ -131,13 +139,13 @@ export default function SendTroopPanel() {
             return 0
         }
 
-        const config = getComponentValue(components.WarriorConfig,getEntityIdFromKeys([1n]))
-        console.log("calConsume",config);
-        
+        const config = getComponentValue(components.WarriorConfig, getEntityIdFromKeys([1n]))
+        console.log("calConsume", config);
+
         const food = config?.Troop_Food! * calDistance() * inputValue / 1_000_000
         const iron = config?.Troop_Iron! * calDistance() * inputValue / 1_000_000
         // const result = Troop_Food * calDistance() * inputValue
-        return food +" Food, "+iron+" Iron"
+        return food + " Food, " + iron + " Iron"
     }, [sendTroopCtr, inputValue])
 
     const calTime = useMemo(() => {
@@ -153,7 +161,7 @@ export default function SendTroopPanel() {
         if (!myBase) {
             return 0
         }
-        if(!sendTroopCtr || !sendTroopCtr.troop){
+        if (!sendTroopCtr || !sendTroopCtr.troop) {
             return 0
         }
         const from = sendTroopCtr.troop.from
@@ -168,7 +176,7 @@ export default function SendTroopPanel() {
 
     const getWarrior = useMemo(() => {
         return calWarrior()
-    }, [account, myBase, warriors,sendTroopCtr])
+    }, [account, myBase, warriors, sendTroopCtr])
 
     const getAvailableTroopId = () => {
         // console.log("getMyTroopSize",account,troops);
@@ -189,36 +197,36 @@ export default function SendTroopPanel() {
                     break
                 }
             }
-            
+
         }
         return size
     }
 
-    const max = ()=>{
+    const max = () => {
         setInputValue(calWarrior())
     }
 
-    const maxButton = useMemo(()=>{
-        return <span onClick={()=>max()} style={{marginLeft:20,cursor:"pointer"}}>max</span>
-    },[account, troops,sendTroopCtr])
+    const maxButton = useMemo(() => {
+        return <span onClick={() => max()} style={{ marginLeft: 20, cursor: "pointer" }}>max</span>
+    }, [account, troops, sendTroopCtr])
 
     const getTroopID = useMemo(() => {
         return getAvailableTroopId()
-    }, [account, troops,sendTroopCtr])
+    }, [account, troops, sendTroopCtr])
 
-    useEffect(()=>{
+    useEffect(() => {
         if (sendTroopCtr.show) {
             mouseStore.setState({ frozen: true })
         } else {
             mouseStore.setState({ frozen: false })
         }
-    },[sendTroopCtr.show])
+    }, [sendTroopCtr.show])
 
     return (
         <ClickWrapper>
             <Container>
                 {
-                    sendTroopCtr.show && <div style={{ width: 340, zIndex:100, height: 260, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                    sendTroopCtr.show && <div style={{ width: 340, zIndex: 100, height: 260, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                         <p style={{ color: "pink" }}>Send Troop</p>
                         <table cellSpacing={13}>
                             <tr>
@@ -248,7 +256,7 @@ export default function SendTroopPanel() {
                             </tr>
                         </table>
                         <button onClick={() => cancel()} style={{ marginLeft: 10, marginRight: 10 }}>Cancel</button>
-                        <LoadingButton initialText="Confirm" loadingText="Confirm..." onClick={ confirm}/>
+                        <LoadingButton initialText="Confirm" loadingText="Confirm..." onClick={confirm} />
                     </div>
                 }
             </Container>
