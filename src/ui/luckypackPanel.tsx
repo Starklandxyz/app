@@ -19,6 +19,7 @@ import {
 import packicon from "../../public/assets/icons/pack1.png"
 import packopenicon from "../../public/assets/icons/packopen.png"
 import { panelStore } from "../store/panelStore";
+import LoadingButton from "./components/LoadingButton";
 
 export default function LuckypackPanel() {
     const [inputvalue, setinput] = useState(1)
@@ -123,7 +124,7 @@ export default function LuckypackPanel() {
 
                         <input style={{ width: 40, marginLeft: 200, marginRight: 5 }} type="number" value={inputvalue} onChange={inputChange} />
                         <span style={{ fontSize: 13, cursor: "pointer" }} onClick={() => max()}>max</span>
-                        <button style={{ marginLeft: 10 }} onClick={() => openPack()}>Open Packs</button>
+                        <LoadingButton style={{ marginLeft: 10 }} onClick={() => openPack()} initialText="Open Packs" loadingText="Open..."/>
                         <button style={{ marginLeft: 50 }} onClick={() => transferPack()}>Transfer Packs</button>
                     </div>
                 </Container>
