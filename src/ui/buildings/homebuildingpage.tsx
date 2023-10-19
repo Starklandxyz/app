@@ -22,6 +22,7 @@ import NesButton from "../components/NesButton";
 import styled from "styled-components";
 import { Direction } from "../../generated/graphql";
 import { updateStore } from "../../store/updateStore";
+import LoadingButton from "../components/LoadingButton";
 
 export default function BasePage() {
   const { account, phaserLayer, camera } = store();
@@ -408,12 +409,13 @@ export default function BasePage() {
       >
         <div style={{ display: "flex" }}>
           <span style={{ alignSelf: "center", flex: 1 }}>Claimable</span>
-          <NesButton
+          <LoadingButton style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }} loadingText="Claim..." initialText="Claim All" onClick={() => claimAll()}/>
+          {/* <button
             onClick={() => claimAll()}
             style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }}
           >
             Claim All
-          </NesButton>
+          </button> */}
         </div>
 
         <div>

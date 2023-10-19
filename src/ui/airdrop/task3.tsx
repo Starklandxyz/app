@@ -9,6 +9,7 @@ import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
+import { AirdropClaimButton } from "../components/AirdropClaimButton";
 
 export default function Task3() {
     const airdropIndex = 3
@@ -20,7 +21,7 @@ export default function Task3() {
         }
     } = phaserLayer!
 
-    const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 2n]))
+    const userairdrop = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), BigInt(airdropIndex)]))
 
     // const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
@@ -46,11 +47,13 @@ export default function Task3() {
         const troop1 = getComponentValue(sqlComponent.Troop,getEntityIdFromKeys([1n,BigInt(account.address),1n],))
         
         if (troop1) {
-            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 3n]))
-            if (airdrop) {
+            // const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), 3n]))
+            if (userairdrop) {
                 return <div>Claimed</div>
             } else {
-                return <div style={{color:"yellow"}}><img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }} />Claim</div>
+                return <AirdropClaimButton onClick={() => claimairdrop()}/>
+                //<div style={{color:"yellow",cursor:"pointer"}} onClick={() => claimairdrop()}>
+                // <img src={gifticon}  style={{ color: "green" }} />Claim</div>
             }
         }
         return <div>Not Satisfied</div>

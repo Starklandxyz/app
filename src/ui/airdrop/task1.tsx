@@ -9,6 +9,7 @@ import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
+import { AirdropClaimButton } from "../components/AirdropClaimButton";
 
 export default function Task1() {
     const airdropIndex = 1
@@ -20,7 +21,7 @@ export default function Task1() {
         }
     } = phaserLayer!
 
-    const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 1n]))
+    const userairdrop = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), BigInt(airdropIndex)]))
 
     const myBase = useComponentValue(sqlComponent.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
@@ -47,7 +48,7 @@ export default function Task1() {
             if (userairdrop) {
                 return <div>Claimed</div>
             } else {
-                return <div style={{color:"yellow"}}><img src={gifticon} onClick={() => claimairdrop()} style={{ color: "green",cursor:"pointer" }} />Claim</div>
+                return <AirdropClaimButton onClick={() => claimairdrop()}/>
             }
         }
         return <div>Not Satisfied</div>

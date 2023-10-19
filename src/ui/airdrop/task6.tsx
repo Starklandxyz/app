@@ -11,6 +11,7 @@ import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
 import { BuildType } from "../../types/Build";
 import { Coord } from "../../types";
+import { AirdropClaimButton } from "../components/AirdropClaimButton";
 
 export default function Task6() {
     const airdropIndex = 6
@@ -22,7 +23,7 @@ export default function Task6() {
         }
     } = phaserLayer!
 
-    const userairdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), 2n]))
+    const userairdrop = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), BigInt(airdropIndex)]))
     const mapLands = useEntityQuery([Has(sqlComponent.Land)], { updateOnValueChange: true })
 
     const airdropConfig = useComponentValue(sqlComponent.AirdropConfig, getEntityIdFromKeys([1n, BigInt(airdropIndex)]))
@@ -59,12 +60,14 @@ export default function Task6() {
         }
 
         if (has) {
-            const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), BigInt(airdropIndex)]))
-            if (airdrop) {
+            // const airdrop = getComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account.address), BigInt(airdropIndex)]))
+            if (userairdrop) {
                 return <div>Claimed</div>
             } else {
                 // return <img src={gifticon} onClick={() => claimairdrop(x, y)} style={{ color: "green", cursor: "pointer" }} />
-                return <div style={{color:"yellow"}}><img src={gifticon} onClick={() => claimairdrop(x,y)} style={{ color: "green",cursor:"pointer" }} />Claim</div>
+                return <AirdropClaimButton onClick={() => claimairdrop(x,y)}/>
+                // <div style={{color:"yellow",cursor:"pointer"}} onClick={() => claimairdrop(x,y)}>
+                // <img src={gifticon}  style={{ color: "green" }} />Claim</div>
             }
         }
         return <div>Not Satisfied</div>

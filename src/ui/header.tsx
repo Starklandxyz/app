@@ -28,6 +28,7 @@ import {
 } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import NesButton from "./components/NesButton";
+import LoadingButton from "./components/LoadingButton";
 
 export default function Header() {
   const { account, phaserLayer } = store();
@@ -95,7 +96,7 @@ export default function Header() {
       return;
     }
     const events = await spawn(account, BigInt("0x" + hex));
-    console.log("startGame",events);
+    console.log("startGame", events);
     if (events && events.length > 0) {
       setNickName("");
       toastSuccess("Mint player success.", "top-center");
@@ -113,6 +114,7 @@ export default function Header() {
   };
 
   const createNew = () => {
+    if (isDeploying) { return }
     toastInfo("Create account...", "top-center");
     create();
   };
@@ -166,14 +168,13 @@ export default function Header() {
                 style={{ fontWeight: "bold" }}
                 placeholder="Enter your nickname"
               />
-              <NesButton
-                style={{}}
+              <LoadingButton
+                initialText="Create Player"
+                loadingText="Creating..."
                 onClick={() => {
-                  startGame();
+                  startGame()
                 }}
-              >
-                Create Player
-              </NesButton>
+              />
             </div>
           )}
           <div style={{ display: "flex", padding: "6px 0px", gap: "8px" }}>
@@ -196,7 +197,7 @@ export default function Header() {
             }
 
             {player && (
-              <NesButton
+              <button
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content="create a new local wallet"
                 data-tooltip-place="top"
@@ -204,18 +205,18 @@ export default function Header() {
                 onClick={() => createNew()}
               >
                 {isDeploying ? "deploying..." : "create new"}
-              </NesButton>
+              </button>
             )}
             {!account && (
-              <NesButton
+              <button
                 type="button"
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content="create a local wallet"
                 data-tooltip-place="top"
-                onClick={createNew}
+                onClick={() => createNew()}
               >
                 {isDeploying ? "deploying wallet" : "create wallet"}
-              </NesButton>
+              </button>
             )}
 
             <img

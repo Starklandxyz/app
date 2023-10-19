@@ -34,8 +34,6 @@ export default function AirdropPanel() {
     const { account, phaserLayer } = store();
     const {
         networkLayer: {
-            systemCalls: { airdrop },
-            world,
             components: sqlComponent,
             network: { graphSdk }
         }
