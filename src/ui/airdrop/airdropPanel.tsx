@@ -28,6 +28,7 @@ import Task7 from './task7';
 import Task8 from './task8';
 import { AUTO } from 'phaser';
 import { panelStore } from '../../store/panelStore';
+import { mouseStore } from '../../store/mouseStore';
 
 export default function AirdropPanel() {
     const { account, phaserLayer } = store();
@@ -69,35 +70,13 @@ export default function AirdropPanel() {
 
     const { showTask } = panelStore();
 
-    const food = useComponentValue(sqlComponent.Food, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
-    const gold = useComponentValue(sqlComponent.Gold, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
-    const iron = useComponentValue(sqlComponent.Iron, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
-    const userWarrior = useComponentValue(sqlComponent.UserWarrior, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]), { balance: 0 });
-
-    const player = useComponentValue(sqlComponent.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
-
-    const troops = useEntityQuery([Has(sqlComponent.Troop)], { updateOnValueChange: true })
-
-    const landEntities = useEntityQuery([Has(sqlComponent.Land)], { updateOnValueChange: true })
-
-    const airdropClaimed = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([BigInt(account ? account.address : "")]))
-
-    const claimairdrop = async (index: number) => {
-        if (!account) {
-            return
-        }
-        const base = getComponentValue(sqlComponent.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
-        if (!base) {
-            toastError("Build a base first")
-            return
-        }
-        const result = await airdrop(account, 1, index)
-        if (result && result.length > 0) {
-            toastSuccess("Airdrop success")
+    useEffect(()=>{
+        if (showTask) {
+            mouseStore.setState({ coord: { x: 0, y: 0 }, frozen: true })
         } else {
-            toastError("Airdrop failed")
+            mouseStore.setState({ frozen: false })
         }
-    }
+    },[showTask])
 
     return (
         <ClickWrapper>
