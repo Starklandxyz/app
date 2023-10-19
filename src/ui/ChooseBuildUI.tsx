@@ -18,6 +18,7 @@ import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { useComponentValue } from "@dojoengine/react";
+import LoadingButton from "./components/LoadingButton";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, account } = store()
@@ -116,22 +117,6 @@ export default function ChooseBuildUI() {
                 toastError("There is no mine around")
                 return
             }
-
-            // for (let i = -1; i < 2; i++) {
-            //     for (let j = -1; j < 2; j++) {
-            //         const x = buildLand.x + i
-            //         const y = buildLand.y + j
-            //         // const land_type = get_land_type(1, x, y)
-
-            //         const has = await fetchHasMiner(1, x, y)
-            //         console.log("buildConfirm has", has);
-
-            //         if (has) {
-            //             toastError("There is no available mine around")
-            //             return
-            //         }
-            //     }
-            // }
         }
 
 
@@ -342,7 +327,7 @@ export default function ChooseBuildUI() {
                     {getBuildInfo}
                     <div style={{ position: "absolute", right: 30, bottom: 30, display: "flex", flexDirection: "column" }}>
                         <button onClick={() => cancel()} style={{ marginBottom: 20 }}>Cancel</button>
-                        <button onClick={() => buildConfirm()}>Build</button>
+                        <LoadingButton initialText="Build" loadingText="Build..." onClick={() => buildConfirm()}/>
                     </div>
                 </div>
             }

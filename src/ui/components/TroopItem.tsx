@@ -15,6 +15,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 import { controlStore } from "../../store/controlStore";
 import { get_land_level } from "../../types/Land";
 import { panelStore } from "../../store/panelStore";
+import LoadingButton, { LoadingType } from "./LoadingButton";
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
@@ -75,7 +76,7 @@ export default function TroopItem(params: any) {
 
         const level = get_land_level(1, troop.to.x, troop.to.y)
         if (level == 6) {
-            attackMon()
+            await attackMon()
             return
         }
         const totalLand = getComponentValue(contractComponents.LandOwner, getEntityIdFromKeys([1n, BigInt(account.address)]))
@@ -202,7 +203,7 @@ export default function TroopItem(params: any) {
             isMy = true
         }
         if (end && !retreat && !isMy) {
-            return <span onClick={() => attackClick()} style={{ cursor: "pointer", marginLeft: 10 }}>攻</span>
+            return <LoadingButton type={LoadingType.Span} onClick={ attackClick} style={{ cursor: "pointer", marginLeft: 10 }} initialText="攻" loadingText="攻..."/>
         }
         return <></>
     }, [troop, timenow])
@@ -218,7 +219,7 @@ export default function TroopItem(params: any) {
         // console.log("enterbutton",end,land);
 
         if (isMy && end) {
-            return <span style={{ marginLeft: 10,cursor:"pointer" }} onClick={() => { enterLand() }}>驻</span>
+            return <LoadingButton type={LoadingType.Span} initialText="驻" loadingText="驻..." style={{ marginLeft: 10,cursor:"pointer" }} onClick={ enterLand}/>
         }
 
         return <></>
@@ -240,7 +241,7 @@ export default function TroopItem(params: any) {
             }
         } else {
             if (!toBase) {
-                return <span onClick={() => retreat()} style={{ cursor: "pointer", marginLeft: 10 }}>撤</span>
+                return <LoadingButton type={LoadingType.Span} initialText="撤" loadingText="撤..." onClick={retreat} style={{ cursor: "pointer", marginLeft: 10 }}/>
             }
         }
         return <></>

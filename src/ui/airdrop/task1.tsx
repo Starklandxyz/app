@@ -48,7 +48,7 @@ export default function Task1() {
             if (userairdrop) {
                 return <div>Claimed</div>
             } else {
-                return <AirdropClaimButton onClick={() => claimairdrop()}/>
+                return <AirdropClaimButton onClick={ claimairdrop}/>
             }
         }
         return <div>Not Satisfied</div>

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-function LoadingButton({ initialText = 'Click Me', loadingText = 'loading...', onClick=(_:any)=>{},style={}}) {
+export enum LoadingType {
+  Button, Span
+}
+export default function LoadingButton({ type = LoadingType.Button, initialText = 'Click Me', loadingText = 'loading...', onClick = (_: any) => { }, style = {} }) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleClick = async (e:any) => {
+  const handleClick = async (e: any) => {
+    if (isLoading) { return }
     setIsLoading(true);
     if (onClick) {
       try {
@@ -15,11 +19,17 @@ function LoadingButton({ initialText = 'Click Me', loadingText = 'loading...', o
     setIsLoading(false);
   };
 
-  return (
-    <button onClick={handleClick} disabled={isLoading} style={style}>
-      {isLoading ? loadingText : initialText}
-    </button>
-  );
-}
+  const node = () => {
+    if (type == LoadingType.Button) {
+      return <button onClick={handleClick} disabled={isLoading} style={style}>
+        {isLoading ? loadingText : initialText}
+      </button>
+    } else if (type == LoadingType.Span) {
+      return <span onClick={handleClick} style={style}>
+        {isLoading ? loadingText : initialText}
+      </span>
+    }
+  }
 
-export default LoadingButton;
+  return node();
+}

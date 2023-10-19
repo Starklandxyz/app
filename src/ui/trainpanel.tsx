@@ -12,6 +12,7 @@ import { handleSQLResult } from "../utils/handleutils";
 import { Warrior } from "../types/Warrior";
 import NesButton from "./components/NesButton";
 import { BuildType } from "../types/Build";
+import LoadingButton from "./components/LoadingButton";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
@@ -210,7 +211,7 @@ export default function TrainPanel() {
                                 <p>Next : {getTrainTime}</p>
                                 <p>Claimable : {claimable}</p>
                             </div>
-                            <button style={{ marginTop: 8, marginLeft: 60 }} onClick={() => claim()}>Claim Warrior</button>
+                            <LoadingButton initialText="Claim Warrior" loadingText="Claim..." style={{ marginTop: 8, marginLeft: 60 }} onClick={claim}/>
                         </div>
                         :
                         <div>
@@ -222,7 +223,7 @@ export default function TrainPanel() {
                                     <input onChange={inputChange} style={{ height: 18, width: 60, marginRight: 10 }} value={inputValue} type="number" />
                                 </div>
                             </div>
-                            <NesButton style={{ marginTop: 8, marginLeft: 60 }} onClick={() => train()}>Start Training</NesButton>
+                            <LoadingButton initialText="Start Training" loadingText="Start..." style={{ marginTop: 8, marginLeft: 60 }} onClick={train}/>
                         </div>
                 }
             </div>

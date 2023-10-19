@@ -20,6 +20,7 @@ import packicon from "../../public/assets/icons/pack1.png"
 import packopenicon from "../../public/assets/icons/packopen.png"
 import fightingicon from "../../public/assets/icons/fighting.png"
 import { panelStore } from "../store/panelStore";
+import LoadingButton from "./components/LoadingButton";
 
 export default function MonsterResultPanel() {
     const [openInfo, setOpenInfo] = useState("")
@@ -85,7 +86,7 @@ export default function MonsterResultPanel() {
                                     openInfo.length < 5 ? 
                                     <div style={{ display: "flex", marginLeft: 100 }}>
                                         <button onClick={() => closeit()} style={{ width: 80 }}>Open Later</button>
-                                        <button onClick={() => openPack()} style={{ width: 60, marginLeft: 50 }}>Open</button>
+                                        <LoadingButton initialText="Open" loadingText="Open..." onClick={openPack} style={{ width: 60, marginLeft: 50 }}/>
                                     </div> : 
                                     <button style={{marginLeft:200}} onClick={() => closeit()}>Close</button>
                                 }

@@ -9,6 +9,7 @@ import { Troop_Speed } from "../contractconfig";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
+import LoadingButton from "./components/LoadingButton";
 
 export default function SendTroopPanel() {
     const { account, phaserLayer } = store()
@@ -238,7 +239,7 @@ export default function SendTroopPanel() {
                             </tr>
                         </table>
                         <button onClick={() => cancel()} style={{ marginLeft: 10, marginRight: 10 }}>Cancel</button>
-                        <button onClick={() => confirm()}>Confirm</button>
+                        <LoadingButton initialText="Confirm" loadingText="Confirm..." onClick={ confirm}/>
                     </div>
                 }
             </Container>

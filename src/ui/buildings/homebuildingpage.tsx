@@ -409,7 +409,7 @@ export default function BasePage() {
       >
         <div style={{ display: "flex" }}>
           <span style={{ alignSelf: "center", flex: 1 }}>Claimable</span>
-          <LoadingButton style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }} loadingText="Claim..." initialText="Claim All" onClick={() => claimAll()}/>
+          <LoadingButton style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }} loadingText="Claim..." initialText="Claim All" onClick={claimAll}/>
           {/* <button
             onClick={() => claimAll()}
             style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }}

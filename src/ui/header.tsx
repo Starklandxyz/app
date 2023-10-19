@@ -171,9 +171,7 @@ export default function Header() {
               <LoadingButton
                 initialText="Create Player"
                 loadingText="Creating..."
-                onClick={() => {
-                  startGame()
-                }}
+                onClick={startGame}
               />
             </div>
           )}

@@ -51,7 +51,7 @@ export default function Task3() {
             if (userairdrop) {
                 return <div>Claimed</div>
             } else {
-                return <AirdropClaimButton onClick={() => claimairdrop()}/>
+                return <AirdropClaimButton onClick={claimairdrop}/>
                 //<div style={{color:"yellow",cursor:"pointer"}} onClick={() => claimairdrop()}>
                 // <img src={gifticon}  style={{ color: "green" }} />Claim</div>
             }
