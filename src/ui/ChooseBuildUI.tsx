@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ClickWrapper } from "./clickWrapper";
 import { controlStore } from "../store/controlStore";
-import { toastError, toastSuccess } from "../utils";
+import { toastError, toastInfo, toastSuccess } from "../utils";
 import { Tileset, TilesetBuilding, TilesetZone } from "../artTypes/world";
 import { store } from "../store/store";
 import goldmineicon from "../../public/assets/icons/goldmine.png"
@@ -166,6 +166,7 @@ export default function ChooseBuildUI() {
                     toastError("This land has miner")
                     return
                 }
+                toastInfo("Start Mining...")
                 const result = await startMining(account!, 1, buildLand.x, buildLand.y, clickedLandRef.current.x, clickedLandRef.current.y)
                 if (result && result.length > 0) {
                     toastSuccess("Start mining success")
