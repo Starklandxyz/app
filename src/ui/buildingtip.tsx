@@ -237,6 +237,7 @@ export default function BuildingTip() {
         if (!account) {
             return
         }
+        settooltip({ show: true, x: window.screen.width * 0.27, y: window.screen.height * 0.45, content: tooltip.content, position: "" })
         const troop = new Troop(account.address, lastCoord, myBase, getTimestamp())
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
