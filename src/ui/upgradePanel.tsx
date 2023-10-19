@@ -11,6 +11,7 @@ import NesButton from "../ui/components/NesButton";
 import { toastError, toastSuccess } from '../utils';
 import { Upgrate_Time } from '../contractconfig';
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
+import LoadingButton from './components/LoadingButton';
 
 export default function UpgradePanel() {
     const { account, phaserLayer, camera } = store();
@@ -114,7 +115,7 @@ export default function UpgradePanel() {
                         <div style={{ marginTop: 10 }}>
                             {updateTime}
                         </div>
-                        <NesButton style={{ marginTop: 10, marginLeft: 150 }} onClick={() => update()}>Update</NesButton>
+                        <LoadingButton initialText='Update' loadingText='Update...' style={{ marginTop: 10, marginLeft: 150 }} onClick={() => update()}/>
                     </div>
                 </Container>
             }
