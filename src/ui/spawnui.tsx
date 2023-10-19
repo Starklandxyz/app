@@ -76,9 +76,10 @@ export default function SpawnUI() {
         }
         console.log("clickLand", lastCoord);
         setShow(false)
+        toastInfo("Building Base...")
         const result = await build_base(account, 1, lastCoord.x, lastCoord.y)
         if (result && result.length > 0) {
-            setShow(false)
+            // setShow(false)
             toastSuccess("Build Base Success!")
         } else {
             toastError("Can't build here")
