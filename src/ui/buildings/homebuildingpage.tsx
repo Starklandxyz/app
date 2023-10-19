@@ -304,7 +304,7 @@ export default function BasePage() {
     // const update_cost = getComponentValue()
     if (update_base && !update_base.claimed) {
       if (timenow > update_base.end_time) {
-        return <><NesButton style={{ minHeight: 30 }} onClick={() => finishUpgrade()}>Confirm Upgrade</NesButton></>
+        return <LoadingButton style={{ minHeight: 30 }} onClick={() => finishUpgrade()} initialText="Confirm Upgrade" loadingText="Confirm.../"/>
       } else {
         const total = update_base.end_time - update_base.start_time
         const used = timenow - update_base.start_time
