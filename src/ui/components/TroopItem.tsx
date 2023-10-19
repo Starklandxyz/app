@@ -218,7 +218,7 @@ export default function TroopItem(params: any) {
         // console.log("enterbutton",end,land);
 
         if (isMy && end) {
-            return <span style={{ marginLeft: 10 }} onClick={() => { enterLand() }}>驻</span>
+            return <span style={{ marginLeft: 10,cursor:"pointer" }} onClick={() => { enterLand() }}>驻</span>
         }
 
         return <></>
