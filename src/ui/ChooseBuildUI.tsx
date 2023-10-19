@@ -131,10 +131,10 @@ export default function ChooseBuildUI() {
             }else{
                 showSelectArea(buildLand.x, buildLand.y)
             }
-            controlStore.setState({ buildLand: undefined })
         } else {
             toastError("Build failed")
         }
+        controlStore.setState({ buildLand: undefined })
     }
 
     useEffect(()=>{

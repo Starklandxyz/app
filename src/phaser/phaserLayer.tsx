@@ -76,10 +76,16 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
     }
 
     const handleMouseDown = (e: any) => {
+        if(frozen){
+            return
+        }
         mouseStore.setState({ down: true })
     }
 
     const handleMouseUp = (e: any) => {
+        if(frozen){
+            return
+        }
         setEvent(null)
         mouseStore.setState({ down: false })
     }

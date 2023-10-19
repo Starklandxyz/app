@@ -10,6 +10,7 @@ import { Has, defineSystem, getComponentValue } from "../../node_modules/@lattic
 import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import LoadingButton from "./components/LoadingButton";
+import { mouseStore } from "../store/mouseStore";
 
 export default function SendTroopPanel() {
     const { account, phaserLayer } = store()
@@ -204,6 +205,14 @@ export default function SendTroopPanel() {
     const getTroopID = useMemo(() => {
         return getAvailableTroopId()
     }, [account, troops,sendTroopCtr])
+
+    useEffect(()=>{
+        if (sendTroopCtr.show) {
+            mouseStore.setState({ frozen: true })
+        } else {
+            mouseStore.setState({ frozen: false })
+        }
+    },[sendTroopCtr.show])
 
     return (
         <ClickWrapper>
