@@ -19,6 +19,7 @@ import { handleSQLResult } from "../utils/handleutils";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { useComponentValue } from "@dojoengine/react";
 import LoadingButton from "./components/LoadingButton";
+import { mouseStore } from "../store/mouseStore";
 
 export default function ChooseBuildUI() {
     const { phaserLayer, account } = store()
@@ -135,6 +136,14 @@ export default function ChooseBuildUI() {
             toastError("Build failed")
         }
     }
+
+    useEffect(()=>{
+        if (buildLand) {
+            mouseStore.setState({ coord: { x: 0, y: 0 }, frozen: true })
+        } else {
+            mouseStore.setState({ frozen: false })
+        }
+    },[buildLand])
 
     const chooseArea = async () => {
         console.log("chooseArea", clickedLandRef.current, buildLand);
