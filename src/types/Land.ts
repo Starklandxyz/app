@@ -26,9 +26,11 @@ export const get_land_type = (map_id: number, x: number, y: number) => {
     switch (rand) {
         case 1n: type = LandType.Gold; break;
         case 2n:
-        case 3n: type = LandType.Iron; break;
-        case 4n:
-        case 5n: type = LandType.Water; break;
+        case 3n: 
+        case 4n: type = LandType.Iron; break;
+        case 5n: 
+        case 6n:
+        case 7n:type = LandType.Water; break;
     }
     return type;
 }
