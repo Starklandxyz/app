@@ -133,14 +133,16 @@ export default function TrainPanel() {
 
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
-
+        console.log("inputChange",value);
+        if(!value){return}
         try {
+            console.log("inputChange",parseInt(value));
             if (parseInt(value) <= 0) {
                 return
             }
             setInput(parseInt(value))
         } catch (error) {
-
+            setInput(1)
         }
     }
 
