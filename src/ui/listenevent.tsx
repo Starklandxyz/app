@@ -37,7 +37,7 @@ export default function ListenEvent() {
                         let entityUpdated = data.entityUpdated;
                         console.log("We got something", entityUpdated.componentNames);
                         console.log(entityUpdated);
-                        let id = entityUpdated.id
+                        let id = entityUpdated.updatedAt
                         let keys = entityUpdated.keys
                         let cs = entityUpdated.componentNames.split(",")
 
