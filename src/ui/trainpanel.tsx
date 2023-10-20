@@ -229,7 +229,7 @@ export default function TrainPanel() {
                         </div>
                 }
             </div>
-            <button onClick={() => adminclick()}>Admin</button>
+            { import.meta.env.VITE_ADMIN_MODE === 'true' && <button onClick={() => adminclick()}>Admin</button> }
         </Container>
     </ClickWrapper>)
 }

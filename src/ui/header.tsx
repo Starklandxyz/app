@@ -194,7 +194,7 @@ export default function Header() {
               </div>
             }
 
-            {player && (
+            {(player != null && player != undefined && import.meta.env.VITE_ADMIN_MODE === 'true') && (
               <button
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content="create a new local wallet"
