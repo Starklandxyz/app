@@ -2,17 +2,12 @@ import { useEffect, useRef } from "react";
 import { store } from "../store/store";
 import { handleSQLResult } from "../utils/handleutils";
 
+
 export default function ListenEvent() {
     const { account, phaserLayer } = store();
-    const accountRef = useRef<string>()
 
-    useEffect(() => {
-        if (!account) {
-            return
-        }
-        console.log("account change ", account?.address);
-        accountRef.current = account?.address
-    }, [account])
+    //id+component => bool
+    const updateMapRef = useRef<Map<string, boolean>>(new Map())
 
     const {
         world,
@@ -40,12 +35,22 @@ export default function ListenEvent() {
                 next({ data }: any) {
                     if (data) {
                         let entityUpdated = data.entityUpdated;
-                        console.log("We got something:" + entityUpdated.componentNames);
+                        console.log("We got something", entityUpdated.componentNames);
                         console.log(entityUpdated);
+                        let id = entityUpdated.id
                         let keys = entityUpdated.keys
-                        switch (entityUpdated.componentNames) {
-                            case "Land": handleLandUpdated(keys); break;
-                            case "Base": handleBaseUpdated(keys); break;
+                        let cs = entityUpdated.componentNames.split(",")
+
+                        for (let index = 0; index < cs.length; index++) {
+                            const element = cs[index];
+                            console.log("We got something", element,id);
+                            switch (element) {
+                                case "Land": handleLandUpdated(id + "Land", keys); break;
+                                case "LandMiner": handleLandMinerUpdated(id + "LandMiner", keys); break;
+                                case "Player": handlePlayerUpdated(id + "Player", keys); break;
+                                case "Troop": handleTroopUpdated(id + "Troop", keys); break;
+                                case "Warrior": handleWarriorUpdated(id + "Warrior", keys); break;
+                            }
                         }
                     }
                 },
@@ -55,61 +60,56 @@ export default function ListenEvent() {
         }
     }, [])
 
-    const handleLandUpdated = async (keys: Array<string>) => {
-        const ls = await graphSdk.getLandByKey({ map_id: keys[0], x: keys[1], y: keys[2] })
-        console.log("handleLandUpdated", keys, ls);
+    const handleLandUpdated = async (id: string, keys: Array<string>) => {
+        if (updateMapRef.current.has(id)) {
+            return
+        }
+        console.log("handleLandUpdated",id);
+        updateMapRef.current.set(id, true)
+        const ls = await graphSdk.getLand({ keys: keys })
         const edges = ls.data.entities?.edges
-        handleSQLResult(edges,components)
-        // const mLands = new Map(mapLands)
-        // if (edges) {
-        //     for (let index = 0; index < edges.length; index++) {
-        //         const element = edges[index];
-        //         const components = element?.node?.components
-        //         if(components)
-        //         for (let index = 0; index < components.length; index++) {
-        //             const component = components[index];
-        //             if(component){
-        //                 if(component.__typename=="Land"){
-        //                     const x = component.x
-        //                     const y = component.y
-        //                     const l = Land2Land(component)
-        //                     mLands.set(x+"_"+y,l)
-        //                 }
-        //                 if(component.__typename=="LandCost"){
-
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // mapStore.setState({lands:mLands})
+        handleSQLResult(edges, components)
     }
 
-    const handleBaseUpdated = async (keys: Array<string>) => {
-        const base = await graphSdk.getBaseByKey({ map_id: keys[0], key: keys[1] })
-        console.log("handleLandUpdated", keys, base);
-        const edges = base.data.entities?.edges
-        handleSQLResult(edges,components)
-        // const mbase = new Map(bases)
-        // if (edges) {
-        //     for (let index = 0; index < edges.length; index++) {
-        //         const element = edges[index];
-        //         const components = element?.node?.components
-        //         if(components)
-        //         for (let index = 0; index < components.length; index++) {
-        //             const component = components[index];
-        //             if(component){
-        //                 if(component.__typename=="Base"){
-        //                     const x = component.x
-        //                     const y = component.y
-        //                     const owner = component.owner
-        //                     mbase.set(owner,{x,y})
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // buildStore.setState({bases:mbase})
+    const handleLandMinerUpdated = async (id: string, keys: Array<string>) => {
+        if (updateMapRef.current.has(id)) {
+            return
+        }
+        console.log("handleLandMinerUpdated",id);
+        updateMapRef.current.set(id, true)
+        const ls = await graphSdk.getLandMiner({ keys: keys })
+        const edges = ls.data.entities?.edges
+        handleSQLResult(edges, components)
+    }
+    const handlePlayerUpdated = async (id: string, keys: Array<string>) => {
+        if (updateMapRef.current.has(id)) {
+            return
+        }
+        console.log("handlePlayerUpdated",id);
+        updateMapRef.current.set(id, true)
+        const ls = await graphSdk.getPlayer({ keys: keys })
+        const edges = ls.data.entities?.edges
+        handleSQLResult(edges, components)
+    }
+    const handleTroopUpdated = async (id: string, keys: Array<string>) => {
+        if (updateMapRef.current.has(id)) {
+            return
+        }
+        console.log("handleTroopUpdated",id);
+        updateMapRef.current.set(id, true)
+        const ls = await graphSdk.getTroop({ keys: keys })
+        const edges = ls.data.entities?.edges
+        handleSQLResult(edges, components)
+    }
+    const handleWarriorUpdated = async (id: string, keys: Array<string>) => {
+        if (updateMapRef.current.has(id)) {
+            return
+        }
+        console.log("handleWarriorUpdated",id);
+        updateMapRef.current.set(id, true)
+        const ls = await graphSdk.getWarrior({ keys: keys })
+        const edges = ls.data.entities?.edges
+        handleSQLResult(edges, components)
     }
 
     return (<></>)

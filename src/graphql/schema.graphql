@@ -454,3 +454,111 @@ query getMiningConfig($map_id:String) {
     }
   }
 }
+
+
+query getLandMiner($keys:[String]) {
+  entities(first:1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on LandMiner {
+            map_id
+            x
+            y
+            miner_x
+            miner_y
+          }
+        }
+      }
+    }
+  }
+}
+
+
+query getLand($keys:[String]) {
+  entities(first:1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Land{
+            map_id
+            x
+            y
+            owner
+            building
+            level
+          }
+        }
+      }
+    }
+  }
+}
+
+query getPlayer($keys:[String]) {
+  entities(first:1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Player{
+            owner
+            nick_name
+            joined_time
+          }
+        }
+      }
+    }
+  }
+}
+
+query getTroop($keys:[String]) {
+  entities(first:1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Troop{
+            map_id
+            owner
+            index
+            balance
+            from_x
+            from_y
+            to_x
+            to_y
+            start_time
+            distance
+            retreat
+          }
+        }
+      }
+    }
+  }
+}
+
+
+query getWarrior($keys:[String]) {
+  entities(first:1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Warrior{
+            map_id
+            x
+            y
+            balance
+          }
+        }
+      }
+    }
+  }
+}
+

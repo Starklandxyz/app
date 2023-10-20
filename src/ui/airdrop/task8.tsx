@@ -73,7 +73,7 @@ export default function Task8() {
     }, [userairdrop, mapLands])
 
     const getRewardDiv = useMemo(() => {
-        console.log("getRewardDiv",airdropConfig);
+        // console.log("getRewardDiv",airdropConfig);
         return <>
             {
                 airdropConfig ?

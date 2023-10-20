@@ -61,7 +61,7 @@ export default function Task3() {
 
 
     const getRewardDiv = useMemo(() => {
-        console.log("getRewardDiv",airdropConfig);
+        // console.log("getRewardDiv",airdropConfig);
         return <>
             {
                 airdropConfig ?

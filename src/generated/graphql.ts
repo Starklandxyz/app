@@ -2345,6 +2345,41 @@ export type GetMiningConfigQueryVariables = Exact<{
 
 export type GetMiningConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig', map_id?: any | null, Food_Speed?: any | null, Iron_Speed?: any | null, Gold_Speed?: any | null, Base_Gold_Speed?: any | null } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
+export type GetLandMinerQueryVariables = Exact<{
+  keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
+}>;
+
+
+export type GetLandMinerQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
+export type GetLandQueryVariables = Exact<{
+  keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
+}>;
+
+
+export type GetLandQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
+export type GetPlayerQueryVariables = Exact<{
+  keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
+}>;
+
+
+export type GetPlayerQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player', owner?: any | null, nick_name?: any | null, joined_time?: any | null } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
+export type GetTroopQueryVariables = Exact<{
+  keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
+}>;
+
+
+export type GetTroopQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop', map_id?: any | null, owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null, retreat?: any | null } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
+export type GetWarriorQueryVariables = Exact<{
+  keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
+}>;
+
+
+export type GetWarriorQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+
 
 export const GetAllPlayersDocument = gql`
     query getAllPlayers {
@@ -2813,6 +2848,115 @@ export const GetMiningConfigDocument = gql`
   }
 }
     `;
+export const GetLandMinerDocument = gql`
+    query getLandMiner($keys: [String]) {
+  entities(first: 1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on LandMiner {
+            map_id
+            x
+            y
+            miner_x
+            miner_y
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetLandDocument = gql`
+    query getLand($keys: [String]) {
+  entities(first: 1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Land {
+            map_id
+            x
+            y
+            owner
+            building
+            level
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetPlayerDocument = gql`
+    query getPlayer($keys: [String]) {
+  entities(first: 1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Player {
+            owner
+            nick_name
+            joined_time
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetTroopDocument = gql`
+    query getTroop($keys: [String]) {
+  entities(first: 1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Troop {
+            map_id
+            owner
+            index
+            balance
+            from_x
+            from_y
+            to_x
+            to_y
+            start_time
+            distance
+            retreat
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetWarriorDocument = gql`
+    query getWarrior($keys: [String]) {
+  entities(first: 1000, keys: $keys) {
+    edges {
+      node {
+        keys
+        components {
+          __typename
+          ... on Warrior {
+            map_id
+            x
+            y
+            balance
+          }
+        }
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -2836,6 +2980,11 @@ const GetBuildPriceDocumentString = print(GetBuildPriceDocument);
 const GetTroopsByKeyDocumentString = print(GetTroopsByKeyDocument);
 const GetAllTroopsDocumentString = print(GetAllTroopsDocument);
 const GetMiningConfigDocumentString = print(GetMiningConfigDocument);
+const GetLandMinerDocumentString = print(GetLandMinerDocument);
+const GetLandDocumentString = print(GetLandDocument);
+const GetPlayerDocumentString = print(GetPlayerDocument);
+const GetTroopDocumentString = print(GetTroopDocument);
+const GetWarriorDocumentString = print(GetWarriorDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
     getAllPlayers(variables?: GetAllPlayersQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetAllPlayersQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
@@ -2891,6 +3040,21 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getMiningConfig(variables?: GetMiningConfigQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetMiningConfigQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetMiningConfigQuery>(GetMiningConfigDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMiningConfig', 'query');
+    },
+    getLandMiner(variables?: GetLandMinerQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetLandMinerQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetLandMinerQuery>(GetLandMinerDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getLandMiner', 'query');
+    },
+    getLand(variables?: GetLandQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetLandQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetLandQuery>(GetLandDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getLand', 'query');
+    },
+    getPlayer(variables?: GetPlayerQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetPlayerQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetPlayerQuery>(GetPlayerDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getPlayer', 'query');
+    },
+    getTroop(variables?: GetTroopQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetTroopQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetTroopQuery>(GetTroopDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getTroop', 'query');
+    },
+    getWarrior(variables?: GetWarriorQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetWarriorQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetWarriorQuery>(GetWarriorDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWarrior', 'query');
     }
   };
 }
