@@ -29,10 +29,6 @@ const mainMap = defineMapConfig({
             Foreground: { tilesets: ["Default"] },
             TempOccupy: { tilesets: ["Default"] },
             Occupy: { tilesets: ["Default"] },
-
-            // Top: { tilesets: ["Default"] },
-            // Top3: { tilesets: ["Default"] },
-
             Build: { tilesets: ["Default"]},
             Select: { tilesets: ["Default"]},
             Flag: { tilesets: ["Default"] },
