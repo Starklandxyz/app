@@ -37,13 +37,13 @@ export default function ListenEvent() {
                         let entityUpdated = data.entityUpdated;
                         console.log("We got something", entityUpdated.componentNames);
                         console.log(entityUpdated);
-                        let id = entityUpdated.updatedAt
+                        let id = entityUpdated.id + "_" + entityUpdated.updatedAt
                         let keys = entityUpdated.keys
                         let cs = entityUpdated.componentNames.split(",")
 
                         for (let index = 0; index < cs.length; index++) {
                             const element = cs[index];
-                            console.log("We got something", element,id);
+                            console.log("We got something", element, id);
                             switch (element) {
                                 case "Land": handleLandUpdated(id + "Land", keys); break;
                                 case "LandMiner": handleLandMinerUpdated(id + "LandMiner", keys); break;
@@ -64,7 +64,7 @@ export default function ListenEvent() {
         if (updateMapRef.current.has(id)) {
             return
         }
-        console.log("handleLandUpdated",id);
+        console.log("handleLandUpdated", id);
         updateMapRef.current.set(id, true)
         const ls = await graphSdk.getLand({ keys: keys })
         const edges = ls.data.entities?.edges
@@ -75,7 +75,7 @@ export default function ListenEvent() {
         if (updateMapRef.current.has(id)) {
             return
         }
-        console.log("handleLandMinerUpdated",id);
+        console.log("handleLandMinerUpdated", id);
         updateMapRef.current.set(id, true)
         const ls = await graphSdk.getLandMiner({ keys: keys })
         const edges = ls.data.entities?.edges
@@ -85,7 +85,7 @@ export default function ListenEvent() {
         if (updateMapRef.current.has(id)) {
             return
         }
-        console.log("handlePlayerUpdated",id);
+        console.log("handlePlayerUpdated", id);
         updateMapRef.current.set(id, true)
         const ls = await graphSdk.getPlayer({ keys: keys })
         const edges = ls.data.entities?.edges
@@ -95,7 +95,7 @@ export default function ListenEvent() {
         if (updateMapRef.current.has(id)) {
             return
         }
-        console.log("handleTroopUpdated",id);
+        console.log("handleTroopUpdated", id);
         updateMapRef.current.set(id, true)
         const ls = await graphSdk.getTroop({ keys: keys })
         const edges = ls.data.entities?.edges
@@ -105,7 +105,7 @@ export default function ListenEvent() {
         if (updateMapRef.current.has(id)) {
             return
         }
-        console.log("handleWarriorUpdated",id);
+        console.log("handleWarriorUpdated", id);
         updateMapRef.current.set(id, true)
         const ls = await graphSdk.getWarrior({ keys: keys })
         const edges = ls.data.entities?.edges
