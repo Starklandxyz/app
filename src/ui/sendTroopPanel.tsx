@@ -11,11 +11,16 @@ import { useComponentValue, useEntityQuery } from "@dojoengine/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import LoadingButton from "./components/LoadingButton";
 import { mouseStore } from "../store/mouseStore";
+import closeicon from "../../public/assets//icons/closeicon.png"
+import { BuildType, getBuildName } from "../types/Build";
+import { Land } from "../generated/graphql";
 
 export default function SendTroopPanel() {
     const { account, phaserLayer } = store()
     const { sendTroopCtr } = controlStore()
     const [inputValue, setInputValue] = useState(1)
+    const [fromArray, setFromArray] = useState<Array<Land>>([])
+    const [toArray, setToArray] = useState<Array<Land>>([])
 
     const {
         networkLayer: {
@@ -26,6 +31,8 @@ export default function SendTroopPanel() {
     } = phaserLayer!
 
     const troops = useEntityQuery([Has(components.Troop)], { updateOnValueChange: true })
+
+    const lands = useEntityQuery([Has(components.Land)], { updateOnValueChange: true })
 
     const warriors = useEntityQuery([Has(components.Warrior)], { updateOnValueChange: true })
 
@@ -53,7 +60,6 @@ export default function SendTroopPanel() {
         } catch (error) {
 
         }
-
     }
 
     const cancel = () => {
@@ -66,6 +72,11 @@ export default function SendTroopPanel() {
             return
         }
         if (!sendTroopCtr.troop) {
+            return
+        }
+
+        if(sendTroopCtr.troop.to.x==sendTroopCtr.troop.from.x && sendTroopCtr.troop.to.y==sendTroopCtr.troop.from.y){
+            toastError("Can not send to same land")
             return
         }
 
@@ -127,7 +138,7 @@ export default function SendTroopPanel() {
         if (to.x == myBase.x && to.y == myBase.y) {
             return calDistanceToBase(myBase, from)
         }
-        return 0
+        return Math.abs(to.x - from.x) + Math.abs(to.y - from.y)
     }
 
     const getDistance = useMemo(() => {
@@ -222,16 +233,113 @@ export default function SendTroopPanel() {
         }
     }, [sendTroopCtr.show])
 
+    useEffect(() => {
+        if (!myBase) { return }
+        if (!sendTroopCtr.show) {
+            setFromArray([])
+            setToArray([])
+            return
+        }
+        const arr: Array<Land> = []
+        const baseLand: Land = {}
+        baseLand.x = myBase.x
+        baseLand.y = myBase.y
+        baseLand.owner = account?.address!
+        baseLand.building = BuildType.Base
+        arr.push(baseLand)
+        for (let index = 0; index < lands.length; index++) {
+            const entity = lands[index];
+            const land = getComponentValue(components.Land, entity)
+            if (!land) { continue }
+            console.log("setFromArray", land);
+            if (land.owner == account?.address!) {
+                if (land.building == BuildType.Fort) {
+                    console.log("setFromArray set");
+                    arr.push(land)
+                }
+            }
+        }
+        console.log("sendTroopCtr", sendTroopCtr, myBase);
+
+        if (sendTroopCtr.troop?.from.x == myBase.x && sendTroopCtr.troop?.from.y == myBase.y) {
+            setFromArray(arr)
+        }
+        if (sendTroopCtr.troop?.to.x == myBase.x && sendTroopCtr.troop?.to.y == myBase.y) {
+            setToArray(arr)
+        }
+    }, [lands, myBase, sendTroopCtr.show])
+
+    const selectAccount = (e: any, from: boolean) => {
+        // select(e.target.value);
+        const coord = e.target.value
+        const x = coord.split(",")[0]
+        const y = coord.split(",")[1]
+
+        const troop = sendTroopCtr.troop
+        if (!troop) { return }
+        if (from) { troop.from = { x, y } }
+        else {
+            troop.to = { x, y }
+        }
+
+        const ctr = {
+            troop: troop,
+            show: true
+        }
+        controlStore.setState({ sendTroopCtr: ctr })
+    };
+
     return (
         <ClickWrapper>
             <Container>
                 {
-                    sendTroopCtr.show && <div style={{ width: 340, zIndex: 100, height: 260, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-                        <p style={{ color: "pink" }}>Send Troop</p>
+                    sendTroopCtr.show && <div style={{ width: 400, zIndex: 100, height: 270, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                        <div style={{ color: "pink", width: 400, textAlign: "center", fontSize: 20, padding: 10, paddingTop: 15 }}>Send Troop</div>
+                        <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => cancel()} />
                         <table cellSpacing={13}>
                             <tr>
-                                <td>Position : ({sendTroopCtr.troop!.to.x},{sendTroopCtr.troop!.to.y})</td>
-                                <td>Owner : None</td>
+                                <td>From : ({sendTroopCtr.troop!.from.x},{sendTroopCtr.troop!.from.y})</td>
+                                <td>
+                                    {
+                                        fromArray.length > 1 && <select
+                                            className="nes-select"
+                                            onChange={(e) => selectAccount(e,true)}
+                                            value={sendTroopCtr.troop?.from.x + "," + sendTroopCtr.troop?.from.y}
+                                        >
+                                            {fromArray.map((value, index) => {
+                                                return (
+                                                    <option value={value.x + "," + value.y} key={index}>
+                                                        {
+                                                            getBuildName(value.building) + `(${value.x},${value.y})`
+                                                        }
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>To : ({sendTroopCtr.troop!.to.x},{sendTroopCtr.troop!.to.y})</td>
+                                <td>
+                                    {
+                                        toArray.length > 1 && <select
+                                            className="nes-select"
+                                            onChange={(e) => selectAccount(e,false)}
+                                            value={sendTroopCtr.troop?.to.x + "," + sendTroopCtr.troop?.to.y}
+                                        >
+                                            {toArray.map((value, index) => {
+                                                return (
+                                                    <option value={value.x + "," + value.y} key={index}>
+                                                        {
+                                                            getBuildName(value.building) + `(${value.x},${value.y})`
+                                                        }
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td>
@@ -255,8 +363,7 @@ export default function SendTroopPanel() {
                                 </td>
                             </tr>
                         </table>
-                        <button onClick={() => cancel()} style={{ marginLeft: 10, marginRight: 10 }}>Cancel</button>
-                        <LoadingButton initialText="Confirm" loadingText="Confirm..." onClick={confirm} />
+                        <LoadingButton style={{ marginLeft: 150 }} initialText="Confirm" loadingText="Confirm..." onClick={confirm} />
                     </div>
                 }
             </Container>

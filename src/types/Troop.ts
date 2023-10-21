@@ -22,6 +22,7 @@ export class Troop {
     }
 }
 
+
 export function Troop2Troop(t:any){
     const owner = t.owner
     const index = t.index

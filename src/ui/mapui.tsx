@@ -41,7 +41,6 @@ export default function MapUI() {
 
     useEffect(() => {
         console.log("map base change");
-
         bases.map((entity) => {
             const value = getComponentValueStrict(components.Base, entity)
             const xStart = value.x
@@ -65,6 +64,8 @@ export default function MapUI() {
                     text.setPosition(pixelPosition?.x, pixelPosition?.y - 14);
                     text.setBackgroundColor("rgba(0,0,0,0.6)")
                     text.setFontSize(11)
+                    console.log("map id", value.owner, account?.address);
+
                     if (value.owner == account?.address) {
                         text.setBackgroundColor("rgba(255,0,0,0.6)")
                         text.setText("Me")
@@ -77,7 +78,7 @@ export default function MapUI() {
                 }
             })
         })
-    }, [bases])
+    }, [bases, account])
 
     useEffect(() => {
         if (!player || !account) {

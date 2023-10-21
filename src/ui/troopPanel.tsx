@@ -69,7 +69,7 @@ export default function TroopPanel() {
           <div
             style={{
               overflow: "auto",
-              width: 210,
+              width: 320,
               maxHeight: 350,
               lineHeight: 1,
               backgroundColor: "rgba(0, 0, 0, 0.5)",

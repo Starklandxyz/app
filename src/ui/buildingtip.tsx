@@ -232,7 +232,7 @@ export default function BuildingTip() {
         }
 
         console.error("sendTroopClick", tooltip);
-        settooltip({ show: true, x: window.screen.width * 0.27, y: window.screen.height * 0.45, content: tooltip.content, position: "" })
+        settooltip({ show: true, x: window.innerWidth * 0.3, y: window.innerHeight * 0.5, content: tooltip.content, position: "" })
         const troop = new Troop(account.address, myBase, lastCoord, getTimestamp())
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }

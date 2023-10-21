@@ -9,7 +9,7 @@ import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
 import { store } from "../../store/store";
 import { Has, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../../dojo/parseEvent";
-import { BuildType } from "../../types/Build";
+import { BuildType, getBuildName } from "../../types/Build";
 import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 import { controlStore } from "../../store/controlStore";
@@ -168,27 +168,21 @@ export default function TroopItem(params: any) {
     }, [troop, timenow])
 
     const getFrom = useMemo(() => {
-        if (!base) {
-            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
+        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.from.x),BigInt(troop.from.y)]))
+        let title = ""
+        if(land){
+            title = getBuildName(land.building)
         }
-        if (base.x == troop.from.x && base.y == troop.from.y) {
-            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>Base</span>
-        } else {
-            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>({troop.from.x},{troop.from.y})</span>
-        }
+        return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>{`${title}(${troop.from.x},${troop.from.y})`}</span>
     }, [troop])
 
     const getTo = useMemo(() => {
-        if (!base) {
-            // return `(${troop.to.x},${troop.to.y})`
-            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
+        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        let title = ""
+        if(land){
+            title = getBuildName(land.building)
         }
-        if (base.x == troop.to.x && base.y == troop.to.y) {
-            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>Base</span>
-        } else {
-            return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>({troop.to.x},{troop.to.y})</span>
-            // return `(${troop.to.x},${troop.to.y})`
-        }
+        return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>{`${title}(${troop.to.x},${troop.to.y})`}</span>
     }, [troop, account, base])
 
     const attackButton = useMemo(() => {
