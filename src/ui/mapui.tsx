@@ -163,7 +163,7 @@ export default function MapUI() {
                 case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
                 case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
                 case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
-                // case BuildType.Base: tile = TilesetTown.Town00; break;
+                case BuildType.Fort: tile = TilesetBuilding.Fort; break;
             }
             // console.log("mapLands tile",land,tile);
             if (tile != 0) {
@@ -175,6 +175,27 @@ export default function MapUI() {
                 putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
             } else {
                 putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");
+            }
+            if (land.building == BuildType.Fort) {
+                const nameObj = objectPool.get("fortname_" + land.owner, "Text")
+                const pixelPosition = tileCoordToPixelCoord({ x: land.x, y: land.y }, TILE_WIDTH, TILE_HEIGHT)
+                nameObj.setComponent({
+                    id: 'position',
+                    once: (text: any) => {
+                        text.setPosition(pixelPosition?.x, pixelPosition?.y - 14);
+                        text.setBackgroundColor("rgba(0,0,0,0.6)")
+                        text.setFontSize(11)
+                        if (land.owner == account?.address) {
+                            text.setBackgroundColor("rgba(255,0,0,0.6)")
+                            text.setText("Me")
+                        } else {
+                            const p = getComponentValue(components.Player, getEntityIdFromKeys([BigInt(land.owner)]))
+                            if (p) {
+                                text.setText(hexToString(p.nick_name.toString()));
+                            }
+                        }
+                    }
+                })
             }
         })
     }, [mapLands, account])

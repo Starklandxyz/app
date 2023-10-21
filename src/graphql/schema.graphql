@@ -57,6 +57,12 @@ query getBaseByKey($key: String,$map_id:String) {
             x
             y
           }
+          __typename
+          ... on FortOwner {
+            map_id
+            owner
+            total
+          }
         }
       }
     }

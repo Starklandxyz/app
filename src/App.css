@@ -70,7 +70,7 @@
   bottom: 5%;
   left: 33%;
   color: white;
-  width: 430px;
+  width: 530px;
   height: 290px;
   background-color: #03030379;
   padding: 10px;
@@ -81,7 +81,7 @@
 .buildinfo {
   border: 2px solid white;
   margin-top: 10px;
-  width: 310px;
+  width: 410px;
   height: 140px;
   border-radius: 10px;
 }

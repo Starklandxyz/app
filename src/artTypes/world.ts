@@ -62,6 +62,7 @@ export enum TilesetBuilding {
     GoldMine = 200,
     IronMine = 201,
     Camp = 202,
+    Fort = 205,
     Building = 203,
     Mining = 204,
 }

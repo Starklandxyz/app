@@ -69,6 +69,7 @@ export default function BuildingTip() {
                 case BuildType.IronMine: land_name = "IronMine"; break;
                 case BuildType.GoldMine: land_name = "GoldMine"; break;
                 case BuildType.Camp: land_name = "Camp"; break;
+                case BuildType.Fort: land_name = "Fort"; break;
             }
             if (land.owner) {
                 const p = getComponentValue(contractComponents.Player, getEntityIdFromKeys([BigInt(land.owner)]))

@@ -4,7 +4,8 @@ export enum BuildType{
     Farmland,
     IronMine,
     GoldMine,
-    Camp
+    Camp,
+    Fort
 }
 
 export class BuildInfo{
@@ -31,5 +32,6 @@ export const getBuildName = (type:BuildType)=>{
         case BuildType.IronMine:return "IronMine";
         case BuildType.GoldMine:return "GoldMine";
         case BuildType.Camp:return "Camp";
+        case BuildType.Fort:return "Fort";
     }
 }

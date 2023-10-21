@@ -14,17 +14,20 @@ import farmlandicon from "../../../public/assets/icons/farmland.png"
 import ironmineicon from "../../../public/assets/icons/ironmine.png"
 import goldmineicon from "../../../public/assets/icons/goldmine.png"
 import campicon from "../../../public/assets/icons/camp.png"
+import forticon from "../../../public/assets/icons/fort.png"
 import BasePage from "./homebuildingpage";
 import FarmlandPage from "./farmlandpage";
 import CampPage from "./camppage";
 import GoldMinePage from "./goldminepage";
 import IronMinePage from "./ironminepage";
 import { handleSQLResult } from "../../utils/handleutils";
+import FortPage from "./fortpage";
 
 export default function UserBuildingPanel() {
     const [showBase, setShowBase] = useState(true)
     const [showFarm, setShowFarm] = useState(false)
     const [showCamp, setShowCamp] = useState(false)
+    const [showFort, setShowFort] = useState(false)
     const [showGold, setShowGold] = useState(false)
     const [showIron, setShowIron] = useState(false)
     const [hideAll, setHide] = useState(false)
@@ -46,6 +49,7 @@ export default function UserBuildingPanel() {
             setShowCamp(false)
             setShowIron(false)
             setShowGold(false)
+            setShowFort(false)
         }
     }, [showBase])
 
@@ -55,6 +59,7 @@ export default function UserBuildingPanel() {
             setShowCamp(false)
             setShowIron(false)
             setShowGold(false)
+            setShowFort(false)
         }
     }, [showFarm])
 
@@ -64,6 +69,7 @@ export default function UserBuildingPanel() {
             setShowFarm(false)
             setShowIron(false)
             setShowGold(false)
+            setShowFort(false)
         }
     }, [showCamp])
 
@@ -73,6 +79,7 @@ export default function UserBuildingPanel() {
             setShowCamp(false)
             setShowIron(false)
             setShowFarm(false)
+            setShowFort(false)
         }
     }, [showGold])
 
@@ -82,8 +89,19 @@ export default function UserBuildingPanel() {
             setShowCamp(false)
             setShowFarm(false)
             setShowGold(false)
+            setShowFort(false)
         }
     }, [showIron])
+
+    useEffect(() => {
+        if (showFort) {
+            setShowBase(false)
+            setShowCamp(false)
+            setShowFarm(false)
+            setShowGold(false)
+            setShowIron(false)
+        }
+    }, [showFort])
 
 
     useEffect(() => {
@@ -122,13 +140,16 @@ export default function UserBuildingPanel() {
                         {
                             showIron && <IronMinePage />
                         }
+                        {
+                            showFort && <FortPage />
+                        }
                     </>
                 }
 
                 <div style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", width: 50, borderRadius: 10, }}>
                     <img data-tooltip-id="my-tooltip"
                         data-tooltip-content="Hide | Show"
-                        data-tooltip-place="top" src={hideAll ? downicon : upicon} onClick={() => hide()} style={{ cursor: "pointer", transform: "rotate(90deg)",marginLeft:15,marginBottom:15 }} />
+                        data-tooltip-place="top" src={hideAll ? downicon : upicon} onClick={() => hide()} style={{ cursor: "pointer", transform: "rotate(90deg)", marginLeft: 15, marginBottom: 15 }} />
                     <div data-tooltip-id="my-tooltip"
                         data-tooltip-content="All Buildings"
                         data-tooltip-place="top" className={showBase ? "build_icon build_icon_select" : "build_icon"} onClick={() => setShowBase(true)}>
@@ -153,6 +174,11 @@ export default function UserBuildingPanel() {
                         data-tooltip-content="All Camps"
                         data-tooltip-place="top" className={showCamp ? "build_icon build_icon_select" : "build_icon"} onClick={() => setShowCamp(true)}>
                         <img src={campicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
+                    </div>
+                    <div data-tooltip-id="my-tooltip"
+                        data-tooltip-content="All Forts"
+                        data-tooltip-place="top" className={showFort ? "build_icon build_icon_select" : "build_icon"} onClick={() => setShowFort(true)}>
+                        <img src={forticon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
                 </div>
             </Container>

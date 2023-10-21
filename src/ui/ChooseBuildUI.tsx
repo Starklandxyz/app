@@ -7,6 +7,7 @@ import { store } from "../store/store";
 import goldmineicon from "../../public/assets/icons/goldmine.png"
 import ironmineicon from "../../public/assets/icons/ironmine.png"
 import campicon from "../../public/assets/icons/camp.png"
+import forticon from "../../public/assets/icons/fort.png"
 import farmlandicon from "../../public/assets/icons/farmland.png"
 import { BuildType, getBuildName } from "../types/Build";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -98,16 +99,16 @@ export default function ChooseBuildUI() {
                     if (selectBuild == BuildType.GoldMine) {
                         if (land_type == LandType.Gold) {
                             const has = await fetchHasMiner(1, x, y)
-                            if(!has){
+                            if (!has) {
                                 hasMine = true
                             }
-                            
+
                         }
                     }
                     if (selectBuild == BuildType.IronMine) {
                         if (land_type == LandType.Iron) {
                             const has = await fetchHasMiner(1, x, y)
-                            if(!has){
+                            if (!has) {
                                 hasMine = true
                             }
                         }
@@ -120,15 +121,34 @@ export default function ChooseBuildUI() {
             }
         }
 
+        if (selectBuild == BuildType.Fort) {
+            let base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+            if (base) {
+                let land = getComponentValue(components.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
+                if (land) {
+                    let fort_owner = getComponentValue(components.FortOwner, getEntityIdFromKeys([1n, BigInt(account.address)]))
+                    let fort_num = 0
+                    if (fort_owner) {
+                        fort_num = fort_owner.total
+                    }
+                    if (fort_num >= Math.floor(land.level / 2)) {
+                        toastError("Exceed max Fort")
+                        return
+                    }
+                    // output = "Max Fort : " + Math.floor(land.level / 2)
+                }
+            }
+        }
+
 
         const result = await buildBuilding(account, 1, buildLand.x, buildLand.y, selectBuild)
         if (result && result.length > 0) {
             toastSuccess("Build Success")
             if (selectBuild == BuildType.Farmland) {
                 claimToMine(account, 1, buildLand.x, buildLand.y, buildLand.x, buildLand.y)
-            } else if(selectBuild == BuildType.Camp){
-                
-            }else{
+            } else if (selectBuild == BuildType.Camp) {
+
+            } else if (selectBuild == BuildType.GoldMine || selectBuild == BuildType.IronMine){
                 showSelectArea(buildLand.x, buildLand.y)
             }
         } else {
@@ -137,13 +157,13 @@ export default function ChooseBuildUI() {
         controlStore.setState({ buildLand: undefined })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         if (buildLand) {
             mouseStore.setState({ coord: { x: 0, y: 0 }, frozen: true })
         } else {
             mouseStore.setState({ frozen: false })
         }
-    },[buildLand])
+    }, [buildLand])
 
     const chooseArea = async () => {
         console.log("chooseArea", clickedLandRef.current, buildLand);
@@ -203,7 +223,7 @@ export default function ChooseBuildUI() {
         setSelectMined(true)
         controlStore.setState({
             showTipButtons: <>
-                <button style={{zIndex:10}} onClick={() => chooseArea()}>Choose</button>
+                <button style={{ zIndex: 10 }} onClick={() => chooseArea()}>Choose</button>
             </>
         })
         for (let i = -1; i < 2; i++) {
@@ -242,6 +262,23 @@ export default function ChooseBuildUI() {
             if (selectBuild == BuildType.Camp) {
                 output += "+10 Soldier Capatity"
             }
+            if (selectBuild == BuildType.Fort) {
+                output = ""
+                if (account) {
+                    let base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+                    if (base) {
+                        let land = getComponentValue(components.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
+                        if (land) {
+                            let fort_owner = getComponentValue(components.FortOwner, getEntityIdFromKeys([1n, BigInt(account.address)]))
+                            let fort_num = 0
+                            if (fort_owner) {
+                                fort_num = fort_owner.total
+                            }
+                            output = "Max Fort : " + fort_num + " / " + Math.floor(land.level / 2)
+                        }
+                    }
+                }
+            }
         } else {
             output = "Output : 100 Food/Hour"
         }
@@ -257,7 +294,7 @@ export default function ChooseBuildUI() {
                 </div>
             </div>
         )
-    }, [selectBuild, miningConfig])
+    }, [selectBuild, miningConfig, account, buildLand])
 
 
     const claimToMine = async (account: Account, map_id: number, miner_x: number, miner_y: number, mined_x: number, mined_y: number) => {
@@ -308,8 +345,8 @@ export default function ChooseBuildUI() {
                 (buildLand && !selectMined) &&
                 <div className="choosebuildpanel">
 
-                    <table style={{ width: 400, marginTop: 1 }}>
-                        <tr style={{ height: 100, width: 400 }}>
+                    <table style={{ width: 500, marginTop: 1 }}>
+                        <tr style={{ height: 100, width: 500 }}>
                             <td
                                 className={selectBuild == BuildType.Farmland ? "selectbox" : "notselectbox"}
                                 onClick={() => clickBuild(BuildType.Farmland)}>
@@ -326,18 +363,23 @@ export default function ChooseBuildUI() {
                                 className={selectBuild == BuildType.Camp ? "selectbox" : "notselectbox"} onClick={() => clickBuild(BuildType.Camp)}>
                                 <img src={campicon} style={{ transform: "scale(2) translate(16px,0px)", imageRendering: "pixelated" }} />
                             </td>
+                            <td
+                                className={selectBuild == BuildType.Fort ? "selectbox" : "notselectbox"} onClick={() => clickBuild(BuildType.Fort)}>
+                                <img src={forticon} style={{ transform: "scale(2) translate(16px,0px)", imageRendering: "pixelated" }} />
+                            </td>
                         </tr>
                         <tr style={{ textAlign: "center" }}>
                             <td style={{ paddingTop: 2 }}>Framland</td>
                             <td style={{ paddingTop: 2 }}>GoldMine</td>
                             <td style={{ paddingTop: 2 }}>IronMine</td>
                             <td style={{ paddingTop: 2 }}>Camp</td>
+                            <td style={{ paddingTop: 2 }}>Fort</td>
                         </tr>
                     </table>
                     {getBuildInfo}
                     <div style={{ position: "absolute", right: 30, bottom: 30, display: "flex", flexDirection: "column" }}>
                         <button onClick={() => cancel()} style={{ marginBottom: 20 }}>Cancel</button>
-                        <LoadingButton initialText="Build" loadingText="Build..." onClick={() => buildConfirm()}/>
+                        <LoadingButton initialText="Build" loadingText="Build..." onClick={() => buildConfirm()} />
                     </div>
                 </div>
             }

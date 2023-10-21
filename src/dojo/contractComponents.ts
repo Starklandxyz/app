@@ -77,6 +77,7 @@ export function defineContractComponents(world: World) {
           Build_Type_IronMine: RecsType.Number,
           Build_Type_GoldMine: RecsType.Number,
           Build_Type_Camp: RecsType.Number,
+          Build_Type_Fort: RecsType.Number,
         },
         {
           metadata: {
@@ -459,6 +460,22 @@ export function defineContractComponents(world: World) {
           map_id: RecsType.Number,
           owner: RecsType.String,
           balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+          },
+        }
+      );
+    })(),
+    FortOwner: (() => {
+      const name = "FortOwner";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          owner: RecsType.String,
+          total: RecsType.Number,
         },
         {
           metadata: {
