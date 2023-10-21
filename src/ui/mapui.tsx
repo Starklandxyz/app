@@ -178,7 +178,7 @@ export default function MapUI() {
                 putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");
             }
             if (land.building == BuildType.Fort) {
-                const nameObj = objectPool.get("fortname_" + land.owner, "Text")
+                const nameObj = objectPool.get("fortname_" + land.x+","+land.y, "Text")
                 const pixelPosition = tileCoordToPixelCoord({ x: land.x, y: land.y }, TILE_WIDTH, TILE_HEIGHT)
                 nameObj.setComponent({
                     id: 'position',
