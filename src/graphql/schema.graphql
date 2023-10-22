@@ -213,6 +213,12 @@ query getAllBase($map_id:String) {
             owner
             balance
           }
+          __typename
+          ... on UserWarrior {
+            map_id
+            owner
+            balance
+          }
         }
       }
     }
