@@ -1,4 +1,4 @@
-import { Tileset, TilesetBuilding, TilesetLevel, TilesetNum, TilesetSelect, TilesetSoldier, TilesetTown, TilesetZone } from "../../artTypes/world";
+import { TileAnimationKey, TileAnimations, Tileset, TilesetBuilding, TilesetLevel, TilesetNum, TilesetSelect, TilesetSoldier, TilesetTown, TilesetZone } from "../../artTypes/world";
 import { PhaserLayer } from "..";
 import { MAP_HEIGHT, MAP_WIDTH } from "../constants";
 import { store } from "../../store/store";
@@ -13,7 +13,7 @@ export function mapSystem(layer: PhaserLayer) {
             Main: {
                 camera,
                 maps: {
-                    Main: { putTileAt },
+                    Main: { putTileAt,putAnimationAt },
                 },
             },
         },
@@ -53,9 +53,11 @@ export function mapSystem(layer: PhaserLayer) {
                 } else if (level == 4) {
                     putTileAt(coord, TilesetLevel.Level4, "Foreground");
                 } else if (level == 5) {
-                    putTileAt(coord, TilesetLevel.Level5, "Foreground");
+                    // putTileAt(coord, TilesetLevel.Level5, "Foreground");
+                    putAnimationAt(coord,TileAnimationKey.Level5,"Foreground")
                 } else {
                     putTileAt(coord, TilesetLevel.Level6, "Foreground");
+                    putAnimationAt(coord,TileAnimationKey.Level6,"Build")
                 }
             }
             // const progress = (x * y) / (size * size) * 100

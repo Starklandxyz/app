@@ -13,7 +13,7 @@ import armeyIcon from "/assets/tilesets/armey.png";
 import { TileAnimations, Tileset } from "../artTypes/world";
 import { Sprites, Assets, Maps, Scenes, TILE_HEIGHT, TILE_WIDTH, Animations } from "./constants";
 
-const ANIMATION_INTERVAL = 200;
+const ANIMATION_INTERVAL = 150;
 
 const mainMap = defineMapConfig({
     chunkSize: TILE_WIDTH * 64, // tile size * tile amount

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { store } from "../store/store";
-import { Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, TilesetZone } from "../artTypes/world";
+import { TileAnimationKey, Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, TilesetZone } from "../artTypes/world";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { BuildType } from "../types/Build";
@@ -21,7 +21,7 @@ export default function MapUI() {
             Main: {
                 objectPool,
                 maps: {
-                    Main: { putTileAt },
+                    Main: { putTileAt ,putAnimationAt},
                 },
             },
         },
@@ -161,19 +161,20 @@ export default function MapUI() {
             if (!land || land?.building == BuildType.Base) {
                 return
             }
-            var tile = 0
+            var tile = undefined
             const buildLand = { x: land.x, y: land.y }
             switch (land?.building) {
-                case BuildType.Camp: tile = TilesetBuilding.Camp; break;
-                case BuildType.GoldMine: tile = TilesetBuilding.GoldMine; break;
-                case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
-                case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
-                case BuildType.Fort: tile = TilesetBuilding.Fort; break;
-                case BuildType.None:tile = Tileset.Empty;break;
+                case BuildType.Camp: tile = TileAnimationKey.Camp; break;
+                case BuildType.GoldMine: tile = TileAnimationKey.GoldMine; break;
+                case BuildType.IronMine: tile = TileAnimationKey.IronMine; break;
+                case BuildType.Farmland: tile = TileAnimationKey.Farmland; break;
+                case BuildType.Fort: tile = TileAnimationKey.Fort; break;
+                // case BuildType.None:tile = Tileset.Empty;break;
             }
-            // console.log("mapLands tile",land,tile);
-            if (tile != 0) {
-                putTileAt(buildLand, tile, "Build");
+            if (tile) {
+                putAnimationAt(buildLand,tile,"Build")
+            }else{
+                putTileAt(buildLand, Tileset.Empty, "Build");
             }
 
             if (land.owner == account?.address) {

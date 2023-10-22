@@ -18,8 +18,8 @@ export enum Tileset {
     Tree5 = 14,
 }
 
-export enum TilesetLevel{
-    Level1 = 0,
+export enum TilesetLevel {
+    Level1 = 320,
     Level2 = 321,
     Level3 = 322,
     Level3_1 = 323,
@@ -51,10 +51,10 @@ export enum TilesetSelect {
     Color7 = 126,
 }
 
-export enum TilesetZone{
-    MyZone  = 126,
+export enum TilesetZone {
+    MyZone = 126,
     EnermyZone = 127,
-    MyZoneWait  = 128,
+    MyZoneWait = 128,
 }
 
 export enum TilesetBuilding {
@@ -67,7 +67,7 @@ export enum TilesetBuilding {
     Mining = 204,
 }
 
-export enum TilesetSoldier{
+export enum TilesetSoldier {
     Soldier1000 = 247,
     Soldier100 = 240,
     Soldier1 = 241,
@@ -78,12 +78,29 @@ export enum TilesetSoldier{
     SoldierFlag4 = 246,
 }
 
-export enum TilesetNum{
-    Num0=289,
-    Num1=280,
-    Num2=281,
-    Num3=282,
+export enum TilesetNum {
+    Num0 = 289,
+    Num1 = 280,
+    Num2 = 281,
+    Num3 = 282,
 }
 
-export enum TileAnimationKey { }
-export const TileAnimations: { [key in TileAnimationKey]: number[] } = {};
+export enum TileAnimationKey {
+    GoldMine = "GoldMine",
+    IronMine = "IronMine",
+    Camp = "Camp",
+    Farmland = "Farmland",
+    Fort = "Fort",
+
+    Level5 = "Level5",
+    Level6 = "Level6",
+}
+export const TileAnimations: { [key in TileAnimationKey]: number[] } = {
+    [TileAnimationKey.GoldMine]: [360, 361, 362, 363],
+    [TileAnimationKey.IronMine]: [364, 365, 366, 367],
+    [TileAnimationKey.Camp]: [368,369,370,371],
+    [TileAnimationKey.Farmland]: [160],
+    [TileAnimationKey.Fort]: [372,373,374,375],
+    [TileAnimationKey.Level5]: [376,377,378,379],
+    [TileAnimationKey.Level6]: [380,381,382,383],
+};
