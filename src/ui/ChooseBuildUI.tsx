@@ -260,7 +260,7 @@ export default function ChooseBuildUI() {
                 output += "+" + miningConfig.Iron_Speed * 3600 / 1_000_000 + " Iron/Hour"
             }
             if (selectBuild == BuildType.Camp) {
-                output += "+10 Soldier Capatity"
+                output += "+30 Soldier Capatity"
             }
             if (selectBuild == BuildType.Fort) {
                 output = ""

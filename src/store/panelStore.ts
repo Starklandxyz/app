@@ -12,7 +12,7 @@ export type PanelStore = {
 
     fightResult: { show: boolean, status: "win" | "lose" | "loading" | undefined },
 
-    monsterResult: { show: boolean, status: "loading" | "win"|"fail"|undefined, pack: number }
+    monsterResult: { show: boolean, status: "loading" | "win"|"fail"|undefined, pack: number },
 };
 
 export const panelStore = create<PanelStore>(() => ({
@@ -20,5 +20,5 @@ export const panelStore = create<PanelStore>(() => ({
     showLuckyPack: false,
     showBoard: false,
     fightResult: { show: false, status: "loading" },
-    monsterResult: { show: false, status: "loading", pack: 0 }
+    monsterResult: { show: false, status: "loading", pack: 0 },
 }));

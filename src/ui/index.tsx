@@ -23,6 +23,7 @@ import BottomPanels from "./bottompanels";
 import FightResultPanel from "./fightResultPanel";
 import MonsterResultPanel from "./monsterResultPanel";
 import RemoveBuildPanel from "./removeBuildPanel";
+import RankPanel from "./rankPanel";
 
 export default function UI() {
     const layers = store((state) => {
@@ -60,6 +61,7 @@ export default function UI() {
             <FightResultPanel/>
             <MonsterResultPanel/>
             <RemoveBuildPanel/>
+            <RankPanel/>
         </Wrapper>
     );
 };

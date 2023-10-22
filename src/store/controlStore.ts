@@ -21,6 +21,7 @@ export type ControlStore = {
     addTipButton: ReactNode | undefined,
 
     removeBuild:Coord|undefined,
+
 };
 
 export const controlStore = create<ControlStore>(() => ({
@@ -30,5 +31,6 @@ export const controlStore = create<ControlStore>(() => ({
     showTipButtons: undefined,
     tipButtonShow: { show: false, x: 0, y: 0 },
     addTipButton: undefined,
-    removeBuild:undefined
+    removeBuild:undefined,
+
 }));

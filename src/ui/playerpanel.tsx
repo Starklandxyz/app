@@ -32,6 +32,7 @@ import NESButton from "./components/NesButton";
 import { Coord } from "../types";
 import { Land } from "../generated/graphql";
 import { panelStore } from "../store/panelStore";
+import { playerStore } from "../store/playerStore";
 
 export default function PlayerPanel() {
   const { account, phaserLayer } = store();
@@ -44,6 +45,7 @@ export default function PlayerPanel() {
     },
   } = phaserLayer!;
 
+  const {rank} = playerStore()
   const [userCamps, setUserCamps] = useState<Array<Land>>([])
 
   const food = useComponentValue(
@@ -257,13 +259,13 @@ export default function PlayerPanel() {
 
   const getRank = useMemo(()=>{
       return <RankDiv>
-        <div onClick={()=>gotoBoard()} style={{fontSize:15, borderRadius:5,backgroundColor:"red",width:80,color:"white",paddingLeft:5}}>Rank #1</div>
+        <div onClick={()=>gotoBoard()} style={{fontSize:15, borderRadius:5,backgroundColor:"red",width:80,color:"white",paddingLeft:5}}>Rank #{rank}</div>
         <div onClick={()=>gotoPacks()} style={{color:"white",fontSize:14,marginLeft:15,marginTop:4}}>{points?points.balance:0} Points</div>
       </RankDiv>
-  },[points])
+  },[points,rank])
 
   const gotoBoard = ()=>{
-
+    panelStore.setState({showBoard:true})
   }
 
   const gotoPacks = ()=>{

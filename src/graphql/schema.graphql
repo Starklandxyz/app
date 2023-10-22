@@ -201,6 +201,12 @@ query getAllBase($map_id:String) {
             x
             y
           }
+          __typename
+          ... on LandOwner {
+            owner
+            map_id
+            total
+          }
         }
       }
     }
