@@ -296,6 +296,15 @@ query getAllLands($map_id:String) {
             target_level
             claimed
           }
+           __typename
+          ... on LandCost {
+            map_id,
+            x,
+            y,
+            cost_gold
+            cost_iron
+            cost_food
+          }
         }
       }
     }

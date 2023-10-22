@@ -69,6 +69,23 @@ export function createSystemCalls(
     return undefined;
   };
 
+  const removeBuilding = async (signer: Account, map_id: number, x: number, y: number) => {
+    try {
+      const tx = await execute(signer, "remove_build", [map_id, x, y]);
+      const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+        retryInterval: 100,
+      });
+      // console.log("roll receipt:", receipt);
+      let events = getEvents(receipt);
+      setComponentsFromEvents(contractComponents, events);
+      return events;
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
+    return undefined;
+  };
+
   const goFight = async (signer: Account, map_id: number, troop_index: number) => {
     console.error("goFight info", map_id, troop_index);
     try {
@@ -403,6 +420,7 @@ export function createSystemCalls(
     sendTroop,
     claimMining,
     upgradeComplete,
+    removeBuilding,
     spawn,
     attackMonster,
     startMining,

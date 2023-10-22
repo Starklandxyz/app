@@ -3,9 +3,8 @@ import { MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { mouseStore } from "../store/mouseStore";
 import { useEffect, useMemo, useState } from "react";
 import { store } from "../store/store";
-import { buildingCoorpToPosition, getTimestamp, hexToString, toastSuccess } from "../utils";
+import { buildingCoorpToPosition, getTimestamp, hexToString, toastError, toastSuccess } from "../utils";
 import { Tileset, TilesetBuilding, TilesetNum, TilesetSelect, TilesetSoldier, TilesetZone } from "../artTypes/world";
-import { Coord } from "../../node_modules/@latticexyz/phaserx/src/index";
 import { ClickWrapper } from "./clickWrapper";
 import { Troop } from "../types/Troop";
 import { controlStore } from "../store/controlStore";
@@ -14,15 +13,12 @@ import { LandType, get_land_barbarians, get_land_level, get_land_type } from "..
 import { useComponentValue } from "@dojoengine/react";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
-import { Troop_Speed } from "../contractconfig";
 export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0, position: "" })
 
     const { coord: lastCoord, down: mouseDown, coords } = mouseStore()
-    // const [coord, setCoord] = useState<Coord>({ x: 0, y: 0 })
-
-    const { sendTroopCtr: sendTroop, buildLand,addTipButton, showTipButtons, tipButtonShow } = controlStore()
+    const { sendTroopCtr: sendTroop, buildLand, addTipButton, showTipButtons, tipButtonShow } = controlStore()
 
     const {
         scenes: {
@@ -33,7 +29,7 @@ export default function BuildingTip() {
             },
         },
         networkLayer: {
-            systemCalls: { adminAttack },
+            systemCalls: { removeBuilding },
             components: contractComponents
         }
     } = phaserLayer!;
@@ -57,7 +53,7 @@ export default function BuildingTip() {
         // console.log("land_baba",land_baba);
 
         var land_warrior = <></>
-        if(lastCoord.x==52&&lastCoord.y==52){
+        if (lastCoord.x == 52 && lastCoord.y == 52) {
             console.log("island");
         }
 
@@ -118,7 +114,7 @@ export default function BuildingTip() {
             </>
 
             land_level = "Level : " + get_land_level(1, lastCoord.x, lastCoord.y)
-            if(get_land_level(1, lastCoord.x, lastCoord.y)==6 && land_type==LandType.None){
+            if (get_land_level(1, lastCoord.x, lastCoord.y) == 6 && land_type == LandType.None) {
                 land_name = "Monster Den"
                 land_owner = "Owner : Diabolo"
             }
@@ -237,6 +233,10 @@ export default function BuildingTip() {
         controlStore.setState({ sendTroopCtr: { troop: troop, show: true }, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
 
+    const removeBuild = async () => {
+        controlStore.setState({ removeBuild: { x: lastCoord.x, y: lastCoord.y }, tipButtonShow: { show: false, x: 0, y: 0 } })
+    }
+
     const retreat = () => {
         if (!account) {
             return
@@ -250,7 +250,7 @@ export default function BuildingTip() {
         controlStore.setState({ buildLand: lastCoord, tipButtonShow: { show: false, x: 0, y: 0 } })
     }
 
-    
+
     const getButtons = useMemo(() => {
         if (!account) {
             return <></>
@@ -275,13 +275,14 @@ export default function BuildingTip() {
                 if (land.building == BuildType.None) {
                     return <>
                         <button style={{ zIndex: 10 }} onClick={() => sendTroopClick()}>Send Troop</button>
-                        <button style={{ zIndex: 10 }} onClick={() => buildClick()}>Build</button>
-                        {hasW && <button style={{ zIndex: 10 }} onClick={() => retreat()}>Retreat Warrior</button>}
+                        <button style={{ zIndex: 10, marginTop: 5 }} onClick={() => buildClick()}>Build</button>
+                        {hasW && <button style={{ zIndex: 10, marginTop: 5 }} onClick={() => retreat()}>Retreat Warrior</button>}
                     </>
                 } else {
                     return <>
                         <button style={{ zIndex: 10 }} onClick={() => sendTroopClick()}>Send Troop</button>
-                        {hasW && <button style={{ zIndex: 10 }} onClick={() => retreat()}>Retreat Warrior</button>}
+                        <button style={{ zIndex: 10, marginTop: 5 }} onClick={() => removeBuild()}>Remove Build</button>
+                        {hasW && <button style={{ zIndex: 10, marginTop: 5 }} onClick={() => retreat()}>Retreat Warrior</button>}
                     </>
                 }
             }

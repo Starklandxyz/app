@@ -22,6 +22,7 @@ import LuckypackPanel from "./luckypackPanel";
 import BottomPanels from "./bottompanels";
 import FightResultPanel from "./fightResultPanel";
 import MonsterResultPanel from "./monsterResultPanel";
+import RemoveBuildPanel from "./removeBuildPanel";
 
 export default function UI() {
     const layers = store((state) => {
@@ -58,6 +59,7 @@ export default function UI() {
             <BottomPanels/>
             <FightResultPanel/>
             <MonsterResultPanel/>
+            <RemoveBuildPanel/>
         </Wrapper>
     );
 };

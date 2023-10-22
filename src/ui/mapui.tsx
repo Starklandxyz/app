@@ -165,6 +165,7 @@ export default function MapUI() {
                 case BuildType.IronMine: tile = TilesetBuilding.IronMine; break;
                 case BuildType.Farmland: tile = TilesetBuilding.Farmland; break;
                 case BuildType.Fort: tile = TilesetBuilding.Fort; break;
+                case BuildType.None:tile = Tileset.Empty;break;
             }
             // console.log("mapLands tile",land,tile);
             if (tile != 0) {
