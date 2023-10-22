@@ -116,7 +116,7 @@ export default function LuckypackPanel() {
                     <div style={{ width: 520, height: 390, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                         <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => { panelStore.setState({ showLuckyPack: false }) }} />
                         <p style={{ fontSize: 20, marginLeft: 200 }}>Lucky Packs</p>
-                        <p>Total : {getBalance}</p>
+                        <p style={{marginLeft:20}}>Total : {getBalance}</p>
                         <div style={{ backgroundColor: "", width: 510, height: 240 }}>
                             <img src={packicon} style={{ marginLeft: 250, marginTop: 100, transform: "scale(5) translate(0px,0px)", imageRendering: "pixelated", backgroundColor: "" }} />
                             <div style={{ textAlign: "center", marginTop: 50, width: 510 }}>{openInfo}</div>
