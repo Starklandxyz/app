@@ -68,6 +68,7 @@ export enum TilesetBuilding {
 }
 
 export enum TilesetSoldier{
+    Soldier1000 = 247,
     Soldier100 = 240,
     Soldier1 = 241,
     Soldier10 = 242,

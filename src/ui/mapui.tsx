@@ -145,6 +145,10 @@ export default function MapUI() {
                 putTileAt(coord, TilesetSoldier.Soldier100, "Soldier");
                 const b = Math.floor(balance / 100)
                 putTileAt(coord, TilesetNum.Num1 + b - 1, "Num");
+            }else{
+                putTileAt(coord, TilesetSoldier.Soldier1000, "Soldier");
+                const b = Math.floor(balance / 1000)
+                putTileAt(coord, TilesetNum.Num1 + b - 1, "Num");
             }
         })
     }, [landWarriors])
