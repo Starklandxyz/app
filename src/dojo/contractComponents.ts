@@ -321,6 +321,8 @@ export function defineContractComponents(world: World) {
           x: RecsType.Number,
           y: RecsType.Number,
           start_time: RecsType.Number,
+          mined_x: RecsType.Number,
+          mined_y: RecsType.Number,
         },
         {
           metadata: {

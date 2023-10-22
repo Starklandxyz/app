@@ -21,7 +21,7 @@ export default function MapUI() {
             Main: {
                 objectPool,
                 maps: {
-                    Main: { putTileAt ,putAnimationAt},
+                    Main: { putTileAt ,putAnimationAt,removeAnimationAt},
                 },
             },
         },
@@ -174,11 +174,12 @@ export default function MapUI() {
             if (tile) {
                 putAnimationAt(buildLand,tile,"Build")
             }else{
+                // removeAnimationAt: (coord: WorldCoord, layer?: LayerKeys) => void;
+                removeAnimationAt(buildLand,"Build")
                 putTileAt(buildLand, Tileset.Empty, "Build");
             }
 
             if (land.owner == account?.address) {
-                // console.log("my Occupy",land);
                 putTileAt(buildLand, TilesetZone.MyZone, "Occupy");
             } else {
                 putTileAt(buildLand, TilesetZone.EnermyZone, "Occupy");
@@ -214,8 +215,14 @@ export default function MapUI() {
 
             const buildLand = { x: miner.x, y: miner.y }
             const type = get_land_type(1, miner.x, miner.y)
+            console.log("LandMiner",miner);
+            
             if (type != LandType.None) {
-                putTileAt(buildLand, TilesetBuilding.Mining, "Flag");
+                if(miner.miner_x!=0 && miner.miner_y!=0){
+                    putTileAt(buildLand, TilesetBuilding.Mining, "Flag");
+                }else{
+                    putTileAt(buildLand, Tileset.Empty, "Flag");
+                }
             }
         })
     }, [minerLands])

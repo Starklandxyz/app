@@ -290,6 +290,8 @@ query getAllLands($map_id:String) {
             x,
             y,
             start_time,
+            mined_x,
+            mined_y
           }
           __typename
           ... on Warrior {

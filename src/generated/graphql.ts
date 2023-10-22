@@ -1020,6 +1020,8 @@ export type LandMining = {
   __typename?: 'LandMining';
   entity?: Maybe<Entity>;
   map_id?: Maybe<Scalars['u64']['output']>;
+  mined_x?: Maybe<Scalars['u64']['output']>;
+  mined_y?: Maybe<Scalars['u64']['output']>;
   start_time?: Maybe<Scalars['u64']['output']>;
   x?: Maybe<Scalars['u64']['output']>;
   y?: Maybe<Scalars['u64']['output']>;
@@ -1044,6 +1046,8 @@ export type LandMiningOrder = {
 
 export enum LandMiningOrderOrderField {
   MapId = 'MAP_ID',
+  MinedX = 'MINED_X',
+  MinedY = 'MINED_Y',
   StartTime = 'START_TIME',
   X = 'X',
   Y = 'Y'
@@ -1056,6 +1060,18 @@ export type LandMiningWhereInput = {
   map_idLT?: InputMaybe<Scalars['Int']['input']>;
   map_idLTE?: InputMaybe<Scalars['Int']['input']>;
   map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  mined_x?: InputMaybe<Scalars['Int']['input']>;
+  mined_xGT?: InputMaybe<Scalars['Int']['input']>;
+  mined_xGTE?: InputMaybe<Scalars['Int']['input']>;
+  mined_xLT?: InputMaybe<Scalars['Int']['input']>;
+  mined_xLTE?: InputMaybe<Scalars['Int']['input']>;
+  mined_xNEQ?: InputMaybe<Scalars['Int']['input']>;
+  mined_y?: InputMaybe<Scalars['Int']['input']>;
+  mined_yGT?: InputMaybe<Scalars['Int']['input']>;
+  mined_yGTE?: InputMaybe<Scalars['Int']['input']>;
+  mined_yLT?: InputMaybe<Scalars['Int']['input']>;
+  mined_yLTE?: InputMaybe<Scalars['Int']['input']>;
+  mined_yNEQ?: InputMaybe<Scalars['Int']['input']>;
   start_time?: InputMaybe<Scalars['Int']['input']>;
   start_timeGT?: InputMaybe<Scalars['Int']['input']>;
   start_timeGTE?: InputMaybe<Scalars['Int']['input']>;
@@ -2361,7 +2377,7 @@ export type GetAllLandsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllLandsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost', map_id?: any | null, x?: any | null, y?: any | null, cost_gold?: any | null, cost_iron?: any | null, cost_food?: any | null } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null, end_time?: any | null, target_level?: any | null, claimed?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllLandsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost', map_id?: any | null, x?: any | null, y?: any | null, cost_gold?: any | null, cost_iron?: any | null, cost_food?: any | null } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null, mined_x?: any | null, mined_y?: any | null } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null, end_time?: any | null, target_level?: any | null, claimed?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetEthByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
@@ -2749,6 +2765,8 @@ export const GetAllLandsDocument = gql`
             x
             y
             start_time
+            mined_x
+            mined_y
           }
           __typename
           ... on Warrior {
