@@ -114,7 +114,7 @@ export default function RankPanel() {
     }
 
     const sub = () => {
-        if (page == 0) {
+        if (page == 1) {
             return
         }
         setPage(pre => pre - 1)
