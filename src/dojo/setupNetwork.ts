@@ -10,9 +10,9 @@ import prod_manifest from '/Users/junhu/git/starklandcontract/target/dev/manifes
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 export async function setupNetwork() {
-    const { VITE_PUBLIC_WORLD_ADDRESS, VITE_PUBLIC_NODE_URL, VITE_PUBLIC_TORII, VITE_PUBLIC_DEV } = import.meta.env;
-    const client = new GraphQLClient(import.meta.env.VITE_PUBLIC_TORII!);
-    const wsClient = new SubscriptionClient(import.meta.env.VITE_GRAPHQL_ENDPOINT,{
+    const { VITE_PUBLIC_WORLD_ADDRESS, VITE_PUBLIC_NODE_URL, VITE_PUBLIC_TORII, VITE_PUBLIC_DEV,VITE_GRAPHQL_ENDPOINT } = import.meta.env;
+    const client = new GraphQLClient(VITE_PUBLIC_TORII!);
+    const wsClient = new SubscriptionClient(VITE_GRAPHQL_ENDPOINT,{
         reconnect: true,
         lazy: true, // only connect when there is a query
         connectionCallback: (error) => {

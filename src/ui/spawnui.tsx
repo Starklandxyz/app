@@ -121,6 +121,8 @@ export default function SpawnUI() {
     }, [coord])
 
     const showButton = useMemo(() => {
+        console.log("showButton",account,myBase);
+        
         if (!account) {
             return <></>
         }

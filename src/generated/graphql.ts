@@ -2815,7 +2815,7 @@ export type GetWarriorQuery = { __typename?: 'Query', entities?: { __typename?: 
 
 export const GetAllPlayersDocument = gql`
     query getAllPlayers {
-  entities(offset: 0, limit: 1000, keys: ["%"]) {
+  entities(offset: 0, limit: 1000, keys: ["*"]) {
     total_count
     edges {
       node {
@@ -2946,7 +2946,7 @@ export const GetWarriorConfigDocument = gql`
     `;
 export const GetAirdropConfigDocument = gql`
     query getAirdropConfig($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%"]) {
+  entities(first: 1000, keys: [$map_id, "*"]) {
     total_count
     edges {
       node {
@@ -3009,7 +3009,7 @@ export const GetTrainingByKeyDocument = gql`
     `;
 export const GetAllBaseDocument = gql`
     query getAllBase($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%"]) {
+  entities(first: 1000, keys: [$map_id, "*"]) {
     total_count
     edges {
       node {
@@ -3087,7 +3087,7 @@ export const GetLandByKeyDocument = gql`
     `;
 export const GetAllLandsDocument = gql`
     query getAllLands($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%", "%"]) {
+  entities(first: 1000, keys: [$map_id, "*", "*"]) {
     total_count
     edges {
       node {
@@ -3225,7 +3225,7 @@ export const GetResoucesByKeyDocument = gql`
     `;
 export const GetBuildPriceDocument = gql`
     query getBuildPrice($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%"]) {
+  entities(first: 1000, keys: [$map_id, "*"]) {
     total_count
     edges {
       node {
@@ -3274,7 +3274,7 @@ export const GetTroopsByKeyDocument = gql`
     `;
 export const GetAllTroopsDocument = gql`
     query getAllTroops($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%", "%"]) {
+  entities(first: 1000, keys: [$map_id, "*", "*"]) {
     total_count
     edges {
       node {

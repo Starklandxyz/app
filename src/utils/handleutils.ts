@@ -6,7 +6,7 @@ export const handleSQLResult = (edges: any, contractComponents: any) => {
 
     for (let index = 0; index < edges.length; index++) {
         const element = edges[index];
-        const components = element?.node?.components
+        const components = element?.node?.models
         const keys = element?.node?.keys
         const nkeys = keys.map((key: any) => BigInt(key));
         for (let j = 0; j < components.length; j++) {
