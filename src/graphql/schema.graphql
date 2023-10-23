@@ -1,10 +1,29 @@
+# query getAllPlayers {
+#   entities(keys: ["%"],offset:0, limit: 1000) {
+#     total_count
+#     edges {
+#       node {
+#         keys
+#         models {
+#            __typename
+#           ... on Player {
+#             owner
+#             nick_name
+#             joined_time
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
+
 query getAllPlayers {
-  entities(first:1000, keys: ["%"]) {
-    totalCount
+  entities(offset:0, limit: 1000 keys: ["%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Player {
             owner
@@ -24,11 +43,11 @@ query getAllPlayers {
 
 query getAirdropByKey($map_id:String, $key: String) {
   entities(first:1000, keys: [$map_id,$key,"%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Airdrop {
             map_id
@@ -45,13 +64,13 @@ query getAirdropByKey($map_id:String, $key: String) {
 
 query getBaseByKey($key: String,$map_id:String) {
   entities(first:1000, keys: [$map_id,$key]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
-          ... on Base {
+          ... on HBase {
             map_id
             owner
             x
@@ -71,11 +90,11 @@ query getBaseByKey($key: String,$map_id:String) {
 
 query getUserWarriorByKey($key: String,$map_id:String) {
   entities(first:1000, keys: [$map_id,$key]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on UserWarrior {
             map_id
@@ -103,11 +122,11 @@ query getUserWarriorByKey($key: String,$map_id:String) {
 
 query getWarriorConfig($map_id:String) {
   entities(first:1000, keys: [$map_id]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on WarriorConfig {
             map_id
@@ -128,11 +147,11 @@ query getWarriorConfig($map_id:String) {
 
 query getAirdropConfig($map_id:String) {
   entities(first:1000, keys: [$map_id,"%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on AirdropConfig {
             map_id
@@ -150,11 +169,11 @@ query getAirdropConfig($map_id:String) {
 
 query getWarriorByLocation($map_id:String,$x:String,$y:String) {
   entities(first:1000, keys: [$map_id,$x,$y]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Warrior {
             x,
@@ -170,11 +189,11 @@ query getWarriorByLocation($map_id:String,$x:String,$y:String) {
 
 query getTrainingByKey($key: String,$map_id:String) {
   entities(first:1000, keys: [$map_id,$key]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Training {
             start_time,
@@ -189,13 +208,13 @@ query getTrainingByKey($key: String,$map_id:String) {
 
 query getAllBase($map_id:String) {
   entities(first:1000, keys: [$map_id,"%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
-          ... on Base {
+          ... on HBase {
             owner
             map_id
             x
@@ -229,11 +248,11 @@ query getAllBase($map_id:String) {
 
 query getLandByKey($map_id:String,$x:String,$y:String) {
   entities(first:1, keys: [$map_id,$x,$y]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Land {
             map_id,
@@ -267,11 +286,11 @@ query getLandByKey($map_id:String,$x:String,$y:String) {
 
 query getAllLands($map_id:String) {
   entities(first:1000, keys: [$map_id,"%","%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Land {
             map_id,
@@ -333,10 +352,11 @@ query getAllLands($map_id:String) {
 
 query getETHByKey($key: String) {
   entities(first:1000, keys: [$key]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on ETH {
             balance
@@ -349,10 +369,11 @@ query getETHByKey($key: String) {
 
 query getLandMinerByKey($map_id: String,$x:String,$y:String) {
   entities(first:1000, keys: [$map_id,$x,$y]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on LandMiner {
             map_id
@@ -369,10 +390,11 @@ query getLandMinerByKey($map_id: String,$x:String,$y:String) {
 
 query getResoucesByKey($map_id:String,$key: String) {
   entities(first:1000, keys: [$map_id,$key]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Food {
             map_id
@@ -399,10 +421,11 @@ query getResoucesByKey($map_id:String,$key: String) {
 
 query getBuildPrice($map_id:String) {
   entities(first:1000, keys: [$map_id,"%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on BuildPrice {
             map_id
@@ -419,10 +442,11 @@ query getBuildPrice($map_id:String) {
 
 query getTroopsByKey($map_id:String,$key: String) {
   entities(first:1000, keys: [$map_id,$key,"%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Troop {
             map_id
@@ -445,10 +469,11 @@ query getTroopsByKey($map_id:String,$key: String) {
 
 query getAllTroops($map_id:String) {
   entities(first:1000, keys: [$map_id,"%","%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Troop {
             map_id
@@ -472,10 +497,11 @@ query getAllTroops($map_id:String) {
 
 query getMiningConfig($map_id:String) {
   entities(first:1000, keys: [$map_id]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on MiningConfig {
             map_id
@@ -493,10 +519,11 @@ query getMiningConfig($map_id:String) {
 
 query getLandMiner($keys:[String]) {
   entities(first:1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on LandMiner {
             map_id
@@ -514,10 +541,11 @@ query getLandMiner($keys:[String]) {
 
 query getLand($keys:[String]) {
   entities(first:1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Land{
             map_id
@@ -535,10 +563,11 @@ query getLand($keys:[String]) {
 
 query getPlayer($keys:[String]) {
   entities(first:1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Player{
             owner
@@ -553,10 +582,11 @@ query getPlayer($keys:[String]) {
 
 query getTroop($keys:[String]) {
   entities(first:1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Troop{
             map_id
@@ -580,10 +610,11 @@ query getTroop($keys:[String]) {
 
 query getWarrior($keys:[String]) {
   entities(first:1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Warrior{
             map_id

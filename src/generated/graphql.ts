@@ -48,21 +48,21 @@ export type AirdropConfig = {
 export type AirdropConfigConnection = {
   __typename?: 'AirdropConfigConnection';
   edges?: Maybe<Array<Maybe<AirdropConfigEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type AirdropConfigEdge = {
   __typename?: 'AirdropConfigEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<AirdropConfig>;
 };
 
 export type AirdropConfigOrder = {
-  direction: Direction;
-  field: AirdropConfigOrderOrderField;
+  direction: OrderDirection;
+  field: AirdropConfigOrderField;
 };
 
-export enum AirdropConfigOrderOrderField {
+export enum AirdropConfigOrderField {
   Index = 'INDEX',
   MapId = 'MAP_ID',
   RewardFood = 'REWARD_FOOD',
@@ -72,62 +72,68 @@ export enum AirdropConfigOrderOrderField {
 }
 
 export type AirdropConfigWhereInput = {
-  index?: InputMaybe<Scalars['Int']['input']>;
-  indexGT?: InputMaybe<Scalars['Int']['input']>;
-  indexGTE?: InputMaybe<Scalars['Int']['input']>;
-  indexLT?: InputMaybe<Scalars['Int']['input']>;
-  indexLTE?: InputMaybe<Scalars['Int']['input']>;
-  indexNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  reward_food?: InputMaybe<Scalars['Int']['input']>;
-  reward_foodGT?: InputMaybe<Scalars['Int']['input']>;
-  reward_foodGTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_foodLT?: InputMaybe<Scalars['Int']['input']>;
-  reward_foodLTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_foodNEQ?: InputMaybe<Scalars['Int']['input']>;
-  reward_gold?: InputMaybe<Scalars['Int']['input']>;
-  reward_goldGT?: InputMaybe<Scalars['Int']['input']>;
-  reward_goldGTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_goldLT?: InputMaybe<Scalars['Int']['input']>;
-  reward_goldLTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_goldNEQ?: InputMaybe<Scalars['Int']['input']>;
-  reward_iron?: InputMaybe<Scalars['Int']['input']>;
-  reward_ironGT?: InputMaybe<Scalars['Int']['input']>;
-  reward_ironGTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_ironLT?: InputMaybe<Scalars['Int']['input']>;
-  reward_ironLTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_ironNEQ?: InputMaybe<Scalars['Int']['input']>;
-  reward_warrior?: InputMaybe<Scalars['Int']['input']>;
-  reward_warriorGT?: InputMaybe<Scalars['Int']['input']>;
-  reward_warriorGTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_warriorLT?: InputMaybe<Scalars['Int']['input']>;
-  reward_warriorLTE?: InputMaybe<Scalars['Int']['input']>;
-  reward_warriorNEQ?: InputMaybe<Scalars['Int']['input']>;
+  index?: InputMaybe<Scalars['u64']['input']>;
+  indexEQ?: InputMaybe<Scalars['u64']['input']>;
+  indexGT?: InputMaybe<Scalars['u64']['input']>;
+  indexGTE?: InputMaybe<Scalars['u64']['input']>;
+  indexLT?: InputMaybe<Scalars['u64']['input']>;
+  indexLTE?: InputMaybe<Scalars['u64']['input']>;
+  indexNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_food?: InputMaybe<Scalars['u64']['input']>;
+  reward_foodEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_foodGT?: InputMaybe<Scalars['u64']['input']>;
+  reward_foodGTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_foodLT?: InputMaybe<Scalars['u64']['input']>;
+  reward_foodLTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_foodNEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_gold?: InputMaybe<Scalars['u64']['input']>;
+  reward_goldEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_goldGT?: InputMaybe<Scalars['u64']['input']>;
+  reward_goldGTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_goldLT?: InputMaybe<Scalars['u64']['input']>;
+  reward_goldLTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_goldNEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_iron?: InputMaybe<Scalars['u64']['input']>;
+  reward_ironEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_ironGT?: InputMaybe<Scalars['u64']['input']>;
+  reward_ironGTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_ironLT?: InputMaybe<Scalars['u64']['input']>;
+  reward_ironLTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_ironNEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_warrior?: InputMaybe<Scalars['u64']['input']>;
+  reward_warriorEQ?: InputMaybe<Scalars['u64']['input']>;
+  reward_warriorGT?: InputMaybe<Scalars['u64']['input']>;
+  reward_warriorGTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_warriorLT?: InputMaybe<Scalars['u64']['input']>;
+  reward_warriorLTE?: InputMaybe<Scalars['u64']['input']>;
+  reward_warriorNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type AirdropConnection = {
   __typename?: 'AirdropConnection';
   edges?: Maybe<Array<Maybe<AirdropEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type AirdropEdge = {
   __typename?: 'AirdropEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Airdrop>;
 };
 
 export type AirdropOrder = {
-  direction: Direction;
-  field: AirdropOrderOrderField;
+  direction: OrderDirection;
+  field: AirdropOrderField;
 };
 
-export enum AirdropOrderOrderField {
+export enum AirdropOrderField {
   Claimed = 'CLAIMED',
   Index = 'INDEX',
   MapId = 'MAP_ID',
@@ -135,34 +141,38 @@ export enum AirdropOrderOrderField {
 }
 
 export type AirdropWhereInput = {
-  claimed?: InputMaybe<Scalars['Int']['input']>;
-  claimedGT?: InputMaybe<Scalars['Int']['input']>;
-  claimedGTE?: InputMaybe<Scalars['Int']['input']>;
-  claimedLT?: InputMaybe<Scalars['Int']['input']>;
-  claimedLTE?: InputMaybe<Scalars['Int']['input']>;
-  claimedNEQ?: InputMaybe<Scalars['Int']['input']>;
-  index?: InputMaybe<Scalars['Int']['input']>;
-  indexGT?: InputMaybe<Scalars['Int']['input']>;
-  indexGTE?: InputMaybe<Scalars['Int']['input']>;
-  indexLT?: InputMaybe<Scalars['Int']['input']>;
-  indexLTE?: InputMaybe<Scalars['Int']['input']>;
-  indexNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  claimed?: InputMaybe<Scalars['bool']['input']>;
+  claimedEQ?: InputMaybe<Scalars['bool']['input']>;
+  claimedGT?: InputMaybe<Scalars['bool']['input']>;
+  claimedGTE?: InputMaybe<Scalars['bool']['input']>;
+  claimedLT?: InputMaybe<Scalars['bool']['input']>;
+  claimedLTE?: InputMaybe<Scalars['bool']['input']>;
+  claimedNEQ?: InputMaybe<Scalars['bool']['input']>;
+  index?: InputMaybe<Scalars['u64']['input']>;
+  indexEQ?: InputMaybe<Scalars['u64']['input']>;
+  indexGT?: InputMaybe<Scalars['u64']['input']>;
+  indexGTE?: InputMaybe<Scalars['u64']['input']>;
+  indexLT?: InputMaybe<Scalars['u64']['input']>;
+  indexLTE?: InputMaybe<Scalars['u64']['input']>;
+  indexNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
 };
 
-export type Base = {
-  __typename?: 'Base';
+export type Base1 = {
+  __typename?: 'Base1';
   entity?: Maybe<Entity>;
   map_id?: Maybe<Scalars['u64']['output']>;
   owner?: Maybe<Scalars['ContractAddress']['output']>;
@@ -170,55 +180,59 @@ export type Base = {
   y?: Maybe<Scalars['u64']['output']>;
 };
 
-export type BaseConnection = {
-  __typename?: 'BaseConnection';
-  edges?: Maybe<Array<Maybe<BaseEdge>>>;
-  totalCount: Scalars['Int']['output'];
+export type Base1Connection = {
+  __typename?: 'Base1Connection';
+  edges?: Maybe<Array<Maybe<Base1Edge>>>;
+  total_count: Scalars['Int']['output'];
 };
 
-export type BaseEdge = {
-  __typename?: 'BaseEdge';
-  cursor: Scalars['Cursor']['output'];
-  node?: Maybe<Base>;
+export type Base1Edge = {
+  __typename?: 'Base1Edge';
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  node?: Maybe<Base1>;
 };
 
-export type BaseOrder = {
-  direction: Direction;
-  field: BaseOrderOrderField;
+export type Base1Order = {
+  direction: OrderDirection;
+  field: Base1OrderField;
 };
 
-export enum BaseOrderOrderField {
+export enum Base1OrderField {
   MapId = 'MAP_ID',
   Owner = 'OWNER',
   X = 'X',
   Y = 'Y'
 }
 
-export type BaseWhereInput = {
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
-  x?: InputMaybe<Scalars['Int']['input']>;
-  xGT?: InputMaybe<Scalars['Int']['input']>;
-  xGTE?: InputMaybe<Scalars['Int']['input']>;
-  xLT?: InputMaybe<Scalars['Int']['input']>;
-  xLTE?: InputMaybe<Scalars['Int']['input']>;
-  xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  y?: InputMaybe<Scalars['Int']['input']>;
-  yGT?: InputMaybe<Scalars['Int']['input']>;
-  yGTE?: InputMaybe<Scalars['Int']['input']>;
-  yLT?: InputMaybe<Scalars['Int']['input']>;
-  yLTE?: InputMaybe<Scalars['Int']['input']>;
-  yNEQ?: InputMaybe<Scalars['Int']['input']>;
+export type Base1WhereInput = {
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type BuildConfig = {
@@ -240,21 +254,21 @@ export type BuildConfig = {
 export type BuildConfigConnection = {
   __typename?: 'BuildConfigConnection';
   edges?: Maybe<Array<Maybe<BuildConfigEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type BuildConfigEdge = {
   __typename?: 'BuildConfigEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<BuildConfig>;
 };
 
 export type BuildConfigOrder = {
-  direction: Direction;
-  field: BuildConfigOrderOrderField;
+  direction: OrderDirection;
+  field: BuildConfigOrderField;
 };
 
-export enum BuildConfigOrderOrderField {
+export enum BuildConfigOrderField {
   BuildTypeBase = 'BUILD_TYPE_BASE',
   BuildTypeCamp = 'BUILD_TYPE_CAMP',
   BuildTypeFarmland = 'BUILD_TYPE_FARMLAND',
@@ -269,72 +283,83 @@ export enum BuildConfigOrderOrderField {
 }
 
 export type BuildConfigWhereInput = {
-  Build_Type_Base?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_BaseGT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_BaseGTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_BaseLT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_BaseLTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_BaseNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_Camp?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_CampGT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_CampGTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_CampLT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_CampLTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_CampNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_Farmland?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FarmlandGT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FarmlandGTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FarmlandLT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FarmlandLTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FarmlandNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_Fort?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FortGT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FortGTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FortLT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FortLTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_FortNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_GoldMine?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_GoldMineGT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_GoldMineGTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_GoldMineLT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_GoldMineLTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_GoldMineNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_IronMine?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_IronMineGT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_IronMineGTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_IronMineLT?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_IronMineLTE?: InputMaybe<Scalars['Int']['input']>;
-  Build_Type_IronMineNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Land_Gold?: InputMaybe<Scalars['Int']['input']>;
-  Land_GoldGT?: InputMaybe<Scalars['Int']['input']>;
-  Land_GoldGTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_GoldLT?: InputMaybe<Scalars['Int']['input']>;
-  Land_GoldLTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_GoldNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Land_Iron?: InputMaybe<Scalars['Int']['input']>;
-  Land_IronGT?: InputMaybe<Scalars['Int']['input']>;
-  Land_IronGTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_IronLT?: InputMaybe<Scalars['Int']['input']>;
-  Land_IronLTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_IronNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Land_None?: InputMaybe<Scalars['Int']['input']>;
-  Land_NoneGT?: InputMaybe<Scalars['Int']['input']>;
-  Land_NoneGTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_NoneLT?: InputMaybe<Scalars['Int']['input']>;
-  Land_NoneLTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_NoneNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Land_Water?: InputMaybe<Scalars['Int']['input']>;
-  Land_WaterGT?: InputMaybe<Scalars['Int']['input']>;
-  Land_WaterGTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_WaterLT?: InputMaybe<Scalars['Int']['input']>;
-  Land_WaterLTE?: InputMaybe<Scalars['Int']['input']>;
-  Land_WaterNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  Build_Type_Base?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_BaseEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_BaseGT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_BaseGTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_BaseLT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_BaseLTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_BaseNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_Camp?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_CampEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_CampGT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_CampGTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_CampLT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_CampLTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_CampNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_Farmland?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FarmlandEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FarmlandGT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FarmlandGTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FarmlandLT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FarmlandLTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FarmlandNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_Fort?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FortEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FortGT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FortGTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FortLT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FortLTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_FortNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_GoldMine?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_GoldMineEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_GoldMineGT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_GoldMineGTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_GoldMineLT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_GoldMineLTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_GoldMineNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_IronMine?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_IronMineEQ?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_IronMineGT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_IronMineGTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_IronMineLT?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_IronMineLTE?: InputMaybe<Scalars['u64']['input']>;
+  Build_Type_IronMineNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_Gold?: InputMaybe<Scalars['u64']['input']>;
+  Land_GoldEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_GoldGT?: InputMaybe<Scalars['u64']['input']>;
+  Land_GoldGTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_GoldLT?: InputMaybe<Scalars['u64']['input']>;
+  Land_GoldLTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_GoldNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_Iron?: InputMaybe<Scalars['u64']['input']>;
+  Land_IronEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_IronGT?: InputMaybe<Scalars['u64']['input']>;
+  Land_IronGTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_IronLT?: InputMaybe<Scalars['u64']['input']>;
+  Land_IronLTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_IronNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_None?: InputMaybe<Scalars['u64']['input']>;
+  Land_NoneEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_NoneGT?: InputMaybe<Scalars['u64']['input']>;
+  Land_NoneGTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_NoneLT?: InputMaybe<Scalars['u64']['input']>;
+  Land_NoneLTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_NoneNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_Water?: InputMaybe<Scalars['u64']['input']>;
+  Land_WaterEQ?: InputMaybe<Scalars['u64']['input']>;
+  Land_WaterGT?: InputMaybe<Scalars['u64']['input']>;
+  Land_WaterGTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_WaterLT?: InputMaybe<Scalars['u64']['input']>;
+  Land_WaterLTE?: InputMaybe<Scalars['u64']['input']>;
+  Land_WaterNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type BuildPrice = {
@@ -350,21 +375,21 @@ export type BuildPrice = {
 export type BuildPriceConnection = {
   __typename?: 'BuildPriceConnection';
   edges?: Maybe<Array<Maybe<BuildPriceEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type BuildPriceEdge = {
   __typename?: 'BuildPriceEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<BuildPrice>;
 };
 
 export type BuildPriceOrder = {
-  direction: Direction;
-  field: BuildPriceOrderOrderField;
+  direction: OrderDirection;
+  field: BuildPriceOrderField;
 };
 
-export enum BuildPriceOrderOrderField {
+export enum BuildPriceOrderField {
   BuildType = 'BUILD_TYPE',
   Food = 'FOOD',
   Gold = 'GOLD',
@@ -373,65 +398,42 @@ export enum BuildPriceOrderOrderField {
 }
 
 export type BuildPriceWhereInput = {
-  build_type?: InputMaybe<Scalars['Int']['input']>;
-  build_typeGT?: InputMaybe<Scalars['Int']['input']>;
-  build_typeGTE?: InputMaybe<Scalars['Int']['input']>;
-  build_typeLT?: InputMaybe<Scalars['Int']['input']>;
-  build_typeLTE?: InputMaybe<Scalars['Int']['input']>;
-  build_typeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  food?: InputMaybe<Scalars['Int']['input']>;
-  foodGT?: InputMaybe<Scalars['Int']['input']>;
-  foodGTE?: InputMaybe<Scalars['Int']['input']>;
-  foodLT?: InputMaybe<Scalars['Int']['input']>;
-  foodLTE?: InputMaybe<Scalars['Int']['input']>;
-  foodNEQ?: InputMaybe<Scalars['Int']['input']>;
-  gold?: InputMaybe<Scalars['Int']['input']>;
-  goldGT?: InputMaybe<Scalars['Int']['input']>;
-  goldGTE?: InputMaybe<Scalars['Int']['input']>;
-  goldLT?: InputMaybe<Scalars['Int']['input']>;
-  goldLTE?: InputMaybe<Scalars['Int']['input']>;
-  goldNEQ?: InputMaybe<Scalars['Int']['input']>;
-  iron?: InputMaybe<Scalars['Int']['input']>;
-  ironGT?: InputMaybe<Scalars['Int']['input']>;
-  ironGTE?: InputMaybe<Scalars['Int']['input']>;
-  ironLT?: InputMaybe<Scalars['Int']['input']>;
-  ironLTE?: InputMaybe<Scalars['Int']['input']>;
-  ironNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  build_type?: InputMaybe<Scalars['u64']['input']>;
+  build_typeEQ?: InputMaybe<Scalars['u64']['input']>;
+  build_typeGT?: InputMaybe<Scalars['u64']['input']>;
+  build_typeGTE?: InputMaybe<Scalars['u64']['input']>;
+  build_typeLT?: InputMaybe<Scalars['u64']['input']>;
+  build_typeLTE?: InputMaybe<Scalars['u64']['input']>;
+  build_typeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  food?: InputMaybe<Scalars['u64']['input']>;
+  foodEQ?: InputMaybe<Scalars['u64']['input']>;
+  foodGT?: InputMaybe<Scalars['u64']['input']>;
+  foodGTE?: InputMaybe<Scalars['u64']['input']>;
+  foodLT?: InputMaybe<Scalars['u64']['input']>;
+  foodLTE?: InputMaybe<Scalars['u64']['input']>;
+  foodNEQ?: InputMaybe<Scalars['u64']['input']>;
+  gold?: InputMaybe<Scalars['u64']['input']>;
+  goldEQ?: InputMaybe<Scalars['u64']['input']>;
+  goldGT?: InputMaybe<Scalars['u64']['input']>;
+  goldGTE?: InputMaybe<Scalars['u64']['input']>;
+  goldLT?: InputMaybe<Scalars['u64']['input']>;
+  goldLTE?: InputMaybe<Scalars['u64']['input']>;
+  goldNEQ?: InputMaybe<Scalars['u64']['input']>;
+  iron?: InputMaybe<Scalars['u64']['input']>;
+  ironEQ?: InputMaybe<Scalars['u64']['input']>;
+  ironGT?: InputMaybe<Scalars['u64']['input']>;
+  ironGTE?: InputMaybe<Scalars['u64']['input']>;
+  ironLT?: InputMaybe<Scalars['u64']['input']>;
+  ironLTE?: InputMaybe<Scalars['u64']['input']>;
+  ironNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
-
-export type Component = {
-  __typename?: 'Component';
-  classHash?: Maybe<Scalars['felt252']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  transactionHash?: Maybe<Scalars['felt252']['output']>;
-};
-
-export type ComponentConnection = {
-  __typename?: 'ComponentConnection';
-  edges?: Maybe<Array<Maybe<ComponentEdge>>>;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type ComponentEdge = {
-  __typename?: 'ComponentEdge';
-  cursor: Scalars['Cursor']['output'];
-  node?: Maybe<Component>;
-};
-
-export type ComponentUnion = Airdrop | AirdropConfig | Base | BuildConfig | BuildPrice | Eth | Fight | Food | FortOwner | GlobalConfig | Gold | Iron | Land | LandCost | LandMiner | LandMining | LandOwner | LuckyPack | MiningConfig | Player | RewardPoint | Training | Troop | UpgradeCost | UserWarrior | Warrior | WarriorConfig;
-
-export enum Direction {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
 
 export type Eth = {
   __typename?: 'ETH';
@@ -443,81 +445,84 @@ export type Eth = {
 export type EthConnection = {
   __typename?: 'ETHConnection';
   edges?: Maybe<Array<Maybe<EthEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type EthEdge = {
   __typename?: 'ETHEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Eth>;
 };
 
 export type EthOrder = {
-  direction: Direction;
-  field: EthOrderOrderField;
+  direction: OrderDirection;
+  field: EthOrderField;
 };
 
-export enum EthOrderOrderField {
+export enum EthOrderField {
   Balance = 'BALANCE',
   Owner = 'OWNER'
 }
 
 export type EthWhereInput = {
-  balance?: InputMaybe<Scalars['String']['input']>;
-  balanceGT?: InputMaybe<Scalars['String']['input']>;
-  balanceGTE?: InputMaybe<Scalars['String']['input']>;
-  balanceLT?: InputMaybe<Scalars['String']['input']>;
-  balanceLTE?: InputMaybe<Scalars['String']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['String']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  balance?: InputMaybe<Scalars['u128']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u128']['input']>;
+  balanceGT?: InputMaybe<Scalars['u128']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u128']['input']>;
+  balanceLT?: InputMaybe<Scalars['u128']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u128']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u128']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
 };
 
 export type Entity = {
   __typename?: 'Entity';
-  componentNames?: Maybe<Scalars['String']['output']>;
-  components?: Maybe<Array<Maybe<ComponentUnion>>>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  event_id?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  model_names?: Maybe<Scalars['String']['output']>;
+  models?: Maybe<Array<Maybe<ModelUnion>>>;
+  updated_at?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type EntityConnection = {
   __typename?: 'EntityConnection';
   edges?: Maybe<Array<Maybe<EntityEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type EntityEdge = {
   __typename?: 'EntityEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Entity>;
 };
 
 export type Event = {
   __typename?: 'Event';
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  data?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  data?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   id?: Maybe<Scalars['ID']['output']>;
-  keys?: Maybe<Scalars['String']['output']>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   systemCall: SystemCall;
-  systemCallId?: Maybe<Scalars['Int']['output']>;
+  transaction_hash?: Maybe<Scalars['String']['output']>;
 };
 
 export type EventConnection = {
   __typename?: 'EventConnection';
   edges?: Maybe<Array<Maybe<EventEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type EventEdge = {
   __typename?: 'EventEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Event>;
 };
 
@@ -533,21 +538,21 @@ export type Fight = {
 export type FightConnection = {
   __typename?: 'FightConnection';
   edges?: Maybe<Array<Maybe<FightEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type FightEdge = {
   __typename?: 'FightEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Fight>;
 };
 
 export type FightOrder = {
-  direction: Direction;
-  field: FightOrderOrderField;
+  direction: OrderDirection;
+  field: FightOrderField;
 };
 
-export enum FightOrderOrderField {
+export enum FightOrderField {
   MapId = 'MAP_ID',
   Out = 'OUT',
   Owner = 'OWNER',
@@ -555,30 +560,34 @@ export enum FightOrderOrderField {
 }
 
 export type FightWhereInput = {
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  out?: InputMaybe<Scalars['Int']['input']>;
-  outGT?: InputMaybe<Scalars['Int']['input']>;
-  outGTE?: InputMaybe<Scalars['Int']['input']>;
-  outLT?: InputMaybe<Scalars['Int']['input']>;
-  outLTE?: InputMaybe<Scalars['Int']['input']>;
-  outNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
-  total?: InputMaybe<Scalars['Int']['input']>;
-  totalGT?: InputMaybe<Scalars['Int']['input']>;
-  totalGTE?: InputMaybe<Scalars['Int']['input']>;
-  totalLT?: InputMaybe<Scalars['Int']['input']>;
-  totalLTE?: InputMaybe<Scalars['Int']['input']>;
-  totalNEQ?: InputMaybe<Scalars['Int']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  out?: InputMaybe<Scalars['u64']['input']>;
+  outEQ?: InputMaybe<Scalars['u64']['input']>;
+  outGT?: InputMaybe<Scalars['u64']['input']>;
+  outGTE?: InputMaybe<Scalars['u64']['input']>;
+  outLT?: InputMaybe<Scalars['u64']['input']>;
+  outLTE?: InputMaybe<Scalars['u64']['input']>;
+  outNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  total?: InputMaybe<Scalars['u64']['input']>;
+  totalEQ?: InputMaybe<Scalars['u64']['input']>;
+  totalGT?: InputMaybe<Scalars['u64']['input']>;
+  totalGTE?: InputMaybe<Scalars['u64']['input']>;
+  totalLT?: InputMaybe<Scalars['u64']['input']>;
+  totalLTE?: InputMaybe<Scalars['u64']['input']>;
+  totalNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type Food = {
@@ -592,45 +601,48 @@ export type Food = {
 export type FoodConnection = {
   __typename?: 'FoodConnection';
   edges?: Maybe<Array<Maybe<FoodEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type FoodEdge = {
   __typename?: 'FoodEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Food>;
 };
 
 export type FoodOrder = {
-  direction: Direction;
-  field: FoodOrderOrderField;
+  direction: OrderDirection;
+  field: FoodOrderField;
 };
 
-export enum FoodOrderOrderField {
+export enum FoodOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
   Owner = 'OWNER'
 }
 
 export type FoodWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
 };
 
 export type FortOwner = {
@@ -644,45 +656,48 @@ export type FortOwner = {
 export type FortOwnerConnection = {
   __typename?: 'FortOwnerConnection';
   edges?: Maybe<Array<Maybe<FortOwnerEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type FortOwnerEdge = {
   __typename?: 'FortOwnerEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<FortOwner>;
 };
 
 export type FortOwnerOrder = {
-  direction: Direction;
-  field: FortOwnerOrderOrderField;
+  direction: OrderDirection;
+  field: FortOwnerOrderField;
 };
 
-export enum FortOwnerOrderOrderField {
+export enum FortOwnerOrderField {
   MapId = 'MAP_ID',
   Owner = 'OWNER',
   Total = 'TOTAL'
 }
 
 export type FortOwnerWhereInput = {
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
-  total?: InputMaybe<Scalars['Int']['input']>;
-  totalGT?: InputMaybe<Scalars['Int']['input']>;
-  totalGTE?: InputMaybe<Scalars['Int']['input']>;
-  totalLT?: InputMaybe<Scalars['Int']['input']>;
-  totalLTE?: InputMaybe<Scalars['Int']['input']>;
-  totalNEQ?: InputMaybe<Scalars['Int']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  total?: InputMaybe<Scalars['u64']['input']>;
+  totalEQ?: InputMaybe<Scalars['u64']['input']>;
+  totalGT?: InputMaybe<Scalars['u64']['input']>;
+  totalGTE?: InputMaybe<Scalars['u64']['input']>;
+  totalLT?: InputMaybe<Scalars['u64']['input']>;
+  totalLTE?: InputMaybe<Scalars['u64']['input']>;
+  totalNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type GlobalConfig = {
@@ -697,21 +712,21 @@ export type GlobalConfig = {
 export type GlobalConfigConnection = {
   __typename?: 'GlobalConfigConnection';
   edges?: Maybe<Array<Maybe<GlobalConfigEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type GlobalConfigEdge = {
   __typename?: 'GlobalConfigEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<GlobalConfig>;
 };
 
 export type GlobalConfigOrder = {
-  direction: Direction;
-  field: GlobalConfigOrderOrderField;
+  direction: OrderDirection;
+  field: GlobalConfigOrderField;
 };
 
-export enum GlobalConfigOrderOrderField {
+export enum GlobalConfigOrderField {
   MapId = 'MAP_ID',
   MaxMapX = 'MAX_MAP_X',
   MaxMapY = 'MAX_MAP_Y',
@@ -719,30 +734,34 @@ export enum GlobalConfigOrderOrderField {
 }
 
 export type GlobalConfigWhereInput = {
-  MAX_MAP_X?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_XGT?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_XGTE?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_XLT?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_XLTE?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_XNEQ?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_Y?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_YGT?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_YGTE?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_YLT?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_YLTE?: InputMaybe<Scalars['Int']['input']>;
-  MAX_MAP_YNEQ?: InputMaybe<Scalars['Int']['input']>;
-  MULTIPLIER?: InputMaybe<Scalars['Int']['input']>;
-  MULTIPLIERGT?: InputMaybe<Scalars['Int']['input']>;
-  MULTIPLIERGTE?: InputMaybe<Scalars['Int']['input']>;
-  MULTIPLIERLT?: InputMaybe<Scalars['Int']['input']>;
-  MULTIPLIERLTE?: InputMaybe<Scalars['Int']['input']>;
-  MULTIPLIERNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  MAX_MAP_X?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_XEQ?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_XGT?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_XGTE?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_XLT?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_XLTE?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_XNEQ?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_Y?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_YEQ?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_YGT?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_YGTE?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_YLT?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_YLTE?: InputMaybe<Scalars['u64']['input']>;
+  MAX_MAP_YNEQ?: InputMaybe<Scalars['u64']['input']>;
+  MULTIPLIER?: InputMaybe<Scalars['u64']['input']>;
+  MULTIPLIEREQ?: InputMaybe<Scalars['u64']['input']>;
+  MULTIPLIERGT?: InputMaybe<Scalars['u64']['input']>;
+  MULTIPLIERGTE?: InputMaybe<Scalars['u64']['input']>;
+  MULTIPLIERLT?: InputMaybe<Scalars['u64']['input']>;
+  MULTIPLIERLTE?: InputMaybe<Scalars['u64']['input']>;
+  MULTIPLIERNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type Gold = {
@@ -756,45 +775,112 @@ export type Gold = {
 export type GoldConnection = {
   __typename?: 'GoldConnection';
   edges?: Maybe<Array<Maybe<GoldEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type GoldEdge = {
   __typename?: 'GoldEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Gold>;
 };
 
 export type GoldOrder = {
-  direction: Direction;
-  field: GoldOrderOrderField;
+  direction: OrderDirection;
+  field: GoldOrderField;
 };
 
-export enum GoldOrderOrderField {
+export enum GoldOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
   Owner = 'OWNER'
 }
 
 export type GoldWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+};
+
+export type HBase = {
+  __typename?: 'HBase';
+  entity?: Maybe<Entity>;
+  map_id?: Maybe<Scalars['u64']['output']>;
+  owner?: Maybe<Scalars['ContractAddress']['output']>;
+  x?: Maybe<Scalars['u64']['output']>;
+  y?: Maybe<Scalars['u64']['output']>;
+};
+
+export type HBaseConnection = {
+  __typename?: 'HBaseConnection';
+  edges?: Maybe<Array<Maybe<HBaseEdge>>>;
+  total_count: Scalars['Int']['output'];
+};
+
+export type HBaseEdge = {
+  __typename?: 'HBaseEdge';
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  node?: Maybe<HBase>;
+};
+
+export type HBaseOrder = {
+  direction: OrderDirection;
+  field: HBaseOrderField;
+};
+
+export enum HBaseOrderField {
+  MapId = 'MAP_ID',
+  Owner = 'OWNER',
+  X = 'X',
+  Y = 'Y'
+}
+
+export type HBaseWhereInput = {
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type Iron = {
@@ -808,45 +894,48 @@ export type Iron = {
 export type IronConnection = {
   __typename?: 'IronConnection';
   edges?: Maybe<Array<Maybe<IronEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type IronEdge = {
   __typename?: 'IronEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Iron>;
 };
 
 export type IronOrder = {
-  direction: Direction;
-  field: IronOrderOrderField;
+  direction: OrderDirection;
+  field: IronOrderField;
 };
 
-export enum IronOrderOrderField {
+export enum IronOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
   Owner = 'OWNER'
 }
 
 export type IronWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
 };
 
 export type Land = {
@@ -863,7 +952,7 @@ export type Land = {
 export type LandConnection = {
   __typename?: 'LandConnection';
   edges?: Maybe<Array<Maybe<LandEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type LandCost = {
@@ -880,21 +969,21 @@ export type LandCost = {
 export type LandCostConnection = {
   __typename?: 'LandCostConnection';
   edges?: Maybe<Array<Maybe<LandCostEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type LandCostEdge = {
   __typename?: 'LandCostEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<LandCost>;
 };
 
 export type LandCostOrder = {
-  direction: Direction;
-  field: LandCostOrderOrderField;
+  direction: OrderDirection;
+  field: LandCostOrderField;
 };
 
-export enum LandCostOrderOrderField {
+export enum LandCostOrderField {
   CostFood = 'COST_FOOD',
   CostGold = 'COST_GOLD',
   CostIron = 'COST_IRON',
@@ -904,47 +993,53 @@ export enum LandCostOrderOrderField {
 }
 
 export type LandCostWhereInput = {
-  cost_food?: InputMaybe<Scalars['Int']['input']>;
-  cost_foodGT?: InputMaybe<Scalars['Int']['input']>;
-  cost_foodGTE?: InputMaybe<Scalars['Int']['input']>;
-  cost_foodLT?: InputMaybe<Scalars['Int']['input']>;
-  cost_foodLTE?: InputMaybe<Scalars['Int']['input']>;
-  cost_foodNEQ?: InputMaybe<Scalars['Int']['input']>;
-  cost_gold?: InputMaybe<Scalars['Int']['input']>;
-  cost_goldGT?: InputMaybe<Scalars['Int']['input']>;
-  cost_goldGTE?: InputMaybe<Scalars['Int']['input']>;
-  cost_goldLT?: InputMaybe<Scalars['Int']['input']>;
-  cost_goldLTE?: InputMaybe<Scalars['Int']['input']>;
-  cost_goldNEQ?: InputMaybe<Scalars['Int']['input']>;
-  cost_iron?: InputMaybe<Scalars['Int']['input']>;
-  cost_ironGT?: InputMaybe<Scalars['Int']['input']>;
-  cost_ironGTE?: InputMaybe<Scalars['Int']['input']>;
-  cost_ironLT?: InputMaybe<Scalars['Int']['input']>;
-  cost_ironLTE?: InputMaybe<Scalars['Int']['input']>;
-  cost_ironNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  x?: InputMaybe<Scalars['Int']['input']>;
-  xGT?: InputMaybe<Scalars['Int']['input']>;
-  xGTE?: InputMaybe<Scalars['Int']['input']>;
-  xLT?: InputMaybe<Scalars['Int']['input']>;
-  xLTE?: InputMaybe<Scalars['Int']['input']>;
-  xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  y?: InputMaybe<Scalars['Int']['input']>;
-  yGT?: InputMaybe<Scalars['Int']['input']>;
-  yGTE?: InputMaybe<Scalars['Int']['input']>;
-  yLT?: InputMaybe<Scalars['Int']['input']>;
-  yLTE?: InputMaybe<Scalars['Int']['input']>;
-  yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  cost_food?: InputMaybe<Scalars['u64']['input']>;
+  cost_foodEQ?: InputMaybe<Scalars['u64']['input']>;
+  cost_foodGT?: InputMaybe<Scalars['u64']['input']>;
+  cost_foodGTE?: InputMaybe<Scalars['u64']['input']>;
+  cost_foodLT?: InputMaybe<Scalars['u64']['input']>;
+  cost_foodLTE?: InputMaybe<Scalars['u64']['input']>;
+  cost_foodNEQ?: InputMaybe<Scalars['u64']['input']>;
+  cost_gold?: InputMaybe<Scalars['u64']['input']>;
+  cost_goldEQ?: InputMaybe<Scalars['u64']['input']>;
+  cost_goldGT?: InputMaybe<Scalars['u64']['input']>;
+  cost_goldGTE?: InputMaybe<Scalars['u64']['input']>;
+  cost_goldLT?: InputMaybe<Scalars['u64']['input']>;
+  cost_goldLTE?: InputMaybe<Scalars['u64']['input']>;
+  cost_goldNEQ?: InputMaybe<Scalars['u64']['input']>;
+  cost_iron?: InputMaybe<Scalars['u64']['input']>;
+  cost_ironEQ?: InputMaybe<Scalars['u64']['input']>;
+  cost_ironGT?: InputMaybe<Scalars['u64']['input']>;
+  cost_ironGTE?: InputMaybe<Scalars['u64']['input']>;
+  cost_ironLT?: InputMaybe<Scalars['u64']['input']>;
+  cost_ironLTE?: InputMaybe<Scalars['u64']['input']>;
+  cost_ironNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type LandEdge = {
   __typename?: 'LandEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Land>;
 };
 
@@ -961,21 +1056,21 @@ export type LandMiner = {
 export type LandMinerConnection = {
   __typename?: 'LandMinerConnection';
   edges?: Maybe<Array<Maybe<LandMinerEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type LandMinerEdge = {
   __typename?: 'LandMinerEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<LandMiner>;
 };
 
 export type LandMinerOrder = {
-  direction: Direction;
-  field: LandMinerOrderOrderField;
+  direction: OrderDirection;
+  field: LandMinerOrderField;
 };
 
-export enum LandMinerOrderOrderField {
+export enum LandMinerOrderField {
   MapId = 'MAP_ID',
   MinerX = 'MINER_X',
   MinerY = 'MINER_Y',
@@ -984,36 +1079,41 @@ export enum LandMinerOrderOrderField {
 }
 
 export type LandMinerWhereInput = {
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  miner_x?: InputMaybe<Scalars['Int']['input']>;
-  miner_xGT?: InputMaybe<Scalars['Int']['input']>;
-  miner_xGTE?: InputMaybe<Scalars['Int']['input']>;
-  miner_xLT?: InputMaybe<Scalars['Int']['input']>;
-  miner_xLTE?: InputMaybe<Scalars['Int']['input']>;
-  miner_xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  miner_y?: InputMaybe<Scalars['Int']['input']>;
-  miner_yGT?: InputMaybe<Scalars['Int']['input']>;
-  miner_yGTE?: InputMaybe<Scalars['Int']['input']>;
-  miner_yLT?: InputMaybe<Scalars['Int']['input']>;
-  miner_yLTE?: InputMaybe<Scalars['Int']['input']>;
-  miner_yNEQ?: InputMaybe<Scalars['Int']['input']>;
-  x?: InputMaybe<Scalars['Int']['input']>;
-  xGT?: InputMaybe<Scalars['Int']['input']>;
-  xGTE?: InputMaybe<Scalars['Int']['input']>;
-  xLT?: InputMaybe<Scalars['Int']['input']>;
-  xLTE?: InputMaybe<Scalars['Int']['input']>;
-  xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  y?: InputMaybe<Scalars['Int']['input']>;
-  yGT?: InputMaybe<Scalars['Int']['input']>;
-  yGTE?: InputMaybe<Scalars['Int']['input']>;
-  yLT?: InputMaybe<Scalars['Int']['input']>;
-  yLTE?: InputMaybe<Scalars['Int']['input']>;
-  yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  miner_x?: InputMaybe<Scalars['u64']['input']>;
+  miner_xEQ?: InputMaybe<Scalars['u64']['input']>;
+  miner_xGT?: InputMaybe<Scalars['u64']['input']>;
+  miner_xGTE?: InputMaybe<Scalars['u64']['input']>;
+  miner_xLT?: InputMaybe<Scalars['u64']['input']>;
+  miner_xLTE?: InputMaybe<Scalars['u64']['input']>;
+  miner_xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  miner_y?: InputMaybe<Scalars['u64']['input']>;
+  miner_yEQ?: InputMaybe<Scalars['u64']['input']>;
+  miner_yGT?: InputMaybe<Scalars['u64']['input']>;
+  miner_yGTE?: InputMaybe<Scalars['u64']['input']>;
+  miner_yLT?: InputMaybe<Scalars['u64']['input']>;
+  miner_yLTE?: InputMaybe<Scalars['u64']['input']>;
+  miner_yNEQ?: InputMaybe<Scalars['u64']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type LandMining = {
@@ -1030,21 +1130,21 @@ export type LandMining = {
 export type LandMiningConnection = {
   __typename?: 'LandMiningConnection';
   edges?: Maybe<Array<Maybe<LandMiningEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type LandMiningEdge = {
   __typename?: 'LandMiningEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<LandMining>;
 };
 
 export type LandMiningOrder = {
-  direction: Direction;
-  field: LandMiningOrderOrderField;
+  direction: OrderDirection;
+  field: LandMiningOrderField;
 };
 
-export enum LandMiningOrderOrderField {
+export enum LandMiningOrderField {
   MapId = 'MAP_ID',
   MinedX = 'MINED_X',
   MinedY = 'MINED_Y',
@@ -1054,50 +1154,56 @@ export enum LandMiningOrderOrderField {
 }
 
 export type LandMiningWhereInput = {
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  mined_x?: InputMaybe<Scalars['Int']['input']>;
-  mined_xGT?: InputMaybe<Scalars['Int']['input']>;
-  mined_xGTE?: InputMaybe<Scalars['Int']['input']>;
-  mined_xLT?: InputMaybe<Scalars['Int']['input']>;
-  mined_xLTE?: InputMaybe<Scalars['Int']['input']>;
-  mined_xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  mined_y?: InputMaybe<Scalars['Int']['input']>;
-  mined_yGT?: InputMaybe<Scalars['Int']['input']>;
-  mined_yGTE?: InputMaybe<Scalars['Int']['input']>;
-  mined_yLT?: InputMaybe<Scalars['Int']['input']>;
-  mined_yLTE?: InputMaybe<Scalars['Int']['input']>;
-  mined_yNEQ?: InputMaybe<Scalars['Int']['input']>;
-  start_time?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  x?: InputMaybe<Scalars['Int']['input']>;
-  xGT?: InputMaybe<Scalars['Int']['input']>;
-  xGTE?: InputMaybe<Scalars['Int']['input']>;
-  xLT?: InputMaybe<Scalars['Int']['input']>;
-  xLTE?: InputMaybe<Scalars['Int']['input']>;
-  xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  y?: InputMaybe<Scalars['Int']['input']>;
-  yGT?: InputMaybe<Scalars['Int']['input']>;
-  yGTE?: InputMaybe<Scalars['Int']['input']>;
-  yLT?: InputMaybe<Scalars['Int']['input']>;
-  yLTE?: InputMaybe<Scalars['Int']['input']>;
-  yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  mined_x?: InputMaybe<Scalars['u64']['input']>;
+  mined_xEQ?: InputMaybe<Scalars['u64']['input']>;
+  mined_xGT?: InputMaybe<Scalars['u64']['input']>;
+  mined_xGTE?: InputMaybe<Scalars['u64']['input']>;
+  mined_xLT?: InputMaybe<Scalars['u64']['input']>;
+  mined_xLTE?: InputMaybe<Scalars['u64']['input']>;
+  mined_xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  mined_y?: InputMaybe<Scalars['u64']['input']>;
+  mined_yEQ?: InputMaybe<Scalars['u64']['input']>;
+  mined_yGT?: InputMaybe<Scalars['u64']['input']>;
+  mined_yGTE?: InputMaybe<Scalars['u64']['input']>;
+  mined_yLT?: InputMaybe<Scalars['u64']['input']>;
+  mined_yLTE?: InputMaybe<Scalars['u64']['input']>;
+  mined_yNEQ?: InputMaybe<Scalars['u64']['input']>;
+  start_time?: InputMaybe<Scalars['u64']['input']>;
+  start_timeEQ?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type LandOrder = {
-  direction: Direction;
-  field: LandOrderOrderField;
+  direction: OrderDirection;
+  field: LandOrderField;
 };
 
-export enum LandOrderOrderField {
+export enum LandOrderField {
   Building = 'BUILDING',
   Level = 'LEVEL',
   MapId = 'MAP_ID',
@@ -1117,84 +1223,93 @@ export type LandOwner = {
 export type LandOwnerConnection = {
   __typename?: 'LandOwnerConnection';
   edges?: Maybe<Array<Maybe<LandOwnerEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type LandOwnerEdge = {
   __typename?: 'LandOwnerEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<LandOwner>;
 };
 
 export type LandOwnerOrder = {
-  direction: Direction;
-  field: LandOwnerOrderOrderField;
+  direction: OrderDirection;
+  field: LandOwnerOrderField;
 };
 
-export enum LandOwnerOrderOrderField {
+export enum LandOwnerOrderField {
   MapId = 'MAP_ID',
   Owner = 'OWNER',
   Total = 'TOTAL'
 }
 
 export type LandOwnerWhereInput = {
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
-  total?: InputMaybe<Scalars['Int']['input']>;
-  totalGT?: InputMaybe<Scalars['Int']['input']>;
-  totalGTE?: InputMaybe<Scalars['Int']['input']>;
-  totalLT?: InputMaybe<Scalars['Int']['input']>;
-  totalLTE?: InputMaybe<Scalars['Int']['input']>;
-  totalNEQ?: InputMaybe<Scalars['Int']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  total?: InputMaybe<Scalars['u64']['input']>;
+  totalEQ?: InputMaybe<Scalars['u64']['input']>;
+  totalGT?: InputMaybe<Scalars['u64']['input']>;
+  totalGTE?: InputMaybe<Scalars['u64']['input']>;
+  totalLT?: InputMaybe<Scalars['u64']['input']>;
+  totalLTE?: InputMaybe<Scalars['u64']['input']>;
+  totalNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type LandWhereInput = {
-  building?: InputMaybe<Scalars['Int']['input']>;
-  buildingGT?: InputMaybe<Scalars['Int']['input']>;
-  buildingGTE?: InputMaybe<Scalars['Int']['input']>;
-  buildingLT?: InputMaybe<Scalars['Int']['input']>;
-  buildingLTE?: InputMaybe<Scalars['Int']['input']>;
-  buildingNEQ?: InputMaybe<Scalars['Int']['input']>;
-  level?: InputMaybe<Scalars['Int']['input']>;
-  levelGT?: InputMaybe<Scalars['Int']['input']>;
-  levelGTE?: InputMaybe<Scalars['Int']['input']>;
-  levelLT?: InputMaybe<Scalars['Int']['input']>;
-  levelLTE?: InputMaybe<Scalars['Int']['input']>;
-  levelNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
-  x?: InputMaybe<Scalars['Int']['input']>;
-  xGT?: InputMaybe<Scalars['Int']['input']>;
-  xGTE?: InputMaybe<Scalars['Int']['input']>;
-  xLT?: InputMaybe<Scalars['Int']['input']>;
-  xLTE?: InputMaybe<Scalars['Int']['input']>;
-  xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  y?: InputMaybe<Scalars['Int']['input']>;
-  yGT?: InputMaybe<Scalars['Int']['input']>;
-  yGTE?: InputMaybe<Scalars['Int']['input']>;
-  yLT?: InputMaybe<Scalars['Int']['input']>;
-  yLTE?: InputMaybe<Scalars['Int']['input']>;
-  yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  building?: InputMaybe<Scalars['u64']['input']>;
+  buildingEQ?: InputMaybe<Scalars['u64']['input']>;
+  buildingGT?: InputMaybe<Scalars['u64']['input']>;
+  buildingGTE?: InputMaybe<Scalars['u64']['input']>;
+  buildingLT?: InputMaybe<Scalars['u64']['input']>;
+  buildingLTE?: InputMaybe<Scalars['u64']['input']>;
+  buildingNEQ?: InputMaybe<Scalars['u64']['input']>;
+  level?: InputMaybe<Scalars['u64']['input']>;
+  levelEQ?: InputMaybe<Scalars['u64']['input']>;
+  levelGT?: InputMaybe<Scalars['u64']['input']>;
+  levelGTE?: InputMaybe<Scalars['u64']['input']>;
+  levelLT?: InputMaybe<Scalars['u64']['input']>;
+  levelLTE?: InputMaybe<Scalars['u64']['input']>;
+  levelNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type LuckyPack = {
@@ -1208,45 +1323,66 @@ export type LuckyPack = {
 export type LuckyPackConnection = {
   __typename?: 'LuckyPackConnection';
   edges?: Maybe<Array<Maybe<LuckyPackEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type LuckyPackEdge = {
   __typename?: 'LuckyPackEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<LuckyPack>;
 };
 
 export type LuckyPackOrder = {
-  direction: Direction;
-  field: LuckyPackOrderOrderField;
+  direction: OrderDirection;
+  field: LuckyPackOrderField;
 };
 
-export enum LuckyPackOrderOrderField {
+export enum LuckyPackOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
   Owner = 'OWNER'
 }
 
 export type LuckyPackWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+};
+
+export type Metadata = {
+  __typename?: 'Metadata';
+  id?: Maybe<Scalars['ID']['output']>;
+  uri?: Maybe<Scalars['String']['output']>;
+};
+
+export type MetadataConnection = {
+  __typename?: 'MetadataConnection';
+  edges?: Maybe<Array<Maybe<MetadataEdge>>>;
+  total_count: Scalars['Int']['output'];
+};
+
+export type MetadataEdge = {
+  __typename?: 'MetadataEdge';
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  node?: Maybe<Metadata>;
 };
 
 export type MiningConfig = {
@@ -1262,21 +1398,21 @@ export type MiningConfig = {
 export type MiningConfigConnection = {
   __typename?: 'MiningConfigConnection';
   edges?: Maybe<Array<Maybe<MiningConfigEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type MiningConfigEdge = {
   __typename?: 'MiningConfigEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<MiningConfig>;
 };
 
 export type MiningConfigOrder = {
-  direction: Direction;
-  field: MiningConfigOrderOrderField;
+  direction: OrderDirection;
+  field: MiningConfigOrderField;
 };
 
-export enum MiningConfigOrderOrderField {
+export enum MiningConfigOrderField {
   BaseGoldSpeed = 'BASE_GOLD_SPEED',
   FoodSpeed = 'FOOD_SPEED',
   GoldSpeed = 'GOLD_SPEED',
@@ -1285,37 +1421,70 @@ export enum MiningConfigOrderOrderField {
 }
 
 export type MiningConfigWhereInput = {
-  Base_Gold_Speed?: InputMaybe<Scalars['Int']['input']>;
-  Base_Gold_SpeedGT?: InputMaybe<Scalars['Int']['input']>;
-  Base_Gold_SpeedGTE?: InputMaybe<Scalars['Int']['input']>;
-  Base_Gold_SpeedLT?: InputMaybe<Scalars['Int']['input']>;
-  Base_Gold_SpeedLTE?: InputMaybe<Scalars['Int']['input']>;
-  Base_Gold_SpeedNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Food_Speed?: InputMaybe<Scalars['Int']['input']>;
-  Food_SpeedGT?: InputMaybe<Scalars['Int']['input']>;
-  Food_SpeedGTE?: InputMaybe<Scalars['Int']['input']>;
-  Food_SpeedLT?: InputMaybe<Scalars['Int']['input']>;
-  Food_SpeedLTE?: InputMaybe<Scalars['Int']['input']>;
-  Food_SpeedNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Gold_Speed?: InputMaybe<Scalars['Int']['input']>;
-  Gold_SpeedGT?: InputMaybe<Scalars['Int']['input']>;
-  Gold_SpeedGTE?: InputMaybe<Scalars['Int']['input']>;
-  Gold_SpeedLT?: InputMaybe<Scalars['Int']['input']>;
-  Gold_SpeedLTE?: InputMaybe<Scalars['Int']['input']>;
-  Gold_SpeedNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Iron_Speed?: InputMaybe<Scalars['Int']['input']>;
-  Iron_SpeedGT?: InputMaybe<Scalars['Int']['input']>;
-  Iron_SpeedGTE?: InputMaybe<Scalars['Int']['input']>;
-  Iron_SpeedLT?: InputMaybe<Scalars['Int']['input']>;
-  Iron_SpeedLTE?: InputMaybe<Scalars['Int']['input']>;
-  Iron_SpeedNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  Base_Gold_Speed?: InputMaybe<Scalars['u64']['input']>;
+  Base_Gold_SpeedEQ?: InputMaybe<Scalars['u64']['input']>;
+  Base_Gold_SpeedGT?: InputMaybe<Scalars['u64']['input']>;
+  Base_Gold_SpeedGTE?: InputMaybe<Scalars['u64']['input']>;
+  Base_Gold_SpeedLT?: InputMaybe<Scalars['u64']['input']>;
+  Base_Gold_SpeedLTE?: InputMaybe<Scalars['u64']['input']>;
+  Base_Gold_SpeedNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Food_Speed?: InputMaybe<Scalars['u64']['input']>;
+  Food_SpeedEQ?: InputMaybe<Scalars['u64']['input']>;
+  Food_SpeedGT?: InputMaybe<Scalars['u64']['input']>;
+  Food_SpeedGTE?: InputMaybe<Scalars['u64']['input']>;
+  Food_SpeedLT?: InputMaybe<Scalars['u64']['input']>;
+  Food_SpeedLTE?: InputMaybe<Scalars['u64']['input']>;
+  Food_SpeedNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Gold_Speed?: InputMaybe<Scalars['u64']['input']>;
+  Gold_SpeedEQ?: InputMaybe<Scalars['u64']['input']>;
+  Gold_SpeedGT?: InputMaybe<Scalars['u64']['input']>;
+  Gold_SpeedGTE?: InputMaybe<Scalars['u64']['input']>;
+  Gold_SpeedLT?: InputMaybe<Scalars['u64']['input']>;
+  Gold_SpeedLTE?: InputMaybe<Scalars['u64']['input']>;
+  Gold_SpeedNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Iron_Speed?: InputMaybe<Scalars['u64']['input']>;
+  Iron_SpeedEQ?: InputMaybe<Scalars['u64']['input']>;
+  Iron_SpeedGT?: InputMaybe<Scalars['u64']['input']>;
+  Iron_SpeedGTE?: InputMaybe<Scalars['u64']['input']>;
+  Iron_SpeedLT?: InputMaybe<Scalars['u64']['input']>;
+  Iron_SpeedLTE?: InputMaybe<Scalars['u64']['input']>;
+  Iron_SpeedNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
+
+export type Model = {
+  __typename?: 'Model';
+  class_hash?: Maybe<Scalars['felt252']['output']>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  transaction_hash?: Maybe<Scalars['felt252']['output']>;
+};
+
+export type ModelConnection = {
+  __typename?: 'ModelConnection';
+  edges?: Maybe<Array<Maybe<ModelEdge>>>;
+  total_count: Scalars['Int']['output'];
+};
+
+export type ModelEdge = {
+  __typename?: 'ModelEdge';
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  node?: Maybe<Model>;
+};
+
+export type ModelUnion = Airdrop | AirdropConfig | Base1 | BuildConfig | BuildPrice | Eth | Fight | Food | FortOwner | GlobalConfig | Gold | HBase | Iron | Land | LandCost | LandMiner | LandMining | LandOwner | LuckyPack | MiningConfig | Player | RewardPoint | Training | Troop | UpgradeCost | UserWarrior | Warrior | WarriorConfig;
+
+export enum OrderDirection {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 export type Player = {
   __typename?: 'Player';
@@ -1328,141 +1497,151 @@ export type Player = {
 export type PlayerConnection = {
   __typename?: 'PlayerConnection';
   edges?: Maybe<Array<Maybe<PlayerEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type PlayerEdge = {
   __typename?: 'PlayerEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Player>;
 };
 
 export type PlayerOrder = {
-  direction: Direction;
-  field: PlayerOrderOrderField;
+  direction: OrderDirection;
+  field: PlayerOrderField;
 };
 
-export enum PlayerOrderOrderField {
+export enum PlayerOrderField {
   JoinedTime = 'JOINED_TIME',
   NickName = 'NICK_NAME',
   Owner = 'OWNER'
 }
 
 export type PlayerWhereInput = {
-  joined_time?: InputMaybe<Scalars['Int']['input']>;
-  joined_timeGT?: InputMaybe<Scalars['Int']['input']>;
-  joined_timeGTE?: InputMaybe<Scalars['Int']['input']>;
-  joined_timeLT?: InputMaybe<Scalars['Int']['input']>;
-  joined_timeLTE?: InputMaybe<Scalars['Int']['input']>;
-  joined_timeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  nick_name?: InputMaybe<Scalars['String']['input']>;
-  nick_nameGT?: InputMaybe<Scalars['String']['input']>;
-  nick_nameGTE?: InputMaybe<Scalars['String']['input']>;
-  nick_nameLT?: InputMaybe<Scalars['String']['input']>;
-  nick_nameLTE?: InputMaybe<Scalars['String']['input']>;
-  nick_nameNEQ?: InputMaybe<Scalars['String']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  joined_time?: InputMaybe<Scalars['u64']['input']>;
+  joined_timeEQ?: InputMaybe<Scalars['u64']['input']>;
+  joined_timeGT?: InputMaybe<Scalars['u64']['input']>;
+  joined_timeGTE?: InputMaybe<Scalars['u64']['input']>;
+  joined_timeLT?: InputMaybe<Scalars['u64']['input']>;
+  joined_timeLTE?: InputMaybe<Scalars['u64']['input']>;
+  joined_timeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  nick_name?: InputMaybe<Scalars['felt252']['input']>;
+  nick_nameEQ?: InputMaybe<Scalars['felt252']['input']>;
+  nick_nameGT?: InputMaybe<Scalars['felt252']['input']>;
+  nick_nameGTE?: InputMaybe<Scalars['felt252']['input']>;
+  nick_nameLT?: InputMaybe<Scalars['felt252']['input']>;
+  nick_nameLTE?: InputMaybe<Scalars['felt252']['input']>;
+  nick_nameNEQ?: InputMaybe<Scalars['felt252']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
 };
 
 export type Query = {
   __typename?: 'Query';
-  airdropComponents?: Maybe<AirdropConnection>;
-  airdropconfigComponents?: Maybe<AirdropConfigConnection>;
-  baseComponents?: Maybe<BaseConnection>;
-  buildconfigComponents?: Maybe<BuildConfigConnection>;
-  buildpriceComponents?: Maybe<BuildPriceConnection>;
-  component: Component;
-  components?: Maybe<ComponentConnection>;
+  airdropModels?: Maybe<AirdropConnection>;
+  airdropconfigModels?: Maybe<AirdropConfigConnection>;
+  base1Models?: Maybe<Base1Connection>;
+  buildconfigModels?: Maybe<BuildConfigConnection>;
+  buildpriceModels?: Maybe<BuildPriceConnection>;
   entities?: Maybe<EntityConnection>;
   entity: Entity;
-  ethComponents?: Maybe<EthConnection>;
-  event: Event;
+  ethModels?: Maybe<EthConnection>;
   events?: Maybe<EventConnection>;
-  fightComponents?: Maybe<FightConnection>;
-  foodComponents?: Maybe<FoodConnection>;
-  fortownerComponents?: Maybe<FortOwnerConnection>;
-  globalconfigComponents?: Maybe<GlobalConfigConnection>;
-  goldComponents?: Maybe<GoldConnection>;
-  ironComponents?: Maybe<IronConnection>;
-  landComponents?: Maybe<LandConnection>;
-  landcostComponents?: Maybe<LandCostConnection>;
-  landminerComponents?: Maybe<LandMinerConnection>;
-  landminingComponents?: Maybe<LandMiningConnection>;
-  landownerComponents?: Maybe<LandOwnerConnection>;
-  luckypackComponents?: Maybe<LuckyPackConnection>;
-  miningconfigComponents?: Maybe<MiningConfigConnection>;
-  playerComponents?: Maybe<PlayerConnection>;
-  rewardpointComponents?: Maybe<RewardPointConnection>;
+  fightModels?: Maybe<FightConnection>;
+  foodModels?: Maybe<FoodConnection>;
+  fortownerModels?: Maybe<FortOwnerConnection>;
+  globalconfigModels?: Maybe<GlobalConfigConnection>;
+  goldModels?: Maybe<GoldConnection>;
+  hbaseModels?: Maybe<HBaseConnection>;
+  ironModels?: Maybe<IronConnection>;
+  landModels?: Maybe<LandConnection>;
+  landcostModels?: Maybe<LandCostConnection>;
+  landminerModels?: Maybe<LandMinerConnection>;
+  landminingModels?: Maybe<LandMiningConnection>;
+  landownerModels?: Maybe<LandOwnerConnection>;
+  luckypackModels?: Maybe<LuckyPackConnection>;
+  metadata: Metadata;
+  metadatas?: Maybe<MetadataConnection>;
+  miningconfigModels?: Maybe<MiningConfigConnection>;
+  model: Model;
+  models?: Maybe<ModelConnection>;
+  playerModels?: Maybe<PlayerConnection>;
+  rewardpointModels?: Maybe<RewardPointConnection>;
   system: System;
   systemCall: SystemCall;
   systemCalls?: Maybe<SystemCallConnection>;
   systems?: Maybe<SystemConnection>;
-  trainingComponents?: Maybe<TrainingConnection>;
-  troopComponents?: Maybe<TroopConnection>;
-  upgradecostComponents?: Maybe<UpgradeCostConnection>;
-  userwarriorComponents?: Maybe<UserWarriorConnection>;
-  warriorComponents?: Maybe<WarriorConnection>;
-  warriorconfigComponents?: Maybe<WarriorConfigConnection>;
+  trainingModels?: Maybe<TrainingConnection>;
+  troopModels?: Maybe<TroopConnection>;
+  upgradecostModels?: Maybe<UpgradeCostConnection>;
+  userwarriorModels?: Maybe<UserWarriorConnection>;
+  warriorModels?: Maybe<WarriorConnection>;
+  warriorconfigModels?: Maybe<WarriorConfigConnection>;
 };
 
 
-export type QueryAirdropComponentsArgs = {
+export type QueryAirdropModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<AirdropOrder>;
   where?: InputMaybe<AirdropWhereInput>;
 };
 
 
-export type QueryAirdropconfigComponentsArgs = {
+export type QueryAirdropconfigModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<AirdropConfigOrder>;
   where?: InputMaybe<AirdropConfigWhereInput>;
 };
 
 
-export type QueryBaseComponentsArgs = {
+export type QueryBase1ModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
-  order?: InputMaybe<BaseOrder>;
-  where?: InputMaybe<BaseWhereInput>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<Base1Order>;
+  where?: InputMaybe<Base1WhereInput>;
 };
 
 
-export type QueryBuildconfigComponentsArgs = {
+export type QueryBuildconfigModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<BuildConfigOrder>;
   where?: InputMaybe<BuildConfigWhereInput>;
 };
 
 
-export type QueryBuildpriceComponentsArgs = {
+export type QueryBuildpriceModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<BuildPriceOrder>;
   where?: InputMaybe<BuildPriceWhereInput>;
-};
-
-
-export type QueryComponentArgs = {
-  id: Scalars['ID']['input'];
 };
 
 
@@ -1472,6 +1651,8 @@ export type QueryEntitiesArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1480,166 +1661,246 @@ export type QueryEntityArgs = {
 };
 
 
-export type QueryEthComponentsArgs = {
+export type QueryEthModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<EthOrder>;
   where?: InputMaybe<EthWhereInput>;
 };
 
 
-export type QueryEventArgs = {
-  id: Scalars['ID']['input'];
+export type QueryEventsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-export type QueryFightComponentsArgs = {
+export type QueryFightModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<FightOrder>;
   where?: InputMaybe<FightWhereInput>;
 };
 
 
-export type QueryFoodComponentsArgs = {
+export type QueryFoodModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<FoodOrder>;
   where?: InputMaybe<FoodWhereInput>;
 };
 
 
-export type QueryFortownerComponentsArgs = {
+export type QueryFortownerModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<FortOwnerOrder>;
   where?: InputMaybe<FortOwnerWhereInput>;
 };
 
 
-export type QueryGlobalconfigComponentsArgs = {
+export type QueryGlobalconfigModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<GlobalConfigOrder>;
   where?: InputMaybe<GlobalConfigWhereInput>;
 };
 
 
-export type QueryGoldComponentsArgs = {
+export type QueryGoldModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<GoldOrder>;
   where?: InputMaybe<GoldWhereInput>;
 };
 
 
-export type QueryIronComponentsArgs = {
+export type QueryHbaseModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order?: InputMaybe<HBaseOrder>;
+  where?: InputMaybe<HBaseWhereInput>;
+};
+
+
+export type QueryIronModelsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<IronOrder>;
   where?: InputMaybe<IronWhereInput>;
 };
 
 
-export type QueryLandComponentsArgs = {
+export type QueryLandModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<LandOrder>;
   where?: InputMaybe<LandWhereInput>;
 };
 
 
-export type QueryLandcostComponentsArgs = {
+export type QueryLandcostModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<LandCostOrder>;
   where?: InputMaybe<LandCostWhereInput>;
 };
 
 
-export type QueryLandminerComponentsArgs = {
+export type QueryLandminerModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<LandMinerOrder>;
   where?: InputMaybe<LandMinerWhereInput>;
 };
 
 
-export type QueryLandminingComponentsArgs = {
+export type QueryLandminingModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<LandMiningOrder>;
   where?: InputMaybe<LandMiningWhereInput>;
 };
 
 
-export type QueryLandownerComponentsArgs = {
+export type QueryLandownerModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<LandOwnerOrder>;
   where?: InputMaybe<LandOwnerWhereInput>;
 };
 
 
-export type QueryLuckypackComponentsArgs = {
+export type QueryLuckypackModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<LuckyPackOrder>;
   where?: InputMaybe<LuckyPackWhereInput>;
 };
 
 
-export type QueryMiningconfigComponentsArgs = {
+export type QueryMetadataArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryMetadatasArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryMiningconfigModelsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<MiningConfigOrder>;
   where?: InputMaybe<MiningConfigWhereInput>;
 };
 
 
-export type QueryPlayerComponentsArgs = {
+export type QueryModelArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryPlayerModelsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<PlayerOrder>;
   where?: InputMaybe<PlayerWhereInput>;
 };
 
 
-export type QueryRewardpointComponentsArgs = {
+export type QueryRewardpointModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<RewardPointOrder>;
   where?: InputMaybe<RewardPointWhereInput>;
 };
@@ -1651,65 +1912,97 @@ export type QuerySystemArgs = {
 
 
 export type QuerySystemCallArgs = {
-  id: Scalars['Int']['input'];
+  id: Scalars['ID']['input'];
 };
 
 
-export type QueryTrainingComponentsArgs = {
+export type QuerySystemCallsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QuerySystemsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryTrainingModelsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<TrainingOrder>;
   where?: InputMaybe<TrainingWhereInput>;
 };
 
 
-export type QueryTroopComponentsArgs = {
+export type QueryTroopModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<TroopOrder>;
   where?: InputMaybe<TroopWhereInput>;
 };
 
 
-export type QueryUpgradecostComponentsArgs = {
+export type QueryUpgradecostModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<UpgradeCostOrder>;
   where?: InputMaybe<UpgradeCostWhereInput>;
 };
 
 
-export type QueryUserwarriorComponentsArgs = {
+export type QueryUserwarriorModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<UserWarriorOrder>;
   where?: InputMaybe<UserWarriorWhereInput>;
 };
 
 
-export type QueryWarriorComponentsArgs = {
+export type QueryWarriorModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<WarriorOrder>;
   where?: InputMaybe<WarriorWhereInput>;
 };
 
 
-export type QueryWarriorconfigComponentsArgs = {
+export type QueryWarriorconfigModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<WarriorConfigOrder>;
   where?: InputMaybe<WarriorConfigWhereInput>;
 };
@@ -1725,94 +2018,107 @@ export type RewardPoint = {
 export type RewardPointConnection = {
   __typename?: 'RewardPointConnection';
   edges?: Maybe<Array<Maybe<RewardPointEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type RewardPointEdge = {
   __typename?: 'RewardPointEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<RewardPoint>;
 };
 
 export type RewardPointOrder = {
-  direction: Direction;
-  field: RewardPointOrderOrderField;
+  direction: OrderDirection;
+  field: RewardPointOrderField;
 };
 
-export enum RewardPointOrderOrderField {
+export enum RewardPointOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
   Owner = 'OWNER'
 }
 
 export type RewardPointWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
-  componentRegistered: Component;
   entityUpdated: Entity;
+  modelRegistered: Model;
+};
+
+
+export type SubscriptionEntityUpdatedArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+
+export type SubscriptionModelRegisteredArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type System = {
   __typename?: 'System';
-  classHash?: Maybe<Scalars['felt252']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  class_hash?: Maybe<Scalars['felt252']['output']>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   systemCalls: Array<SystemCall>;
-  transactionHash?: Maybe<Scalars['felt252']['output']>;
+  transaction_hash?: Maybe<Scalars['felt252']['output']>;
 };
 
 export type SystemCall = {
   __typename?: 'SystemCall';
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
   data?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   system: System;
-  systemId?: Maybe<Scalars['ID']['output']>;
-  transactionHash?: Maybe<Scalars['String']['output']>;
+  system_id?: Maybe<Scalars['ID']['output']>;
+  transaction_hash?: Maybe<Scalars['String']['output']>;
 };
 
 export type SystemCallConnection = {
   __typename?: 'SystemCallConnection';
   edges?: Maybe<Array<Maybe<SystemCallEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type SystemCallEdge = {
   __typename?: 'SystemCallEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<SystemCall>;
 };
 
 export type SystemConnection = {
   __typename?: 'SystemConnection';
   edges?: Maybe<Array<Maybe<SystemEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type SystemEdge = {
   __typename?: 'SystemEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<System>;
 };
 
@@ -1829,21 +2135,21 @@ export type Training = {
 export type TrainingConnection = {
   __typename?: 'TrainingConnection';
   edges?: Maybe<Array<Maybe<TrainingEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type TrainingEdge = {
   __typename?: 'TrainingEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Training>;
 };
 
 export type TrainingOrder = {
-  direction: Direction;
-  field: TrainingOrderOrderField;
+  direction: OrderDirection;
+  field: TrainingOrderField;
 };
 
-export enum TrainingOrderOrderField {
+export enum TrainingOrderField {
   MapId = 'MAP_ID',
   Out = 'OUT',
   Owner = 'OWNER',
@@ -1852,36 +2158,41 @@ export enum TrainingOrderOrderField {
 }
 
 export type TrainingWhereInput = {
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  out?: InputMaybe<Scalars['Int']['input']>;
-  outGT?: InputMaybe<Scalars['Int']['input']>;
-  outGTE?: InputMaybe<Scalars['Int']['input']>;
-  outLT?: InputMaybe<Scalars['Int']['input']>;
-  outLTE?: InputMaybe<Scalars['Int']['input']>;
-  outNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
-  start_time?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  total?: InputMaybe<Scalars['Int']['input']>;
-  totalGT?: InputMaybe<Scalars['Int']['input']>;
-  totalGTE?: InputMaybe<Scalars['Int']['input']>;
-  totalLT?: InputMaybe<Scalars['Int']['input']>;
-  totalLTE?: InputMaybe<Scalars['Int']['input']>;
-  totalNEQ?: InputMaybe<Scalars['Int']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  out?: InputMaybe<Scalars['u64']['input']>;
+  outEQ?: InputMaybe<Scalars['u64']['input']>;
+  outGT?: InputMaybe<Scalars['u64']['input']>;
+  outGTE?: InputMaybe<Scalars['u64']['input']>;
+  outLT?: InputMaybe<Scalars['u64']['input']>;
+  outLTE?: InputMaybe<Scalars['u64']['input']>;
+  outNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  start_time?: InputMaybe<Scalars['u64']['input']>;
+  start_timeEQ?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  total?: InputMaybe<Scalars['u64']['input']>;
+  totalEQ?: InputMaybe<Scalars['u64']['input']>;
+  totalGT?: InputMaybe<Scalars['u64']['input']>;
+  totalGTE?: InputMaybe<Scalars['u64']['input']>;
+  totalLT?: InputMaybe<Scalars['u64']['input']>;
+  totalLTE?: InputMaybe<Scalars['u64']['input']>;
+  totalNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type Troop = {
@@ -1903,21 +2214,21 @@ export type Troop = {
 export type TroopConnection = {
   __typename?: 'TroopConnection';
   edges?: Maybe<Array<Maybe<TroopEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type TroopEdge = {
   __typename?: 'TroopEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Troop>;
 };
 
 export type TroopOrder = {
-  direction: Direction;
-  field: TroopOrderOrderField;
+  direction: OrderDirection;
+  field: TroopOrderField;
 };
 
-export enum TroopOrderOrderField {
+export enum TroopOrderField {
   Balance = 'BALANCE',
   Distance = 'DISTANCE',
   FromX = 'FROM_X',
@@ -1932,72 +2243,83 @@ export enum TroopOrderOrderField {
 }
 
 export type TroopWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  distance?: InputMaybe<Scalars['Int']['input']>;
-  distanceGT?: InputMaybe<Scalars['Int']['input']>;
-  distanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  distanceLT?: InputMaybe<Scalars['Int']['input']>;
-  distanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  distanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  from_x?: InputMaybe<Scalars['Int']['input']>;
-  from_xGT?: InputMaybe<Scalars['Int']['input']>;
-  from_xGTE?: InputMaybe<Scalars['Int']['input']>;
-  from_xLT?: InputMaybe<Scalars['Int']['input']>;
-  from_xLTE?: InputMaybe<Scalars['Int']['input']>;
-  from_xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  from_y?: InputMaybe<Scalars['Int']['input']>;
-  from_yGT?: InputMaybe<Scalars['Int']['input']>;
-  from_yGTE?: InputMaybe<Scalars['Int']['input']>;
-  from_yLT?: InputMaybe<Scalars['Int']['input']>;
-  from_yLTE?: InputMaybe<Scalars['Int']['input']>;
-  from_yNEQ?: InputMaybe<Scalars['Int']['input']>;
-  index?: InputMaybe<Scalars['Int']['input']>;
-  indexGT?: InputMaybe<Scalars['Int']['input']>;
-  indexGTE?: InputMaybe<Scalars['Int']['input']>;
-  indexLT?: InputMaybe<Scalars['Int']['input']>;
-  indexLTE?: InputMaybe<Scalars['Int']['input']>;
-  indexNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
-  retreat?: InputMaybe<Scalars['Int']['input']>;
-  retreatGT?: InputMaybe<Scalars['Int']['input']>;
-  retreatGTE?: InputMaybe<Scalars['Int']['input']>;
-  retreatLT?: InputMaybe<Scalars['Int']['input']>;
-  retreatLTE?: InputMaybe<Scalars['Int']['input']>;
-  retreatNEQ?: InputMaybe<Scalars['Int']['input']>;
-  start_time?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  to_x?: InputMaybe<Scalars['Int']['input']>;
-  to_xGT?: InputMaybe<Scalars['Int']['input']>;
-  to_xGTE?: InputMaybe<Scalars['Int']['input']>;
-  to_xLT?: InputMaybe<Scalars['Int']['input']>;
-  to_xLTE?: InputMaybe<Scalars['Int']['input']>;
-  to_xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  to_y?: InputMaybe<Scalars['Int']['input']>;
-  to_yGT?: InputMaybe<Scalars['Int']['input']>;
-  to_yGTE?: InputMaybe<Scalars['Int']['input']>;
-  to_yLT?: InputMaybe<Scalars['Int']['input']>;
-  to_yLTE?: InputMaybe<Scalars['Int']['input']>;
-  to_yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  distance?: InputMaybe<Scalars['u64']['input']>;
+  distanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  distanceGT?: InputMaybe<Scalars['u64']['input']>;
+  distanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  distanceLT?: InputMaybe<Scalars['u64']['input']>;
+  distanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  distanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  from_x?: InputMaybe<Scalars['u64']['input']>;
+  from_xEQ?: InputMaybe<Scalars['u64']['input']>;
+  from_xGT?: InputMaybe<Scalars['u64']['input']>;
+  from_xGTE?: InputMaybe<Scalars['u64']['input']>;
+  from_xLT?: InputMaybe<Scalars['u64']['input']>;
+  from_xLTE?: InputMaybe<Scalars['u64']['input']>;
+  from_xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  from_y?: InputMaybe<Scalars['u64']['input']>;
+  from_yEQ?: InputMaybe<Scalars['u64']['input']>;
+  from_yGT?: InputMaybe<Scalars['u64']['input']>;
+  from_yGTE?: InputMaybe<Scalars['u64']['input']>;
+  from_yLT?: InputMaybe<Scalars['u64']['input']>;
+  from_yLTE?: InputMaybe<Scalars['u64']['input']>;
+  from_yNEQ?: InputMaybe<Scalars['u64']['input']>;
+  index?: InputMaybe<Scalars['u64']['input']>;
+  indexEQ?: InputMaybe<Scalars['u64']['input']>;
+  indexGT?: InputMaybe<Scalars['u64']['input']>;
+  indexGTE?: InputMaybe<Scalars['u64']['input']>;
+  indexLT?: InputMaybe<Scalars['u64']['input']>;
+  indexLTE?: InputMaybe<Scalars['u64']['input']>;
+  indexNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  retreat?: InputMaybe<Scalars['bool']['input']>;
+  retreatEQ?: InputMaybe<Scalars['bool']['input']>;
+  retreatGT?: InputMaybe<Scalars['bool']['input']>;
+  retreatGTE?: InputMaybe<Scalars['bool']['input']>;
+  retreatLT?: InputMaybe<Scalars['bool']['input']>;
+  retreatLTE?: InputMaybe<Scalars['bool']['input']>;
+  retreatNEQ?: InputMaybe<Scalars['bool']['input']>;
+  start_time?: InputMaybe<Scalars['u64']['input']>;
+  start_timeEQ?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  to_x?: InputMaybe<Scalars['u64']['input']>;
+  to_xEQ?: InputMaybe<Scalars['u64']['input']>;
+  to_xGT?: InputMaybe<Scalars['u64']['input']>;
+  to_xGTE?: InputMaybe<Scalars['u64']['input']>;
+  to_xLT?: InputMaybe<Scalars['u64']['input']>;
+  to_xLTE?: InputMaybe<Scalars['u64']['input']>;
+  to_xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  to_y?: InputMaybe<Scalars['u64']['input']>;
+  to_yEQ?: InputMaybe<Scalars['u64']['input']>;
+  to_yGT?: InputMaybe<Scalars['u64']['input']>;
+  to_yGTE?: InputMaybe<Scalars['u64']['input']>;
+  to_yLT?: InputMaybe<Scalars['u64']['input']>;
+  to_yLTE?: InputMaybe<Scalars['u64']['input']>;
+  to_yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type UpgradeCost = {
@@ -2015,21 +2337,21 @@ export type UpgradeCost = {
 export type UpgradeCostConnection = {
   __typename?: 'UpgradeCostConnection';
   edges?: Maybe<Array<Maybe<UpgradeCostEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type UpgradeCostEdge = {
   __typename?: 'UpgradeCostEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<UpgradeCost>;
 };
 
 export type UpgradeCostOrder = {
-  direction: Direction;
-  field: UpgradeCostOrderOrderField;
+  direction: OrderDirection;
+  field: UpgradeCostOrderField;
 };
 
-export enum UpgradeCostOrderOrderField {
+export enum UpgradeCostOrderField {
   Claimed = 'CLAIMED',
   EndTime = 'END_TIME',
   MapId = 'MAP_ID',
@@ -2040,48 +2362,55 @@ export enum UpgradeCostOrderOrderField {
 }
 
 export type UpgradeCostWhereInput = {
-  claimed?: InputMaybe<Scalars['Int']['input']>;
-  claimedGT?: InputMaybe<Scalars['Int']['input']>;
-  claimedGTE?: InputMaybe<Scalars['Int']['input']>;
-  claimedLT?: InputMaybe<Scalars['Int']['input']>;
-  claimedLTE?: InputMaybe<Scalars['Int']['input']>;
-  claimedNEQ?: InputMaybe<Scalars['Int']['input']>;
-  end_time?: InputMaybe<Scalars['Int']['input']>;
-  end_timeGT?: InputMaybe<Scalars['Int']['input']>;
-  end_timeGTE?: InputMaybe<Scalars['Int']['input']>;
-  end_timeLT?: InputMaybe<Scalars['Int']['input']>;
-  end_timeLTE?: InputMaybe<Scalars['Int']['input']>;
-  end_timeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  start_time?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeGTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLT?: InputMaybe<Scalars['Int']['input']>;
-  start_timeLTE?: InputMaybe<Scalars['Int']['input']>;
-  start_timeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  target_level?: InputMaybe<Scalars['Int']['input']>;
-  target_levelGT?: InputMaybe<Scalars['Int']['input']>;
-  target_levelGTE?: InputMaybe<Scalars['Int']['input']>;
-  target_levelLT?: InputMaybe<Scalars['Int']['input']>;
-  target_levelLTE?: InputMaybe<Scalars['Int']['input']>;
-  target_levelNEQ?: InputMaybe<Scalars['Int']['input']>;
-  x?: InputMaybe<Scalars['Int']['input']>;
-  xGT?: InputMaybe<Scalars['Int']['input']>;
-  xGTE?: InputMaybe<Scalars['Int']['input']>;
-  xLT?: InputMaybe<Scalars['Int']['input']>;
-  xLTE?: InputMaybe<Scalars['Int']['input']>;
-  xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  y?: InputMaybe<Scalars['Int']['input']>;
-  yGT?: InputMaybe<Scalars['Int']['input']>;
-  yGTE?: InputMaybe<Scalars['Int']['input']>;
-  yLT?: InputMaybe<Scalars['Int']['input']>;
-  yLTE?: InputMaybe<Scalars['Int']['input']>;
-  yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  claimed?: InputMaybe<Scalars['bool']['input']>;
+  claimedEQ?: InputMaybe<Scalars['bool']['input']>;
+  claimedGT?: InputMaybe<Scalars['bool']['input']>;
+  claimedGTE?: InputMaybe<Scalars['bool']['input']>;
+  claimedLT?: InputMaybe<Scalars['bool']['input']>;
+  claimedLTE?: InputMaybe<Scalars['bool']['input']>;
+  claimedNEQ?: InputMaybe<Scalars['bool']['input']>;
+  end_time?: InputMaybe<Scalars['u64']['input']>;
+  end_timeEQ?: InputMaybe<Scalars['u64']['input']>;
+  end_timeGT?: InputMaybe<Scalars['u64']['input']>;
+  end_timeGTE?: InputMaybe<Scalars['u64']['input']>;
+  end_timeLT?: InputMaybe<Scalars['u64']['input']>;
+  end_timeLTE?: InputMaybe<Scalars['u64']['input']>;
+  end_timeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  start_time?: InputMaybe<Scalars['u64']['input']>;
+  start_timeEQ?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeGTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLT?: InputMaybe<Scalars['u64']['input']>;
+  start_timeLTE?: InputMaybe<Scalars['u64']['input']>;
+  start_timeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  target_level?: InputMaybe<Scalars['u64']['input']>;
+  target_levelEQ?: InputMaybe<Scalars['u64']['input']>;
+  target_levelGT?: InputMaybe<Scalars['u64']['input']>;
+  target_levelGTE?: InputMaybe<Scalars['u64']['input']>;
+  target_levelLT?: InputMaybe<Scalars['u64']['input']>;
+  target_levelLTE?: InputMaybe<Scalars['u64']['input']>;
+  target_levelNEQ?: InputMaybe<Scalars['u64']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type UserWarrior = {
@@ -2095,45 +2424,48 @@ export type UserWarrior = {
 export type UserWarriorConnection = {
   __typename?: 'UserWarriorConnection';
   edges?: Maybe<Array<Maybe<UserWarriorEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type UserWarriorEdge = {
   __typename?: 'UserWarriorEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<UserWarrior>;
 };
 
 export type UserWarriorOrder = {
-  direction: Direction;
-  field: UserWarriorOrderOrderField;
+  direction: OrderDirection;
+  field: UserWarriorOrderField;
 };
 
-export enum UserWarriorOrderOrderField {
+export enum UserWarriorOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
   Owner = 'OWNER'
 }
 
 export type UserWarriorWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  owner?: InputMaybe<Scalars['String']['input']>;
-  ownerGT?: InputMaybe<Scalars['String']['input']>;
-  ownerGTE?: InputMaybe<Scalars['String']['input']>;
-  ownerLT?: InputMaybe<Scalars['String']['input']>;
-  ownerLTE?: InputMaybe<Scalars['String']['input']>;
-  ownerNEQ?: InputMaybe<Scalars['String']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  owner?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerGTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLT?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerLTE?: InputMaybe<Scalars['ContractAddress']['input']>;
+  ownerNEQ?: InputMaybe<Scalars['ContractAddress']['input']>;
 };
 
 export type Warrior = {
@@ -2162,21 +2494,21 @@ export type WarriorConfig = {
 export type WarriorConfigConnection = {
   __typename?: 'WarriorConfigConnection';
   edges?: Maybe<Array<Maybe<WarriorConfigEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type WarriorConfigEdge = {
   __typename?: 'WarriorConfigEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<WarriorConfig>;
 };
 
 export type WarriorConfigOrder = {
-  direction: Direction;
-  field: WarriorConfigOrderOrderField;
+  direction: OrderDirection;
+  field: WarriorConfigOrderField;
 };
 
-export enum WarriorConfigOrderOrderField {
+export enum WarriorConfigOrderField {
   MapId = 'MAP_ID',
   TrainFood = 'TRAIN_FOOD',
   TrainGold = 'TRAIN_GOLD',
@@ -2189,80 +2521,89 @@ export enum WarriorConfigOrderOrderField {
 }
 
 export type WarriorConfigWhereInput = {
-  Train_Food?: InputMaybe<Scalars['Int']['input']>;
-  Train_FoodGT?: InputMaybe<Scalars['Int']['input']>;
-  Train_FoodGTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_FoodLT?: InputMaybe<Scalars['Int']['input']>;
-  Train_FoodLTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_FoodNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Train_Gold?: InputMaybe<Scalars['Int']['input']>;
-  Train_GoldGT?: InputMaybe<Scalars['Int']['input']>;
-  Train_GoldGTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_GoldLT?: InputMaybe<Scalars['Int']['input']>;
-  Train_GoldLTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_GoldNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Train_Iron?: InputMaybe<Scalars['Int']['input']>;
-  Train_IronGT?: InputMaybe<Scalars['Int']['input']>;
-  Train_IronGTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_IronLT?: InputMaybe<Scalars['Int']['input']>;
-  Train_IronLTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_IronNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Train_Time?: InputMaybe<Scalars['Int']['input']>;
-  Train_TimeGT?: InputMaybe<Scalars['Int']['input']>;
-  Train_TimeGTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_TimeLT?: InputMaybe<Scalars['Int']['input']>;
-  Train_TimeLTE?: InputMaybe<Scalars['Int']['input']>;
-  Train_TimeNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Troop_Food?: InputMaybe<Scalars['Int']['input']>;
-  Troop_FoodGT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_FoodGTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_FoodLT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_FoodLTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_FoodNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Troop_Gold?: InputMaybe<Scalars['Int']['input']>;
-  Troop_GoldGT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_GoldGTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_GoldLT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_GoldLTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_GoldNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Troop_Iron?: InputMaybe<Scalars['Int']['input']>;
-  Troop_IronGT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_IronGTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_IronLT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_IronLTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_IronNEQ?: InputMaybe<Scalars['Int']['input']>;
-  Troop_Speed?: InputMaybe<Scalars['Int']['input']>;
-  Troop_SpeedGT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_SpeedGTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_SpeedLT?: InputMaybe<Scalars['Int']['input']>;
-  Troop_SpeedLTE?: InputMaybe<Scalars['Int']['input']>;
-  Troop_SpeedNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
+  Train_Food?: InputMaybe<Scalars['u64']['input']>;
+  Train_FoodEQ?: InputMaybe<Scalars['u64']['input']>;
+  Train_FoodGT?: InputMaybe<Scalars['u64']['input']>;
+  Train_FoodGTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_FoodLT?: InputMaybe<Scalars['u64']['input']>;
+  Train_FoodLTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_FoodNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Train_Gold?: InputMaybe<Scalars['u64']['input']>;
+  Train_GoldEQ?: InputMaybe<Scalars['u64']['input']>;
+  Train_GoldGT?: InputMaybe<Scalars['u64']['input']>;
+  Train_GoldGTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_GoldLT?: InputMaybe<Scalars['u64']['input']>;
+  Train_GoldLTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_GoldNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Train_Iron?: InputMaybe<Scalars['u64']['input']>;
+  Train_IronEQ?: InputMaybe<Scalars['u64']['input']>;
+  Train_IronGT?: InputMaybe<Scalars['u64']['input']>;
+  Train_IronGTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_IronLT?: InputMaybe<Scalars['u64']['input']>;
+  Train_IronLTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_IronNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Train_Time?: InputMaybe<Scalars['u64']['input']>;
+  Train_TimeEQ?: InputMaybe<Scalars['u64']['input']>;
+  Train_TimeGT?: InputMaybe<Scalars['u64']['input']>;
+  Train_TimeGTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_TimeLT?: InputMaybe<Scalars['u64']['input']>;
+  Train_TimeLTE?: InputMaybe<Scalars['u64']['input']>;
+  Train_TimeNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_Food?: InputMaybe<Scalars['u64']['input']>;
+  Troop_FoodEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_FoodGT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_FoodGTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_FoodLT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_FoodLTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_FoodNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_Gold?: InputMaybe<Scalars['u64']['input']>;
+  Troop_GoldEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_GoldGT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_GoldGTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_GoldLT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_GoldLTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_GoldNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_Iron?: InputMaybe<Scalars['u64']['input']>;
+  Troop_IronEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_IronGT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_IronGTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_IronLT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_IronLTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_IronNEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_Speed?: InputMaybe<Scalars['u64']['input']>;
+  Troop_SpeedEQ?: InputMaybe<Scalars['u64']['input']>;
+  Troop_SpeedGT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_SpeedGTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_SpeedLT?: InputMaybe<Scalars['u64']['input']>;
+  Troop_SpeedLTE?: InputMaybe<Scalars['u64']['input']>;
+  Troop_SpeedNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type WarriorConnection = {
   __typename?: 'WarriorConnection';
   edges?: Maybe<Array<Maybe<WarriorEdge>>>;
-  totalCount: Scalars['Int']['output'];
+  total_count: Scalars['Int']['output'];
 };
 
 export type WarriorEdge = {
   __typename?: 'WarriorEdge';
-  cursor: Scalars['Cursor']['output'];
+  cursor?: Maybe<Scalars['Cursor']['output']>;
   node?: Maybe<Warrior>;
 };
 
 export type WarriorOrder = {
-  direction: Direction;
-  field: WarriorOrderOrderField;
+  direction: OrderDirection;
+  field: WarriorOrderField;
 };
 
-export enum WarriorOrderOrderField {
+export enum WarriorOrderField {
   Balance = 'BALANCE',
   MapId = 'MAP_ID',
   X = 'X',
@@ -2270,36 +2611,40 @@ export enum WarriorOrderOrderField {
 }
 
 export type WarriorWhereInput = {
-  balance?: InputMaybe<Scalars['Int']['input']>;
-  balanceGT?: InputMaybe<Scalars['Int']['input']>;
-  balanceGTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceLT?: InputMaybe<Scalars['Int']['input']>;
-  balanceLTE?: InputMaybe<Scalars['Int']['input']>;
-  balanceNEQ?: InputMaybe<Scalars['Int']['input']>;
-  map_id?: InputMaybe<Scalars['Int']['input']>;
-  map_idGT?: InputMaybe<Scalars['Int']['input']>;
-  map_idGTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idLT?: InputMaybe<Scalars['Int']['input']>;
-  map_idLTE?: InputMaybe<Scalars['Int']['input']>;
-  map_idNEQ?: InputMaybe<Scalars['Int']['input']>;
-  x?: InputMaybe<Scalars['Int']['input']>;
-  xGT?: InputMaybe<Scalars['Int']['input']>;
-  xGTE?: InputMaybe<Scalars['Int']['input']>;
-  xLT?: InputMaybe<Scalars['Int']['input']>;
-  xLTE?: InputMaybe<Scalars['Int']['input']>;
-  xNEQ?: InputMaybe<Scalars['Int']['input']>;
-  y?: InputMaybe<Scalars['Int']['input']>;
-  yGT?: InputMaybe<Scalars['Int']['input']>;
-  yGTE?: InputMaybe<Scalars['Int']['input']>;
-  yLT?: InputMaybe<Scalars['Int']['input']>;
-  yLTE?: InputMaybe<Scalars['Int']['input']>;
-  yNEQ?: InputMaybe<Scalars['Int']['input']>;
+  balance?: InputMaybe<Scalars['u64']['input']>;
+  balanceEQ?: InputMaybe<Scalars['u64']['input']>;
+  balanceGT?: InputMaybe<Scalars['u64']['input']>;
+  balanceGTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceLT?: InputMaybe<Scalars['u64']['input']>;
+  balanceLTE?: InputMaybe<Scalars['u64']['input']>;
+  balanceNEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_id?: InputMaybe<Scalars['u64']['input']>;
+  map_idEQ?: InputMaybe<Scalars['u64']['input']>;
+  map_idGT?: InputMaybe<Scalars['u64']['input']>;
+  map_idGTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idLT?: InputMaybe<Scalars['u64']['input']>;
+  map_idLTE?: InputMaybe<Scalars['u64']['input']>;
+  map_idNEQ?: InputMaybe<Scalars['u64']['input']>;
+  x?: InputMaybe<Scalars['u64']['input']>;
+  xEQ?: InputMaybe<Scalars['u64']['input']>;
+  xGT?: InputMaybe<Scalars['u64']['input']>;
+  xGTE?: InputMaybe<Scalars['u64']['input']>;
+  xLT?: InputMaybe<Scalars['u64']['input']>;
+  xLTE?: InputMaybe<Scalars['u64']['input']>;
+  xNEQ?: InputMaybe<Scalars['u64']['input']>;
+  y?: InputMaybe<Scalars['u64']['input']>;
+  yEQ?: InputMaybe<Scalars['u64']['input']>;
+  yGT?: InputMaybe<Scalars['u64']['input']>;
+  yGTE?: InputMaybe<Scalars['u64']['input']>;
+  yLT?: InputMaybe<Scalars['u64']['input']>;
+  yLTE?: InputMaybe<Scalars['u64']['input']>;
+  yNEQ?: InputMaybe<Scalars['u64']['input']>;
 };
 
 export type GetAllPlayersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllPlayersQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH', owner?: any | null, balance?: any | null } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player', owner?: any | null, nick_name?: any | null, joined_time?: any | null } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllPlayersQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH', owner?: any | null, balance?: any | null } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player', owner?: any | null, nick_name?: any | null, joined_time?: any | null } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetAirdropByKeyQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -2307,7 +2652,7 @@ export type GetAirdropByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetAirdropByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop', map_id?: any | null, owner?: any | null, index?: any | null, claimed?: any | null } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAirdropByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop', map_id?: any | null, owner?: any | null, index?: any | null, claimed?: any | null } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetBaseByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
@@ -2315,7 +2660,7 @@ export type GetBaseByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetBaseByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base', map_id?: any | null, owner?: any | null, x?: any | null, y?: any | null } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner', map_id?: any | null, owner?: any | null, total?: any | null } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetBaseByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner', map_id?: any | null, owner?: any | null, total?: any | null } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase', map_id?: any | null, owner?: any | null, x?: any | null, y?: any | null } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetUserWarriorByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
@@ -2323,21 +2668,21 @@ export type GetUserWarriorByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetUserWarriorByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetUserWarriorByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetWarriorConfigQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetWarriorConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig', map_id?: any | null, Train_Food?: any | null, Train_Gold?: any | null, Train_Iron?: any | null, Train_Time?: any | null, Troop_Food?: any | null, Troop_Iron?: any | null, Troop_Gold?: any | null, Troop_Speed?: any | null } | null> | null } | null } | null> | null } | null };
+export type GetWarriorConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig', map_id?: any | null, Train_Food?: any | null, Train_Gold?: any | null, Train_Iron?: any | null, Train_Time?: any | null, Troop_Food?: any | null, Troop_Iron?: any | null, Troop_Gold?: any | null, Troop_Speed?: any | null } | null> | null } | null } | null> | null } | null };
 
 export type GetAirdropConfigQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAirdropConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig', map_id?: any | null, index?: any | null, reward_warrior?: any | null, reward_food?: any | null, reward_gold?: any | null, reward_iron?: any | null } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAirdropConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig', map_id?: any | null, index?: any | null, reward_warrior?: any | null, reward_food?: any | null, reward_gold?: any | null, reward_iron?: any | null } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetWarriorByLocationQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -2346,7 +2691,7 @@ export type GetWarriorByLocationQueryVariables = Exact<{
 }>;
 
 
-export type GetWarriorByLocationQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetWarriorByLocationQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetTrainingByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
@@ -2354,14 +2699,14 @@ export type GetTrainingByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetTrainingByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training', start_time?: any | null, total?: any | null, out?: any | null } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetTrainingByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training', start_time?: any | null, total?: any | null, out?: any | null } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetAllBaseQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAllBaseQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base', owner?: any | null, map_id?: any | null, x?: any | null, y?: any | null } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner', owner?: any | null, map_id?: any | null, total?: any | null } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllBaseQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase', owner?: any | null, map_id?: any | null, x?: any | null, y?: any | null } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner', owner?: any | null, map_id?: any | null, total?: any | null } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetLandByKeyQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -2370,21 +2715,21 @@ export type GetLandByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetLandByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost', map_id?: any | null, x?: any | null, y?: any | null, cost_gold?: any | null, cost_iron?: any | null, cost_food?: any | null } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetLandByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost', map_id?: any | null, x?: any | null, y?: any | null, cost_gold?: any | null, cost_iron?: any | null, cost_food?: any | null } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetAllLandsQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAllLandsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', totalCount: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost', map_id?: any | null, x?: any | null, y?: any | null, cost_gold?: any | null, cost_iron?: any | null, cost_food?: any | null } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null, mined_x?: any | null, mined_y?: any | null } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null, end_time?: any | null, target_level?: any | null, claimed?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllLandsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost', map_id?: any | null, x?: any | null, y?: any | null, cost_gold?: any | null, cost_iron?: any | null, cost_food?: any | null } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null, mined_x?: any | null, mined_y?: any | null } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost', map_id?: any | null, x?: any | null, y?: any | null, start_time?: any | null, end_time?: any | null, target_level?: any | null, claimed?: any | null } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetEthByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetEthByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetEthByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH', balance?: any | null } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetLandMinerByKeyQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -2393,7 +2738,7 @@ export type GetLandMinerByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetLandMinerByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetLandMinerByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetResoucesByKeyQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -2401,14 +2746,14 @@ export type GetResoucesByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetResoucesByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Iron', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetResoucesByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'HBase' } | { __typename: 'Iron', map_id?: any | null, owner?: any | null, balance?: any | null } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetBuildPriceQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetBuildPriceQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice', map_id?: any | null, build_type?: any | null, gold?: any | null, food?: any | null, iron?: any | null } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetBuildPriceQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice', map_id?: any | null, build_type?: any | null, gold?: any | null, food?: any | null, iron?: any | null } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetTroopsByKeyQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
@@ -2416,66 +2761,66 @@ export type GetTroopsByKeyQueryVariables = Exact<{
 }>;
 
 
-export type GetTroopsByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop', map_id?: any | null, owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetTroopsByKeyQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop', map_id?: any | null, owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetAllTroopsQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetAllTroopsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop', map_id?: any | null, owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null, retreat?: any | null } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetAllTroopsQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop', map_id?: any | null, owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null, retreat?: any | null } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetMiningConfigQueryVariables = Exact<{
   map_id?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetMiningConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig', map_id?: any | null, Food_Speed?: any | null, Iron_Speed?: any | null, Gold_Speed?: any | null, Base_Gold_Speed?: any | null } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetMiningConfigQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig', map_id?: any | null, Food_Speed?: any | null, Iron_Speed?: any | null, Gold_Speed?: any | null, Base_Gold_Speed?: any | null } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetLandMinerQueryVariables = Exact<{
   keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
 }>;
 
 
-export type GetLandMinerQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetLandMinerQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner', map_id?: any | null, x?: any | null, y?: any | null, miner_x?: any | null, miner_y?: any | null } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetLandQueryVariables = Exact<{
   keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
 }>;
 
 
-export type GetLandQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetLandQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land', map_id?: any | null, x?: any | null, y?: any | null, owner?: any | null, building?: any | null, level?: any | null } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetPlayerQueryVariables = Exact<{
   keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
 }>;
 
 
-export type GetPlayerQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player', owner?: any | null, nick_name?: any | null, joined_time?: any | null } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetPlayerQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player', owner?: any | null, nick_name?: any | null, joined_time?: any | null } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetTroopQueryVariables = Exact<{
   keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
 }>;
 
 
-export type GetTroopQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop', map_id?: any | null, owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null, retreat?: any | null } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetTroopQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop', map_id?: any | null, owner?: any | null, index?: any | null, balance?: any | null, from_x?: any | null, from_y?: any | null, to_x?: any | null, to_y?: any | null, start_time?: any | null, distance?: any | null, retreat?: any | null } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior' } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 export type GetWarriorQueryVariables = Exact<{
   keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>> | InputMaybe<Scalars['String']['input']>>;
 }>;
 
 
-export type GetWarriorQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, components?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
+export type GetWarriorQuery = { __typename?: 'Query', entities?: { __typename?: 'EntityConnection', total_count: number, edges?: Array<{ __typename?: 'EntityEdge', node?: { __typename?: 'Entity', keys?: Array<string | null> | null, models?: Array<{ __typename: 'Airdrop' } | { __typename: 'AirdropConfig' } | { __typename: 'Base1' } | { __typename: 'BuildConfig' } | { __typename: 'BuildPrice' } | { __typename: 'ETH' } | { __typename: 'Fight' } | { __typename: 'Food' } | { __typename: 'FortOwner' } | { __typename: 'GlobalConfig' } | { __typename: 'Gold' } | { __typename: 'HBase' } | { __typename: 'Iron' } | { __typename: 'Land' } | { __typename: 'LandCost' } | { __typename: 'LandMiner' } | { __typename: 'LandMining' } | { __typename: 'LandOwner' } | { __typename: 'LuckyPack' } | { __typename: 'MiningConfig' } | { __typename: 'Player' } | { __typename: 'RewardPoint' } | { __typename: 'Training' } | { __typename: 'Troop' } | { __typename: 'UpgradeCost' } | { __typename: 'UserWarrior' } | { __typename: 'Warrior', map_id?: any | null, x?: any | null, y?: any | null, balance?: any | null } | { __typename: 'WarriorConfig' } | null> | null } | null } | null> | null } | null };
 
 
 export const GetAllPlayersDocument = gql`
     query getAllPlayers {
-  entities(first: 1000, keys: ["%"]) {
-    totalCount
+  entities(offset: 0, limit: 1000, keys: ["%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Player {
             owner
@@ -2496,11 +2841,11 @@ export const GetAllPlayersDocument = gql`
 export const GetAirdropByKeyDocument = gql`
     query getAirdropByKey($map_id: String, $key: String) {
   entities(first: 1000, keys: [$map_id, $key, "%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Airdrop {
             map_id
@@ -2517,13 +2862,13 @@ export const GetAirdropByKeyDocument = gql`
 export const GetBaseByKeyDocument = gql`
     query getBaseByKey($key: String, $map_id: String) {
   entities(first: 1000, keys: [$map_id, $key]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
-          ... on Base {
+          ... on HBase {
             map_id
             owner
             x
@@ -2544,11 +2889,11 @@ export const GetBaseByKeyDocument = gql`
 export const GetUserWarriorByKeyDocument = gql`
     query getUserWarriorByKey($key: String, $map_id: String) {
   entities(first: 1000, keys: [$map_id, $key]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on UserWarrior {
             map_id
@@ -2576,11 +2921,11 @@ export const GetUserWarriorByKeyDocument = gql`
 export const GetWarriorConfigDocument = gql`
     query getWarriorConfig($map_id: String) {
   entities(first: 1000, keys: [$map_id]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on WarriorConfig {
             map_id
@@ -2602,11 +2947,11 @@ export const GetWarriorConfigDocument = gql`
 export const GetAirdropConfigDocument = gql`
     query getAirdropConfig($map_id: String) {
   entities(first: 1000, keys: [$map_id, "%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on AirdropConfig {
             map_id
@@ -2625,11 +2970,11 @@ export const GetAirdropConfigDocument = gql`
 export const GetWarriorByLocationDocument = gql`
     query getWarriorByLocation($map_id: String, $x: String, $y: String) {
   entities(first: 1000, keys: [$map_id, $x, $y]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Warrior {
             x
@@ -2645,11 +2990,11 @@ export const GetWarriorByLocationDocument = gql`
 export const GetTrainingByKeyDocument = gql`
     query getTrainingByKey($key: String, $map_id: String) {
   entities(first: 1000, keys: [$map_id, $key]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Training {
             start_time
@@ -2665,13 +3010,13 @@ export const GetTrainingByKeyDocument = gql`
 export const GetAllBaseDocument = gql`
     query getAllBase($map_id: String) {
   entities(first: 1000, keys: [$map_id, "%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
-          ... on Base {
+          ... on HBase {
             owner
             map_id
             x
@@ -2704,11 +3049,11 @@ export const GetAllBaseDocument = gql`
 export const GetLandByKeyDocument = gql`
     query getLandByKey($map_id: String, $x: String, $y: String) {
   entities(first: 1, keys: [$map_id, $x, $y]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Land {
             map_id
@@ -2743,11 +3088,11 @@ export const GetLandByKeyDocument = gql`
 export const GetAllLandsDocument = gql`
     query getAllLands($map_id: String) {
   entities(first: 1000, keys: [$map_id, "%", "%"]) {
-    totalCount
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Land {
             map_id
@@ -2809,10 +3154,11 @@ export const GetAllLandsDocument = gql`
 export const GetEthByKeyDocument = gql`
     query getETHByKey($key: String) {
   entities(first: 1000, keys: [$key]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on ETH {
             balance
@@ -2826,10 +3172,11 @@ export const GetEthByKeyDocument = gql`
 export const GetLandMinerByKeyDocument = gql`
     query getLandMinerByKey($map_id: String, $x: String, $y: String) {
   entities(first: 1000, keys: [$map_id, $x, $y]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on LandMiner {
             map_id
@@ -2847,10 +3194,11 @@ export const GetLandMinerByKeyDocument = gql`
 export const GetResoucesByKeyDocument = gql`
     query getResoucesByKey($map_id: String, $key: String) {
   entities(first: 1000, keys: [$map_id, $key]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Food {
             map_id
@@ -2878,10 +3226,11 @@ export const GetResoucesByKeyDocument = gql`
 export const GetBuildPriceDocument = gql`
     query getBuildPrice($map_id: String) {
   entities(first: 1000, keys: [$map_id, "%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on BuildPrice {
             map_id
@@ -2899,10 +3248,11 @@ export const GetBuildPriceDocument = gql`
 export const GetTroopsByKeyDocument = gql`
     query getTroopsByKey($map_id: String, $key: String) {
   entities(first: 1000, keys: [$map_id, $key, "%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Troop {
             map_id
@@ -2925,10 +3275,11 @@ export const GetTroopsByKeyDocument = gql`
 export const GetAllTroopsDocument = gql`
     query getAllTroops($map_id: String) {
   entities(first: 1000, keys: [$map_id, "%", "%"]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Troop {
             map_id
@@ -2952,10 +3303,11 @@ export const GetAllTroopsDocument = gql`
 export const GetMiningConfigDocument = gql`
     query getMiningConfig($map_id: String) {
   entities(first: 1000, keys: [$map_id]) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on MiningConfig {
             map_id
@@ -2973,10 +3325,11 @@ export const GetMiningConfigDocument = gql`
 export const GetLandMinerDocument = gql`
     query getLandMiner($keys: [String]) {
   entities(first: 1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on LandMiner {
             map_id
@@ -2994,10 +3347,11 @@ export const GetLandMinerDocument = gql`
 export const GetLandDocument = gql`
     query getLand($keys: [String]) {
   entities(first: 1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Land {
             map_id
@@ -3016,10 +3370,11 @@ export const GetLandDocument = gql`
 export const GetPlayerDocument = gql`
     query getPlayer($keys: [String]) {
   entities(first: 1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Player {
             owner
@@ -3035,10 +3390,11 @@ export const GetPlayerDocument = gql`
 export const GetTroopDocument = gql`
     query getTroop($keys: [String]) {
   entities(first: 1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Troop {
             map_id
@@ -3062,10 +3418,11 @@ export const GetTroopDocument = gql`
 export const GetWarriorDocument = gql`
     query getWarrior($keys: [String]) {
   entities(first: 1000, keys: $keys) {
+    total_count
     edges {
       node {
         keys
-        components {
+        models {
           __typename
           ... on Warrior {
             map_id
