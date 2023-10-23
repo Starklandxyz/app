@@ -10,7 +10,7 @@ import {
 } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexyz/react";
 import { Troop, Troop2Troop } from "../types/Troop";
 import NesButton from "./components/NesButton";
 
@@ -28,7 +28,7 @@ export default function TroopPanel() {
     },
   } = phaserLayer!;
   const myBase = useComponentValue(
-    components.Base,
+    components.HBase,
     getEntityIdFromKeys([1n, BigInt(account ? account.address : "")])
   );
 

@@ -6,7 +6,7 @@ import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { BuildType } from "../types/Build";
 import { hexToString } from "../utils";
 import { handleSQLResult } from "../utils/handleutils";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexyz/react";
 // import { Land } from "../types/Land";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
@@ -30,8 +30,8 @@ export default function MapUI() {
             network: { graphSdk }
         }
     } = phaserLayer!;
-    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
-    const bases = useEntityQuery([Has(components.Base)], { updateOnValueChange: true })
+    const myBase = useComponentValue(components.HBase, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const bases = useEntityQuery([Has(components.HBase)], { updateOnValueChange: true })
     const mapLands = useEntityQuery([Has(components.Land)], { updateOnValueChange: true })
     const minerLands = useEntityQuery([Has(components.LandMiner)], { updateOnValueChange: true })
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
@@ -42,7 +42,7 @@ export default function MapUI() {
     useEffect(() => {
         console.log("map base change");
         bases.map((entity) => {
-            const value = getComponentValueStrict(components.Base, entity)
+            const value = getComponentValueStrict(components.HBase, entity)
             const xStart = value.x
             const yStart = value.y
             var diff = 0

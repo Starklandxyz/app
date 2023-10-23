@@ -1,4 +1,4 @@
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "../../../node_modules/@latticexyz/react";
 import { store } from "../../store/store";
 import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import { useEffect, useMemo, useState } from "react";
@@ -38,7 +38,7 @@ export default function BasePage() {
 
   // const [base, setBase] = useState<Land>()
   const base = useComponentValue(
-    contractComponents.Base,
+    contractComponents.HBase,
     getEntityIdFromKeys([1n, account ? BigInt(account.address) : 0n])
   );
   const miningConfig = useComponentValue(
@@ -125,7 +125,7 @@ export default function BasePage() {
     const xs: Array<number> = [];
     const ys: Array<number> = [];
     const base = getComponentValue(
-      contractComponents.Base,
+      contractComponents.HBase,
       getEntityIdFromKeys([1n, BigInt(account.address)])
     );
     if (!base) {
@@ -204,7 +204,7 @@ export default function BasePage() {
       return 0;
     }
     const base = getComponentValue(
-      contractComponents.Base,
+      contractComponents.HBase,
       getEntityIdFromKeys([1n, BigInt(account.address)])
     );
     if (!base) {

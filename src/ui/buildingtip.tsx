@@ -10,7 +10,7 @@ import { Troop } from "../types/Troop";
 import { controlStore } from "../store/controlStore";
 import { BuildType } from "../types/Build";
 import { LandType, get_land_barbarians, get_land_level, get_land_type } from "../types/Land";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue } from "../../node_modules/@latticexyz/react";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 export default function BuildingTip() {
@@ -34,7 +34,7 @@ export default function BuildingTip() {
         }
     } = phaserLayer!;
 
-    const myBase = useComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const myBase = useComponentValue(contractComponents.HBase, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     useEffect(() => {
         const x = MAP_WIDTH / 2

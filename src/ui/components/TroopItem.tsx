@@ -59,7 +59,7 @@ export default function TroopItem(params: any) {
     }
 
     const maxLand = () => {
-        const base = getComponentValue(contractComponents.Base, getEntityIdFromKeys([1n, BigInt(account?.address!)]))
+        const base = getComponentValue(contractComponents.HBase, getEntityIdFromKeys([1n, BigInt(account?.address!)]))
         if (!base) {
             return 10
         }

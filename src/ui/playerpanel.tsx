@@ -25,7 +25,7 @@ import {
 } from "../../node_modules/@latticexyz/recs/src/index";
 import { handleSQLResult } from "../utils/handleutils";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexyz/react";
 import { BuildType } from "../types/Build";
 import { controlStore } from "../store/controlStore";
 import NESButton from "./components/NesButton";
@@ -231,7 +231,7 @@ export default function PlayerPanel() {
     if (!account) {
       return 10
     }
-    const base = getComponentValue(sqlComponent.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+    const base = getComponentValue(sqlComponent.HBase, getEntityIdFromKeys([1n, BigInt(account.address)]))
     if (!base) {
       return 10
     }

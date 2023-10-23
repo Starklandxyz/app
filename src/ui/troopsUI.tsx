@@ -13,7 +13,7 @@ import sha256 from 'crypto-js/sha256';
 import { BuildType } from "../types/Build";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
-import { useEntityQuery } from "@dojoengine/react";
+import { useEntityQuery } from "../../node_modules/@latticexyz/react";
 const SIZE = 12
 
 export default function TroopsUI() {
@@ -44,7 +44,7 @@ export default function TroopsUI() {
                 return
             }
             const value = Troop2Troop(t)
-            const base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(value.owner)]))
+            const base = getComponentValue(components.HBase, getEntityIdFromKeys([1n, BigInt(value.owner)]))
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
             // console.log("time change",timenow,value);

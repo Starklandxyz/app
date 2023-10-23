@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { controlStore } from "../store/controlStore"
 import { ClickWrapper } from "./clickWrapper"
 import { useEffect, useMemo, useState } from "react";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue } from "../../node_modules/@latticexyz/react";
 import { store } from "../store/store";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { toastError, toastInfo, toastSuccess } from "../utils";

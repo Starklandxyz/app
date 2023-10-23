@@ -6,7 +6,7 @@ import { store } from "../store/store";
 import { Account } from "starknet";
 import { ticStore } from "../store/ticStore";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexyz/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
 import { Warrior } from "../types/Warrior";
@@ -32,7 +32,7 @@ export default function TrainPanel() {
     const landEntities = useEntityQuery([Has(components.Land)], {
         updateOnValueChange: true,
     });
-    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const myBase = useComponentValue(components.HBase, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     const training = useComponentValue(components.Training, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]))

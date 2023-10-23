@@ -18,7 +18,7 @@ import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } fr
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue } from "../../node_modules/@latticexyz/react";
 import LoadingButton from "./components/LoadingButton";
 import { mouseStore } from "../store/mouseStore";
 
@@ -122,7 +122,7 @@ export default function ChooseBuildUI() {
         }
 
         if (selectBuild == BuildType.Fort) {
-            let base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+            let base = getComponentValue(components.HBase, getEntityIdFromKeys([1n, BigInt(account.address)]))
             if (base) {
                 let land = getComponentValue(components.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
                 if (land) {
@@ -265,7 +265,7 @@ export default function ChooseBuildUI() {
             if (selectBuild == BuildType.Fort) {
                 output = ""
                 if (account) {
-                    let base = getComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account.address)]))
+                    let base = getComponentValue(components.HBase, getEntityIdFromKeys([1n, BigInt(account.address)]))
                     if (base) {
                         let land = getComponentValue(components.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
                         if (land) {

@@ -18,7 +18,7 @@ import PlayerPanel from "./playerpanel";
 import ethicon from "../../public/ethereum.png";
 import starkicon from "../../public/starkneticon.png";
 import { ticStore } from "../store/ticStore";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue } from "../../node_modules/@latticexyz/react";
 import {
   ComponentValue,
   Has,

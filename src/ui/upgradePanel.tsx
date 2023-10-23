@@ -3,7 +3,7 @@ import { ClickWrapper } from './clickWrapper';
 import { updateStore } from '../store/updateStore';
 import { useEffect, useMemo } from 'react';
 import closeicon from "../../public/assets//icons/closeicon.png"
-import { useComponentValue } from '@dojoengine/react';
+import { useComponentValue } from '../../node_modules/@latticexyz/react';
 import { store } from '../store/store';
 import { getBuildName } from '../types/Build';
 import { getEntityIdFromKeys } from '../dojo/parseEvent';

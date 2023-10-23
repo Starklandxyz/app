@@ -7,7 +7,7 @@ import { calDistanceFromBase, calDistanceToBase, getTimestamp, toastError, toast
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Troop_Speed } from "../contractconfig";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexyz/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import LoadingButton from "./components/LoadingButton";
 import { mouseStore } from "../store/mouseStore";
@@ -36,7 +36,7 @@ export default function SendTroopPanel() {
 
     const warriors = useEntityQuery([Has(components.Warrior)], { updateOnValueChange: true })
 
-    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const myBase = useComponentValue(components.HBase, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!account) {

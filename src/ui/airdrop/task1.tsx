@@ -6,7 +6,7 @@ import { store } from "../../store/store";
 import { useEffect, useMemo, useRef } from "react";
 import { ComponentValue, Has, defineSystem, getComponentEntities, getComponentValue, setComponent } from "../../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../../dojo/parseEvent";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
+import { useComponentValue, useEntityQuery } from "../../../node_modules/@latticexyz/react";
 import gifticon from "../../../public/assets//icons/gifticon.png"
 import { toastError, toastSuccess } from "../../utils";
 import { AirdropClaimButton } from "../components/AirdropClaimButton";
@@ -23,7 +23,7 @@ export default function Task1() {
 
     const userairdrop = useComponentValue(sqlComponent.Airdrop, getEntityIdFromKeys([1n, BigInt(account ? account.address : ""), BigInt(airdropIndex)]))
 
-    const myBase = useComponentValue(sqlComponent.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const myBase = useComponentValue(sqlComponent.HBase, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
 
     const airdropConfig = useComponentValue(sqlComponent.AirdropConfig, getEntityIdFromKeys([1n, BigInt(airdropIndex)]))
 

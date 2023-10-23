@@ -9,7 +9,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "codegen": "graphql-codegen",
-    "components": "npx @dojoengine/core ./contracts/target/dev/manifest.json src/dojo/contractComponents.ts"
+    "components": "npx @dojoengine/core /Users/junhu/git/starklandcontract/target/dev/manifest.json src/dojo/contractComponents.ts"
   },
   "exports": {
     ".": {
@@ -18,9 +18,9 @@
     }
   },
   "dependencies": {
-    "@dojoengine/core": "^0.0.20",
-    "@dojoengine/react": "^0.0.3",
-    "@dojoengine/utils": "^0.0.2",
+    "@dojoengine/core": "^0.1.30",
+    "@dojoengine/create-burner": "^0.1.30",
+    "@dojoengine/utils": "^0.1.30",
     "@latticexyz/phaserx": "^2.0.0-next.9",
     "@latticexyz/react": "^2.0.0-next.9",
     "@latticexyz/recs": "^2.0.0-next.9",

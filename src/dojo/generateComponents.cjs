@@ -13,6 +13,14 @@ if (process.argv.length !== 4) {
 const jsonFilePath = path.resolve(process.argv[2]);
 const jsFilePath = path.resolve(process.argv[3]);
 
+// Extract recs package version
+const { dependencies } = require(path.resolve("./package.json"));
+const recsVersion = dependencies?.["@latticexyz/recs"] ?? "";
+const isRecsVersion2 = /^[\^\~]?2./g.exec(recsVersion) != null;
+console.log(`...generating for @latticexyz/recs version ${isRecsVersion2 ? '2 (bigint support, Entity as string)' : '1 (no bigint, EntityIndex as number)'}`)
+console.log('---------------------------')
+console.log('WARNING: Currently does not generate custom types. You will have to manually add this.')
+
 fs.readFile(jsonFilePath, "utf8", (err, jsonString) => {
   if (err) {
     console.log("Error reading file:", err);
@@ -25,15 +33,16 @@ fs.readFile(jsonFilePath, "utf8", (err, jsonString) => {
     fileContent += `import { defineComponent, Type as RecsType, World } from "../../node_modules/@latticexyz/recs/src/index";\n\n`;
     fileContent += `export function defineContractComponents(world: World) {\n  return {\n`;
 
-    data.components.forEach((component) => {
-      const tableName = component.name;
+    data.models.forEach((model) => {
+      let types = []
+      const tableName = model.name;
       fileContent += `    ${tableName}: (() => {\n`;
       fileContent += `      const name = "${tableName}";\n`;
       fileContent += `      return defineComponent(\n        world,\n        {\n`;
 
-      component.members.forEach((member) => {
+      model.members.forEach((member) => {
         let memberType = "RecsType.Number";  // Default type set to Number
-
+        types.push(member.type);
         if (
           member.type === "bool"
         ) {
@@ -55,6 +64,9 @@ fs.readFile(jsonFilePath, "utf8", (err, jsonString) => {
       fileContent += `        },\n        {\n`;
       fileContent += `          metadata: {\n`;
       fileContent += `            name: name,\n`;
+      if (isRecsVersion2) {
+        fileContent += `            types: ${JSON.stringify(types)},\n`;
+      }
       fileContent += `          },\n        }\n      );\n    })(),\n`;
     });
 

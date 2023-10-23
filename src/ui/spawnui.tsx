@@ -9,7 +9,7 @@ import { Tileset, TilesetTown } from "../artTypes/world";
 import { Coord } from "../../node_modules/@latticexyz/utils/src/index";
 import { toastError, toastInfo, toastSuccess } from "../utils";
 import { LandType, get_land_type } from "../types/Land";
-import { useComponentValue } from "@dojoengine/react";
+import { useComponentValue } from "../../node_modules/@latticexyz/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import NesButton from "./components/NesButton";
 // import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
@@ -34,7 +34,7 @@ export default function SpawnUI() {
         }
     } = phaserLayer!;
 
-    const myBase = useComponentValue(components.Base, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
+    const myBase = useComponentValue(components.HBase, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]));
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     const baseClick = () => {

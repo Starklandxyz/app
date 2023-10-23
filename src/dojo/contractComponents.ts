@@ -19,6 +19,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","ContractAddress","u64","u64"],
           },
         }
       );
@@ -36,6 +37,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64"],
           },
         }
       );
@@ -58,6 +60,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -82,6 +85,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64","u64","u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -98,6 +102,23 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["ContractAddress","felt252","u64"],
+          },
+        }
+      );
+    })(),
+    ETH: (() => {
+      const name = "ETH";
+      return defineComponent(
+        world,
+        {
+          owner: RecsType.String,
+          balance: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+            types: ["ContractAddress","u128"],
           },
         }
       );
@@ -114,6 +135,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
           },
         }
       );
@@ -130,6 +152,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
           },
         }
       );
@@ -146,6 +169,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
           },
         }
       );
@@ -163,23 +187,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
-          },
-        }
-      );
-    })(),
-    Base: (() => {
-      const name = "Base";
-      return defineComponent(
-        world,
-        {
-          map_id: RecsType.Number,
-          owner: RecsType.String,
-          x: RecsType.Number,
-          y: RecsType.Number,
-        },
-        {
-          metadata: {
-            name: name,
+            types: ["u64","u64","u64","u64"],
           },
         }
       );
@@ -199,21 +207,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
-          },
-        }
-      );
-    })(),
-    ETH: (() => {
-      const name = "ETH";
-      return defineComponent(
-        world,
-        {
-          owner: RecsType.String,
-          balance: RecsType.Number,
-        },
-        {
-          metadata: {
-            name: name,
+            types: ["u64","u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -238,6 +232,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64","u64","u64","u64","u64","u64","u64","u64","bool"],
           },
         }
       );
@@ -256,6 +251,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64","u64","u64"],
           },
         }
       );
@@ -272,6 +268,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
           },
         }
       );
@@ -290,6 +287,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -308,6 +306,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -327,6 +326,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -344,6 +344,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64","u64"],
           },
         }
       );
@@ -362,6 +363,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -379,6 +381,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64","bool"],
           },
         }
       );
@@ -398,6 +401,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64","u64"],
           },
         }
       );
@@ -418,6 +422,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","u64","u64","u64","u64","u64","bool"],
           },
         }
       );
@@ -434,6 +439,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
           },
         }
       );
@@ -450,6 +456,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
           },
         }
       );
@@ -466,6 +473,7 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
           },
         }
       );
@@ -482,6 +490,25 @@ export function defineContractComponents(world: World) {
         {
           metadata: {
             name: name,
+            types: ["u64","ContractAddress","u64"],
+          },
+        }
+      );
+    })(),
+    HBase: (() => {
+      const name = "HBase";
+      return defineComponent(
+        world,
+        {
+          map_id: RecsType.Number,
+          owner: RecsType.String,
+          x: RecsType.Number,
+          y: RecsType.Number,
+        },
+        {
+          metadata: {
+            name: name,
+            types: ["u64","ContractAddress","u64","u64"],
           },
         }
       );

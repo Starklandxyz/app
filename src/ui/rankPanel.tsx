@@ -4,7 +4,7 @@ import closeicon from "../../public/assets//icons/closeicon.png"
 import { panelStore } from "../store/panelStore";
 import { useEffect, useMemo, useState } from "react";
 import { mouseStore } from "../store/mouseStore";
-import { useEntityQuery } from "@dojoengine/react";
+import { useEntityQuery } from "../../node_modules/@latticexyz/react";
 import {
     ComponentValue,
     Has,
@@ -55,13 +55,13 @@ export default function RankPanel() {
         }
     }, [showBoard])
 
-    const bases = useEntityQuery([Has(components.Base)], { updateOnValueChange: true })
+    const bases = useEntityQuery([Has(components.HBase)], { updateOnValueChange: true })
 
     useEffect(() => {
         const ranks: Array<RankInfo> = []
         for (let index = 0; index < bases.length; index++) {
             const entity = bases[index];
-            const base = getComponentValue(components.Base, entity)
+            const base = getComponentValue(components.HBase, entity)
             if (!base) { return }
             const player = getComponentValue(components.Player, getEntityIdFromKeys([BigInt(base.owner)]))
             if (!player) { return }
