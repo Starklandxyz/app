@@ -81,7 +81,7 @@ export default function BasePage() {
 
     landEntities.map((entity) => {
       const value = getComponentValue(contractComponents.Land, entity);
-      // console.log("landEntities", value);
+      console.log("landEntities", value);
       if (value && value.owner == account.address) {
         const land = new Land();
         land.build = value.building;
@@ -187,14 +187,14 @@ export default function BasePage() {
       return 0;
     }
     return calClaimable(farmland, miningConfig.Food_Speed).toFixed(2);
-  }, [timenow]);
+  }, [timenow,miningConfig]);
 
   const ironClaimable = useMemo(() => {
     if (!miningConfig) {
       return 0;
     }
     return calClaimable(ironMine, miningConfig.Iron_Speed).toFixed(2);
-  }, [timenow]);
+  }, [timenow,miningConfig]);
 
   const calBaseClaimable = () => {
     if (!miningConfig) {
@@ -224,7 +224,7 @@ export default function BasePage() {
     const t2 = calBaseClaimable();
     const t = t1 + t2;
     return t.toFixed(2);
-  }, [timenow]);
+  }, [timenow,miningConfig]);
 
   const getBaseLevel = useMemo(() => {
     if (!base) {
