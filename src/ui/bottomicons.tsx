@@ -6,8 +6,13 @@ import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
 import { positionToCoorp, toastError } from "../utils";
 import twitter from "/twitterlogo.png"
 import telegram from "/telegram.png"
+import diskette from "/diskette.png"
+import { useBurner } from "../hooks/burner";
 
 export default function BottomIcons() {
+
+    const { exportAccounts } = useBurner();
+
     const { account, phaserLayer } = store()
     const {
         scenes: {
@@ -29,7 +34,9 @@ export default function BottomIcons() {
             <Container>
                 <div>
                     <img style={{ cursor: "pointer", marginTop: 15, marginRight: 10 }} width={25} src={twitter} onClick={() => gotoTwitter()} />
-                    <img style={{ cursor: "pointer", marginTop: 15 }} width={25} src={telegram} onClick={() => gotoTelegram()} />
+                    <img style={{ cursor: "pointer", marginTop: 15,marginRight: 10 }} width={25} src={telegram} onClick={() => gotoTelegram()} />
+                    <img style={{ cursor: "pointer", marginTop: 15,marginRight: 10 }} width={25} src={diskette} onClick={() => exportAccounts()} />
+                    
                 </div>
             </Container>
         </ClickWrapper>)

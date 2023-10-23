@@ -74,7 +74,7 @@ export const useBurner = () => {
           }
         }
         // set first account as active account if not
-        if(!activeAccount){
+        if (!activeAccount) {
           const firstAddr = Object.keys(storage)[0];
           activeAccount = new Account(
             provider,
@@ -82,7 +82,7 @@ export const useBurner = () => {
             storage[firstAddr].privateKey,
           );
         }
-        
+
         // check if active account is deployed
         try {
           await admin.getTransactionReceipt(storage[activeAccount.address].deployTx)
@@ -90,14 +90,14 @@ export const useBurner = () => {
           setAccount(activeAccount);
         }
         catch (ex: any) {
-          if(ex.message.indexOf('Transaction hash not found') > 0) {
+          if (ex.message.indexOf('Transaction hash not found') > 0) {
             // app chain restart, try to redeploy this account with private key
             try {
               console.log(`redeploy account ${activeAccount.address}`);
               await reDeployAccount(activeAccount.address);
               await setAccount(activeAccount);
               return;
-            }catch {
+            } catch {
 
             }
           }
@@ -258,6 +258,18 @@ export const useBurner = () => {
     Storage.set("burner", burnner);
   }
 
+  const exportAccounts = () => {
+    // 要导出的数据对象
+    let burnner = Storage.get("burners") || {};
+    const jsonString = JSON.stringify(burnner);
+
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = "starkland_accounts.json"; // 下载的文件名
+    downloadLink.click();
+  }
+
   return {
     list,
     select,
@@ -269,6 +281,7 @@ export const useBurner = () => {
     getPlayerName,
     isAccountDeployed,
     removeAccount,
+    exportAccounts
   };
 };
 
