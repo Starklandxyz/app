@@ -16,7 +16,7 @@ export const useDojo = () => {
     const { create, list, account, select, isDeploying } = useBurner();
 
     useEffect(() => {
-        console.log("usedojo account " + account?.address);
+        console.log("usedojo account " , account?.address);
         store.setState({ account:account })
     }, [account])
 
