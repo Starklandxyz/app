@@ -157,6 +157,7 @@ query getWarriorByLocation($map_id:String,$x:String,$y:String) {
         models {
           __typename
           ... on Warrior {
+            map_id
             x,
             y,
             balance

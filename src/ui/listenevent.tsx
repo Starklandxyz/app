@@ -111,6 +111,7 @@ export default function ListenEvent() {
           }
           __typename
           ... on Warrior {
+            map_id
             x,
             y,
             balance
@@ -131,7 +132,7 @@ export default function ListenEvent() {
                 next({ data }: any) {
                     if (data) {
                         let entityUpdated = data.entityUpdated;
-                        console.log("We got something", entityUpdated.componentNames);
+                        console.log("We got something", entityUpdated.model_names);
                         console.log(entityUpdated);
                         let id = entityUpdated.id + "_" + entityUpdated.updated_at
                         let keys = entityUpdated.keys
