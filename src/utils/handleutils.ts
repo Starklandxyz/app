@@ -20,10 +20,24 @@ export const handleSQLResult = (edges: any, contractComponents: any) => {
                 acc[key] = component[key]
                 return acc;
             }, {});
-
-            // console.log("handleSQLResult",component.__typename);
             setComponent(contractComponent, getEntityIdFromKeys(nkeys), componentValues)
-            // console.log("handleSQLResult finish",component.__typename);
         }
+    }
+}
+
+export const handleWssResult = (models: Array<any>, keys: Array<string>, contractComponents: any) => {
+    const nkeys = keys.map((key: any) => BigInt(key));
+    for (let index = 0; index < models.length; index++) {
+        const model = models[index];
+        const propertyCount = Object.keys(model).length;
+        if (propertyCount == 1) {
+            continue
+        }
+        const contractComponent = contractComponents[model.__typename]
+        const componentValues = Object.keys(contractComponent.schema).reduce((acc: ComponentValue, key, _) => {
+            acc[key] = model[key]
+            return acc;
+        }, {});
+        setComponent(contractComponent, getEntityIdFromKeys(nkeys), componentValues)
     }
 }

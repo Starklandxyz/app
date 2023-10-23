@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { store } from "../store/store";
-import { handleSQLResult } from "../utils/handleutils";
+import { handleSQLResult, handleWssResult } from "../utils/handleutils";
 
 
 export default function ListenEvent() {
@@ -24,8 +24,104 @@ export default function ListenEvent() {
             entityUpdated{
                 id
                 keys
-                componentNames
-                updatedAt
+                model_names
+                created_at
+                updated_at
+                event_id
+                models{
+                    __typename
+                ... on UserWarrior {
+                    map_id
+                    owner
+                    balance
+                }
+                __typename
+          ... on Player{
+            owner
+            nick_name
+            joined_time
+          }
+          __typename
+          ... on LuckyPack {
+            map_id
+            owner
+            balance
+          }
+          __typename
+          ... on HBase {
+            owner
+            map_id
+            x
+            y
+          }
+          __typename
+          ... on LandOwner {
+            owner
+            map_id
+            total
+          }
+          __typename
+          ... on RewardPoint {
+            map_id
+            owner
+            balance
+          }
+          __typename
+          ... on UserWarrior {
+            map_id
+            owner
+            balance
+          }
+          __typename
+          ... on Training {
+            start_time,
+            total,
+            out
+          }
+          __typename
+          ... on LandMiner {
+            map_id,
+            x,
+            y,
+            miner_x,
+            miner_y
+          }
+          __typename
+          ... on Troop{
+            map_id
+            owner
+            index
+            balance
+            from_x
+            from_y
+            to_x
+            to_y
+            start_time
+            distance
+            retreat
+          }
+          __typename
+          ... on Land {
+            map_id,
+            x,
+            y,
+            owner,
+            building,
+            level
+          }
+          __typename
+          ... on Warrior {
+            x,
+            y,
+            balance
+          }
+          __typename
+          ... on RewardPoint {
+            map_id
+            owner
+            balance
+          }
+                }
             }
           }`;
         const subscription = wsClient
@@ -37,21 +133,22 @@ export default function ListenEvent() {
                         let entityUpdated = data.entityUpdated;
                         console.log("We got something", entityUpdated.componentNames);
                         console.log(entityUpdated);
-                        let id = entityUpdated.id + "_" + entityUpdated.updatedAt
+                        let id = entityUpdated.id + "_" + entityUpdated.updated_at
                         let keys = entityUpdated.keys
-                        let cs = entityUpdated.componentNames.split(",")
-
-                        for (let index = 0; index < cs.length; index++) {
-                            const element = cs[index];
-                            console.log("We got something", element, id);
-                            switch (element) {
-                                case "Land": handleLandUpdated(id + "Land", keys); break;
-                                case "LandMiner": handleLandMinerUpdated(id + "LandMiner", keys); break;
-                                case "Player": handlePlayerUpdated(id + "Player", keys); break;
-                                case "Troop": handleTroopUpdated(id + "Troop", keys); break;
-                                case "Warrior": handleWarriorUpdated(id + "Warrior", keys); break;
-                            }
-                        }
+                        let models = entityUpdated.models
+                        let cs = entityUpdated.model_names.split(",")
+                        handleWssResult(models,keys,components)
+                        // for (let index = 0; index < cs.length; index++) {
+                        //     const element = cs[index];
+                        //     console.log("We got something", element, id);
+                        //     switch (element) {
+                        //         case "Land": handleLandUpdated(id + "Land", keys); break;
+                        //         case "LandMiner": handleLandMinerUpdated(id + "LandMiner", keys); break;
+                        //         case "Player": handlePlayerUpdated(id + "Player", keys); break;
+                        //         case "Troop": handleTroopUpdated(id + "Troop", keys); break;
+                        //         case "Warrior": handleWarriorUpdated(id + "Warrior", keys); break;
+                        //     }
+                        // }
                     }
                 },
             });

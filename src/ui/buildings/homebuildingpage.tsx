@@ -20,7 +20,6 @@ import {
 import { TILE_HEIGHT, TILE_WIDTH } from "../../phaser/constants";
 import NesButton from "../components/NesButton";
 import styled from "styled-components";
-import { Direction } from "../../generated/graphql";
 import { updateStore } from "../../store/updateStore";
 import LoadingButton from "../components/LoadingButton";
 
@@ -81,7 +80,7 @@ export default function BasePage() {
 
     landEntities.map((entity) => {
       const value = getComponentValue(contractComponents.Land, entity);
-      console.log("landEntities", value);
+      // console.log("landEntities", value);
       if (value && value.owner == account.address) {
         const land = new Land();
         land.build = value.building;
