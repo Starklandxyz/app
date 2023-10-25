@@ -5,8 +5,8 @@ import { Account, num } from "starknet";
 import { GraphQLClient } from 'graphql-request';
 import { getSdk } from '../generated/graphql';
 import {SubscriptionClient } from 'graphql-subscriptions-client';
-import dev_manifest from '/Users/junhu/git/starklandcontract/target/dev/manifest.json'
-import prod_manifest from '/Users/junhu/git/starklandcontract/target/dev/manifest.json'
+import dev_manifest from '../contracts/manifest.json'
+import prod_manifest from '../contracts/manifest.json'
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 export async function setupNetwork() {
