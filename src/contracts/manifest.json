@@ -858,7 +858,7 @@
     {
       "name": "init",
       "address": "0x4dc4d7a6672afe4c4a4706d20aba2c2f0e0dbdc240f1fb70069c04ae44e067d",
-      "class_hash": "0x63455f46213e7e0aaf2c024efcf67d986c9cdf9349acf3efdc68dbfd646fd2d",
+      "class_hash": "0x38edf7f6459c57428e7b97e84947e131fded8560f7ba5045ea1913fcf7a0338",
       "abi": [
         {
           "type": "impl",
@@ -1065,7 +1065,7 @@
     {
       "name": "train_warrior",
       "address": "0x3c93642b78a1d0de22ce3176be29ebf9904c3e2909f95d03a0fbbbe5d6b8996",
-      "class_hash": "0x582b5c57e1a844939711d11dc6cedd4d81675eb8305e9478b139c7cfc26788",
+      "class_hash": "0x123946d5a001b2fef5063fbdbe7809d9c204768a6c1eb047bb5c9af95b07a10",
       "abi": [
         {
           "type": "impl",
@@ -1102,6 +1102,30 @@
             {
               "type": "function",
               "name": "execute",
+              "inputs": [
+                {
+                  "name": "map_id",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "amount",
+                  "type": "core::integer::u64"
+                },
+                {
+                  "name": "camps_x",
+                  "type": "core::array::Array::<core::integer::u64>"
+                },
+                {
+                  "name": "camps_y",
+                  "type": "core::array::Array::<core::integer::u64>"
+                }
+              ],
+              "outputs": [],
+              "state_mutability": "view"
+            },
+            {
+              "type": "function",
+              "name": "buy",
               "inputs": [
                 {
                   "name": "map_id",
@@ -1217,7 +1241,7 @@
     {
       "name": "claim_airdrop",
       "address": "0x7b07ab3178f48b6522f895935764ed8aa7e768e2e935da993e5fd1a4eb3b34c",
-      "class_hash": "0x149ac2c32ead4ae67677ca5ea92fa8f8fbd8125e36589b7b5ba41bd123420ee",
+      "class_hash": "0x22da6101f77579f49f760e59505130f9d857d0677116dda814b923a2f74553c",
       "abi": [
         {
           "type": "impl",
@@ -1939,7 +1963,7 @@
     {
       "name": "upgrade_building",
       "address": "0x2a74e68383f4e20e0c2856b66926102c2219cfda963c6d9a85d5820f1caa279",
-      "class_hash": "0x2ad0dde65a3e52b38319b001fe377be6d00664c8ee36b7d95d79cab58bec4c6",
+      "class_hash": "0x35252c0e808daef0bc16e091f8bf37b8da410bebc59536c3a5cd90d08fe89c4",
       "abi": [
         {
           "type": "impl",

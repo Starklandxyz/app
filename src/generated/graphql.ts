@@ -1600,6 +1600,7 @@ export type QueryEventsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
+  keys?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   last?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -3170,7 +3171,7 @@ export const GetBuildPriceDocument = gql`
     `;
 export const GetTroopsByKeyDocument = gql`
     query getTroopsByKey($map_id: String, $key: String) {
-  entities(first: 1000, keys: [$map_id, $key, "*"]) {
+  entities(first: 1000, keys: [$map_id, $key, "%"]) {
     total_count
     edges {
       node {

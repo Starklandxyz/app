@@ -423,7 +423,7 @@ query getBuildPrice($map_id:String) {
 }
 
 query getTroopsByKey($map_id:String,$key: String) {
-  entities(first:1000, keys: [$map_id,$key,"*"]) {
+  entities(first:1000, keys: [$map_id,$key,"%"]) {
     total_count
     edges {
       node {
