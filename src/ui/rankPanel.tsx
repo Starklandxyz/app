@@ -124,7 +124,7 @@ export default function RankPanel() {
         {
             showBoard &&
             <Container>
-                <div style={{ width: 700, zIndex: 100, height: 480, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                <div style={{ width: 700, zIndex: 100, height: 520, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                     <div style={{ color: "pink", width: 700, textAlign: "center", fontSize: 20, padding: 10, paddingTop: 15 }}>Billboard</div>
                     <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => panelStore.setState({ showBoard: false })} />
 
@@ -144,7 +144,7 @@ export default function RankPanel() {
                     <table border={1} cellPadding={7} style={{ marginLeft: 15, textAlign: 'center' }}>
                         <tbody>
                             {page && sortedData.map((row, index) => (
-                                (index > 20 * (page - 1) - 1 && index < 20 * page) &&
+                                (index > 10 * (page - 1) - 1 && index < 10 * page) &&
                                 <tr key={row.owner}>
                                     <td style={{ width: '50px' }}>{index + 1}</td>
                                     <td style={{ width: '120px' }}>{row.username}</td>
@@ -162,7 +162,7 @@ export default function RankPanel() {
                         <p style={{ marginLeft: 15, marginRight: 15 }}>{page}</p>
                         <p style={{ cursor: "pointer" }} onClick={() => add()}>+</p>
                     </div>
-                    <p style={{ marginLeft: 20 }}>Your Rank : {getYourRank}</p>
+                    <div style={{ marginLeft: 20 }}>Your Rank : {getYourRank}</div>
                 </div>
             </Container>
         }
