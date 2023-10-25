@@ -18,23 +18,25 @@ import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { Coord } from "../types";
 import { hexToString } from "../utils";
 import { playerStore } from "../store/playerStore";
+import { get_land_barbarians } from "../types/Land";
+import { BuildType } from "../types/Build";
 type SortOrder = 'asc' | 'desc';
 
 class RankInfo {
     public username = ""
     public owner = ""
     public point = 0
+    public domination = 0
     public base: Coord = { x: 0, y: 0 }
     public level = 0
     public lands = 0
-    public warriors = 0
 }
 
 export default function RankPanel() {
     const { showBoard } = panelStore()
     const { account, phaserLayer } = store()
     const [page, setPage] = useState(1)
-
+    const { territoryMap } = playerStore()
     const {
         networkLayer: {
             world,
@@ -56,8 +58,10 @@ export default function RankPanel() {
     }, [showBoard])
 
     const bases = useEntityQuery([Has(components.HBase)], { updateOnValueChange: true })
+    const lands = useEntityQuery([Has(components.Land)], { updateOnValueChange: true })
 
     useEffect(() => {
+        if (territoryMap.size == 0) { return }
         const ranks: Array<RankInfo> = []
         for (let index = 0; index < bases.length; index++) {
             const entity = bases[index];
@@ -66,7 +70,7 @@ export default function RankPanel() {
             const player = getComponentValue(components.Player, getEntityIdFromKeys([BigInt(base.owner)]))
             if (!player) { return }
             const point = getComponentValue(components.RewardPoint, getEntityIdFromKeys([1n, BigInt(base.owner)]))
-            const warrior = getComponentValue(components.UserWarrior, getEntityIdFromKeys([1n, BigInt(base.owner)]))
+            // const warrior = getComponentValue(components.UserWarrior, getEntityIdFromKeys([1n, BigInt(base.owner)]))
             const land = getComponentValue(components.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
             const lands = getComponentValue(components.LandOwner, getEntityIdFromKeys([1n, BigInt(base.owner)]))
             const rank = new RankInfo()
@@ -74,7 +78,15 @@ export default function RankPanel() {
             rank.owner = base.owner
             rank.username = hexToString(player.nick_name)
             rank.point = point ? point.balance : 0
-            rank.warriors = warrior ? warrior.balance : 0
+            const map = territoryMap.get(base.owner)
+            if (map) {
+                let total = 0
+                map.forEach((value, key) => {
+                    total += value
+                })
+                rank.domination = total
+            }
+            // rank.warriors = warrior ? warrior.balance : 0
             rank.level = land ? land.level : 1
             rank.lands = lands ? lands.total : 0
             ranks.push(rank)
@@ -89,7 +101,47 @@ export default function RankPanel() {
         });
 
         setsortedData(sortedData)
-    }, [showBoard, bases])
+    }, [showBoard, bases, territoryMap])
+
+    useEffect(() => {
+        const territoryMap: Map<string, Map<string, number>> = new Map()
+        for (let index = 0; index < lands.length; index++) {
+            const entity = lands[index];
+            const land = getComponentValue(components.Land, entity)
+            if (land) {
+                if (land.building == BuildType.Base) {
+                    continue
+                }
+                let map = territoryMap.get(land.owner)
+                if (!map) {
+                    map = new Map()
+                }
+
+                const warrior = getComponentValue(components.Warrior, getEntityIdFromKeys([1n, BigInt(land.x), BigInt(land.y)]))
+                const baba = get_land_barbarians(1, land.x, land.y)
+                let warrior_balance = warrior ? warrior.balance : 0
+                warrior_balance += parseInt(baba.toString())
+
+                //选取周围所有地块
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        let x = land.x + i
+                        let y = land.y + j
+                        const id = x + "_" + y
+                        if (map.has(id)) {
+                            if (warrior_balance > map.get(id)!) {
+                                map.set(id, warrior_balance)
+                            }
+                        } else {
+                            map.set(id, warrior_balance)
+                        }
+                    }
+                }
+                territoryMap.set(land.owner, map)
+            }
+        }
+        playerStore.setState({ territoryMap: territoryMap })
+    }, [showBoard, lands])
 
 
     const getYourRank = useMemo(() => {
@@ -99,10 +151,10 @@ export default function RankPanel() {
 
         for (let index = 0; index < sortedData.length; index++) {
             const row = sortedData[index];
-            if ((row.owner) == (account.address)) {
+            if (row.owner == (account.address)) {
                 // console.log("is same ", (row.entity), parseInt(account.address).toString());
                 // console.log(index);
-                playerStore.setState({rank:index+1})
+                playerStore.setState({ rank: index + 1 })
                 return <span>{index + 1}</span>
             }
         }
@@ -134,10 +186,10 @@ export default function RankPanel() {
                                 <th style={{ width: '50px' }}>Rank</th>
                                 <th style={{ width: '120px' }}>Name</th>
                                 <th style={{ width: '80px' }}>Points</th>
+                                <th style={{ width: '80px' }}>Domination</th>
                                 <th style={{ width: '80px' }}>Base</th>
                                 <th style={{ width: '80px' }}>Level</th>
                                 <th style={{ width: '80px' }}>Lands</th>
-                                <th style={{ width: '80px' }}>Warriors</th>
                             </tr>
                         </thead>
                     </table>
@@ -149,10 +201,10 @@ export default function RankPanel() {
                                     <td style={{ width: '50px' }}>{index + 1}</td>
                                     <td style={{ width: '120px' }}>{row.username}</td>
                                     <td style={{ width: '80px' }}>{row.point}</td>
+                                    <td style={{ width: '80px' }}>{row.domination}</td>
                                     <td style={{ width: '80px' }}>{`(${row.base.x},${row.base.y})`}</td>
                                     <td style={{ width: '80px' }}>{row.level}</td>
                                     <td style={{ width: '80px' }}>{row.lands}</td>
-                                    <td style={{ width: '80px' }}>{row.warriors}</td>
                                 </tr>
                             ))}
                         </tbody>

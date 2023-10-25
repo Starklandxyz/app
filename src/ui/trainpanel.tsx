@@ -10,7 +10,6 @@ import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexy
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { handleSQLResult } from "../utils/handleutils";
 import { Warrior } from "../types/Warrior";
-import NesButton from "./components/NesButton";
 import { BuildType } from "../types/Build";
 import LoadingButton from "./components/LoadingButton";
 
@@ -22,7 +21,6 @@ export default function TrainPanel() {
     // const [training, setTraining] = useState<Training>(new Training())
 
     const {
-        world,
         networkLayer: {
             systemCalls: { trainWarrior, buyWarrior, admin, takeWarrior },
             components,

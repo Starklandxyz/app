@@ -8,6 +8,7 @@ import {
 import starklogo from "../../public/starkneticon.png";
 import foodIcon from "../../public/assets/icons/food.png";
 import ironIcon from "../../public/assets/icons/iron.png";
+import dominationIcon from "../../public/assets/icons/domination.png";
 import goldIcon from "../../public/assets/icons/gold.png";
 import soldierIcon from "../../public/assets/icons/soldier.png";
 import flagIcon from "../../public/assets/icons/flag.png";
@@ -45,7 +46,8 @@ export default function PlayerPanel() {
     },
   } = phaserLayer!;
 
-  const {rank} = playerStore()
+  const { rank } = playerStore()
+  const { territoryMap } = playerStore()
   const [userCamps, setUserCamps] = useState<Array<Land>>([])
 
   const food = useComponentValue(
@@ -102,12 +104,12 @@ export default function PlayerPanel() {
       // console.log("Player:", p, hexToString(p?.nick_name));
     }
 
-    
+
     for (let index = 0; index < troops.length; index++) {
       const element = troops[index];
       const t = getComponentValue(sqlComponent.Troop, element)
       // console.log("Troop",t);
-      
+
       let address = account?.address
       address = "0x302cb5ef3583bd2555fe1d88faa13f03dab93614620310a58c7b00fabe51f7e"
       if (t && t.owner == address) {
@@ -155,7 +157,7 @@ export default function PlayerPanel() {
   }, [landEntities, account]);
 
   const fetchAirdrop = async () => {
-    const resources = await graphSdk.getAirdropByKey({map_id:"0x1", key: account?.address });
+    const resources = await graphSdk.getAirdropByKey({ map_id: "0x1", key: account?.address });
     console.log("fetchAirdrop", resources);
     const edges = resources.data.entities?.edges;
     handleSQLResult(edges, sqlComponent);
@@ -204,6 +206,23 @@ export default function PlayerPanel() {
     });
     return size;
   }, [account, troops]);
+
+  const getdomination = useMemo(() => {
+    if (!account) {
+      return 0
+    }
+    const map = territoryMap.get(account.address)
+    if (!map) {
+      return 0
+    }
+    let total = 0
+    map.forEach((value,key)=>{
+      console.log("my territoryMap",key,value);
+      
+      total += value
+    })
+    return total
+  }, [territoryMap, account])
 
   const getPlayerName = useMemo(() => {
     console.log("getPlayerName", player?.nick_name);
@@ -257,19 +276,19 @@ export default function PlayerPanel() {
     return total
   }, [account, userCamps, landEntities])
 
-  const getRank = useMemo(()=>{
-      return <RankDiv>
-        <div onClick={()=>gotoBoard()} style={{fontSize:15, borderRadius:5,backgroundColor:"red",width:80,color:"white",paddingLeft:5}}>Rank #{rank}</div>
-        <div onClick={()=>gotoPacks()} style={{color:"white",fontSize:14,marginLeft:15,marginTop:4}}>{points?points.balance:0} Points</div>
-      </RankDiv>
-  },[points,rank])
+  const getRank = useMemo(() => {
+    return <RankDiv>
+      <div onClick={() => gotoBoard()} style={{ fontSize: 15, borderRadius: 5, backgroundColor: "red", width: 80, color: "white", paddingLeft: 5 }}>Rank #{rank}</div>
+      <div onClick={() => gotoPacks()} style={{ color: "white", fontSize: 14, marginLeft: 15, marginTop: 4 }}>{points ? points.balance : 0} Points</div>
+    </RankDiv>
+  }, [points, rank])
 
-  const gotoBoard = ()=>{
-    panelStore.setState({showBoard:true})
+  const gotoBoard = () => {
+    panelStore.setState({ showBoard: true })
   }
 
-  const gotoPacks = ()=>{
-    panelStore.setState({showLuckyPack:true})
+  const gotoPacks = () => {
+    panelStore.setState({ showLuckyPack: true })
   }
 
   return (
@@ -328,13 +347,22 @@ export default function PlayerPanel() {
         <ResourceValue>{userWarrior && userWarrior.balance}/{maxWarrior}</ResourceValue>
       </ResourceItemWrapper>
 
-      <ResourceItemWrapper
+      {/* <ResourceItemWrapper
         data-tooltip-id="my-tooltip"
         data-tooltip-content="Troops"
         data-tooltip-place="top"
       >
         <ResourceIcon src={flagIcon} alt="flag" />
         <ResourceValue>{getMyTroopSize}</ResourceValue>
+      </ResourceItemWrapper> */}
+
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Domination"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={dominationIcon} alt="flag" />
+        <ResourceValue>{getdomination}</ResourceValue>
       </ResourceItemWrapper>
 
       <NESButton
