@@ -183,7 +183,7 @@ export const random_on_chain = (seed_: number) => {
     return hex
 }
 
-export const parseTime = (sec: number) => {
+export const parseTime = (sec: number,showzero=true) => {
     const h = Math.floor(sec / 3600)
     const m = Math.floor((sec - h * 3600) / 60)
     const s = sec - h * 3600 - m * 60
@@ -203,9 +203,15 @@ export const parseTime = (sec: number) => {
     }
     var result = ""
     if (h == 0) {
-        result = `${m}m: ${s}s`
+        result = `${m}m:${s}s`
+        if(!showzero && s==0){
+            result = `${m}m`
+        }
     } else {
-        result = `${h}h: ${m}m: ${s}s`
+        result = `${h}h:${m}m:${s}s`
+        if(!showzero && s==0){
+            result = `${h}h:${m}m`
+        }
     }
     // console.log("parseTime",sec,h,m,s);
     // console.log("parseTime",hs,ms,ss,result);

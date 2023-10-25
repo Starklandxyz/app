@@ -10,7 +10,7 @@ import {
   getComponentValueStrict,
 } from "../../../node_modules/@latticexyz/recs/src/index";
 import { BuildType } from "../../types/Build";
-import { toastError, toastSuccess } from "../../utils";
+import { parseTime, toastError, toastSuccess } from "../../utils";
 import { ticStore } from "../../store/ticStore";
 import { handleSQLResult } from "../../utils/handleutils";
 import {
@@ -186,14 +186,14 @@ export default function BasePage() {
       return 0;
     }
     return calClaimable(farmland, miningConfig.Food_Speed).toFixed(2);
-  }, [timenow,miningConfig]);
+  }, [timenow, miningConfig]);
 
   const ironClaimable = useMemo(() => {
     if (!miningConfig) {
       return 0;
     }
     return calClaimable(ironMine, miningConfig.Iron_Speed).toFixed(2);
-  }, [timenow,miningConfig]);
+  }, [timenow, miningConfig]);
 
   const calBaseClaimable = () => {
     if (!miningConfig) {
@@ -223,7 +223,7 @@ export default function BasePage() {
     const t2 = calBaseClaimable();
     const t = t1 + t2;
     return t.toFixed(2);
-  }, [timenow,miningConfig]);
+  }, [timenow, miningConfig]);
 
   const getBaseLevel = useMemo(() => {
     if (!base) {
@@ -304,11 +304,11 @@ export default function BasePage() {
     // const update_cost = getComponentValue()
     if (update_base && !update_base.claimed) {
       if (timenow > update_base.end_time) {
-        return <LoadingButton style={{ minHeight: 30 }} onClick={() => finishUpgrade()} initialText="Confirm Upgrade" loadingText="Confirm.../"/>
+        return <LoadingButton style={{ minHeight: 30 }} onClick={() => finishUpgrade()} initialText="Confirm Upgrade" loadingText="Confirm.../" />
       } else {
         const total = update_base.end_time - update_base.start_time
         const used = timenow - update_base.start_time
-        return <>{used}s/{total}s Updating...</>
+        return <>{parseTime(used)}/{parseTime(total,false)} Updating...</>
       }
     }
     return <NesButton style={{ minHeight: 30 }} onClick={() => updateBase()}>Upgrade</NesButton>
@@ -326,7 +326,7 @@ export default function BasePage() {
   return (
     <div
       style={{
-        width: 240,
+        width: 260,
         height: 400,
         lineHeight: 0.3,
         backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -409,13 +409,7 @@ export default function BasePage() {
       >
         <div style={{ display: "flex" }}>
           <span style={{ alignSelf: "center", flex: 1 }}>Claimable</span>
-          <LoadingButton style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }} loadingText="Claim..." initialText="Claim All" onClick={claimAll}/>
-          {/* <button
-            onClick={() => claimAll()}
-            style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }}
-          >
-            Claim All
-          </button> */}
+          <LoadingButton style={{ marginRight: 4, height: 26, justifyContent: "flex-end" }} loadingText="Claim..." initialText="Claim All" onClick={claimAll} />
         </div>
 
         <div>

@@ -8,7 +8,7 @@ import { store } from '../store/store';
 import { getBuildName } from '../types/Build';
 import { getEntityIdFromKeys } from '../dojo/parseEvent';
 import NesButton from "../ui/components/NesButton";
-import { toastError, toastSuccess } from '../utils';
+import { parseTime, toastError, toastSuccess } from '../utils';
 import { Upgrate_Time } from '../contractconfig'
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import LoadingButton from './components/LoadingButton';
@@ -65,7 +65,7 @@ export default function UpgradePanel() {
             return 0
         }
         const pow = Math.pow(2, land.level - 1) * Upgrate_Time
-        return "Update Time : " + pow + "s"
+        return "Update Time : " + parseTime(pow,false)
     }, [land])
 
     const update = async () => {
@@ -73,17 +73,27 @@ export default function UpgradePanel() {
             return
         }
         const pow = Math.pow(2, land.level)
+        console.log("update", buildPrice);
+
         // const food =  pow * buildPrice.food
         const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
-        if (getComponentValue(contractComponents.Gold, entityIndex)?.balance! < pow * buildPrice.gold) {
+        const gold = getComponentValue(contractComponents.Gold, entityIndex)
+        const balance_gold = gold ? gold.balance : 0
+        if (balance_gold < pow * buildPrice.gold) {
             toastError("Gold is not enough")
             return
         }
-        if (getComponentValue(contractComponents.Food, entityIndex)?.balance! < pow * buildPrice.food) {
+
+        const food = getComponentValue(contractComponents.Food, entityIndex)
+        const balance_food = food ? food.balance : 0
+        if (balance_food < pow * buildPrice.food) {
             toastError("Food is not enough")
             return
         }
-        if (getComponentValue(contractComponents.Iron, entityIndex)?.balance! < pow * buildPrice.iron) {
+
+        const iron = getComponentValue(contractComponents.Iron, entityIndex)
+        const balance_iron = iron ? iron.balance : 0
+        if (balance_iron < pow * buildPrice.iron) {
             toastError("Iron is not enough")
             return
         }
@@ -115,7 +125,7 @@ export default function UpgradePanel() {
                         <div style={{ marginTop: 10 }}>
                             {updateTime}
                         </div>
-                        <LoadingButton initialText='Update' loadingText='Update...' style={{ marginTop: 10, marginLeft: 150 }} onClick={() => update()}/>
+                        <LoadingButton initialText='Update' loadingText='Update...' style={{ marginTop: 10, marginLeft: 150 }} onClick={() => update()} />
                     </div>
                 </Container>
             }

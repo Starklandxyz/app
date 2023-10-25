@@ -64,7 +64,7 @@ export default function MapUI() {
                     text.setPosition(pixelPosition?.x, pixelPosition?.y - 14);
                     text.setBackgroundColor("rgba(0,0,0,0.6)")
                     text.setFontSize(11)
-                    console.log("map id", value.owner, account?.address);
+                    // console.log("map id", value.owner, account?.address);
 
                     if (value.owner == account?.address) {
                         text.setBackgroundColor("rgba(255,0,0,0.6)")
@@ -225,7 +225,7 @@ export default function MapUI() {
 
             const buildLand = { x: miner.x, y: miner.y }
             const type = get_land_type(1, miner.x, miner.y)
-            console.log("LandMiner",miner);
+            // console.log("LandMiner",miner);
             
             if (type != LandType.None) {
                 if(miner.miner_x!=0 && miner.miner_y!=0){
