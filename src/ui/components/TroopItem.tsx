@@ -244,6 +244,7 @@ export default function TroopItem(params: any) {
     const goto = (coord: Coord) => {
         console.log("goto");
         const pixelPosition = tileCoordToPixelCoord(coord, TILE_WIDTH, TILE_HEIGHT);
+        console.log("center On");
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }
 

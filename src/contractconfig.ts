@@ -1,2 +1,2 @@
-export const Troop_Speed = 10
-export const Upgrate_Time = 36
+export const Troop_Speed = 30
+export const Upgrate_Time = 600

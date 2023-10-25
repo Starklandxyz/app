@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { store } from "../store/store";
 import { TileAnimationKey, Tileset, TilesetBuilding, TilesetNum, TilesetSoldier, TilesetTown, TilesetZone } from "../artTypes/world";
 import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
@@ -37,7 +37,7 @@ export default function MapUI() {
     const player = useComponentValue(components.Player, getEntityIdFromKeys([BigInt(account ? account.address : "")]));
 
     const landWarriors = useEntityQuery([Has(components.Warrior)], { updateOnValueChange: true })
-
+    const [initialized,setInitialized] = useState(false)
 
     useEffect(() => {
         console.log("map base change");
@@ -80,6 +80,10 @@ export default function MapUI() {
         })
     }, [bases, account])
 
+    useEffect(()=>{
+        console.log("change myBase");
+    },[myBase])
+
     useEffect(() => {
         if (!player || !account) {
             return
@@ -88,6 +92,11 @@ export default function MapUI() {
         if (!myBase) {
             return
         }
+        if(initialized){
+            return
+        }
+        setInitialized(true)
+
         const xStart = myBase.x
         const yStart = myBase.y
         var diff = 6
@@ -96,6 +105,7 @@ export default function MapUI() {
         putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02 + diff, "Build");
         putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03 + diff, "Build");
         const pixelPosition = tileCoordToPixelCoord({ x: myBase.x + 1, y: myBase.y + 1 }, TILE_WIDTH, TILE_HEIGHT);
+        console.log("center On");
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }, [player, myBase])
 

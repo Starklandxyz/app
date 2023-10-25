@@ -5,7 +5,6 @@ import { controlStore } from "../store/controlStore";
 import { Troop } from "../types/Troop";
 import { calDistanceFromBase, calDistanceToBase, getTimestamp, toastError, toastSuccess } from "../utils";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Troop_Speed } from "../contractconfig";
 import { Has, defineSystem, getComponentValue } from "../../node_modules/@latticexyz/recs/src/index";
 import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexyz/react";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
@@ -75,7 +74,7 @@ export default function SendTroopPanel() {
             return
         }
 
-        if(sendTroopCtr.troop.to.x==sendTroopCtr.troop.from.x && sendTroopCtr.troop.to.y==sendTroopCtr.troop.from.y){
+        if (sendTroopCtr.troop.to.x == sendTroopCtr.troop.from.x && sendTroopCtr.troop.to.y == sendTroopCtr.troop.from.y) {
             toastError("Can not send to same land")
             return
         }
@@ -163,7 +162,9 @@ export default function SendTroopPanel() {
         if (!sendTroopCtr.troop) {
             return "0s"
         }
-        const result = Troop_Speed * calDistance()
+        const config = getComponentValue(components.WarriorConfig, getEntityIdFromKeys([1n]))
+        const speed = config ? config.Troop_Speed : 30
+        const result = speed * calDistance()
         return result + "s"
     }, [sendTroopCtr, inputValue])
 
@@ -303,7 +304,7 @@ export default function SendTroopPanel() {
                                     {
                                         fromArray.length > 1 && <select
                                             className="nes-select"
-                                            onChange={(e) => selectAccount(e,true)}
+                                            onChange={(e) => selectAccount(e, true)}
                                             value={sendTroopCtr.troop?.from.x + "," + sendTroopCtr.troop?.from.y}
                                         >
                                             {fromArray.map((value, index) => {
@@ -325,7 +326,7 @@ export default function SendTroopPanel() {
                                     {
                                         toArray.length > 1 && <select
                                             className="nes-select"
-                                            onChange={(e) => selectAccount(e,false)}
+                                            onChange={(e) => selectAccount(e, false)}
                                             value={sendTroopCtr.troop?.to.x + "," + sendTroopCtr.troop?.to.y}
                                         >
                                             {toArray.map((value, index) => {

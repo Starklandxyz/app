@@ -40,6 +40,7 @@ export default function BuildingTip() {
         const x = MAP_WIDTH / 2
         const y = x
         const pixelPosition = tileCoordToPixelCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT);
+        console.log("center On");
         camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
     }, [])
 

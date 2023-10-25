@@ -388,6 +388,25 @@ export function createSystemCalls(
     return events;
   };
 
+  const buyWarrior = async (
+    signer: Account,
+    map_id: number,
+    amount: number, xs: Array<number>, ys: Array<number>
+  ) => {
+    const tx = await execute(signer, "train_warrior","buy", CallData.compile([map_id,amount, xs, ys]));
+    // console.log(tx);
+    const receipt = await signer.waitForTransaction(tx.transaction_hash, {
+      retryInterval: 100,
+    });
+
+    // console.log(receipt);
+
+    const events = getEvents(receipt);
+    // console.log(events);
+    setComponentsFromEvents(contractComponents, events);
+    return events;
+  };
+
   const spawn = async (signer: Account, nick_name: BigInt) => {
     // console.log("spawn signer:" + signer.address + ",nickname:" + nick_name);
     try {
@@ -427,6 +446,7 @@ export function createSystemCalls(
     buildBuilding,
     build_base,
     adminAttack,
+    buyWarrior,
     trainWarrior,
     admin,
     goFight

@@ -18,13 +18,13 @@ export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
     const { timenow } = ticStore()
     const { account, phaserLayer } = store()
-
+    const [trainorbuy, setTrainorBuy] = useState(true)
     // const [training, setTraining] = useState<Training>(new Training())
 
     const {
         world,
         networkLayer: {
-            systemCalls: { trainWarrior, admin, takeWarrior },
+            systemCalls: { trainWarrior, buyWarrior, admin, takeWarrior },
             components,
             network: { graphSdk }
         }
@@ -131,12 +131,68 @@ export default function TrainPanel() {
         }
     }
 
+    const buy = async () => {
+        if (!account) {
+            toastError("Create Wallet First")
+            return
+        }
+        if (!player) {
+            toastError("Mint player first")
+            return
+        }
+        if (!myBase) {
+            toastError("Build a base first.")
+            return
+        }
+
+        const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
+        const multi = 5
+        if (getComponentValue(components.Gold, entityIndex)?.balance! < warriorConfig.Train_Gold * inputValue * multi) {
+            toastError("Gold is not enough")
+            return
+        }
+        if (getComponentValue(components.Food, entityIndex)?.balance! < warriorConfig.Train_Food * inputValue * multi) {
+            toastError("Food is not enough")
+            return
+        }
+        if (getComponentValue(components.Iron, entityIndex)?.balance! < warriorConfig.Train_Iron * inputValue * multi) {
+            toastError("Iron is not enough")
+            return
+        }
+
+        const camps_x: Array<number> = []
+        const camps_y: Array<number> = []
+        let max = 60
+        landEntities.map((entity) => {
+            const value = getComponentValue(components.Land, entity);
+            if (value && value.owner == account.address && value.building == BuildType.Camp) {
+                camps_x.push(value.x)
+                camps_y.push(value.y)
+                max += 30 * value.level
+            }
+        });
+        const userW = getComponentValue(components.UserWarrior, getEntityIdFromKeys([1n, BigInt(account.address)]))
+        if (userW) {
+            if (userW.balance + inputValue > max) {
+                toastError("Exceed max warrior. Build Camp.")
+                return
+            }
+        }
+
+        const result = await buyWarrior(account, 1, inputValue, camps_x, camps_y)
+        if (result && result.length > 0) {
+            toastSuccess("Buy success...")
+        } else {
+            toastError("Buy failed")
+        }
+    }
+
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
-        console.log("inputChange",value);
-        if(!value){return}
+        console.log("inputChange", value);
+        if (!value) { return }
         try {
-            console.log("inputChange",parseInt(value));
+            console.log("inputChange", parseInt(value));
             if (parseInt(value) <= 0) {
                 return
             }
@@ -147,14 +203,18 @@ export default function TrainPanel() {
     }
 
     const calTotalTime = useMemo(() => {
+        if (!trainorbuy) {
+            return "0s"
+        }
         const total = warriorConfig.Train_Time * inputValue
         return parseTime(total)
-    }, [inputValue, warriorConfig])
+    }, [inputValue, warriorConfig, trainorbuy])
 
     const calConsume = useMemo(() => {
-        var result = (inputValue * warriorConfig.Train_Food) / 1_000_000 + " Food , " + (inputValue * warriorConfig.Train_Gold) / 1_000_000 + " Gold"
+        let multi = trainorbuy ? 1 : 5
+        var result = multi * (inputValue * warriorConfig.Train_Food) / 1_000_000 + " Food , " + multi * (inputValue * warriorConfig.Train_Gold) / 1_000_000 + " Gold" + " , " + multi * (inputValue * warriorConfig.Train_Iron) / 1_000_000 + " Iron"
         return result
-    }, [inputValue, warriorConfig])
+    }, [inputValue, warriorConfig, trainorbuy])
 
     const calClaimable = (train: any) => {
 
@@ -203,8 +263,18 @@ export default function TrainPanel() {
 
     return (<ClickWrapper>
         <Container>
-            <div style={{ width: 220, height: 190, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-                <p>Train Warrior</p>
+            <div style={{ display: "flex" }}>
+                <div onClick={() => setTrainorBuy(true)} style={trainorbuy ? { backgroundColor: "rgba(0, 0, 255, 0.5)" } : {}} className="trainselector">Train</div>
+                <div onClick={() => setTrainorBuy(false)} style={!trainorbuy ? { backgroundColor: "rgba(0, 0, 255, 0.5)" } : {}} className="trainselector">Buy</div>
+            </div>
+            <div style={{ width: 220, height: 220, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                {
+                    trainorbuy ?
+                        <p>Train Warrior</p>
+                        :
+                        <p>Buy Warrior</p>
+                }
+
                 {
                     (training?.total != 0 && training?.total != training?.out) ?
                         <div>
@@ -213,23 +283,30 @@ export default function TrainPanel() {
                                 <p>Next : {getTrainTime}</p>
                                 <p>Claimable : {claimable}</p>
                             </div>
-                            <LoadingButton initialText="Claim Warrior" loadingText="Claim..." style={{ marginTop: 8, marginLeft: 60 }} onClick={claim}/>
+                            <LoadingButton initialText="Claim Warrior" loadingText="Claim..." style={{ marginTop: 8, marginLeft: 60 }} onClick={claim} />
                         </div>
                         :
                         <div>
-                            <div style={{ fontSize: 14, border: "1px solid white", width: 210, height: 100, borderRadius: 15, padding: 5 }}>
+                            <div style={{ fontSize: 14, border: "1px solid white", width: 210, height: 120, borderRadius: 15, padding: 5 }}>
                                 <p>Consume : {calConsume}</p>
                                 <p>Time : {calTotalTime}</p>
                                 <div style={{ display: "flex" }}>
-                                    <div style={{ marginTop: 5, marginRight: 10 }}>Train Amount </div>
+                                    <div style={{ marginTop: 5, marginRight: 10 }}>Warrior Amount </div>
                                     <input onChange={inputChange} style={{ height: 18, width: 60, marginRight: 10 }} value={inputValue} type="number" />
                                 </div>
                             </div>
-                            <LoadingButton initialText="Start Training" loadingText="Start..." style={{ marginTop: 8, marginLeft: 60 }} onClick={train}/>
+
+                            <div style={{ display: "flex", marginTop: 10, marginLeft: 50 }}>
+                                {
+                                    !trainorbuy ? <LoadingButton initialText="Buy Immediately" loadingText="Buy..." onClick={buy} /> :
+                                        <LoadingButton initialText="Start Training" loadingText="Start..." onClick={train} />
+
+                                }
+                            </div>
                         </div>
                 }
             </div>
-            { import.meta.env.VITE_ADMIN_MODE === 'true' && <button onClick={() => adminclick()}>Admin</button> }
+            {import.meta.env.VITE_ADMIN_MODE === 'true' && <button onClick={() => adminclick()}>Admin</button>}
         </Container>
     </ClickWrapper>)
 }

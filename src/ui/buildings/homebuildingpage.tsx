@@ -279,6 +279,7 @@ export default function BasePage() {
       TILE_WIDTH,
       TILE_HEIGHT
     );
+    console.log("center On");
     camera?.centerOn(pixelPosition?.x!, pixelPosition?.y!);
   };
 

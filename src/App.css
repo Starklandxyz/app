@@ -326,3 +326,12 @@ button:after {
 /* .small_fontsize {
   font-size: 10px;
 } */
+
+.trainselector {
+  cursor: pointer;
+  border-radius: 10px;
+  padding-left: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100px;
+  height: 30px;
+}

@@ -9,7 +9,7 @@ import { getBuildName } from '../types/Build';
 import { getEntityIdFromKeys } from '../dojo/parseEvent';
 import NesButton from "../ui/components/NesButton";
 import { toastError, toastSuccess } from '../utils';
-import { Upgrate_Time } from '../contractconfig';
+import { Upgrate_Time } from '../contractconfig'
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import LoadingButton from './components/LoadingButton';
 

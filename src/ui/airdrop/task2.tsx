@@ -48,7 +48,7 @@ export default function Task2() {
             if (userairdrop) {
                 return <div>Claimed</div>
             } else {
-                if(userWarrior.balance>=20)
+                if(userWarrior.balance>=30)
                 return <AirdropClaimButton onClick={ claimairdrop}/>
                 // <div style={{color:"yellow",cursor:"pointer"}} onClick={() => claimairdrop()}>
                 // <img src={gifticon}  style={{ color: "green" }} />Claim</div>
@@ -83,7 +83,7 @@ export default function Task2() {
 
     return (
         <tr>
-        <td>2. Have 20 Warriors</td>
+        <td>2. Have 30 Warriors</td>
         {getRewardDiv}
         <td>{taskButton}</td>
     </tr>
