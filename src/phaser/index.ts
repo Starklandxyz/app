@@ -16,7 +16,7 @@ export const createPhaserLayer = async (networkLayer: NetworkLayer, phaserConfig
     const { camera } = scenes.Main;
 
     // setBounds(x: number, y: number, width: number, height: number, centerOn?: boolean): this;
-    camera.phaserCamera.setBounds(-30, -30, MAP_WIDTH * TILE_WIDTH + 100, MAP_HEIGHT * TILE_HEIGHT + 100);
+    camera.phaserCamera.setBounds(-60, -60, MAP_WIDTH * TILE_WIDTH + 200, MAP_HEIGHT * TILE_HEIGHT + 200);
     camera.phaserCamera.centerOn(0, 0);
 
     const components = {};

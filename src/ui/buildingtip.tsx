@@ -177,7 +177,7 @@ export default function BuildingTip() {
             putTileAt(c, Tileset.Empty, "Select");
             c = q.dequeue()
         }
-
+        if(lastCoord.x!=0 && lastCoord.y!=0)
         putTileAt(lastCoord, TilesetSelect.Color3, "Select");
         // setCoord({ x: lastCoord.x, y: lastCoord.y })
     }, [lastCoord])

@@ -5,7 +5,7 @@ import { usePhaserLayer } from "../hooks/usePhaserLayer";
 import { mouseStore } from "../store/mouseStore";
 import { controlStore } from "../store/controlStore";
 import { pixelCoordToTileCoord, tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/src/index";
-import { TILE_HEIGHT, TILE_WIDTH } from "./constants";
+import { MAP_HEIGHT, MAP_WIDTH, TILE_HEIGHT, TILE_WIDTH } from "./constants";
 
 type Props = {
     networkLayer: NetworkLayer | null;
@@ -18,7 +18,7 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
     const { camera } = store()
     const { down } = mouseStore()
     const [lastEvent, setEvent] = useState<any>()
-    const { coord: lastCoord, coords,frozen } = mouseStore()
+    const { coord: lastCoord, coords, frozen } = mouseStore()
     const { sendTroopCtr: sendTroop, buildLand, showTipButtons, tipButtonShow } = controlStore()
 
     const handleMouseMove = (e: any) => {
@@ -37,7 +37,7 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
         if (buildLand) {
             return
         }
-        if(frozen){
+        if (frozen) {
             return
         }
         const ex = e.clientX
@@ -46,7 +46,9 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
         const y = (ey + camera.phaserCamera.worldView.y * 2) / 2;
 
         const coord = pixelCoordToTileCoord({ x, y }, TILE_WIDTH, TILE_HEIGHT)
-
+        if (coord.x <= 0 || coord.y <= 0 || coord.x > MAP_WIDTH || coord.y > MAP_HEIGHT) {
+            return
+        }
         if (coord.x == lastCoord.x && coord.y == lastCoord.y) {
 
         } else {
@@ -76,14 +78,14 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
     }
 
     const handleMouseDown = (e: any) => {
-        if(frozen){
+        if (frozen) {
             return
         }
         mouseStore.setState({ down: true })
     }
 
     const handleMouseUp = (e: any) => {
-        if(frozen){
+        if (frozen) {
             return
         }
         setEvent(null)
