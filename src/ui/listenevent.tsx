@@ -49,8 +49,8 @@ export default function ListenEvent() {
           }
           __typename
           ... on HBase {
-            owner
             map_id
+            owner
             x
             y
           }
@@ -74,6 +74,8 @@ export default function ListenEvent() {
           }
           __typename
           ... on Training {
+            map_id
+            owner
             start_time,
             total,
             out

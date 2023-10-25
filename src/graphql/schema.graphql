@@ -178,6 +178,8 @@ query getTrainingByKey($key: String,$map_id:String) {
         models {
           __typename
           ... on Training {
+            map_id
+            owner
             start_time,
             total,
             out
