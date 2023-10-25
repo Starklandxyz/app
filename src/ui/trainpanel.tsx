@@ -89,6 +89,9 @@ export default function TrainPanel() {
             toastError("Build a base first.")
             return
         }
+        if(!inputValue){
+            return
+        }
 
         const entityIndex = getEntityIdFromKeys([1n, BigInt(account.address)])
         if (getComponentValue(components.Gold, entityIndex)?.balance! < warriorConfig.Train_Gold * inputValue) {
@@ -189,8 +192,8 @@ export default function TrainPanel() {
 
     const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
-        console.log("inputChange", value);
-        if (!value) { return }
+        // console.log("inputChange", value);
+        // if (!value) { return }
         try {
             console.log("inputChange", parseInt(value));
             if (parseInt(value) <= 0) {
@@ -206,13 +209,13 @@ export default function TrainPanel() {
         if (!trainorbuy) {
             return "0s"
         }
-        const total = warriorConfig.Train_Time * inputValue
+        const total = warriorConfig.Train_Time * (inputValue ? inputValue : 1)
         return parseTime(total)
     }, [inputValue, warriorConfig, trainorbuy])
 
     const calConsume = useMemo(() => {
         let multi = trainorbuy ? 1 : 5
-        var result = multi * (inputValue * warriorConfig.Train_Food) / 1_000_000 + " Food , " + multi * (inputValue * warriorConfig.Train_Gold) / 1_000_000 + " Gold" + " , " + multi * (inputValue * warriorConfig.Train_Iron) / 1_000_000 + " Iron"
+        var result = multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Food) / 1_000_000 + " Food , " + multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Gold) / 1_000_000 + " Gold" + " , " + multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Iron) / 1_000_000 + " Iron"
         return result
     }, [inputValue, warriorConfig, trainorbuy])
 
