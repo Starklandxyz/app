@@ -136,10 +136,10 @@ export default function BasePage() {
     xs.push(base.x);
     ys.push(base.y);
 
-    farmland.map((land) => {
-      xs.push(land.x);
-      ys.push(land.y);
-    });
+    // farmland.map((land) => {
+    //   xs.push(land.x);
+    //   ys.push(land.y);
+    // });
     ironMine.map((land) => {
       xs.push(land.x);
       ys.push(land.y);
