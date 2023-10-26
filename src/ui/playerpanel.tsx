@@ -11,7 +11,6 @@ import ironIcon from "../../public/assets/icons/iron.png";
 import dominationIcon from "../../public/assets/icons/domination.png";
 import goldIcon from "../../public/assets/icons/gold.png";
 import soldierIcon from "../../public/assets/icons/soldier.png";
-import flagIcon from "../../public/assets/icons/flag.png";
 import landIcon from "../../public/assets/icons/landicon.png";
 import { store } from "../store/store";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -70,6 +69,16 @@ export default function PlayerPanel() {
     getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
     { balance: 0 }
   );
+
+  const base = useComponentValue(
+    sqlComponent.HBase,
+    getEntityIdFromKeys([1n, BigInt(account ? account.address : "")])
+  );
+  const baseland = useComponentValue(
+    sqlComponent.Land,
+    getEntityIdFromKeys([1n, BigInt(base ? base.x : 0), BigInt(base ? base.y : 0)])
+  );
+
   const userWarrior = useComponentValue(
     sqlComponent.UserWarrior,
     getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]),
@@ -81,12 +90,6 @@ export default function PlayerPanel() {
     getEntityIdFromKeys([BigInt(account ? account.address : "")])
   );
 
-  const players = useEntityQuery([Has(sqlComponent.Player)], { updateOnValueChange: true })
-
-  const troops = useEntityQuery([Has(sqlComponent.Troop)], {
-    updateOnValueChange: true,
-  });
-
   const landEntities = useEntityQuery([Has(sqlComponent.Land)], {
     updateOnValueChange: true,
   });
@@ -95,28 +98,6 @@ export default function PlayerPanel() {
     sqlComponent.Airdrop,
     getEntityIdFromKeys([BigInt(account ? account.address : "")])
   );
-
-  useEffect(() => {
-    // "0x6e744c30f007502cb9dfbc0a70668531e7eec4e0fe785041879b5123231ae92"
-    for (let index = 0; index < players.length; index++) {
-      const element = players[index];
-      const p = getComponentValue(sqlComponent.Player, element)
-      // console.log("Player:", p, hexToString(p?.nick_name));
-    }
-
-
-    for (let index = 0; index < troops.length; index++) {
-      const element = troops[index];
-      const t = getComponentValue(sqlComponent.Troop, element)
-      // console.log("Troop",t);
-
-      let address = account?.address
-      address = "0x302cb5ef3583bd2555fe1d88faa13f03dab93614620310a58c7b00fabe51f7e"
-      if (t && t.owner == address) {
-        console.log("Troops:", t);
-      }
-    }
-  }, [players, troops])
 
   useEffect(() => {
     if (!account) {
@@ -190,23 +171,6 @@ export default function PlayerPanel() {
     handleSQLResult(edges, sqlComponent);
   };
 
-  const getMyTroopSize = useMemo(() => {
-    // console.log("getMyTroopSize",account,troops);
-    if (!account) {
-      return 0;
-    }
-    var size = 0;
-
-    troops.map((entity) => {
-      const troop = getComponentValue(sqlComponent.Troop, entity);
-      // console.log("getMyTroopSize",entity,troop);
-      if (troop?.owner == account.address && troop?.start_time != 0) {
-        size++;
-      }
-    });
-    return size;
-  }, [account, troops]);
-
   const getdomination = useMemo(() => {
     if (!account) {
       return 0
@@ -232,35 +196,21 @@ export default function PlayerPanel() {
     console.log("airdropClaimed", airdropClaimed);
   }, [airdropClaimed]);
 
-  const hasAirdrop = useMemo(() => {
-    if (!account) {
-      return false;
-    }
-    if (airdropClaimed) {
-      return false;
-    } else {
-      return true;
-    }
-  }, [airdropClaimed, account]);
-
   const maxLand = useMemo(() => {
     console.log("maxland", account);
 
     if (!account) {
       return 10
     }
-    const base = getComponentValue(sqlComponent.HBase, getEntityIdFromKeys([1n, BigInt(account.address)]))
     if (!base) {
       return 10
     }
-    const land = getComponentValue(sqlComponent.Land, getEntityIdFromKeys([1n, BigInt(base.x), BigInt(base.y)]))
-    if (!land) {
+    if (!baseland) {
       return 10
     }
-    const max = 10 + 5 * (land?.level - 1)
-
+    const max = 10 + 5 * (baseland?.level - 1)
     return max
-  }, [account, landEntities])
+  }, [account, base,baseland])
 
   const maxWarrior = useMemo(() => {
     console.log("maxWarrior", account, userCamps);
