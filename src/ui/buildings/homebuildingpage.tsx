@@ -151,20 +151,22 @@ export default function BasePage() {
 
     let xtemp = []
     let ytemp = []
-    let times = Math.ceil(xs.length / 20)
-    for (let index = 0; index < times; index++) {
-      times--
+    let size = Math.ceil(xs.length / 20)
+    console.log("claimAll", xs.length, size);
+    for (let index = 0; index < size; index++) {
+      // times--
       xtemp = []
       ytemp = []
       for (let index = 0; index < 20; index++) {
-        if (index + times * 20 >= xs.length) {
+        if (index + (size - index - 1) * 20 >= xs.length) {
           break
         }
-        const x = xs[index + times * 20];
-        const y = ys[index + times * 20];
+        const x = xs[index + (size - index - 1) * 20];
+        const y = ys[index + (size - index - 1) * 20];
         xtemp[index] = x
         ytemp[index] = y
       }
+      console.log("claimAll",xtemp,ytemp);
       const result = await claimMining(account!, 1, xtemp, ytemp);
       if (result && result.length > 0) {
         toastSuccess("Claim success");
