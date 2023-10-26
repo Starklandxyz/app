@@ -149,11 +149,28 @@ export default function BasePage() {
       ys.push(land.y);
     });
 
-    const result = await claimMining(account!, 1, xs, ys);
-    if (result && result.length > 0) {
-      toastSuccess("Claim success");
-    } else {
-      toastError("Claim failed");
+    let xtemp = []
+    let ytemp = []
+    let times = Math.ceil(xs.length / 20)
+    for (let index = 0; index < times; index++) {
+      times--
+      xtemp = []
+      ytemp = []
+      for (let index = 0; index < 20; index++) {
+        if (index + times * 20 >= xs.length) {
+          break
+        }
+        const x = xs[index + times * 20];
+        const y = ys[index + times * 20];
+        xtemp[index] = x
+        ytemp[index] = y
+      }
+      const result = await claimMining(account!, 1, xtemp, ytemp);
+      if (result && result.length > 0) {
+        toastSuccess("Claim success");
+      } else {
+        toastError("Claim failed");
+      }
     }
   };
 
@@ -356,11 +373,11 @@ export default function BasePage() {
         )}
 
         <div style={{ display: "flex", marginTop: "14px", paddingLeft: "2px" }}>
-          <div style={{ fontWeight: "bold", display:"flex", justifyContent:"flex-end", flex:1, margin: "auto" }}>
+          <div style={{ fontWeight: "bold", display: "flex", justifyContent: "flex-end", flex: 1, margin: "auto" }}>
             {updateButton}
           </div>
         </div>
-       
+
       </div>
       <div
         style={{
