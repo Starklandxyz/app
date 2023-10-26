@@ -14,6 +14,7 @@ import { BuildType } from "../types/Build";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { useEntityQuery } from "../../node_modules/@latticexyz/react";
+import { get_land_level } from "../types/Land";
 const SIZE = 12
 
 export default function TroopsUI() {
@@ -48,7 +49,7 @@ export default function TroopsUI() {
             const usedtime = timenow - value.startTime
             const left = value.totalTime - usedtime
             // console.log("time change",timenow,value);
-            
+
             if (value.startTime != 0 && left < 0) {
                 showFlag(value)
                 hideTroopArrow(objectPool, value);
@@ -78,7 +79,7 @@ export default function TroopsUI() {
                 flip = true
             }
             // console.log("createArmey", value);
-            
+
             if (value.owner == account?.address) {
                 if (value.retreat) {
                     hideFlag(value.from)
@@ -86,7 +87,7 @@ export default function TroopsUI() {
             }
             if (value.startTime == 0) {
                 hideFlag(value.to)
-            }else{
+            } else {
                 createArmey(objectPool, value.id, pos, left, flip)
             }
         })
@@ -124,6 +125,8 @@ export default function TroopsUI() {
         var from_y = troop.from.y
         var to_x = troop.to.x
         var to_y = troop.to.y
+        const level =get_land_level(1,to_x,to_y)
+        if(level!=6)
         putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
         if (isBase(troop.from)) {
             from_x = from_x + 1
@@ -157,7 +160,7 @@ export default function TroopsUI() {
 
         const rr = (start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y)
         const length = Math.sqrt(rr) / SIZE
-        console.log("createArrowLine",length);
+        console.log("createArrowLine", length);
         for (let index = 0; index < Math.ceil(length); index++) {
             const sid = "arrow_" + troop.id + "_" + index
             const arrowObj = pool.get(sid, "Sprite")
@@ -186,7 +189,7 @@ export default function TroopsUI() {
                     }
                     sprite.setPosition(x, y)
                     sprite.z = 1
-                    console.log("createArrowLine",sprite);
+                    console.log("createArrowLine", sprite);
                 }
             })
         }
@@ -274,7 +277,9 @@ export default function TroopsUI() {
             }
         }
         putTileAt(pos, flag, "Flag");
-        putTileAt(pos, TilesetZone.MyZoneWait, "TempOccupy");
+        const level = get_land_level(1, troop.to.x, troop.to.y)
+        if (level != 6)
+            putTileAt(pos, TilesetZone.MyZoneWait, "TempOccupy");
     }
 
     const hideTroopArrow = (pool: ObjectPool, troop: Troop) => {

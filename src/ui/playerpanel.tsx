@@ -217,8 +217,7 @@ export default function PlayerPanel() {
     }
     let total = 0
     map.forEach((value,key)=>{
-      console.log("my territoryMap",key,value);
-      
+      // console.log("my territoryMap",key,value);
       total += value
     })
     return total
