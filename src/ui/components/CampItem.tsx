@@ -52,7 +52,7 @@ export default function CampItem(params: any) {
     }, [timenow, update_base])
 
     return (<ClickWrapper>
-        <div style={{ border: "1px solid white", borderRadius: 15, padding: 5, marginBottom: 10, lineHeight: 1.5 }}>
+        <div style={{marginRight:10, border: "1px solid white", borderRadius: 15, padding: 5, marginBottom: 10, lineHeight: 1.5 }}>
             <div style={{ display: "flex" }}>
                 <div style={{ marginRight: 30 }}>{`(${land.x},${land.y})`}</div>
                 <div>+{land.level * 10 + 20} Capacity</div>

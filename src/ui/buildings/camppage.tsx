@@ -27,12 +27,16 @@ import CampItem from "../components/CampItem";
 
 
 export default function CampPage() {
-    const {camps}  =playerBuildStore()
+    const { camps } = playerBuildStore()
 
-    return (<div style={{ width: 210, height: 400, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
-        <div style={{padding:10}}>Camps</div>
-        {
-            camps.map((land,index)=><CampItem land={land}/>)
-        }
-    </div>)
+    return (
+        <div style={{ width: 260, height: 400, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+            <div style={{ padding: 10 }}>Camps</div>
+            <div style={{ maxHeight: 360, overflow: "auto", }}>
+                {
+                    camps.map((land, index) => <CampItem land={land} />)
+                }
+            </div>
+        </div>
+    )
 }
