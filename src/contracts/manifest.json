@@ -1963,7 +1963,7 @@
     {
       "name": "upgrade_building",
       "address": "0x2a74e68383f4e20e0c2856b66926102c2219cfda963c6d9a85d5820f1caa279",
-      "class_hash": "0x35252c0e808daef0bc16e091f8bf37b8da410bebc59536c3a5cd90d08fe89c4",
+      "class_hash": "0x1c323250989ee1b03da97d3676452efa1d22a519477d00cc6eb174bdc70c7d8",
       "abi": [
         {
           "type": "impl",
