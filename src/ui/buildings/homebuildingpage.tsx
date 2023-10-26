@@ -153,16 +153,16 @@ export default function BasePage() {
     let ytemp = []
     let size = Math.ceil(xs.length / 20)
     console.log("claimAll", xs.length, size);
-    for (let index = 0; index < size; index++) {
+    for (let i = 0; i < size; i++) {
       // times--
       xtemp = []
       ytemp = []
       for (let index = 0; index < 20; index++) {
-        if (index + (size - index - 1) * 20 >= xs.length) {
+        if (index + (size - i - 1) * 20 >= xs.length) {
           break
         }
-        const x = xs[index + (size - index - 1) * 20];
-        const y = ys[index + (size - index - 1) * 20];
+        const x = xs[index + (size - i - 1) * 20];
+        const y = ys[index + (size - i - 1) * 20];
         xtemp[index] = x
         ytemp[index] = y
       }
