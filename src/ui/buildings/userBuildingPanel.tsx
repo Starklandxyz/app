@@ -2,11 +2,6 @@ import { ClickWrapper } from "../clickWrapper";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { store } from "../../store/store";
-import { BuildType } from "../../types/Build";
-import { Land } from "../../types/Land";
-import { useComponentValue, useEntityQuery } from "@dojoengine/react";
-import { Has, HasValue, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
-import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import upicon from "../../../public/assets/icons/upicon.png"
 import downicon from "../../../public/assets/icons/downicon.png"
 import baseicon from "../../../public/assets/icons/Castle.png"
@@ -33,8 +28,6 @@ export default function UserBuildingPanel() {
     const [hideAll, setHide] = useState(false)
 
     const { account, phaserLayer } = store()
-
-    // const [training, setTraining] = useState<Training>(new Training())
 
     const {
         world,
@@ -156,6 +149,11 @@ export default function UserBuildingPanel() {
                         <img src={baseicon} style={{ transform: "scale(0.6) translate(-10px,-2px)", imageRendering: "pixelated" }} />
                     </div>
                     <div data-tooltip-id="my-tooltip"
+                        data-tooltip-content="All Camps"
+                        data-tooltip-place="top" className={showCamp ? "build_icon build_icon_select" : "build_icon"} onClick={() => setShowCamp(true)}>
+                        <img src={campicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
+                    </div>
+                    <div data-tooltip-id="my-tooltip"
                         data-tooltip-content="All Farmlands"
                         data-tooltip-place="top" className={showFarm ? "build_icon build_icon_select" : "build_icon"} onClick={() => setShowFarm(true)}>
                         <img src={farmlandicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
@@ -169,11 +167,6 @@ export default function UserBuildingPanel() {
                         data-tooltip-content="All Iron Mines"
                         data-tooltip-place="top" className={showIron ? "build_icon build_icon_select" : "build_icon"} onClick={() => setShowIron(true)}>
                         <img src={ironmineicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
-                    </div>
-                    <div data-tooltip-id="my-tooltip"
-                        data-tooltip-content="All Camps"
-                        data-tooltip-place="top" className={showCamp ? "build_icon build_icon_select" : "build_icon"} onClick={() => setShowCamp(true)}>
-                        <img src={campicon} style={{ transform: "scale(1.2) translate(8px,12px)", imageRendering: "pixelated" }} />
                     </div>
                     <div data-tooltip-id="my-tooltip"
                         data-tooltip-content="All Forts"
