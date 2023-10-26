@@ -3,6 +3,8 @@ import { ClickWrapper } from "./clickWrapper";
 import styled from "styled-components";
 import { store } from "../store/store";
 import TroopItem from "./components/TroopItem";
+import upicon from "../../public/assets/icons/upicon.png"
+import downicon from "../../public/assets/icons/downicon.png"
 import {
   Has,
   defineSystem,
@@ -17,6 +19,7 @@ import NesButton from "./components/NesButton";
 export default function TroopPanel() {
   const { account, phaserLayer } = store();
   const [showContent, setShowContent] = useState(true);
+  const [hidePanel, setHidePanel] = useState(false);
   const toggleContent = useCallback(() => {
     setShowContent(!showContent);
   }, [showContent]);
@@ -69,7 +72,6 @@ export default function TroopPanel() {
           <div
             style={{
               overflow: "auto",
-              width: 320,
               maxHeight: 350,
               lineHeight: 1,
               backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -79,14 +81,14 @@ export default function TroopPanel() {
             }}
           >
             <div style={{ display: "flex" }}>
-              <p style={{ flex: 1, fontSize: 20, color: "pink",margin:"auto" }}>
+              <p style={{ flex: 1, fontSize: 20, color: "pink", margin: "4px" }}>
                 Troops -{" "}
                 <span style={{ fontSize: "17px", color: "lightblue" }}>
                   {" "}
                   {myTroops.length}
                 </span>
               </p>
-              <NesButton
+              {/* <NesButton
                 style={{
                   height: "30px",
                   alignSelf: "center",
@@ -95,10 +97,17 @@ export default function TroopPanel() {
                 onClick={toggleContent}
               >
                 Show/Hide
-              </NesButton>
+              </NesButton> */}
+
+              <div style={{ width: 50 }}>
+                <img data-tooltip-id="my-tooltip"
+                  data-tooltip-content="Hide | Show"
+                  data-tooltip-place="top" src={hidePanel ? upicon : downicon} onClick={() => setHidePanel(!hidePanel)}
+                  style={{ position:"absolute",top:"-5px",right:"10px", cursor: "pointer", transform: "rotate(90deg)", marginBottom: 15 }} />
+              </div>
             </div>
-            {showContent && (
-              <div>
+            {!hidePanel && (
+              <div style={{marginTop:15}}>
                 {[...myTroops.values()].map(
                   (value) =>
                     value.owner == account.address &&
