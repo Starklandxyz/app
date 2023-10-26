@@ -136,7 +136,7 @@ export default function BuildingTip() {
             const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
             const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
             var x = ex + 180
-            if (ex > innerWidth - 450) {
+            if (ex > innerWidth - 550) {
                 x = ex - 120
             }
             var y = ey - 40

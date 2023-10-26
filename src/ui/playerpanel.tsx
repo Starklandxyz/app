@@ -216,7 +216,7 @@ export default function PlayerPanel() {
       return 0
     }
     let total = 0
-    map.forEach((value,key)=>{
+    map.forEach((value, key) => {
       // console.log("my territoryMap",key,value);
       total += value
     })
@@ -270,7 +270,7 @@ export default function PlayerPanel() {
     let total = 60
     for (let index = 0; index < userCamps.length; index++) {
       const camp = userCamps[index];
-      total += camp.level * 30
+      total += (camp.level - 1) * 10 + 30
     }
     return total
   }, [account, userCamps, landEntities])
