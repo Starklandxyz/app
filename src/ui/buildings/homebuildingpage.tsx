@@ -22,6 +22,7 @@ import NesButton from "../components/NesButton";
 import styled from "styled-components";
 import { updateStore } from "../../store/updateStore";
 import LoadingButton from "../components/LoadingButton";
+import { playerBuildStore } from "../../store/playerbuildingstore";
 
 export default function BasePage() {
   const { account, phaserLayer, camera } = store();
@@ -113,6 +114,7 @@ export default function BasePage() {
     setIronmine(irons);
     setGoldmine(golds);
     setcamp(camps);
+    playerBuildStore.setState({ bases: bs, farmlands: fs, ironmines: irons, goldmines: golds, camps: camps })
   }, [landEntities, account]);
 
   const claimAll = async () => {
@@ -308,10 +310,10 @@ export default function BasePage() {
       } else {
         const total = update_base.end_time - update_base.start_time
         const used = timenow - update_base.start_time
-        return <>{parseTime(used)}/{parseTime(total,false)} Updating...</>
+        return <>{parseTime(used)}/{parseTime(total, false)} Updating...</>
       }
     }
-    return <NesButton style={{ minHeight: 30 }} onClick={() => updateBase()}>Upgrade</NesButton>
+    return <button style={{ minHeight: 30 }} onClick={() => updateBase()}>Upgrade</button>
   }, [timenow, update_base])
 
   const campCapacity = useMemo(() => {
