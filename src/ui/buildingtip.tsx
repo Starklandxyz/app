@@ -59,11 +59,11 @@ export default function BuildingTip() {
         const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
         const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
         console.log("lastCoord", lastCoord, c, ex, ey, innerWidth);
-        if (ex > innerWidth - 60) {
-            console.log("ex > innerWidth - 60", ex, innerWidth - 60);
+        if (ex > innerWidth - 100) {
+            console.log("ex > innerWidth - 100", ex, innerWidth - 100);
             return
         } else {
-            console.log("ex <= innerWidth - 60", ex, innerWidth - 60);
+            console.log("ex <= innerWidth - 100", ex, innerWidth - 100);
 
         }
 
