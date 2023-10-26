@@ -13,11 +13,17 @@ import { Warrior } from "../types/Warrior";
 import { BuildType } from "../types/Build";
 import LoadingButton from "./components/LoadingButton";
 
+import foodIcon from "../../public/assets/icons/food.png"
+import ironIcon from "../../public/assets/icons/iron.png"
+import goldIcon from "../../public/assets/icons/gold.png"
+import soldierIcon from "../../public/assets/icons/soldier.png"
+
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
     const { timenow } = ticStore()
     const { account, phaserLayer } = store()
     const [trainorbuy, setTrainorBuy] = useState(true)
+    const [isTraining, setIsTraining] = useState(false)
     // const [training, setTraining] = useState<Training>(new Training())
 
     const {
@@ -87,7 +93,7 @@ export default function TrainPanel() {
             toastError("Build a base first.")
             return
         }
-        if(!inputValue){
+        if (!inputValue) {
             return
         }
 
@@ -213,8 +219,12 @@ export default function TrainPanel() {
 
     const calConsume = useMemo(() => {
         let multi = trainorbuy ? 1 : 5
-        var result = multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Food) / 1_000_000 + " Food , " + multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Gold) / 1_000_000 + " Gold" + " , " + multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Iron) / 1_000_000 + " Iron"
-        return result
+        let food = multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Food) / 1_000_000;
+        let gold = multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Gold) / 1_000_000;
+        let iron = multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Iron) / 1_000_000;
+
+        // var result = multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Food) / 1_000_000 + " Food , " + multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Gold) / 1_000_000 + " Gold" + " , " + multi * ((inputValue ? inputValue : 1) * warriorConfig.Train_Iron) / 1_000_000 + " Iron"
+        return { food, gold, iron };
     }, [inputValue, warriorConfig, trainorbuy])
 
     const calClaimable = (train: any) => {
@@ -262,24 +272,33 @@ export default function TrainPanel() {
         }
     }
 
+    useEffect(() => {
+        console.log(`training changed...`)
+        setIsTraining(training?.total != 0 && training?.total != training?.out)
+    }, [training])
+
     return (<ClickWrapper>
         <Container>
-            <div style={{ display: "flex" }}>
-                <div onClick={() => setTrainorBuy(true)} style={trainorbuy ? { backgroundColor: "rgba(0, 0, 255, 0.5)" } : {}} className="trainselector">Train</div>
-                <div onClick={() => setTrainorBuy(false)} style={!trainorbuy ? { backgroundColor: "rgba(0, 0, 255, 0.5)" } : {}} className="trainselector">Buy</div>
+            <div style={{ display: "flex" }} className="train-tab">
+                <div onClick={() => setTrainorBuy(true)} style={trainorbuy ? { backgroundColor: "rgba(0, 0, 255, 0.5)" } : {}} className="trainselector left">Train</div>
+                <div onClick={() => setTrainorBuy(isTraining || false)} style={!trainorbuy ? { backgroundColor: "rgba(0, 0, 255, 0.5)" } : {}} className={`trainselector right ${isTraining ? "disable" : ""}`}>Buy</div>
             </div>
-            <div style={{ width: 220, height: 220, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+            <div className="container-small" style={{ width: 240, height: 200, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "10px", borderRadius: "0px 0px 15px 15px", paddingTop: 1 }}>
                 {
                     trainorbuy ?
                         <p>Train Warrior</p>
                         :
-                        <p>Buy Warrior</p>
+                        <p>Buy Warrior
+                            <br />
+                            <span style={{ fontSize: 12, color: "lightGray" }}>Pay 10x cost to immediately acquire warriors instead of training.</span>
+                        </p>
+
                 }
 
                 {
                     (training?.total != 0 && training?.total != training?.out) ?
                         <div>
-                            <div style={{ fontSize: 14, border: "1px solid white", width: 210, height: 100, borderRadius: 15, padding: 5 }}>
+                            <div style={{ fontSize: 14, border: "1px solid white", height: 100, borderRadius: 15, padding: 5 }}>
                                 <p>Claimed : {training?.out}/{training?.total}</p>
                                 <p>Next : {getTrainTime}</p>
                                 <p>Claimable : {claimable}</p>
@@ -288,19 +307,29 @@ export default function TrainPanel() {
                         </div>
                         :
                         <div>
-                            <div style={{ fontSize: 14, border: "1px solid white", width: 210, height: 120, borderRadius: 15, padding: 5 }}>
-                                <p>Consume : {calConsume}</p>
+                            <div className="cost" style={{ fontSize: 14, border: "1px solid white", borderRadius: 15, padding: 5 }}>
+                                <span></span>
+                                <p style={{ marginTop: 4 }}>Cost :
+                                    <img src={foodIcon} />
+                                    <span>{calConsume["food"]}</span>
+                                    <span>&nbsp;</span>
+                                    <img src={goldIcon} />
+                                    <span>{calConsume["gold"]}</span>
+                                    <span>&nbsp;</span>
+                                    <img src={ironIcon} />
+                                    <span>{calConsume["iron"]}</span>
+                                </p>
                                 <p>Time : {calTotalTime}</p>
                                 <div style={{ display: "flex" }}>
-                                    <div style={{ marginTop: 5, marginRight: 10 }}>Warrior Amount </div>
+                                    <div style={{ marginTop: 5, marginRight: 10, marginLeft:4,marginBottom:10 }}>Warrior Amount </div>
                                     <input onChange={inputChange} style={{ height: 18, width: 60, marginRight: 10 }} value={inputValue} type="number" />
                                 </div>
                             </div>
 
-                            <div style={{ display: "flex", marginTop: 10, marginLeft: 50 }}>
+                            <div style={{ textAlign:"center", marginTop: 10 }}>
                                 {
-                                    !trainorbuy ? <LoadingButton initialText="Buy Immediately" loadingText="Buy..." onClick={buy} /> :
-                                        <LoadingButton initialText="Start Training" loadingText="Start..." onClick={train} />
+                                    !trainorbuy ? <LoadingButton style={{minWidth: 70}} initialText="Buy" loadingText="Buy..." onClick={buy} /> :
+                                        <LoadingButton style={{minWidth: 70, marginTop:20}} initialText="Start Training" loadingText="Start..." onClick={train} />
 
                                 }
                             </div>

@@ -327,11 +327,33 @@ button:after {
   font-size: 10px;
 } */
 
-.trainselector {
-  cursor: pointer;
-  border-radius: 10px;
-  padding-left: 10px;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 100px;
-  height: 30px;
+.train-tab {
+  .trainselector {
+    cursor: pointer;
+    padding-left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100px;
+    height: 30px;
+    flex:1;
+  }
+  
+  .left {
+    border-radius: 10px 0px 0px 0px;
+  }
+  
+  .right {
+    border-radius: 0px 10px 0px 0px;
+  }
+
+  .disable {
+    color:gray;
+  }
+}
+
+.container-small p {
+  margin: 10px 4px;
+}
+
+.cost img {
+  height: 19px;
 }
