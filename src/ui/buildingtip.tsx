@@ -17,7 +17,7 @@ export default function BuildingTip() {
     const { camera, phaserLayer, account } = store()
     const [tooltip, settooltip] = useState({ show: false, content: <></>, x: 0, y: 0, position: "" })
 
-    const { coord: lastCoord, down: mouseDown, coords } = mouseStore()
+    const { coord: lastCoord, down: mouseDown, coords, downCoord, upCoord } = mouseStore()
     const { sendTroopCtr: sendTroop, buildLand, addTipButton, showTipButtons, tipButtonShow } = controlStore()
 
     const {
@@ -208,21 +208,26 @@ export default function BuildingTip() {
         if (tipButtonShow.show) {
             return
         }
+        if (!camera) {
+            return
+        }
         if (!mouseDown) {
+            if (upCoord && downCoord) {
+                if (upCoord.x != downCoord.x || upCoord.y != downCoord.y) {
+                    return
+                }
+            }
             const c = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
             console.log("click lastCoord", lastCoord, c);
-
-            if (camera) {
-                const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
-                const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
-                var x = ex
-                var y = ey + 50
-                if (ey > innerHeight - 200) {
-                    y = ey - 100
-                }
-                console.log("click", lastCoord, x, y);
-                controlStore.setState({ tipButtonShow: { show: true, x: x, y: y }, clickedLand: { x: lastCoord.x, y: lastCoord.y } })
+            const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
+            const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
+            var x = ex
+            var y = ey + 50
+            if (ey > innerHeight - 200) {
+                y = ey - 100
             }
+            console.log("click", lastCoord, x, y);
+            controlStore.setState({ tipButtonShow: { show: true, x: x, y: y }, clickedLand: { x: lastCoord.x, y: lastCoord.y } })
         }
     }, [mouseDown, account])
 
