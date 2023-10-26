@@ -60,8 +60,13 @@ export default function BuildingTip() {
         const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
         console.log("lastCoord", lastCoord, c, ex, ey, innerWidth);
         if (ex > innerWidth - 60) {
+            console.log("ex > innerWidth - 60", ex, innerWidth - 60);
             return
+        } else {
+            console.log("ex <= innerWidth - 60", ex, innerWidth - 60);
+
         }
+
         var land_name = "Land"
         var land_owner = "Owner : No Owner"
         var land_desc = ""
