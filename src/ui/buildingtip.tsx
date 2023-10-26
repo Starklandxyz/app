@@ -45,7 +45,23 @@ export default function BuildingTip() {
     }, [])
 
     useEffect(() => {
+        if (!camera) {
+            return
+        }
         const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(lastCoord.x), BigInt(lastCoord.y)]))
+        const xx = lastCoord.x
+        const yy = lastCoord.y
+        const xxx = xx.toString()
+        const yyy = yy.toString()
+        var p = `(${xxx},${yyy})`
+        const c = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
+
+        const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
+        const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
+        console.log("lastCoord", lastCoord, c, ex, ey, innerWidth);
+        if (ex > innerWidth - 60) {
+            return
+        }
         var land_name = "Land"
         var land_owner = "Owner : No Owner"
         var land_desc = ""
@@ -125,41 +141,31 @@ export default function BuildingTip() {
             }
         }
 
-        const xx = lastCoord.x
-        const yy = lastCoord.y
-        const xxx = xx.toString()
-        const yyy = yy.toString()
-        var p = `(${xxx},${yyy})`
-        const c = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
-        // console.log("lastCoord", lastCoord, c);
-        if (camera) {
-            const ex = c.x * 2 - camera.phaserCamera.worldView.x * 2
-            const ey = c.y * 2 - camera.phaserCamera.worldView.y * 2
-            var x = ex + 180
-            if (ex > innerWidth - 550) {
-                x = ex - 120
-            }
-            var y = ey - 40
-            if (ey > innerHeight - 200) {
-                y = ey - 100
-            }
-            if (ey < 160) {
-                y = ey + 120
-            }
-            setTip({
-                show: true, x: x, y: y,
-                position: p,
-                content:
-                    <div>
-                        <div style={{ marginTop: 5 }}>{land_name}</div>
-                        <div style={{ marginTop: 5 }}>{p}</div>
-                        <div style={{ marginTop: 5 }}>{land_owner}</div>
-                        <div style={{ marginTop: 5 }}>{land_desc}</div>
-                        <div style={{ marginTop: 5 }}>{land_level}</div>
-                        <div style={{ marginTop: 5 }}>{land_warrior}</div>
-                    </div>
-            })
+        var x = ex + 180
+        if (ex > innerWidth - 550) {
+            x = ex - 120
         }
+        var y = ey - 40
+        if (ey > innerHeight - 200) {
+            y = ey - 100
+        }
+        if (ey < 160) {
+            y = ey + 120
+        }
+        setTip({
+            show: true, x: x, y: y,
+            position: p,
+            content:
+                <div>
+                    <div style={{ marginTop: 5 }}>{land_name}</div>
+                    <div style={{ marginTop: 5 }}>{p}</div>
+                    <div style={{ marginTop: 5 }}>{land_owner}</div>
+                    <div style={{ marginTop: 5 }}>{land_desc}</div>
+                    <div style={{ marginTop: 5 }}>{land_level}</div>
+                    <div style={{ marginTop: 5 }}>{land_warrior}</div>
+                </div>
+        })
+
     }, [lastCoord])
 
     const setTip = (tip: any) => {
@@ -169,17 +175,23 @@ export default function BuildingTip() {
 
 
     useEffect(() => {
-        // console.log("putTileAt", coord, lastCoord);
-
+        if (!camera) { return }
+        const cc = tileCoordToPixelCoord(lastCoord, TILE_WIDTH, TILE_HEIGHT)
+        const ex = cc.x * 2 - camera.phaserCamera.worldView.x * 2
+        // const ey = cc.y * 2 - camera.phaserCamera.worldView.y * 2
+        // console.log("lastCoord", lastCoord, cc, ex, ey, innerWidth);
+        if (ex > innerWidth - 60) {
+            return
+        }
         const q = coords.clone()
         let c = q.dequeue()
         while (c) {
             putTileAt(c, Tileset.Empty, "Select");
             c = q.dequeue()
         }
-        if(lastCoord.x!=0 && lastCoord.y!=0)
-        putTileAt(lastCoord, TilesetSelect.Color3, "Select");
-        // setCoord({ x: lastCoord.x, y: lastCoord.y })
+        if (lastCoord.x != 0 && lastCoord.y != 0) {
+            putTileAt(lastCoord, TilesetSelect.Color3, "Select");
+        }
     }, [lastCoord])
 
     useEffect(() => {
