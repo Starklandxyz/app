@@ -349,18 +349,18 @@ export default function BasePage() {
         {base && (
           <ResourceItem>
             <span className="name" onClick={() => zoomto(base)} style={{ cursor: "pointer" }}>
-              Base {base?.x},{base?.y}{" "}
+              Base ({base?.x},{base?.y}) LV {getBaseLevel}
             </span>
             <span className="speed">{getBaseGoldPerHour} Gold/H</span>
           </ResourceItem>
         )}
 
-        <div style={{ display: "flex", marginTop: "8px", paddingLeft: "6px" }}>
+        <div style={{ display: "flex", marginTop: "14px", paddingLeft: "2px" }}>
           <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
-            LV {getBaseLevel}
+            {updateButton}
           </span>
-          {updateButton}
         </div>
+       
       </div>
       <div
         style={{
