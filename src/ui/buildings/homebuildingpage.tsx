@@ -136,18 +136,18 @@ export default function BasePage() {
     xs.push(base.x);
     ys.push(base.y);
 
-    // farmland.map((land) => {
+    farmland.map((land) => {
+      xs.push(land.x);
+      ys.push(land.y);
+    });
+    // ironMine.map((land) => {
     //   xs.push(land.x);
     //   ys.push(land.y);
     // });
-    ironMine.map((land) => {
-      xs.push(land.x);
-      ys.push(land.y);
-    });
-    goldmine.map((land) => {
-      xs.push(land.x);
-      ys.push(land.y);
-    });
+    // goldmine.map((land) => {
+    //   xs.push(land.x);
+    //   ys.push(land.y);
+    // });
 
     const result = await claimMining(account!, 1, xs, ys);
     if (result && result.length > 0) {
