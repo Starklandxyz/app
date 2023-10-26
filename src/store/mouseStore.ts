@@ -8,6 +8,8 @@ export type MouseStore = {
     frozen:boolean,
     coord:Coord
     down: boolean
+    downCoord:Coord|undefined,
+    upCoord:Coord|undefined,
     coords:Queue<Coord>
 };
 
@@ -17,5 +19,7 @@ export const mouseStore = create<MouseStore>(() => ({
     frozen:false,
     coord:{x:0,y:0},
     down: false,
+    downCoord:undefined,
+    upCoord:undefined,
     coords:new Queue<Coord>()
 }));

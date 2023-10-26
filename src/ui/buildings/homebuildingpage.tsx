@@ -22,6 +22,7 @@ import NesButton from "../components/NesButton";
 import styled from "styled-components";
 import { updateStore } from "../../store/updateStore";
 import LoadingButton from "../components/LoadingButton";
+import { playerBuildStore } from "../../store/playerbuildingstore";
 
 export default function BasePage() {
   const { account, phaserLayer, camera } = store();
@@ -113,6 +114,7 @@ export default function BasePage() {
     setIronmine(irons);
     setGoldmine(golds);
     setcamp(camps);
+    playerBuildStore.setState({ bases: bs, farmlands: fs, ironmines: irons, goldmines: golds, camps: camps })
   }, [landEntities, account]);
 
   const claimAll = async () => {
@@ -308,10 +310,10 @@ export default function BasePage() {
       } else {
         const total = update_base.end_time - update_base.start_time
         const used = timenow - update_base.start_time
-        return <>{parseTime(used)}/{parseTime(total,false)} Updating...</>
+        return <>{parseTime(used)}/{parseTime(total, false)} Updating...</>
       }
     }
-    return <NesButton style={{ minHeight: 30 }} onClick={() => updateBase()}>Upgrade</NesButton>
+    return <button style={{ minHeight: 30 }} onClick={() => updateBase()}>Upgrade</button>
   }, [timenow, update_base])
 
   const campCapacity = useMemo(() => {
@@ -347,18 +349,18 @@ export default function BasePage() {
         {base && (
           <ResourceItem>
             <span className="name" onClick={() => zoomto(base)} style={{ cursor: "pointer" }}>
-              Base {base?.x},{base?.y}{" "}
+              Base ({base?.x},{base?.y}) LV {getBaseLevel}
             </span>
             <span className="speed">{getBaseGoldPerHour} Gold/H</span>
           </ResourceItem>
         )}
 
-        <div style={{ display: "flex", marginTop: "8px", paddingLeft: "6px" }}>
+        <div style={{ display: "flex", marginTop: "14px", paddingLeft: "2px" }}>
           <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
-            LV {getBaseLevel}
+            {updateButton}
           </span>
-          {updateButton}
         </div>
+       
       </div>
       <div
         style={{

@@ -16,7 +16,7 @@ type Props = {
 export const PhaserLayer = ({ networkLayer }: Props) => {
     const { phaserLayer, ref } = usePhaserLayer({ networkLayer });
     const { camera } = store()
-    const { down } = mouseStore()
+    const { down, downCoord } = mouseStore()
     const [lastEvent, setEvent] = useState<any>()
     const { coord: lastCoord, coords, frozen } = mouseStore()
     const { sendTroopCtr: sendTroop, buildLand, showTipButtons, tipButtonShow } = controlStore()
@@ -81,7 +81,9 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
         if (frozen) {
             return
         }
-        mouseStore.setState({ down: true })
+        const ex = e.clientX
+        const ey = e.clientY
+        mouseStore.setState({ down: true, downCoord: { x: ex, y: ey } })
     }
 
     const handleMouseUp = (e: any) => {
@@ -89,7 +91,9 @@ export const PhaserLayer = ({ networkLayer }: Props) => {
             return
         }
         setEvent(null)
-        mouseStore.setState({ down: false })
+        const ex = e.clientX
+        const ey = e.clientY
+        mouseStore.setState({ down: false, upCoord: { x: ex, y: ey } })
     }
 
     const handleMouseLeave = () => {

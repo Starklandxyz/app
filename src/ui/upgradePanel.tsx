@@ -5,13 +5,15 @@ import { useEffect, useMemo } from 'react';
 import closeicon from "../../public/assets//icons/closeicon.png"
 import { useComponentValue } from '../../node_modules/@latticexyz/react';
 import { store } from '../store/store';
-import { getBuildName } from '../types/Build';
+import { BuildType, getBuildName } from '../types/Build';
 import { getEntityIdFromKeys } from '../dojo/parseEvent';
 import NesButton from "../ui/components/NesButton";
 import { parseTime, toastError, toastSuccess } from '../utils';
 import { Upgrate_Time } from '../contractconfig'
 import { ComponentValue, Has, defineSystem, getComponentValue, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import LoadingButton from './components/LoadingButton';
+import { controlStore } from '../store/controlStore';
+import { mouseStore } from '../store/mouseStore';
 
 export default function UpgradePanel() {
     const { account, phaserLayer, camera } = store();
@@ -51,7 +53,10 @@ export default function UpgradePanel() {
             return ""
         }
         // land.level
-        const pow = Math.pow(2, land.level)
+
+        // const pow = Math.pow(2, land.level)
+        let multi = land.building == BuildType.Base ? 2 : 4
+        const pow = Math.pow(multi, land.level)
         return <div style={{ display: "flex" }}>
             <div className="buildneedbox buildneedenough">{buildPrice ? pow * buildPrice.food / 1_000_000 : 0} Food</div>
             <div className="buildneedbox buildneedenough">{buildPrice ? pow * buildPrice.gold / 1_000_000 : 0} Gold</div>
@@ -72,7 +77,8 @@ export default function UpgradePanel() {
         if (!buildPrice || !account) {
             return
         }
-        const pow = Math.pow(2, land.level)
+        let multi = land.building == BuildType.Base ? 2 : 4
+        const pow = Math.pow(multi, land.level)
         console.log("update", buildPrice);
 
         // const food =  pow * buildPrice.food
@@ -107,6 +113,14 @@ export default function UpgradePanel() {
         }
     }
 
+    useEffect(()=>{
+        if (updateLand) {
+            mouseStore.setState({ coord: { x: 0, y: 0 }, frozen: true })
+        } else {
+            mouseStore.setState({ frozen: false })
+        }
+    },[updateLand])
+
     return (
         <ClickWrapper>
             {
@@ -136,7 +150,7 @@ export default function UpgradePanel() {
 const Container = styled.div`
     display:flex;
     position: absolute;
-    bottom: 12%;
+    top: 20%;
     right: 25%;
     color:white;
 `;
