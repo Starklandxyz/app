@@ -41,7 +41,7 @@ export default function CampItem(params: any) {
         // const update_cost = getComponentValue()
         if (update_base && !update_base.claimed) {
             if (timenow > update_base.end_time) {
-                return <LoadingButton style={{ minHeight: 30 }} onClick={() => finishUpgrade()} initialText="Confirm Upgrade" loadingText="Confirm.../" />
+                return <LoadingButton style={{ minHeight: 30 }} onClick={() => finishUpgrade()} initialText="Confirm Upgrade" loadingText="Confirm..." />
             } else {
                 const total = update_base.end_time - update_base.start_time
                 const used = timenow - update_base.start_time

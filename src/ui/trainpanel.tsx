@@ -286,7 +286,10 @@ export default function TrainPanel() {
             <div className="container-small" style={{ width: 240, height: 200, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "10px", borderRadius: "0px 0px 15px 15px", paddingTop: 1 }}>
                 {
                     trainorbuy ?
-                        <p>Train Warrior</p>
+                        <p>Train Warrior
+                            <br />
+                            <span style={{ fontSize: 12, color: "lightGray" }}>Each warrior takes 1 minute to train.</span>
+                        </p>
                         :
                         <p>Buy Warrior
                             <br />
@@ -329,7 +332,7 @@ export default function TrainPanel() {
                             <div style={{ textAlign:"center", marginTop: 10 }}>
                                 {
                                     !trainorbuy ? <LoadingButton style={{minWidth: 70}} initialText="Buy" loadingText="Buy..." onClick={buy} /> :
-                                        <LoadingButton style={{minWidth: 70, marginTop:20}} initialText="Start Training" loadingText="Start..." onClick={train} />
+                                        <LoadingButton style={{minWidth: 70, marginTop:12}} initialText="Start Training" loadingText="Start..." onClick={train} />
 
                                 }
                             </div>

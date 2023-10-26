@@ -356,9 +356,9 @@ export default function BasePage() {
         )}
 
         <div style={{ display: "flex", marginTop: "14px", paddingLeft: "2px" }}>
-          <span style={{ fontWeight: "bold", flex: 1, margin: "auto" }}>
+          <div style={{ fontWeight: "bold", display:"flex", justifyContent:"flex-end", flex:1, margin: "auto" }}>
             {updateButton}
-          </span>
+          </div>
         </div>
        
       </div>
