@@ -858,7 +858,7 @@
     {
       "name": "init",
       "address": "0x4dc4d7a6672afe4c4a4706d20aba2c2f0e0dbdc240f1fb70069c04ae44e067d",
-      "class_hash": "0x38edf7f6459c57428e7b97e84947e131fded8560f7ba5045ea1913fcf7a0338",
+      "class_hash": "0x501e2c0c66e4ba237a3d00138f5f4f8bd361ede58dba51256b4e83772d5c701",
       "abi": [
         {
           "type": "impl",
@@ -1065,7 +1065,7 @@
     {
       "name": "train_warrior",
       "address": "0x3c93642b78a1d0de22ce3176be29ebf9904c3e2909f95d03a0fbbbe5d6b8996",
-      "class_hash": "0x123946d5a001b2fef5063fbdbe7809d9c204768a6c1eb047bb5c9af95b07a10",
+      "class_hash": "0x71bfe9406924ce6c353b487ebc771f5aa553ab0f181e288c308615a4fc67fd5",
       "abi": [
         {
           "type": "impl",
@@ -1565,7 +1565,7 @@
     {
       "name": "go_fight",
       "address": "0x40e9b249cc4496bd5b8fbc05ad57928d80e7dc7c71fc54a1b61124ca4532c43",
-      "class_hash": "0x6ca85740d7c8ceeb5b22176f975642aa37dd8e2f4c0a10d0e6c245d3a5de381",
+      "class_hash": "0x5e1d79adb44aec9d27e0b1e821059218bf728c4e8552bc6e7c2149825e6459",
       "abi": [
         {
           "type": "impl",
