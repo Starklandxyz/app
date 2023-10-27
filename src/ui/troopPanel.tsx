@@ -25,6 +25,11 @@ export default function TroopPanel() {
   }, [showContent]);
 
   const {
+    scenes: {
+      Main: {
+        input
+      },
+    },
     networkLayer: {
       components,
       network: { graphSdk },
@@ -43,6 +48,16 @@ export default function TroopPanel() {
   useEffect(() => {
     fetchTroops();
   }, []);
+
+
+  useEffect(() => {
+    input.onKeyPress(
+      keys => keys.has("T"),
+      () => {
+        console.log("input t",hidePanel);
+        setHidePanel(pre => !pre)
+      });
+  }, [])
 
   const fetchTroops = async () => {
     const ts = await graphSdk.getAllTroops({ map_id: "0x1" });
@@ -101,13 +116,13 @@ export default function TroopPanel() {
 
               <div style={{ width: 50 }}>
                 <img data-tooltip-id="my-tooltip"
-                  data-tooltip-content="Hide | Show"
-                  data-tooltip-place="top" src={hidePanel ? upicon : downicon} onClick={() => setHidePanel(!hidePanel)}
-                  style={{ position:"absolute",top:"-5px",right:"10px", cursor: "pointer", transform: "rotate(90deg)", marginBottom: 15 }} />
+                  data-tooltip-content="Hide | Show (Shortcut : T)"
+                  data-tooltip-place="top" src={hidePanel ? upicon : downicon} onClick={() => setHidePanel(pre => !pre)}
+                  style={{ position: "absolute", top: "-5px", right: "10px", cursor: "pointer", transform: "rotate(90deg)", marginBottom: 15 }} />
               </div>
             </div>
             {!hidePanel && (
-              <div style={{marginTop:15}}>
+              <div style={{ marginTop: 15 }}>
                 {[...myTroops.values()].map(
                   (value) =>
                     value.owner == account.address &&

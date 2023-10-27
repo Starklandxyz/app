@@ -30,6 +30,11 @@ export default function UserBuildingPanel() {
     const { account, phaserLayer } = store()
 
     const {
+        scenes: {
+            Main: {
+                input
+            },
+        },
         world,
         networkLayer: {
             components,
@@ -99,6 +104,11 @@ export default function UserBuildingPanel() {
 
     useEffect(() => {
         fetchBuildPrice()
+        input.onKeyPress(
+            keys => keys.has("H"),
+            () => {
+                hide()
+            });
     }, [])
 
     const fetchBuildPrice = async () => {
@@ -141,7 +151,7 @@ export default function UserBuildingPanel() {
 
                 <div style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", width: 50, borderRadius: 10, }}>
                     <img data-tooltip-id="my-tooltip"
-                        data-tooltip-content="Hide | Show"
+                        data-tooltip-content="Hide | Show(Shortcut : H)"
                         data-tooltip-place="top" src={hideAll ? downicon : upicon} onClick={() => hide()} style={{ cursor: "pointer", transform: "rotate(90deg)", marginLeft: 15, marginBottom: 15 }} />
                     <div data-tooltip-id="my-tooltip"
                         data-tooltip-content="All Buildings"

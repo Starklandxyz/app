@@ -34,6 +34,7 @@ const mainMap = defineMapConfig({
             Flag: { tilesets: ["Default"] },
             Soldier: { tilesets: ["Default"] },
             Num: { tilesets: ["Default"] },
+            BuildTop: { tilesets: ["Default"] },
         },
         defaultLayer: "Background",
     },

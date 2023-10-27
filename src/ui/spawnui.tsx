@@ -68,6 +68,7 @@ export default function SpawnUI() {
         for (let width = 0; width < 2; width++) {
             for (let height = 0; height < 2; height++) {
                 const landType = get_land_type(1, lastCoord.x + width, lastCoord.y + height)
+                console.log("clickLand",landType);
                 if (landType != LandType.None) {
                     toastError("Can't build here")
                     return
@@ -94,26 +95,25 @@ export default function SpawnUI() {
             return
         }
 
-
         if (lastCoord.x == coord.x && lastCoord.y == coord.y) {
             return
         }
         {
             const xStart = lastCoord.x
             const yStart = lastCoord.y
-            putTileAt({ x: xStart, y: yStart }, Tileset.Empty, "Build");
-            putTileAt({ x: xStart + 1, y: yStart }, Tileset.Empty, "Build");
-            putTileAt({ x: xStart, y: yStart + 1 }, Tileset.Empty, "Build");
-            putTileAt({ x: xStart + 1, y: yStart + 1 }, Tileset.Empty, "Build");
+            putTileAt({ x: xStart, y: yStart }, Tileset.Empty, "BuildTop");
+            putTileAt({ x: xStart + 1, y: yStart }, Tileset.Empty, "BuildTop");
+            putTileAt({ x: xStart, y: yStart + 1 }, Tileset.Empty, "BuildTop");
+            putTileAt({ x: xStart + 1, y: yStart + 1 }, Tileset.Empty, "BuildTop");
         }
 
         const xStart = coord.x
         const yStart = coord.y
         const diff = 6
-        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00+diff, "Build");
-        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01+diff, "Build");
-        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02+diff, "Build");
-        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03+diff, "Build");
+        putTileAt({ x: xStart, y: yStart }, TilesetTown.Town00+diff, "BuildTop");
+        putTileAt({ x: xStart + 1, y: yStart }, TilesetTown.Town01+diff, "BuildTop");
+        putTileAt({ x: xStart, y: yStart + 1 }, TilesetTown.Town02+diff, "BuildTop");
+        putTileAt({ x: xStart + 1, y: yStart + 1 }, TilesetTown.Town03+diff, "BuildTop");
 
 
         setLastCoord(coord)

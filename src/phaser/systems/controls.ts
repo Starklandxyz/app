@@ -3,7 +3,11 @@ import { PhaserLayer } from "..";
 export const controls = (layer: PhaserLayer) => {
 
     const {
-
+        scenes: {
+            Main: {
+                input
+            },
+        },
     } = layer;
 
     // input.onKeyPress(

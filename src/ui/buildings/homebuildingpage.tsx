@@ -30,6 +30,11 @@ export default function BasePage() {
   const { timenow } = ticStore();
 
   const {
+    scenes: {
+      Main: {
+        input
+      },
+    },
     networkLayer: {
       systemCalls: { claimMining, upgradeComplete },
       components: contractComponents,
@@ -69,6 +74,15 @@ export default function BasePage() {
     const edges = result.data.entities?.edges;
     handleSQLResult(edges, contractComponents);
   };
+
+  useEffect(() => {
+    if(!base){return}
+    input.onKeyPress(
+      keys => keys.has("B"),
+      () => {
+        zoomto(base)
+      });
+  }, [base])
 
   useEffect(() => {
     if (!account) {
@@ -167,7 +181,7 @@ export default function BasePage() {
         xtemp[index] = x
         ytemp[index] = y
       }
-      console.log("claimAll",xtemp,ytemp);
+      console.log("claimAll", xtemp, ytemp);
       const result = await claimMining(account!, 1, xtemp, ytemp);
       if (result && result.length > 0) {
         toastSuccess("Claim success");
@@ -340,7 +354,7 @@ export default function BasePage() {
     let total = 0
     for (let index = 0; index < camp.length; index++) {
       const element = camp[index];
-      total += (element.level-1) * CampLevelWarrior +  WarriorPerCamp
+      total += (element.level - 1) * CampLevelWarrior + WarriorPerCamp
     }
     return total
   }, [camp])
