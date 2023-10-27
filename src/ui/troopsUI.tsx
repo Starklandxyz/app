@@ -69,6 +69,8 @@ export default function TroopsUI() {
             }
             const start = tileCoordToPixelCoord(from, TILE_WIDTH, TILE_HEIGHT)
             const end = tileCoordToPixelCoord(to, TILE_WIDTH, TILE_HEIGHT)
+            end.x = end.x + TILE_WIDTH / 2 - 5
+            end.y = end.y + TILE_HEIGHT / 2 - 5
             var speedx = (end.x - start.x) / value.totalTime
             var speedy = (end.y - start.y) / value.totalTime
             var x = start.x + speedx * usedtime
@@ -103,6 +105,7 @@ export default function TroopsUI() {
             if (value.startTime + value.totalTime <= getTimestamp()) {
                 return
             }
+            console.log("troops", t);
             createArrowLine(objectPool, value)
         })
     }, [troops])
@@ -125,9 +128,9 @@ export default function TroopsUI() {
         var from_y = troop.from.y
         var to_x = troop.to.x
         var to_y = troop.to.y
-        const level =get_land_level(1,to_x,to_y)
-        if(level!=6)
-        putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
+        const level = get_land_level(1, to_x, to_y)
+        if (level != 6)
+            putTileAt(troop.to, TilesetZone.MyZoneWait, "Occupy");
         if (isBase(troop.from)) {
             from_x = from_x + 1
             from_y = from_y + 1
@@ -138,12 +141,14 @@ export default function TroopsUI() {
         }
         const start = tileCoordToPixelCoord({ x: from_x, y: from_y }, TILE_WIDTH, TILE_HEIGHT)
         const end = tileCoordToPixelCoord({ x: to_x, y: to_y }, TILE_WIDTH, TILE_HEIGHT)
+        console.log("createArrowLine", start, end);
+
         if (troop.retreat) {
-            start.x = start.x + MAP_WIDTH / 2
-            start.y = start.y + MAP_HEIGHT / 2
+            start.x = start.x + TILE_WIDTH / 2
+            start.y = start.y + TILE_HEIGHT / 2
         } else {
-            end.x = end.x + MAP_WIDTH / 4
-            end.y = end.y + MAP_HEIGHT / 4
+            end.x = end.x + TILE_WIDTH / 2
+            end.y = end.y + TILE_HEIGHT / 2
         }
         var theta = 0
         if (end.x == start.x) {
@@ -189,7 +194,7 @@ export default function TroopsUI() {
                     }
                     sprite.setPosition(x, y)
                     sprite.z = 1
-                    console.log("createArrowLine", sprite);
+                    // console.log("createArrowLine", sprite);
                 }
             })
         }
