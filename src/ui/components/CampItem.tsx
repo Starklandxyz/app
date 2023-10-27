@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Land } from "../../types/Land";
 import { ClickWrapper } from "../clickWrapper";
 import { ticStore } from "../../store/ticStore";
@@ -10,9 +10,10 @@ import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import LoadingButton from "./LoadingButton";
 
 export default function CampItem(params: any) {
-    const land = params.land
+    // const land = params.land
     const { account, phaserLayer, camera } = store();
     const { timenow } = ticStore();
+    const [land,setland] = useState(params.land)
 
     const {
         networkLayer: {
@@ -30,6 +31,13 @@ export default function CampItem(params: any) {
 
     const finishUpgrade = async () => {
         const result = await upgradeComplete(account!, 1, land.x, land.y)
+        const nland = new Land()
+        nland.build = land.build
+        nland.level = land.level+1
+        nland.map_id = land.map_id
+        nland.x = land.x
+        nland.y = land.y
+        setland(nland)
         if (result && result.length > 0) {
             toastSuccess("Upgrade success")
         } else {

@@ -293,7 +293,7 @@ export default function TrainPanel() {
                         :
                         <p>Buy Warrior
                             <br />
-                            <span style={{ fontSize: 12, color: "lightGray" }}>Pay 10x cost to immediately acquire warriors instead of training.</span>
+                            <span style={{ fontSize: 12, color: "lightGray" }}>Pay 5x cost to immediately acquire warriors instead of training.</span>
                         </p>
 
                 }
