@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 
 export enum LoadingType {
-  Button, Span
+  Button, Span,Image
 }
-export default function LoadingButton({ type = LoadingType.Button, initialText = 'Click Me', loadingText = 'loading...', onClick = (_: any) => { }, style = {} }) {
+export default function LoadingButton({image="", type = LoadingType.Button, initialText = 'Click Me', loadingText = 'loading...', onClick = (_: any) => { }, style = {} }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async (e: any) => {
@@ -28,6 +28,8 @@ export default function LoadingButton({ type = LoadingType.Button, initialText =
       return <span onClick={handleClick} style={style}>
         {isLoading ? loadingText : initialText}
       </span>
+    } else if(type==LoadingType.Image){
+      return <>{isLoading?<span>{loadingText}</span>:<img onClick={handleClick} style={{cursor:"pointer"}} src={image}/>}</>
     }
   }
 

@@ -5,6 +5,9 @@ import { getTimestamp, toastError, toastSuccess } from "../../utils";
 import { ticStore } from "../../store/ticStore";
 import flag from "../../../public/assets/icons/flag.png";
 import soldierIcon from "../../../public/assets/icons/soldier.png"
+import attackIcon from "../../../public/assets/icons/attack.png"
+import retreatIcon from "../../../public/assets/icons/retreat.png"
+import enterIcon from "../../../public/assets/icons/enter.png"
 import { Coord } from "../../../node_modules/@latticexyz/utils/src/index";
 import { store } from "../../store/store";
 import { Has, getComponentValue, getComponentValueStrict } from "../../../node_modules/@latticexyz/recs/src/index";
@@ -16,6 +19,7 @@ import { controlStore } from "../../store/controlStore";
 import { get_land_level } from "../../types/Land";
 import { panelStore } from "../../store/panelStore";
 import LoadingButton, { LoadingType } from "./LoadingButton";
+
 
 export default function TroopItem(params: any) {
     const { timenow } = ticStore()
@@ -168,18 +172,18 @@ export default function TroopItem(params: any) {
     }, [troop, timenow])
 
     const getFrom = useMemo(() => {
-        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.from.x),BigInt(troop.from.y)]))
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.from.x), BigInt(troop.from.y)]))
         let title = ""
-        if(land){
+        if (land) {
             title = getBuildName(land.building)
         }
         return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.from)}>{`${title}(${troop.from.x},${troop.from.y})`}</span>
     }, [troop])
 
     const getTo = useMemo(() => {
-        const land = getComponentValue(contractComponents.Land,getEntityIdFromKeys([1n,BigInt(troop.to.x),BigInt(troop.to.y)]))
+        const land = getComponentValue(contractComponents.Land, getEntityIdFromKeys([1n, BigInt(troop.to.x), BigInt(troop.to.y)]))
         let title = ""
-        if(land){
+        if (land) {
             title = getBuildName(land.building)
         }
         return <span style={{ cursor: "pointer" }} onClick={() => goto(troop.to)}>{`${title}(${troop.to.x},${troop.to.y})`}</span>
@@ -197,7 +201,9 @@ export default function TroopItem(params: any) {
             isMy = true
         }
         if (end && !retreat && !isMy) {
-            return <LoadingButton type={LoadingType.Span} onClick={ attackClick} style={{ cursor: "pointer", marginLeft: 10 }} initialText="攻" loadingText="攻..."/>
+            return <div style={{ marginLeft: 5 }} data-tooltip-id="my-tooltip"
+                data-tooltip-content="Attack"
+                data-tooltip-place="top"><LoadingButton image={attackIcon} type={LoadingType.Image} onClick={attackClick} style={{ cursor: "pointer", marginLeft: 10 }} initialText="攻" loadingText="Attack..." /></div>
         }
         return <></>
     }, [troop, timenow])
@@ -213,7 +219,9 @@ export default function TroopItem(params: any) {
         // console.log("enterbutton",end,land);
 
         if (isMy && end) {
-            return <LoadingButton type={LoadingType.Span} initialText="驻" loadingText="驻..." style={{ marginLeft: 10,cursor:"pointer" }} onClick={ enterLand}/>
+            return <div style={{ marginLeft: 5 }} data-tooltip-id="my-tooltip"
+                data-tooltip-content="March into land"
+                data-tooltip-place="top"><LoadingButton type={LoadingType.Image} image={enterIcon} initialText="驻" loadingText="Enter..." style={{ marginLeft: 10, cursor: "pointer" }} onClick={enterLand} /></div>
         }
 
         return <></>
@@ -235,7 +243,9 @@ export default function TroopItem(params: any) {
             }
         } else {
             if (!toBase) {
-                return <LoadingButton type={LoadingType.Span} initialText="撤" loadingText="撤..." onClick={retreat} style={{ cursor: "pointer", marginLeft: 10 }}/>
+                return <div style={{ marginLeft: 5 }} data-tooltip-id="my-tooltip"
+                    data-tooltip-content="Retreat"
+                    data-tooltip-place="top"><LoadingButton type={LoadingType.Image} image={retreatIcon} initialText="撤" loadingText="Retreat..." onClick={retreat} style={{ cursor: "pointer", marginLeft: 10 }} /></div>
             }
         }
         return <></>

@@ -5,7 +5,7 @@ export function AirdropClaimButton({ onClick = (_: any) => { } }) {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = async (e: any) => {
-        if(isLoading){return}
+        if (isLoading) { return }
         setIsLoading(true);
         if (onClick) {
             try {
@@ -20,7 +20,7 @@ export function AirdropClaimButton({ onClick = (_: any) => { } }) {
     return (
         <div style={{ color: "yellow", cursor: "pointer" }} onClick={handleClick}>
             <img src={gifticon} style={{ color: "green" }} /> {isLoading ? "Claim..." : "Claim"}
-            </div>
+        </div>
         // <button onClick={handleClick} disabled={isLoading} style={style}>
         //   {isLoading ? "Claim..." : "Claim"}
         // </button>
