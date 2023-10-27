@@ -23,6 +23,7 @@ import styled from "styled-components";
 import { updateStore } from "../../store/updateStore";
 import LoadingButton from "../components/LoadingButton";
 import { playerBuildStore } from "../../store/playerbuildingstore";
+import { CampLevelWarrior, WarriorPerCamp } from "../../utils/constants";
 
 export default function BasePage() {
   const { account, phaserLayer, camera } = store();
@@ -339,7 +340,7 @@ export default function BasePage() {
     let total = 0
     for (let index = 0; index < camp.length; index++) {
       const element = camp[index];
-      total += element.level * 30
+      total += (element.level-1) * CampLevelWarrior +  WarriorPerCamp
     }
     return total
   }, [camp])

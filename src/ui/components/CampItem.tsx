@@ -8,12 +8,13 @@ import { updateStore } from "../../store/updateStore";
 import { useComponentValue, useEntityQuery } from "../../../node_modules/@latticexyz/react";
 import { getEntityIdFromKeys } from "../../dojo/parseEvent";
 import LoadingButton from "./LoadingButton";
+import { CampLevelWarrior, WarriorPerCamp } from "../../utils/constants";
 
 export default function CampItem(params: any) {
     // const land = params.land
     const { account, phaserLayer, camera } = store();
     const { timenow } = ticStore();
-    const [land,setland] = useState(params.land)
+    const [land, setland] = useState(params.land)
 
     const {
         networkLayer: {
@@ -33,7 +34,7 @@ export default function CampItem(params: any) {
         const result = await upgradeComplete(account!, 1, land.x, land.y)
         const nland = new Land()
         nland.build = land.build
-        nland.level = land.level+1
+        nland.level = land.level + 1
         nland.map_id = land.map_id
         nland.x = land.x
         nland.y = land.y
@@ -60,10 +61,10 @@ export default function CampItem(params: any) {
     }, [timenow, update_base])
 
     return (<ClickWrapper>
-        <div style={{marginRight:10, border: "1px solid white", borderRadius: 15, padding: 5, marginBottom: 10, lineHeight: 1.5 }}>
+        <div style={{ marginRight: 10, border: "1px solid white", borderRadius: 15, padding: 5, marginBottom: 10, lineHeight: 1.5 }}>
             <div style={{ display: "flex" }}>
                 <div style={{ marginRight: 30 }}>{`(${land.x},${land.y})`}</div>
-                <div>+{land.level * 10 + 20} Capacity</div>
+                <div>+{(land.level - 1) * CampLevelWarrior + WarriorPerCamp} Capacity</div>
             </div>
             <div style={{ display: "flex" }}>
                 <div style={{ marginRight: 20 }}>Lv : {land.level}</div>
