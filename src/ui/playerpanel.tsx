@@ -213,12 +213,12 @@ export default function PlayerPanel() {
   const maxWarrior = useMemo(() => {
     console.log("maxWarrior", account, userCamps);
     if (!account) {
-      return 60
+      return 120
     }
-    let total = 60
+    let total = 120
     for (let index = 0; index < userCamps.length; index++) {
       const camp = userCamps[index];
-      total += (camp.level - 1) * 10 + 30
+      total += (camp.level - 1) * 20 + 60
     }
     return total
   }, [account, userCamps, landEntities])

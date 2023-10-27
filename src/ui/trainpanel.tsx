@@ -17,6 +17,7 @@ import foodIcon from "../../public/assets/icons/food.png"
 import ironIcon from "../../public/assets/icons/iron.png"
 import goldIcon from "../../public/assets/icons/gold.png"
 import soldierIcon from "../../public/assets/icons/soldier.png"
+import { playerStore } from "../store/playerStore";
 
 export default function TrainPanel() {
     const [inputValue, setInput] = useState(1)
@@ -113,13 +114,13 @@ export default function TrainPanel() {
 
         const camps_x: Array<number> = []
         const camps_y: Array<number> = []
-        let max = 60
+        let max = 120
         landEntities.map((entity) => {
             const value = getComponentValue(components.Land, entity);
             if (value && value.owner == account.address && value.building == BuildType.Camp) {
                 camps_x.push(value.x)
                 camps_y.push(value.y)
-                max += 30 * value.level
+                max += (value.level - 1) * 20 + 60
             }
         });
         const userW = getComponentValue(components.UserWarrior, getEntityIdFromKeys([1n, BigInt(account.address)]))
@@ -169,13 +170,13 @@ export default function TrainPanel() {
 
         const camps_x: Array<number> = []
         const camps_y: Array<number> = []
-        let max = 60
+        let max = 120
         landEntities.map((entity) => {
             const value = getComponentValue(components.Land, entity);
             if (value && value.owner == account.address && value.building == BuildType.Camp) {
                 camps_x.push(value.x)
                 camps_y.push(value.y)
-                max += 30 * value.level
+                max += (value.level - 1) * 20 + 60
             }
         });
         const userW = getComponentValue(components.UserWarrior, getEntityIdFromKeys([1n, BigInt(account.address)]))
@@ -324,15 +325,15 @@ export default function TrainPanel() {
                                 </p>
                                 <p>Time : {calTotalTime}</p>
                                 <div style={{ display: "flex" }}>
-                                    <div style={{ marginTop: 5, marginRight: 10, marginLeft:4,marginBottom:10 }}>Warrior Amount </div>
+                                    <div style={{ marginTop: 5, marginRight: 10, marginLeft: 4, marginBottom: 10 }}>Warrior Amount </div>
                                     <input onChange={inputChange} style={{ height: 18, width: 60, marginRight: 10 }} value={inputValue} type="number" />
                                 </div>
                             </div>
 
-                            <div style={{ textAlign:"center", marginTop: 10 }}>
+                            <div style={{ textAlign: "center", marginTop: 10 }}>
                                 {
-                                    !trainorbuy ? <LoadingButton style={{minWidth: 70}} initialText="Buy" loadingText="Buy..." onClick={buy} /> :
-                                        <LoadingButton style={{minWidth: 70, marginTop:12}} initialText="Start Training" loadingText="Start..." onClick={train} />
+                                    !trainorbuy ? <LoadingButton style={{ minWidth: 70 }} initialText="Buy" loadingText="Buy..." onClick={buy} /> :
+                                        <LoadingButton style={{ minWidth: 70, marginTop: 12 }} initialText="Start Training" loadingText="Start..." onClick={train} />
 
                                 }
                             </div>
