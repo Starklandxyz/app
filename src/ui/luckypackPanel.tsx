@@ -113,18 +113,23 @@ export default function LuckypackPanel() {
         {
             showLuckyPack && <ClickWrapper>
                 <Container>
-                    <div style={{ width: 520, height: 390, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
+                    <div style={{ width: 520, height: 400, lineHeight: 1, backgroundColor: "rgba(0, 0, 0, 0.8)", padding: 10, borderRadius: 15, paddingTop: 1 }}>
                         <img src={closeicon} style={{ position: "absolute", right: 10, top: 10, cursor: "pointer" }} onClick={() => { panelStore.setState({ showLuckyPack: false }) }} />
-                        <p style={{ fontSize: 20, marginLeft: 200 }}>Lucky Packs</p>
-                        <p>Total : {getBalance}</p>
-                        <div style={{ backgroundColor: "", width: 510, height: 240 }}>
-                            <img src={packicon} style={{ marginLeft: 250, marginTop: 100, transform: "scale(5) translate(0px,0px)", imageRendering: "pixelated", backgroundColor: "" }} />
-                            <div style={{ textAlign: "center", marginTop: 50, width: 510 }}>{openInfo}</div>
+                        <div style={{ fontSize: 20, marginLeft: 200, marginTop: 30 }}>Lucky Packs</div>
+                        <div style={{ lineHeight: 1.4 }}>
+                            <div style={{color:"orange"}}>Include : </div>
+                            <div style={{color:"white"}}>Recources : Food, Gold, Iron (Stay tuned)</div>
+                            <div style={{color:"white"}}>NFTs : Heros, Weapons etc... (Stay tuned)</div>
+                            <div style={{color:"white"}}>Game Points : 100~200 per pack</div>
                         </div>
-
+                        <div style={{ backgroundColor: "", width: 510, height: 200 }}>
+                            <img src={packicon} style={{ marginLeft: 250, marginTop: 60, transform: "scale(5) translate(0px,0px)", imageRendering: "pixelated", backgroundColor: "" }} />
+                            <div style={{ textAlign: "center", marginTop: 40, width: 510 }}>{openInfo}</div>
+                        </div>
+                        <div style={{ marginLeft: 10 }}>Total : {getBalance}</div>
                         <input style={{ width: 40, marginLeft: 200, marginRight: 5 }} type="number" value={inputvalue} onChange={inputChange} />
                         <span style={{ fontSize: 13, cursor: "pointer" }} onClick={() => max()}>max</span>
-                        <LoadingButton style={{ marginLeft: 10 }} onClick={() => openPack()} initialText="Open Packs" loadingText="Open..."/>
+                        <LoadingButton style={{ marginLeft: 10 }} onClick={() => openPack()} initialText="Open Packs" loadingText="Open..." />
                         <button style={{ marginLeft: 50 }} onClick={() => transferPack()}>Transfer Packs</button>
                     </div>
                 </Container>

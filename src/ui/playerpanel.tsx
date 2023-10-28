@@ -28,6 +28,7 @@ import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexyz/react";
 import { BuildType } from "../types/Build";
 import NESButton from "./components/NesButton";
+import packicon from "../../public/assets/icons/pack1.png"
 import { Land } from "../generated/graphql";
 import { panelStore } from "../store/panelStore";
 import { playerStore } from "../store/playerStore";
@@ -208,7 +209,7 @@ export default function PlayerPanel() {
     }
     const max = 10 + 5 * (baseland?.level - 1)
     return max
-  }, [account, base,baseland])
+  }, [account, base, baseland])
 
   const maxWarrior = useMemo(() => {
     console.log("maxWarrior", account, userCamps);
@@ -237,6 +238,8 @@ export default function PlayerPanel() {
   const gotoPacks = () => {
     panelStore.setState({ showLuckyPack: true })
   }
+
+  const packBalance = useComponentValue(sqlComponent.LuckyPack, getEntityIdFromKeys([1n, BigInt(account ? account.address : "")]))
 
   return (
     <TopBarWrapper>
@@ -312,6 +315,15 @@ export default function PlayerPanel() {
         <ResourceValue>{getdomination}</ResourceValue>
       </ResourceItemWrapper>
 
+      <ResourceItemWrapper
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content="Lucky Packs(NFT)"
+        data-tooltip-place="top"
+      >
+        <ResourceIcon src={packicon} alt="flag" />
+        <ResourceValue>{packBalance ? packBalance.balance : 0}</ResourceValue>
+      </ResourceItemWrapper>
+
       <NESButton
         style={{}}
         onClick={() => panelStore.setState({ showTask: true })}
@@ -376,6 +388,7 @@ const ResourceIcon = styled.img`
 // 定义资源数值
 const ResourceValue = styled.span`
   font-size: 16px;
+  margin-left:3px;
 `;
 
 // 定义创建按钮
