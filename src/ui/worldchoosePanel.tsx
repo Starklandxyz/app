@@ -5,7 +5,7 @@ import closeicon from "../../public/assets//icons/closeicon.png"
 import { useEffect, useState } from "react";
 import { mouseStore } from "../store/mouseStore";
 import { worldStore } from "../store/worldStore";
-import { toastError, toastSuccess } from "../utils";
+import { toastError, toastInfo, toastSuccess } from "../utils";
 
 export default function WorldChoosePanel() {
     const { showWorld } = panelStore()
@@ -34,6 +34,10 @@ export default function WorldChoosePanel() {
     const enterWorld = ()=>{
         if(inputvalue<=0 || inputvalue>8000){
             toastError("Wrong Realm ID")
+            return
+        }
+        if(true){
+            toastInfo("World is not ready. Stay tuned.")
             return
         }
         worldStore.setState({map_id:inputvalue})
