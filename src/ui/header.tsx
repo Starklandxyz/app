@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { store } from "../store/store";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDojo } from "../hooks/useDojo";
 import {
   getTimestamp,
@@ -13,25 +13,18 @@ import {
   truncateString,
 } from "../utils";
 import { ClickWrapper } from "./clickWrapper";
-import { ethers } from "ethers";
 import PlayerPanel from "./playerpanel";
-import ethicon from "../../public/ethereum.png";
 import starkicon from "../../public/starkneticon.png";
 import { ticStore } from "../store/ticStore";
 import { useComponentValue } from "../../node_modules/@latticexyz/react";
-import {
-  ComponentValue,
-  Has,
-  defineSystem,
-  getComponentValue,
-  setComponent,
-} from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
-import NesButton from "./components/NesButton";
 import LoadingButton from "./components/LoadingButton";
+import { panelStore } from "../store/panelStore";
+import { worldStore } from "../store/worldStore";
 
 export default function Header() {
   const { account, phaserLayer } = store();
+  const {map_id} = worldStore()
   const [nickName, setNickName] = useState("");
 
   const {
@@ -131,6 +124,18 @@ export default function Header() {
     }
   }, [account]);
 
+  const changeWorld = () => {
+    panelStore.setState({ showWorld: true })
+  }
+
+  const getWorldNow = useMemo(() => {
+    if (map_id == 9999) {
+      return "Public World"
+    } else {
+      return `#${map_id}`
+    }
+  }, [map_id])
+
   return (
     <ClickWrapper>
       <HeaderUIContainer>
@@ -140,6 +145,16 @@ export default function Header() {
 
         <WalletContainer>
           <ResourceItemWrapper
+            data-tooltip-id="my-tooltip"
+            data-tooltip-content="Realm World ID"
+            data-tooltip-place="top"
+          >
+            {/* <ResourceIcon src={ethicon} alt="gold" /> */}
+            <ResourceValue onClick={() => { changeWorld() }} style={{ marginRight: 20, cursor: "pointer" }}>
+              Realm World : {getWorldNow}
+            </ResourceValue>
+          </ResourceItemWrapper>
+          {/* <ResourceItemWrapper
             data-tooltip-id="my-tooltip"
             data-tooltip-content="ETH balance"
             data-tooltip-place="top"
@@ -151,7 +166,7 @@ export default function Header() {
                   ethers.utils.formatEther(BigInt(eth.balance))
                 ).toFixed(6)}
             </ResourceValue>
-          </ResourceItemWrapper>
+          </ResourceItemWrapper> */}
 
           {account && !player && (
             <div

@@ -446,7 +446,6 @@ export type Event = {
   data?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   id?: Maybe<Scalars['ID']['output']>;
   keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  systemCall: SystemCall;
   transaction_hash?: Maybe<Scalars['String']['output']>;
 };
 
@@ -1507,11 +1506,9 @@ export type Query = {
   models?: Maybe<ModelConnection>;
   playerModels?: Maybe<PlayerConnection>;
   rewardpointModels?: Maybe<RewardPointConnection>;
-  system: System;
-  systemCall: SystemCall;
-  systemCalls?: Maybe<SystemCallConnection>;
-  systems?: Maybe<SystemConnection>;
   trainingModels?: Maybe<TrainingConnection>;
+  transaction: Transaction;
+  transactions?: Maybe<TransactionConnection>;
   troopModels?: Maybe<TroopConnection>;
   upgradecostModels?: Maybe<UpgradeCostConnection>;
   userwarriorModels?: Maybe<UserWarriorConnection>;
@@ -1829,36 +1826,6 @@ export type QueryRewardpointModelsArgs = {
 };
 
 
-export type QuerySystemArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QuerySystemCallArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QuerySystemCallsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-export type QuerySystemsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
 export type QueryTrainingModelsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -1868,6 +1835,21 @@ export type QueryTrainingModelsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order?: InputMaybe<TrainingOrder>;
   where?: InputMaybe<TrainingWhereInput>;
+};
+
+
+export type QueryTransactionArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryTransactionsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2001,50 +1983,6 @@ export type SubscriptionModelRegisteredArgs = {
   id?: InputMaybe<Scalars['ID']['input']>;
 };
 
-export type System = {
-  __typename?: 'System';
-  class_hash?: Maybe<Scalars['felt252']['output']>;
-  created_at?: Maybe<Scalars['DateTime']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
-  systemCalls: Array<SystemCall>;
-  transaction_hash?: Maybe<Scalars['felt252']['output']>;
-};
-
-export type SystemCall = {
-  __typename?: 'SystemCall';
-  created_at?: Maybe<Scalars['DateTime']['output']>;
-  data?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  system: System;
-  system_id?: Maybe<Scalars['ID']['output']>;
-  transaction_hash?: Maybe<Scalars['String']['output']>;
-};
-
-export type SystemCallConnection = {
-  __typename?: 'SystemCallConnection';
-  edges?: Maybe<Array<Maybe<SystemCallEdge>>>;
-  total_count: Scalars['Int']['output'];
-};
-
-export type SystemCallEdge = {
-  __typename?: 'SystemCallEdge';
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  node?: Maybe<SystemCall>;
-};
-
-export type SystemConnection = {
-  __typename?: 'SystemConnection';
-  edges?: Maybe<Array<Maybe<SystemEdge>>>;
-  total_count: Scalars['Int']['output'];
-};
-
-export type SystemEdge = {
-  __typename?: 'SystemEdge';
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  node?: Maybe<System>;
-};
-
 export type Training = {
   __typename?: 'Training';
   entity?: Maybe<Entity>;
@@ -2116,6 +2054,30 @@ export type TrainingWhereInput = {
   totalLT?: InputMaybe<Scalars['u64']['input']>;
   totalLTE?: InputMaybe<Scalars['u64']['input']>;
   totalNEQ?: InputMaybe<Scalars['u64']['input']>;
+};
+
+export type Transaction = {
+  __typename?: 'Transaction';
+  calldata?: Maybe<Array<Maybe<Scalars['felt252']['output']>>>;
+  created_at?: Maybe<Scalars['DateTime']['output']>;
+  id?: Maybe<Scalars['ID']['output']>;
+  max_fee?: Maybe<Scalars['felt252']['output']>;
+  nonce?: Maybe<Scalars['felt252']['output']>;
+  sender_address?: Maybe<Scalars['felt252']['output']>;
+  signature?: Maybe<Array<Maybe<Scalars['felt252']['output']>>>;
+  transaction_hash?: Maybe<Scalars['felt252']['output']>;
+};
+
+export type TransactionConnection = {
+  __typename?: 'TransactionConnection';
+  edges?: Maybe<Array<Maybe<TransactionEdge>>>;
+  total_count: Scalars['Int']['output'];
+};
+
+export type TransactionEdge = {
+  __typename?: 'TransactionEdge';
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  node?: Maybe<Transaction>;
 };
 
 export type Troop = {
@@ -2738,7 +2700,7 @@ export type GetWarriorQuery = { __typename?: 'Query', entities?: { __typename?: 
 
 export const GetAllPlayersDocument = gql`
     query getAllPlayers {
-  entities(offset: 0, limit: 1000, keys: ["%"]) {
+  entities(offset: 0, limit: 1000, keys: ["*"]) {
     total_count
     edges {
       node {
@@ -2763,7 +2725,7 @@ export const GetAllPlayersDocument = gql`
     `;
 export const GetAirdropByKeyDocument = gql`
     query getAirdropByKey($map_id: String, $key: String) {
-  entities(first: 1000, keys: [$map_id, $key, "%"]) {
+  entities(first: 1000, keys: [$map_id, $key, "*"]) {
     total_count
     edges {
       node {
@@ -2869,7 +2831,7 @@ export const GetWarriorConfigDocument = gql`
     `;
 export const GetAirdropConfigDocument = gql`
     query getAirdropConfig($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%"]) {
+  entities(first: 1000, keys: [$map_id, "*"]) {
     total_count
     edges {
       node {
@@ -2935,7 +2897,7 @@ export const GetTrainingByKeyDocument = gql`
     `;
 export const GetAllBaseDocument = gql`
     query getAllBase($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%"]) {
+  entities(first: 1000, keys: [$map_id, "*"]) {
     total_count
     edges {
       node {
@@ -3013,7 +2975,7 @@ export const GetLandByKeyDocument = gql`
     `;
 export const GetAllLandsDocument = gql`
     query getAllLands($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%", "%"]) {
+  entities(first: 1000, keys: [$map_id, "*", "*"]) {
     total_count
     edges {
       node {
@@ -3151,7 +3113,7 @@ export const GetResoucesByKeyDocument = gql`
     `;
 export const GetBuildPriceDocument = gql`
     query getBuildPrice($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%"]) {
+  entities(first: 1000, keys: [$map_id, "*"]) {
     total_count
     edges {
       node {
@@ -3173,7 +3135,7 @@ export const GetBuildPriceDocument = gql`
     `;
 export const GetTroopsByKeyDocument = gql`
     query getTroopsByKey($map_id: String, $key: String) {
-  entities(first: 1000, keys: [$map_id, $key, "%"]) {
+  entities(first: 1000, keys: [$map_id, $key, "*"]) {
     total_count
     edges {
       node {
@@ -3200,7 +3162,7 @@ export const GetTroopsByKeyDocument = gql`
     `;
 export const GetAllTroopsDocument = gql`
     query getAllTroops($map_id: String) {
-  entities(first: 1000, keys: [$map_id, "%", "%"]) {
+  entities(first: 1000, keys: [$map_id, "*", "*"]) {
     total_count
     edges {
       node {

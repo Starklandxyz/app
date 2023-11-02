@@ -10,7 +10,6 @@ import { useComponentValue, useEntityQuery } from "../../node_modules/@latticexy
 // import { Land } from "../types/Land";
 import { ComponentValue, Has, defineSystem, getComponentValue, getComponentValueStrict, setComponent } from "../../node_modules/@latticexyz/recs/src/index";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
-import { min } from "rxjs";
 import { LandType, get_land_type } from "../types/Land";
 export default function MapUI() {
     const { account } = store()
