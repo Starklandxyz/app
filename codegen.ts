@@ -1,8 +1,8 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-    // schema: 'https://api.cartridge.gg/x/starklandv002/torii/graphql',
-    schema: 'http://0.0.0.0:8080/graphql',
+    schema: 'https://api.starknopoly.com/graphql',
+    // schema: 'http://0.0.0.0:8080/graphql',
     documents: 'src/**/*.graphql',
     generates: {
         'src/generated/graphql.ts': {
