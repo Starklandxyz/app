@@ -56,65 +56,59 @@ export const useBurner = () => {
   const [account, setAccount] = useState<Account>();
   const [isDeploying, setIsDeploying] = useState(false);
 
-  // init
-  useEffect(() => {
-
-    const setActiveAccount = async () => {
-      const storage: BurnerStorage = Storage.get("burners");
-      if (storage) {
-        // try to get active account
-        let activeAccount = null;
-        for (let address in storage) {
-          if (storage[address].active) {
-            activeAccount = new Account(
-              provider,
-              address,
-              storage[address].privateKey,
-            );
-          }
-        }
-        // set first account as active account if not
-        if (!activeAccount) {
-          const firstAddr = Object.keys(storage)[0];
+  const setActiveAccount = useCallback(async () => {
+    const storage: BurnerStorage = Storage.get("burners");
+    if (storage) {
+      // try to get active account
+      let activeAccount = null;
+      for (let address in storage) {
+        if (storage[address].active) {
           activeAccount = new Account(
             provider,
-            firstAddr,
-            storage[firstAddr].privateKey,
+            address,
+            storage[address].privateKey,
           );
         }
+      }
+      // set first account as active account if not
+      if (!activeAccount) {
+        const firstAddr = Object.keys(storage)[0];
+        activeAccount = new Account(
+          provider,
+          firstAddr,
+          storage[firstAddr].privateKey,
+        );
+      }
 
-        // check if active account is deployed
-        try {
-          await admin.getTransactionReceipt(storage[activeAccount.address].deployTx)
-          // set first account to active account if it was deployed.
-          setAccount(activeAccount);
-        }
-        catch (ex: any) {
-          if (ex.message.indexOf('Transaction hash not found') > 0) {
-            // app chain restart, try to redeploy this account with private key
-            try {
-              console.log(`redeploy account ${activeAccount.address}`);
-              await reDeployAccount(activeAccount.address);
-              await setAccount(activeAccount);
-              return;
-            } catch {
+      // check if active account is deployed
+      try {
+        await admin.getTransactionReceipt(storage[activeAccount.address].deployTx)
+        // set first account to active account if it was deployed.
+        setAccount(activeAccount);
+      }
+      catch (ex: any) {
+        if (ex.message.indexOf('Transaction hash not found') > 0) {
+          // app chain restart, try to redeploy this account with private key
+          try {
+            console.log(`redeploy account ${activeAccount.address}`);
+            await reDeployAccount(activeAccount.address);
+            await setAccount(activeAccount);
+            return;
+          } catch {
 
-            }
           }
-          // TODO: redeploy
-          setAccount(undefined);
-
-          // set to false
-          storage[activeAccount.address].active = false;
-          Storage.set("burners", storage);
-          console.log("burners not deployed, try redeploy or resetting local storage");
-          return;
         }
+        // TODO: redeploy
+        setAccount(undefined);
+
+        // set to false
+        storage[activeAccount.address].active = false;
+        Storage.set("burners", storage);
+        console.log("burners not deployed, try redeploy or resetting local storage");
+        return;
       }
     }
-
-    setActiveAccount();
-  }, []);
+  }, [])
 
   const list = useCallback(() => {
     let storage = Storage.get("burners") || {};
@@ -276,6 +270,7 @@ export const useBurner = () => {
     create,
     account,
     isDeploying,
+    setActiveAccount,
     reDeployAccount,
     setPlayerName,
     getPlayerName,

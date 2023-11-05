@@ -13,8 +13,12 @@ export const useDojo = () => {
 
     // todo: allow connection with wallet providers
     const masterAccount = new Account(provider, import.meta.env.VITE_PUBLIC_MASTER_ADDRESS!, import.meta.env.VITE_PUBLIC_MASTER_PRIVATE_KEY!)
-    const { create, list, account, select, isDeploying } = useBurner();
+    const { create, list, account, select, isDeploying, setActiveAccount } = useBurner();
 
+    useEffect(()=>{
+        setActiveAccount();
+    }, [])
+    
     useEffect(() => {
         console.log("usedojo account " , account?.address);
         store.setState({ account:account })
