@@ -77,11 +77,11 @@ export default function BasePage() {
 
   useEffect(() => {
     if(!base){return}
-    input.onKeyPress(
-      keys => keys.has("B"),
-      () => {
-        zoomto(base)
-      });
+    // input.onKeyPress(
+    //   keys => keys.has("B"),
+    //   () => {
+    //     zoomto(base)
+    //   });
   }, [base])
 
   useEffect(() => {

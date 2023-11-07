@@ -51,12 +51,12 @@ export default function TroopPanel() {
 
 
   useEffect(() => {
-    input.onKeyPress(
-      keys => keys.has("T"),
-      () => {
-        console.log("input t",hidePanel);
-        setHidePanel(pre => !pre)
-      });
+    // input.onKeyPress(
+    //   keys => keys.has("T"),
+    //   () => {
+    //     console.log("input t",hidePanel);
+    //     setHidePanel(pre => !pre)
+    //   });
   }, [])
 
   const fetchTroops = async () => {

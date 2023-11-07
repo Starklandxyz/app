@@ -104,11 +104,11 @@ export default function UserBuildingPanel() {
 
     useEffect(() => {
         fetchBuildPrice()
-        input.onKeyPress(
-            keys => keys.has("H"),
-            () => {
-                hide()
-            });
+        // input.onKeyPress(
+        //     keys => keys.has("H"),
+        //     () => {
+        //         hide()
+        //     });
     }, [])
 
     const fetchBuildPrice = async () => {
