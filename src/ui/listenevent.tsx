@@ -108,8 +108,8 @@ export default function ListenEvent() {
                 next({ data }: any) {
                     if (data) {
                         let entityUpdated = data.entityUpdated;
-                        console.log("We got something", entityUpdated.model_names);
-                        console.log(entityUpdated);
+                        // console.log("We got something", entityUpdated.model_names);
+                        // console.log(entityUpdated);
                         let id = entityUpdated.id + "_" + entityUpdated.updated_at
                         let keys = entityUpdated.keys
                         let models = entityUpdated.models

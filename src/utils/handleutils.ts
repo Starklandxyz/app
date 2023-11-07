@@ -38,7 +38,7 @@ export const handleWssResult = (models: Array<any>, keys: Array<string>, contrac
             acc[key] = model[key]
             return acc;
         }, {});
-        console.log("handleWssResult",model,componentValues);
+        // console.log("handleWssResult",model,componentValues);
         setComponent(contractComponent, getEntityIdFromKeys(nkeys), componentValues)
     }
 }
