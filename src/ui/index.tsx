@@ -25,6 +25,7 @@ import MonsterResultPanel from "./monsterResultPanel";
 import RemoveBuildPanel from "./removeBuildPanel";
 import RankPanel from "./rankPanel";
 import WorldChoosePanel from "./worldchoosePanel";
+import LiveIndicator from "./components/LiveIndicator";
 
 export default function UI() {
     const layers = store((state) => {
@@ -44,6 +45,7 @@ export default function UI() {
             </TopHeaderContainer>
             <BottomIcons/>
             <BuildingTip />
+            <LiveIndicator />
             <VersionContainer>
                 <p>version:{VERSION}</p>
             </VersionContainer>
