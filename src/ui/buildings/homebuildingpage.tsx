@@ -213,19 +213,19 @@ export default function BasePage() {
     const land = new Land();
     land.x = base.x;
     land.y = base.y;
-    let speed = miningConfig.Base_Gold_Speed
+    let speed = 0
     try {
       switch (type) {
+        case ResourceType.Gold: speed = miningConfig.Base_Gold_Speed; break;
         case ResourceType.Food: speed = miningConfig.Base_Food_Speed; break;
         case ResourceType.Iron: speed = miningConfig.Base_Iron_Speed; break;
       }
     } catch (error) {
-      
+      speed = 0
     }
-    
-    if(!speed){
-      speed = miningConfig.Base_Gold_Speed
-    }
+    // if(!speed){
+    //   speed = miningConfig.Base_Gold_Speed
+    // }
     return calClaimable([land], speed);
   };
 
