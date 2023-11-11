@@ -76,7 +76,7 @@ export default function BasePage() {
   };
 
   useEffect(() => {
-    if(!base){return}
+    if (!base) { return }
     // input.onKeyPress(
     //   keys => keys.has("B"),
     //   () => {
@@ -221,17 +221,26 @@ export default function BasePage() {
     if (!miningConfig) {
       return 0;
     }
-    return calClaimable(farmland, miningConfig.Food_Speed).toFixed(2);
+    const t1 = calClaimable(farmland, miningConfig.Food_Speed).toFixed(2);
+    const t2 = calBaseClaimable(ResourceType.Food);
+    return t1 + t2
   }, [timenow, miningConfig]);
 
   const ironClaimable = useMemo(() => {
     if (!miningConfig) {
       return 0;
     }
-    return calClaimable(ironMine, miningConfig.Iron_Speed).toFixed(2);
+    const t2 = calBaseClaimable(ResourceType.Iron);
+    const t1 = calClaimable(ironMine, miningConfig.Iron_Speed).toFixed(2);
+    return t1 + t2
   }, [timenow, miningConfig]);
 
-  const calBaseClaimable = () => {
+  enum ResourceType {
+    Gold,
+    Food,
+    Iron
+  }
+  const calBaseClaimable = (type: ResourceType) => {
     if (!miningConfig) {
       return 0;
     }
@@ -248,7 +257,12 @@ export default function BasePage() {
     const land = new Land();
     land.x = base.x;
     land.y = base.y;
-    return calClaimable([land], miningConfig.Base_Gold_Speed);
+    let speed = miningConfig.Base_Gold_Speed
+    switch (type) {
+      case ResourceType.Food: speed = miningConfig.Base_Food_Speed; break;
+      case ResourceType.Iron: speed = miningConfig.Base_Iron_Speed; break;
+    }
+    return calClaimable([land], speed);
   };
 
   const goldClaimable = useMemo(() => {
@@ -256,7 +270,7 @@ export default function BasePage() {
       return 0;
     }
     const t1 = calClaimable(goldmine, miningConfig.Gold_Speed);
-    const t2 = calBaseClaimable();
+    const t2 = calBaseClaimable(ResourceType.Gold);
     const t = t1 + t2;
     return t.toFixed(2);
   }, [timenow, miningConfig]);
