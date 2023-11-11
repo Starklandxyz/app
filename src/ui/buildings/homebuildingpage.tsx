@@ -214,10 +214,15 @@ export default function BasePage() {
     land.x = base.x;
     land.y = base.y;
     let speed = miningConfig.Base_Gold_Speed
-    switch (type) {
-      case ResourceType.Food: speed = miningConfig.Base_Food_Speed; break;
-      case ResourceType.Iron: speed = miningConfig.Base_Iron_Speed; break;
+    try {
+      switch (type) {
+        case ResourceType.Food: speed = miningConfig.Base_Food_Speed; break;
+        case ResourceType.Iron: speed = miningConfig.Base_Iron_Speed; break;
+      }
+    } catch (error) {
+      
     }
+    
     if(!speed){
       speed = miningConfig.Base_Gold_Speed
     }
