@@ -191,6 +191,39 @@ export default function BasePage() {
     }
   };
 
+  enum ResourceType {
+    Gold,
+    Food,
+    Iron
+  }
+  const calBaseClaimable = (type: ResourceType) => {
+    if (!miningConfig) {
+      return 0;
+    }
+    if (!account) {
+      return 0;
+    }
+    const base = getComponentValue(
+      contractComponents.HBase,
+      getEntityIdFromKeys([1n, BigInt(account.address)])
+    );
+    if (!base) {
+      return 0;
+    }
+    const land = new Land();
+    land.x = base.x;
+    land.y = base.y;
+    let speed = miningConfig.Base_Gold_Speed
+    switch (type) {
+      case ResourceType.Food: speed = miningConfig.Base_Food_Speed; break;
+      case ResourceType.Iron: speed = miningConfig.Base_Iron_Speed; break;
+    }
+    if(!speed){
+      speed = miningConfig.Base_Gold_Speed
+    }
+    return calClaimable([land], speed);
+  };
+
   const calClaimable = (lands: Land[], speed: number) => {
     // const config = getComponentValue(contractComponents.MiningConfig, getEntityIdFromKeys([1n]))
     // if (!miningConfig) {
@@ -235,35 +268,6 @@ export default function BasePage() {
     return t1 + t2
   }, [timenow, miningConfig]);
 
-  enum ResourceType {
-    Gold,
-    Food,
-    Iron
-  }
-  const calBaseClaimable = (type: ResourceType) => {
-    if (!miningConfig) {
-      return 0;
-    }
-    if (!account) {
-      return 0;
-    }
-    const base = getComponentValue(
-      contractComponents.HBase,
-      getEntityIdFromKeys([1n, BigInt(account.address)])
-    );
-    if (!base) {
-      return 0;
-    }
-    const land = new Land();
-    land.x = base.x;
-    land.y = base.y;
-    let speed = miningConfig.Base_Gold_Speed
-    switch (type) {
-      case ResourceType.Food: speed = miningConfig.Base_Food_Speed; break;
-      case ResourceType.Iron: speed = miningConfig.Base_Iron_Speed; break;
-    }
-    return calClaimable([land], speed);
-  };
 
   const goldClaimable = useMemo(() => {
     if (!miningConfig) {
