@@ -223,9 +223,9 @@ export default function BasePage() {
     } catch (error) {
       speed = 0
     }
-    // if(!speed){
-    //   speed = miningConfig.Base_Gold_Speed
-    // }
+    if(!speed){
+      speed = 0
+    }
     return calClaimable([land], speed);
   };
 
