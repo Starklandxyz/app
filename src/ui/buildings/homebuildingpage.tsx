@@ -259,9 +259,10 @@ export default function BasePage() {
     if (!miningConfig) {
       return 0;
     }
-    const t1 = calClaimable(farmland, miningConfig.Food_Speed).toFixed(2);
+    const t1 = calClaimable(farmland, miningConfig.Food_Speed);
     const t2 = calBaseClaimable(ResourceType.Food);
-    return t1 + t2
+    const t = t1 + t2;
+    return t.toFixed(2);
   }, [timenow, miningConfig]);
 
   const ironClaimable = useMemo(() => {
@@ -269,8 +270,9 @@ export default function BasePage() {
       return 0;
     }
     const t2 = calBaseClaimable(ResourceType.Iron);
-    const t1 = calClaimable(ironMine, miningConfig.Iron_Speed).toFixed(2);
-    return t1 + t2
+    const t1 = calClaimable(ironMine, miningConfig.Iron_Speed);
+    const t = t1 + t2;
+    return t.toFixed(2);
   }, [timenow, miningConfig]);
 
 
