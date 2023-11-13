@@ -3,7 +3,7 @@ import { tileCoordToPixelCoord } from "../../node_modules/@latticexyz/phaserx/sr
 import { ClickWrapper } from "./clickWrapper";
 import { store } from "../store/store";
 import { TILE_HEIGHT, TILE_WIDTH } from "../phaser/constants";
-import { positionToCoorp, toastError } from "../utils";
+import { positionToCoorp, toastError, toastInfo } from "../utils";
 import twitter from "/twitterlogo.png"
 import telegram from "/telegram.png"
 import diskette from "/diskette.png"
@@ -22,11 +22,12 @@ export default function BottomIcons() {
     } = phaserLayer!;
 
     const gotoTwitter = () => {
-        window.open("https://twitter.com/starklandxyz/")
+        window.open("https://twitter.com/starkland_xyz/")
     }
 
     const gotoTelegram = () => {
-        window.open("https://t.me/starkland")
+        // window.open("https://t.me/starkland")
+        toastInfo("Stay turned")
     }
 
     return (
