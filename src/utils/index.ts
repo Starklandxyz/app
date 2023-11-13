@@ -105,7 +105,7 @@ export function stringToHex(str: string): string {
 
 export function hexToString(hex: string | undefined): string {
     // console.log(`hex: ${hex}`);
-    
+
     if (!hex) {
         return ''
     }
@@ -115,7 +115,7 @@ export function hexToString(hex: string | undefined): string {
             str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
         }
         const result = decodeURI(str);
-        return result
+        return handleUserName(result)
     } catch (error) {
         console.error(error);
     }
@@ -183,7 +183,7 @@ export const random_on_chain = (seed_: number) => {
     return hex
 }
 
-export const parseTime = (sec: number,showzero=true) => {
+export const parseTime = (sec: number, showzero = true) => {
     const h = Math.floor(sec / 3600)
     const m = Math.floor((sec - h * 3600) / 60)
     const s = sec - h * 3600 - m * 60
@@ -204,12 +204,12 @@ export const parseTime = (sec: number,showzero=true) => {
     var result = ""
     if (h == 0) {
         result = `${m}m:${s}s`
-        if(!showzero && s==0){
+        if (!showzero && s == 0) {
             result = `${m}m`
         }
     } else {
         result = `${h}h:${m}m:${s}s`
-        if(!showzero && s==0){
+        if (!showzero && s == 0) {
             result = `${h}h:${m}m`
         }
     }
@@ -256,4 +256,14 @@ export const calDistanceToBase = (base: Coord, from: Coord) => {
         dis = dis4
     }
     return dis
+}
+
+export const handleUserName = (username: string, isSelf: boolean = false) => {
+    if (isSelf) {
+        return username
+    }
+    if (username.includes("Kill")) {
+        return "User001"
+    }
+    return username
 }

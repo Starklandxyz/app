@@ -16,7 +16,7 @@ import {
 import { store } from "../store/store";
 import { getEntityIdFromKeys } from "../dojo/parseEvent";
 import { Coord } from "../types";
-import { hexToString } from "../utils";
+import { handleUserName, hexToString } from "../utils";
 import { playerStore } from "../store/playerStore";
 import { get_land_barbarians } from "../types/Land";
 import { BuildType } from "../types/Build";
@@ -199,7 +199,7 @@ export default function RankPanel() {
                                 (index > 10 * (page - 1) - 1 && index < 10 * page) &&
                                 <tr key={row.owner}>
                                     <td style={{ width: '50px' }}>{index + 1}</td>
-                                    <td style={{ width: '120px' }}>{row.username}</td>
+                                    <td style={{ width: '120px' }}>{handleUserName(row.username)}</td>
                                     <td style={{ width: '80px' }}>{row.point}</td>
                                     <td style={{ width: '80px' }}>{row.domination}</td>
                                     <td style={{ width: '80px' }}>{`(${row.base.x},${row.base.y})`}</td>
